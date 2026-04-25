@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using LTWEB_QuaMonHai_CuoiKy.Data;
 using LTWEB_QuaMonHai_CuoiKy.Models;
+using System.Text.Json;
 
 namespace LTWEB_QuaMonHai_CuoiKy.Controllers
 {
@@ -19,188 +16,111 @@ namespace LTWEB_QuaMonHai_CuoiKy.Controllers
             _context = context;
         }
 
-        // GET: HangHoas
+        // 1. LIỆT KÊ: Đọc từ SQL Server
         public async Task<IActionResult> Index(int page = 1)
         {
-            int pageSize = 9; // Giới hạn 9 sản phẩm mỗi trang
-
-            var query = _context.HangHoas
-                .Include(h => h.MaLoaiNavigation)
-                .AsNoTracking();
+            int pageSize = 9;
+            var query = _context.HangHoas.Include(h => h.MaLoaiNavigation).OrderByDescending(h => h.MaHh);
 
             int totalItems = await query.CountAsync();
-            int totalPages = (int)Math.Ceiling(totalItems / (double)pageSize);
-
-            // Tránh trường hợp số trang truyền vào không hợp lệ
-            if (page < 1) page = 1;
-            if (page > totalPages && totalPages > 0) page = totalPages;
-
-            var items = await query
-                .Skip((page - 1) * pageSize)
-                .Take(pageSize)
-                .ToListAsync();
-
             ViewBag.CurrentPage = page;
-            ViewBag.TotalPages = totalPages;
+            ViewBag.TotalPages = (int)Math.Ceiling(totalItems / (double)pageSize);
 
+            var items = await query.Skip((page - 1) * pageSize).Take(pageSize).ToListAsync();
             return View(items);
         }
 
-        // GET: HangHoas/Details/5
-        public async Task<IActionResult> Details(int? id)
+        // 2. ĐỒNG BỘ: Kéo từ API về SQL Server (Chìa khóa để lưu dữ liệu)
+        public async Task<IActionResult> SyncFromApi()
         {
-            if (id == null)
+            using (var client = new HttpClient())
             {
-                return NotFound();
-            }
-
-            var hangHoa = await _context.HangHoas
-                .Include(h => h.MaLoaiNavigation)
-                .Include(h => h.MaNccNavigation)
-                .FirstOrDefaultAsync(m => m.MaHh == id);
-            if (hangHoa == null)
-            {
-                return NotFound();
-            }
-
-            return View(hangHoa);
-        }
-
-        // GET: HangHoas/Create
-        public IActionResult Create()
-        {
-            ViewData["MaLoai"] = new SelectList(_context.Loais, "MaLoai", "MaLoai");
-            ViewData["MaNcc"] = new SelectList(_context.NhaCungCaps, "MaNcc", "MaNcc");
-            return View();
-        }
-
-        // POST: HangHoas/Create
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("MaHh,TenHh,MaLoai,DonGia,MoTa,MaNcc")] HangHoa hangHoa, IFormFile fHinh)
-        {
-            if (ModelState.IsValid)
-            {
-                // Xử lý upload hình ảnh
-                if (fHinh != null && fHinh.Length > 0)
+                var response = await client.GetAsync("https://dummyjson.com/products?limit=30");
+                if (response.IsSuccessStatusCode)
                 {
-                    hangHoa.Hinh = await LuuFileHinh(fHinh);
-                }
+                    var json = await response.Content.ReadAsStringAsync();
+                    var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
+                    var apiData = JsonSerializer.Deserialize<ProductApiResponse>(json, options);
 
-                _context.Add(hangHoa);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            ViewData["MaLoai"] = new SelectList(_context.Loais, "MaLoai", "TenLoai", hangHoa.MaLoai);
-            ViewData["MaNcc"] = new SelectList(_context.NhaCungCaps, "MaNcc", "TenCongTy", hangHoa.MaNcc);
-            return View(hangHoa);
-        }
-
-        // Hàm hỗ trợ lưu file hình vào thư mục wwwroot/Hinh/HangHoa
-        private async Task<string> LuuFileHinh(IFormFile file)
-        {
-            var fileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
-            var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Hinh", "HangHoa", fileName);
-
-            using (var stream = new FileStream(path, FileMode.Create))
-            {
-                await file.CopyToAsync(stream);
-            }
-            return fileName;
-        }
-        // GET: HangHoas/Edit/5
-        public async Task<IActionResult> Edit(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var hangHoa = await _context.HangHoas.FindAsync(id);
-            if (hangHoa == null)
-            {
-                return NotFound();
-            }
-            ViewData["MaLoai"] = new SelectList(_context.Loais, "MaLoai", "MaLoai", hangHoa.MaLoai);
-            ViewData["MaNcc"] = new SelectList(_context.NhaCungCaps, "MaNcc", "MaNcc", hangHoa.MaNcc);
-            return View(hangHoa);
-        }
-
-        // POST: HangHoas/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("MaHh,TenHh,TenAlias,MaLoai,MoTaDonVi,DonGia,Hinh,NgaySx,GiamGia,SoLanXem,MoTa,MaNcc")] HangHoa hangHoa)
-        {
-            if (id != hangHoa.MaHh)
-            {
-                return NotFound();
-            }
-
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _context.Update(hangHoa);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!HangHoaExists(hangHoa.MaHh))
+                    foreach (var item in apiData.products)
                     {
-                        return NotFound();
+                        if (!_context.HangHoas.Any(h => h.TenHh == item.title))
+                        {
+                            _context.HangHoas.Add(new HangHoa
+                            {
+                                TenHh = item.title,
+                                DonGia = item.price,
+                                Hinh = item.thumbnail, // Lưu URL trực tiếp
+                                MaLoai = 1, // Gán loại mặc định
+                                MoTa = item.description,
+                                NgaySx = DateTime.Now
+                            });
+                        }
                     }
-                    else
-                    {
-                        throw;
-                    }
+                    await _context.SaveChangesAsync(); // LƯU VĨNH VIỄN VÀO SQL
                 }
-                return RedirectToAction(nameof(Index));
             }
-            ViewData["MaLoai"] = new SelectList(_context.Loais, "MaLoai", "MaLoai", hangHoa.MaLoai);
-            ViewData["MaNcc"] = new SelectList(_context.NhaCungCaps, "MaNcc", "MaNcc", hangHoa.MaNcc);
-            return View(hangHoa);
-        }
-
-        // GET: HangHoas/Delete/5
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var hangHoa = await _context.HangHoas
-                .Include(h => h.MaLoaiNavigation)
-                .Include(h => h.MaNccNavigation)
-                .FirstOrDefaultAsync(m => m.MaHh == id);
-            if (hangHoa == null)
-            {
-                return NotFound();
-            }
-
-            return View(hangHoa);
-        }
-
-        // POST: HangHoas/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            var hangHoa = await _context.HangHoas.FindAsync(id);
-            if (hangHoa != null)
-            {
-                _context.HangHoas.Remove(hangHoa);
-            }
-
-            await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool HangHoaExists(int id)
+        // 3. EDIT: Sửa và ghi đè vào SQL Server
+        public async Task<IActionResult> Edit(int? id)
         {
-            return _context.HangHoas.Any(e => e.MaHh == id);
+            var hh = await _context.HangHoas.FindAsync(id);
+            if (hh == null) return NotFound();
+            ViewData["MaLoai"] = new SelectList(_context.Loais, "MaLoai", "TenLoai", hh.MaLoai);
+            return View(hh);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(int id, HangHoa hh)
+        {
+            if (ModelState.IsValid)
+            {
+                _context.Update(hh);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+            return View(hh);
+        }
+
+        // 4. DELETE: Xóa vĩnh viễn khỏi SQL
+        public async Task<IActionResult> Delete(int id)
+        {
+            var hh = await _context.HangHoas.FindAsync(id);
+            if (hh != null)
+            {
+                _context.HangHoas.Remove(hh);
+                await _context.SaveChangesAsync();
+            }
+            return RedirectToAction(nameof(Index));
+        }
+
+        // 5. CREATE & DETAILS (Cơ bản)
+        public IActionResult Create()
+        {
+            ViewData["MaLoai"] = new SelectList(_context.Loais, "MaLoai", "TenLoai");
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create(HangHoa hh)
+        {
+            if (ModelState.IsValid)
+            {
+                _context.Add(hh);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+            return View(hh);
+        }
+
+        public async Task<IActionResult> Details(int? id)
+        {
+            var hh = await _context.HangHoas.Include(h => h.MaLoaiNavigation).FirstOrDefaultAsync(m => m.MaHh == id);
+            return View(hh);
         }
     }
 }

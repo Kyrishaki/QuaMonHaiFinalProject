@@ -2,46 +2,69 @@
 using LTWEB_QuaMonHai_CuoiKy.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
+using System.Text.Json;
 
 namespace LTWEB_QuaMonHai_CuoiKy.Controllers
 {
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-
         private readonly Hshop2023Context _context;
+
         public HomeController(ILogger<HomeController> logger, Hshop2023Context context)
         {
             _logger = logger;
             _context = context;
         }
 
-        public IActionResult Index(int page = 1)
+        // Hàm Index hỗ trợ tham số page để phân trang
+        public async Task<IActionResult> Index(int page = 1)
         {
-            int pageSize = 9; // Giới hạn 9 sản phẩm mỗi trang
+            int pageSize = 9; // Số sản phẩm hiển thị trên 1 trang (3x3)
+            int skip = (page - 1) * pageSize; // Tính số lượng sản phẩm cần bỏ qua
 
-            // 1. Lấy toàn bộ truy vấn
-            var query = _context.HangHoas.AsQueryable();
+            List<ApiProduct> dsSanPham = new List<ApiProduct>();
+            int totalItems = 0;
 
-            // 2. Tính toán phân trang
-            int totalItems = query.Count();
-            int totalPages = (int)Math.Ceiling(totalItems / (double)pageSize);
+            using (var client = new HttpClient())
+            {
+                // Gọi API với limit và skip để thực hiện phân trang
+                // DummyJSON có tổng cộng 100 sản phẩm gốc
+                string url = $"https://dummyjson.com/products?limit={pageSize}&skip={skip}";
 
-            // Tránh lỗi số trang ngoài phạm vi
-            if (page < 1) page = 1;
-            if (page > totalPages && totalPages > 0) page = totalPages;
+                try
+                {
+                    var response = await client.GetAsync(url);
+                    if (response.IsSuccessStatusCode)
+                    {
+                        var jsonString = await response.Content.ReadAsStringAsync();
 
-            // 3. Chỉ lấy 9 sản phẩm của trang hiện tại
-            var hangHoas = query
-                .Skip((page - 1) * pageSize)
-                .Take(pageSize)
-                .ToList();
+                        // Cấu hình không phân biệt chữ hoa chữ thường khi đọc JSON
+                        var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
 
-            // Gửi dữ liệu phân trang qua View
+                        // Giải mã JSON sang Model ProductApiResponse
+                        var apiData = JsonSerializer.Deserialize<ProductApiResponse>(jsonString, options);
+
+                        if (apiData != null && apiData.products != null)
+                        {
+                            dsSanPham = apiData.products;
+                            // Lấy giá trị tổng sản phẩm từ API (thường là 100 hoặc 194 tùy đợt update của DummyJSON)
+                            totalItems = apiData.total;
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    // Ghi lại lỗi nếu không thể kết nối Internet hoặc API lỗi
+                    ViewBag.Error = "Lỗi kết nối API: " + ex.Message;
+                }
+            }
+
+            // Gửi dữ liệu tính toán phân trang sang View qua ViewBag
             ViewBag.CurrentPage = page;
-            ViewBag.TotalPages = totalPages;
+            ViewBag.TotalPages = (int)Math.Ceiling(totalItems / (double)pageSize);
 
-            return View(hangHoas);
+            return View(dsSanPham);
         }
 
         public IActionResult Privacy()

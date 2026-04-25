@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\Codes\\LTWEB\\LTWEB_QuaMonHai_CuoiKy\\LTWEB_QuaMonHai_CuoiKy.csproj": {}
+    "D:\\Codes\\LTWEB\\QuaMonHaiFinalProject\\LTWEB_QuaMonHai_CuoiKy.csproj": {}
   },
   "projects": {
-    "D:\\Codes\\LTWEB\\LTWEB_QuaMonHai_CuoiKy\\LTWEB_QuaMonHai_CuoiKy.csproj": {
+    "D:\\Codes\\LTWEB\\QuaMonHaiFinalProject\\LTWEB_QuaMonHai_CuoiKy.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Codes\\LTWEB\\LTWEB_QuaMonHai_CuoiKy\\LTWEB_QuaMonHai_CuoiKy.csproj",
+        "projectUniqueName": "D:\\Codes\\LTWEB\\QuaMonHaiFinalProject\\LTWEB_QuaMonHai_CuoiKy.csproj",
         "projectName": "LTWEB_QuaMonHai_CuoiKy",
-        "projectPath": "D:\\Codes\\LTWEB\\LTWEB_QuaMonHai_CuoiKy\\LTWEB_QuaMonHai_CuoiKy.csproj",
+        "projectPath": "D:\\Codes\\LTWEB\\QuaMonHaiFinalProject\\LTWEB_QuaMonHai_CuoiKy.csproj",
         "packagesPath": "C:\\Users\\MHT\\.nuget\\packages\\",
-        "outputPath": "D:\\Codes\\LTWEB\\LTWEB_QuaMonHai_CuoiKy\\obj\\",
+        "outputPath": "D:\\Codes\\LTWEB\\QuaMonHaiFinalProject\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "zNI9FXWQdn0=",
+  "dgSpecHash": "BcrjImM6WSI=",
   "success": true,
-  "projectFilePath": "D:\\Codes\\LTWEB\\LTWEB_QuaMonHai_CuoiKy\\LTWEB_QuaMonHai_CuoiKy.csproj",
+  "projectFilePath": "D:\\Codes\\LTWEB\\QuaMonHaiFinalProject\\LTWEB_QuaMonHai_CuoiKy.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\MHT\\.nuget\\packages\\azure.core\\1.38.0\\azure.core.1.38.0.nupkg.sha512",
     "C:\\Users\\MHT\\.nuget\\packages\\azure.identity\\1.11.4\\azure.identity.1.11.4.nupkg.sha512",

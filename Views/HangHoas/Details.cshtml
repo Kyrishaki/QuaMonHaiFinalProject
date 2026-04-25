@@ -1,84 +1,38 @@
 ﻿@model LTWEB_QuaMonHai_CuoiKy.Models.HangHoa
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Chi tiết sản phẩm";
 }
 
-<h1>Details</h1>
-
-<div>
-    <h4>HangHoa</h4>
+<div class="container py-4">
+    <h2>Chi Tiết Sản Phẩm</h2>
     <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.TenHh)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.TenHh)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.TenAlias)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.TenAlias)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.MoTaDonVi)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.MoTaDonVi)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.DonGia)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.DonGia)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Hinh)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Hinh)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.NgaySx)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.NgaySx)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.GiamGia)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.GiamGia)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.SoLanXem)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.SoLanXem)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.MoTa)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.MoTa)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.MaLoaiNavigation)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.MaLoaiNavigation.MaLoai)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.MaNccNavigation)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.MaNccNavigation.MaNcc)
-        </dd>
-    </dl>
-</div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.MaHh">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    <div class="row bg-light p-4 rounded shadow-sm">
+        <div class="col-md-4 text-center">
+            <img src="@(Model.Hinh.StartsWith("http") ? Model.Hinh : "/Hinh/HangHoa/" + Model.Hinh)"
+                 class="img-fluid rounded shadow" alt="@Model.TenHh" />
+        </div>
+        <div class="col-md-8">
+            <dl class="row fs-5">
+                <dt class="col-sm-4 text-muted">Mã SP (SQL)</dt>
+                <dd class="col-sm-8">@Model.MaHh</dd>
+
+                <dt class="col-sm-4 text-muted">Tên sản phẩm</dt>
+                <dd class="col-sm-8 fw-bold">@Model.TenHh</dd>
+
+                <dt class="col-sm-4 text-muted">Danh mục</dt>
+                <dd class="col-sm-8"><span class="badge bg-primary">@Model.MaLoaiNavigation?.TenLoai</span></dd>
+
+                <dt class="col-sm-4 text-muted">Giá bán</dt>
+                <dd class="col-sm-8 text-success fw-bold">$@Model.DonGia</dd>
+
+                <dt class="col-sm-4 text-muted">Mô tả chi tiết</dt>
+                <dd class="col-sm-8">@Model.MoTa</dd>
+            </dl>
+            <div class="mt-4 pt-3 border-top">
+                <a asp-action="Edit" asp-route-id="@Model.MaHh" class="btn btn-warning btn-lg me-2">Sửa thông tin</a>
+                <a asp-action="Index" class="btn btn-outline-secondary btn-lg">Quay lại</a>
+            </div>
+        </div>
+    </div>
 </div>

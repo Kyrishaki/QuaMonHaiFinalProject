@@ -7,6 +7,306 @@ wwwroot\css\site.css
 wwwroot\css\style.css
 wwwroot\favicon.ico
 wwwroot\feature.html
+wwwroot\image\divider.gif
+wwwroot\image\HangHoa\1009.gif
+wwwroot\image\HangHoa\21meTyhQebL._SL500_AA300_.jpg
+wwwroot\image\HangHoa\31EPGSm2s1L._SL500_AA300_.jpg
+wwwroot\image\HangHoa\31hCgES5GXL._AA300_.jpg
+wwwroot\image\HangHoa\31ioCUUFnoL.jpg
+wwwroot\image\HangHoa\31jsjfVfH9L._SL500_AA300_.jpg
+wwwroot\image\HangHoa\31LAnW1JFqL._SL500_AA300_.jpg
+wwwroot\image\HangHoa\31ncPnMYCxL._SL500_AA300_.jpg
+wwwroot\image\HangHoa\31pAGovVENL._SL500_AA300_.jpg
+wwwroot\image\HangHoa\31pT+SdvQXL._SL500_AA300_.jpg
+wwwroot\image\HangHoa\31TB6tC6BOL._SL500_AA300_.jpg
+wwwroot\image\HangHoa\31YOss-gC-L._AA300_.jpg
+wwwroot\image\HangHoa\31yxRemzRLL._SS350_ (1).jpg
+wwwroot\image\HangHoa\41-yvkFqVZL._SL500_AA300_.jpg
+wwwroot\image\HangHoa\410PjzqoC8L._AA300_.jpg
+wwwroot\image\HangHoa\415cOCbey.jpg
+wwwroot\image\HangHoa\415cOCbeyML.jpg
+wwwroot\image\HangHoa\416OcTXFfeL._AA300_.jpg
+wwwroot\image\HangHoa\416pdroSEkL.jpg
+wwwroot\image\HangHoa\419WCoqfamL._AA300_.jpg
+wwwroot\image\HangHoa\41A9R5KXCXL._AA300_.jpg
+wwwroot\image\HangHoa\41BiMx1FKyL._SL500_AA300_.jpg
+wwwroot\image\HangHoa\41brDHtPY9L._SL500_AA300_.jpg
+wwwroot\image\HangHoa\41CIcYRxJKL._SL500_AA300_.jpg
+wwwroot\image\HangHoa\41G38jC0ajL._SL500_AA300_.jpg
+wwwroot\image\HangHoa\41GVLtgNngL._SL500_AA300_.jpg
+wwwroot\image\HangHoa\41iDo0HDhbL._SL500_AA300_.jpg
+wwwroot\image\HangHoa\41iji4-9UsL._SL500_AA300_.jpg
+wwwroot\image\HangHoa\41IPLmZIKhL._SL500_AA300_.jpg
+wwwroot\image\HangHoa\41KALboJKuL.jpg
+wwwroot\image\HangHoa\41lffECD-sL._SY445_.jpg
+wwwroot\image\HangHoa\41LMouG6j7L._SL500_AA300_.jpg
+wwwroot\image\HangHoa\41MJUdI2jdL._SL500_AA300_.jpg
+wwwroot\image\HangHoa\41Pg1ahql8L._AA300_.jpg
+wwwroot\image\HangHoa\41qfgTvFBwL._SL500_AA300_.jpg
+wwwroot\image\HangHoa\41qlcUEhNmL._SL500_AA300_.jpg
+wwwroot\image\HangHoa\41riQRGf-6L._SL500_AA300_.jpg
+wwwroot\image\HangHoa\41RxtSQOd2L._SL500_AA300_.jpg
+wwwroot\image\HangHoa\41sd2DTD8EL._SL500_AA300_.jpg
+wwwroot\image\HangHoa\41sdBTtnUDL._SL500_AA300_.jpg
+wwwroot\image\HangHoa\41sl3FN6NpL.jpg
+wwwroot\image\HangHoa\41sw9ASUvBL._SX342_.jpg
+wwwroot\image\HangHoa\41TexqWVkHL._SL500_AA300_.jpg
+wwwroot\image\HangHoa\41V4Ds2PtZL._SL500_AA300_.jpg
+wwwroot\image\HangHoa\41w4TlVPhGL.jpg
+wwwroot\image\HangHoa\41wHu2N4tVL._SL500_AA300_.jpg
+wwwroot\image\HangHoa\41WvZnGYUkL._SL500_AA300_.jpg
+wwwroot\image\HangHoa\41XX7Pi240L.jpg
+wwwroot\image\HangHoa\41yh1vBmqsL._SL500_AA300_.jpg
+wwwroot\image\HangHoa\41Ymq8fjbOL._SL500_AA300_.jpg
+wwwroot\image\HangHoa\41Z43OmFHjL._SX342_.jpg
+wwwroot\image\HangHoa\41ZE9SmWdzL._SL500_AA300_.jpg
+wwwroot\image\HangHoa\41zxxR71G+L._SL500_AA300_.jpg
+wwwroot\image\HangHoa\51+4d3VBFvL._SL500_AA300_.jpg
+wwwroot\image\HangHoa\513UnnRfFML._SL1001_.jpg
+wwwroot\image\HangHoa\515p1IeP0-L._SL500_AA300_.jpg
+wwwroot\image\HangHoa\5195-l+nflL._AA300_.jpg
+wwwroot\image\HangHoa\51czOOat0OL._SL500_AA300_.jpg
+wwwroot\image\HangHoa\51GBNkHO6vL._SL500_AA300_.jpg
+wwwroot\image\HangHoa\51JhyHtnEgL._SL1001_.jpg
+wwwroot\image\HangHoa\51l46qQB50L._SL500_AA300_.jpg
+wwwroot\image\HangHoa\51Lj5bxbNtL._SL500_AA300_.jpg
+wwwroot\image\HangHoa\51nukXFJLJL.jpg
+wwwroot\image\HangHoa\51pvLIvb6ZL._SL500_AA300_.jpg
+wwwroot\image\HangHoa\51s6pbRlNyL._SL500_AA300_.jpg
+wwwroot\image\HangHoa\51uJ-pWfc9L._SL500_AA300_.jpg
+wwwroot\image\HangHoa\51vxcBS1sQL._SL500_AA300_.jpg
+wwwroot\image\HangHoa\51w+JqOnmSL._SL500_AA300_.jpg
+wwwroot\image\HangHoa\51y46IslQkL._SL500_AA300_.jpg
+wwwroot\image\HangHoa\51yomC0EodL._SL500_AA300_.jpg
+wwwroot\image\HangHoa\51Z9tfgl4aL._SL500_AA300_.jpg
+wwwroot\image\HangHoa\71bJrFAys9L._SL1280_.jpg
+wwwroot\image\HangHoa\71cBwWAgvIL._SL1430_.jpg
+wwwroot\image\HangHoa\816zGZv1ORL._SL1500_.jpg
+wwwroot\image\HangHoa\81k1XbQ6nQL._SL1500_.jpg
+wwwroot\image\HangHoa\81Q1DvOnnoL._SL1500_.jpg
+wwwroot\image\HangHoa\91FM0Hog9FL._SL1500_.jpg
+wwwroot\image\HangHoa\91JUBDf1jTL._AA1500_.jpg
+wwwroot\image\HangHoa\91T2BjUkYmL._SL1500_.jpg
+wwwroot\image\HangHoa\Camera1.jpg
+wwwroot\image\HangHoa\To.gif
+wwwroot\image\icons\Accept.png
+wwwroot\image\icons\Add to basket.png
+wwwroot\image\icons\Add.png
+wwwroot\image\icons\Address book.png
+wwwroot\image\icons\Alarm.png
+wwwroot\image\icons\Anchor.png
+wwwroot\image\icons\Application form.png
+wwwroot\image\icons\Bar chart.png
+wwwroot\image\icons\Basket.png
+wwwroot\image\icons\Bell.png
+wwwroot\image\icons\Best.png
+wwwroot\image\icons\Billboard.png
+wwwroot\image\icons\Bluetooth.png
+wwwroot\image\icons\Bomb.png
+wwwroot\image\icons\Book.png
+wwwroot\image\icons\Bookmark.png
+wwwroot\image\icons\Box.png
+wwwroot\image\icons\Boy.png
+wwwroot\image\icons\Brick house.png
+wwwroot\image\icons\Bricks.png
+wwwroot\image\icons\Brief case.png
+wwwroot\image\icons\Brightness.png
+wwwroot\image\icons\Bubble.png
+wwwroot\image\icons\Buddy.png
+wwwroot\image\icons\Cable.png
+wwwroot\image\icons\Calculator.png
+wwwroot\image\icons\Calendar.png
+wwwroot\image\icons\Call.png
+wwwroot\image\icons\Camera.png
+wwwroot\image\icons\Card file.png
+wwwroot\image\icons\Cash register.png
+wwwroot\image\icons\Cat.png
+wwwroot\image\icons\Certificate.png
+wwwroot\image\icons\Clien list.png
+wwwroot\image\icons\Clipboard.png
+wwwroot\image\icons\Clock.png
+wwwroot\image\icons\Closed door.png
+wwwroot\image\icons\Closed folder.png
+wwwroot\image\icons\Coin.png
+wwwroot\image\icons\Coins.png
+wwwroot\image\icons\Color wheel.png
+wwwroot\image\icons\Comment.png
+wwwroot\image\icons\Comments.png
+wwwroot\image\icons\Company.png
+wwwroot\image\icons\Computer.png
+wwwroot\image\icons\Conference.png
+wwwroot\image\icons\Connect.png
+wwwroot\image\icons\Construction.png
+wwwroot\image\icons\Contrast.png
+wwwroot\image\icons\Control panel.png
+wwwroot\image\icons\Create.png
+wwwroot\image\icons\Database.png
+wwwroot\image\icons\Date.png
+wwwroot\image\icons\Delete.png
+wwwroot\image\icons\Desktop.png
+wwwroot\image\icons\Diagram.png
+wwwroot\image\icons\Dice.png
+wwwroot\image\icons\Disconnect.png
+wwwroot\image\icons\Discussion.png
+wwwroot\image\icons\Document.png
+wwwroot\image\icons\Documents.png
+wwwroot\image\icons\Dog.png
+wwwroot\image\icons\Dollar.png
+wwwroot\image\icons\Down.png
+wwwroot\image\icons\Download.png
+wwwroot\image\icons\Edit.png
+wwwroot\image\icons\eng.gif
+wwwroot\image\icons\Euro.png
+wwwroot\image\icons\Exit button.png
+wwwroot\image\icons\Exit.png
+wwwroot\image\icons\Favourites.png
+wwwroot\image\icons\Fax.png
+wwwroot\image\icons\Flash drive.png
+wwwroot\image\icons\Flow block.png
+wwwroot\image\icons\Free.png
+wwwroot\image\icons\Friends.png
+wwwroot\image\icons\Full basket.png
+wwwroot\image\icons\Funny.png
+wwwroot\image\icons\Game controller.png
+wwwroot\image\icons\Gear.png
+wwwroot\image\icons\Genealogy.png
+wwwroot\image\icons\Gift.png
+wwwroot\image\icons\Girl.png
+wwwroot\image\icons\Globe.png
+wwwroot\image\icons\Handshake.png
+wwwroot\image\icons\Happy.png
+wwwroot\image\icons\Hard disk.png
+wwwroot\image\icons\Heart.png
+wwwroot\image\icons\Help.png
+wwwroot\image\icons\Hierarchy.png
+wwwroot\image\icons\Home.png
+wwwroot\image\icons\Hungup.png
+wwwroot\image\icons\Industry.png
+wwwroot\image\icons\Info.png
+wwwroot\image\icons\Key.png
+wwwroot\image\icons\Label.png
+wwwroot\image\icons\Left.png
+wwwroot\image\icons\Lego brick.png
+wwwroot\image\icons\Letter.png
+wwwroot\image\icons\List.png
+wwwroot\image\icons\Lists.png
+wwwroot\image\icons\Lock.png
+wwwroot\image\icons\Log out.png
+wwwroot\image\icons\Login.png
+wwwroot\image\icons\Mail.png
+wwwroot\image\icons\Microsoft.png
+wwwroot\image\icons\Mobile phone.png
+wwwroot\image\icons\Money.png
+wwwroot\image\icons\Monitor.png
+wwwroot\image\icons\Mouse.png
+wwwroot\image\icons\Music.png
+wwwroot\image\icons\No.png
+wwwroot\image\icons\Notes.png
+wwwroot\image\icons\Numbered list.png
+wwwroot\image\icons\OK.png
+wwwroot\image\icons\Online.png
+wwwroot\image\icons\Open door.png
+wwwroot\image\icons\Open file.png
+wwwroot\image\icons\Open folder.png
+wwwroot\image\icons\Open letter.png
+wwwroot\image\icons\Open lock.png
+wwwroot\image\icons\Payment.png
+wwwroot\image\icons\Peace.png
+wwwroot\image\icons\Pets.png
+wwwroot\image\icons\Phone.png
+wwwroot\image\icons\Piggy bank.png
+wwwroot\image\icons\Piggy.png
+wwwroot\image\icons\Pointer.png
+wwwroot\image\icons\Pound.png
+wwwroot\image\icons\Price list.png
+wwwroot\image\icons\Print preview.png
+wwwroot\image\icons\Print.png
+wwwroot\image\icons\Printer.png
+wwwroot\image\icons\Problem.png
+wwwroot\image\icons\Properties.png
+wwwroot\image\icons\Red star.png
+wwwroot\image\icons\Refresh.png
+wwwroot\image\icons\Remove from basket.png
+wwwroot\image\icons\Report.png
+wwwroot\image\icons\Right.png
+wwwroot\image\icons\Rouble.png
+wwwroot\image\icons\RSS.png
+wwwroot\image\icons\Sad.png
+wwwroot\image\icons\Safe.png
+wwwroot\image\icons\Save as.png
+wwwroot\image\icons\Save.png
+wwwroot\image\icons\Scroll list.png
+wwwroot\image\icons\Search.png
+wwwroot\image\icons\Shield.png
+wwwroot\image\icons\Smile.png
+wwwroot\image\icons\Software.png
+wwwroot\image\icons\Statistics.png
+wwwroot\image\icons\Stop.png
+wwwroot\image\icons\Task list.png
+wwwroot\image\icons\Telephone.png
+wwwroot\image\icons\Text.png
+wwwroot\image\icons\Tick.png
+wwwroot\image\icons\To do list.png
+wwwroot\image\icons\Trash.png
+wwwroot\image\icons\Unknown person.png
+wwwroot\image\icons\Unlock.png
+wwwroot\image\icons\Unordered list.png
+wwwroot\image\icons\Up.png
+wwwroot\image\icons\Upload.png
+wwwroot\image\icons\User group.png
+wwwroot\image\icons\User.png
+wwwroot\image\icons\Users.png
+wwwroot\image\icons\vit.gif
+wwwroot\image\icons\Wallet.png
+wwwroot\image\icons\Warning.png
+wwwroot\image\icons\Weather.png
+wwwroot\image\icons\Wireless.png
+wwwroot\image\icons\Wizard.png
+wwwroot\image\icons\Yen.png
+wwwroot\image\icons\Yin-Yang.png
+wwwroot\image\icons\Zoom in.png
+wwwroot\image\icons\Zoom out.png
+wwwroot\image\icons\Zoom.png
+wwwroot\image\KhachHang\android_300200.png
+wwwroot\image\KhachHang\Author.jpg
+wwwroot\image\KhachHang\man.jpg
+wwwroot\image\KhachHang\Penguins.jpg
+wwwroot\image\KhachHang\woman.jpg
+wwwroot\image\Loai11.jpeg
+wwwroot\image\Loaiimages.jpeg
+wwwroot\image\Loai\Accept.png
+wwwroot\image\Loai\agenda_1.jpg
+wwwroot\image\Loai\Alarm.png
+wwwroot\image\Loai\Anchor.png
+wwwroot\image\Loai\Bell.png
+wwwroot\image\Loai\Best.png
+wwwroot\image\Loai\Billboard.png
+wwwroot\image\Loai\Bomb.png
+wwwroot\image\Loai\Brick house.png
+wwwroot\image\Loai\Bricks.png
+wwwroot\image\Loai\Buddy.png
+wwwroot\image\Loai\Certificate.png
+wwwroot\image\Loai\Dice.png
+wwwroot\image\Loai\Dollar.png
+wwwroot\image\Loai\Favourites.png
+wwwroot\image\Loai\Funny.png
+wwwroot\image\Loai\Heart.png
+wwwroot\image\Loai\Microsoft.png
+wwwroot\image\Loai\Unlock.png
+wwwroot\image\NhaCC\Acer_logo-300x300.gif
+wwwroot\image\NhaCC\amd-logo.jpg
+wwwroot\image\NhaCC\apple.jpg
+wwwroot\image\NhaCC\dell-logo.jpg
+wwwroot\image\NhaCC\dell-logo2.jpg
+wwwroot\image\NhaCC\hp-logo.jpg
+wwwroot\image\NhaCC\intel-logo.jpg
+wwwroot\image\NhaCC\motorola.jpg
+wwwroot\image\NhaCC\nokia.jpg
+wwwroot\image\NhaCC\samsung-logo-2.jpg
+wwwroot\image\NhaCC\samsung.jpg
+wwwroot\image\NhaCC\shopping_cart.png
+wwwroot\image\NhaCC\sonny-ericsson.jpg
+wwwroot\image\Others\shopping_cart.png
 wwwroot\img\about.jpg
 wwwroot\img\avatar.jpg
 wwwroot\img\baner-1.png
