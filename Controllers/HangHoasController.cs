@@ -20,30 +20,10 @@ namespace LTWEB_QuaMonHai_CuoiKy.Controllers
         }
 
         // GET: HangHoas
-        public async Task<IActionResult> Index(int page = 1)
+        public async Task<IActionResult> Index()
         {
-            int pageSize = 9; // Giới hạn 9 sản phẩm mỗi trang
-
-            var query = _context.HangHoas
-                .Include(h => h.MaLoaiNavigation)
-                .AsNoTracking();
-
-            int totalItems = await query.CountAsync();
-            int totalPages = (int)Math.Ceiling(totalItems / (double)pageSize);
-
-            // Tránh trường hợp số trang truyền vào không hợp lệ
-            if (page < 1) page = 1;
-            if (page > totalPages && totalPages > 0) page = totalPages;
-
-            var items = await query
-                .Skip((page - 1) * pageSize)
-                .Take(pageSize)
-                .ToListAsync();
-
-            ViewBag.CurrentPage = page;
-            ViewBag.TotalPages = totalPages;
-
-            return View(items);
+            var hshop2023Context = _context.HangHoas.Include(h => h.MaLoaiNavigation).Include(h => h.MaNccNavigation);
+            return View(await hshop2023Context.ToListAsync());
         }
 
         // GET: HangHoas/Details/5
@@ -75,39 +55,23 @@ namespace LTWEB_QuaMonHai_CuoiKy.Controllers
         }
 
         // POST: HangHoas/Create
+        // To protect from overposting attacks, enable the specific properties you want to bind to.
+        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("MaHh,TenHh,MaLoai,DonGia,MoTa,MaNcc")] HangHoa hangHoa, IFormFile fHinh)
+        public async Task<IActionResult> Create([Bind("MaHh,TenHh,TenAlias,MaLoai,MoTaDonVi,DonGia,Hinh,NgaySx,GiamGia,SoLanXem,MoTa,MaNcc")] HangHoa hangHoa)
         {
             if (ModelState.IsValid)
             {
-                // Xử lý upload hình ảnh
-                if (fHinh != null && fHinh.Length > 0)
-                {
-                    hangHoa.Hinh = await LuuFileHinh(fHinh);
-                }
-
                 _context.Add(hangHoa);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["MaLoai"] = new SelectList(_context.Loais, "MaLoai", "TenLoai", hangHoa.MaLoai);
-            ViewData["MaNcc"] = new SelectList(_context.NhaCungCaps, "MaNcc", "TenCongTy", hangHoa.MaNcc);
+            ViewData["MaLoai"] = new SelectList(_context.Loais, "MaLoai", "MaLoai", hangHoa.MaLoai);
+            ViewData["MaNcc"] = new SelectList(_context.NhaCungCaps, "MaNcc", "MaNcc", hangHoa.MaNcc);
             return View(hangHoa);
         }
 
-        // Hàm hỗ trợ lưu file hình vào thư mục wwwroot/Hinh/HangHoa
-        private async Task<string> LuuFileHinh(IFormFile file)
-        {
-            var fileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
-            var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Hinh", "HangHoa", fileName);
-
-            using (var stream = new FileStream(path, FileMode.Create))
-            {
-                await file.CopyToAsync(stream);
-            }
-            return fileName;
-        }
         // GET: HangHoas/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {

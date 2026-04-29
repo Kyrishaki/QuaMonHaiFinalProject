@@ -1,4 +1,6 @@
 using LTWEB_QuaMonHai_CuoiKy.Data;
+using LTWEB_QuaMonHai_CuoiKy.Helpers;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -7,6 +9,18 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<Hshop2023Context>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("Hshop2023ConnectionString")));
+
+//Khai báo service authentication
+builder.Services.AddAuthentication
+    (CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(options =>
+    {
+        options.LoginPath = "/KhachHang/DangNhap";
+        options.AccessDeniedPath = "/AccessDenied"; //Dang nhap roi chua co quyen se toi dia chi nay
+    });
+
+// https://docs.automapper.org/en/stable/Dependency-injection.html
+builder.Services.AddAutoMapper(typeof(AutoMapperProfile));
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
