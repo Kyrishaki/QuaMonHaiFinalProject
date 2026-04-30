@@ -1,23 +1,23 @@
 {
   "format": 1,
   "restore": {
-    "H:\\App\\GitHub\\QuaMonHaiFinalProject\\LTWEB_QuaMonHai_CuoiKy.csproj": {}
+    "E:\\Codin\\GitHub\\QuaMonHaiFinalProject\\LTWEB_QuaMonHai_CuoiKy.csproj": {}
   },
   "projects": {
-    "H:\\App\\GitHub\\QuaMonHaiFinalProject\\LTWEB_QuaMonHai_CuoiKy.csproj": {
+    "E:\\Codin\\GitHub\\QuaMonHaiFinalProject\\LTWEB_QuaMonHai_CuoiKy.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "H:\\App\\GitHub\\QuaMonHaiFinalProject\\LTWEB_QuaMonHai_CuoiKy.csproj",
+        "projectUniqueName": "E:\\Codin\\GitHub\\QuaMonHaiFinalProject\\LTWEB_QuaMonHai_CuoiKy.csproj",
         "projectName": "LTWEB_QuaMonHai_CuoiKy",
-        "projectPath": "H:\\App\\GitHub\\QuaMonHaiFinalProject\\LTWEB_QuaMonHai_CuoiKy.csproj",
-        "packagesPath": "C:\\Users\\Admin\\.nuget\\packages\\",
-        "outputPath": "H:\\App\\GitHub\\QuaMonHaiFinalProject\\obj\\",
+        "projectPath": "E:\\Codin\\GitHub\\QuaMonHaiFinalProject\\LTWEB_QuaMonHai_CuoiKy.csproj",
+        "packagesPath": "C:\\Users\\Lenovo\\.nuget\\packages\\",
+        "outputPath": "E:\\Codin\\GitHub\\QuaMonHaiFinalProject\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
-          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+          "E:\\Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\Admin\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Lenovo\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
@@ -51,6 +51,10 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "dependencies": {
+            "AutoMapper.Extensions.Microsoft.DependencyInjection": {
+              "target": "Package",
+              "version": "[12.0.1, )"
+            },
             "Microsoft.EntityFrameworkCore": {
               "target": "Package",
               "version": "[8.0.26, )"

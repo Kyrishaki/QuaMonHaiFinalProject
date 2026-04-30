@@ -1,511 +1,515 @@
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\bin\Debug\net8.0\appsettings.Development.json
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\bin\Debug\net8.0\appsettings.json
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\bin\Debug\net8.0\LTWEB_QuaMonHai_CuoiKy.staticwebassets.runtime.json
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\bin\Debug\net8.0\LTWEB_QuaMonHai_CuoiKy.staticwebassets.endpoints.json
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\bin\Debug\net8.0\LTWEB_QuaMonHai_CuoiKy.exe
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\bin\Debug\net8.0\LTWEB_QuaMonHai_CuoiKy.deps.json
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\bin\Debug\net8.0\LTWEB_QuaMonHai_CuoiKy.runtimeconfig.json
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\bin\Debug\net8.0\LTWEB_QuaMonHai_CuoiKy.dll
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\bin\Debug\net8.0\LTWEB_QuaMonHai_CuoiKy.pdb
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\bin\Debug\net8.0\Azure.Core.dll
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\bin\Debug\net8.0\Azure.Identity.dll
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\bin\Debug\net8.0\Humanizer.dll
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\bin\Debug\net8.0\Microsoft.Bcl.AsyncInterfaces.dll
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\bin\Debug\net8.0\Microsoft.CodeAnalysis.dll
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\bin\Debug\net8.0\Microsoft.CodeAnalysis.CSharp.dll
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\bin\Debug\net8.0\Microsoft.CodeAnalysis.CSharp.Workspaces.dll
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\bin\Debug\net8.0\Microsoft.CodeAnalysis.Workspaces.dll
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\bin\Debug\net8.0\Microsoft.Data.SqlClient.dll
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.dll
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.Abstractions.dll
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.Design.dll
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.Relational.dll
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.SqlServer.dll
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\bin\Debug\net8.0\Microsoft.Extensions.Caching.Memory.dll
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\bin\Debug\net8.0\Microsoft.Extensions.DependencyInjection.dll
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\bin\Debug\net8.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\bin\Debug\net8.0\Microsoft.Extensions.DependencyModel.dll
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\bin\Debug\net8.0\Microsoft.Extensions.Logging.dll
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\bin\Debug\net8.0\Microsoft.Extensions.Logging.Abstractions.dll
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\bin\Debug\net8.0\Microsoft.Extensions.Options.dll
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\bin\Debug\net8.0\Microsoft.Identity.Client.dll
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\bin\Debug\net8.0\Microsoft.Identity.Client.Extensions.Msal.dll
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\bin\Debug\net8.0\Microsoft.IdentityModel.Abstractions.dll
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\bin\Debug\net8.0\Microsoft.IdentityModel.JsonWebTokens.dll
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\bin\Debug\net8.0\Microsoft.IdentityModel.Logging.dll
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\bin\Debug\net8.0\Microsoft.IdentityModel.Protocols.dll
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\bin\Debug\net8.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\bin\Debug\net8.0\Microsoft.IdentityModel.Tokens.dll
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\bin\Debug\net8.0\Microsoft.SqlServer.Server.dll
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\bin\Debug\net8.0\Mono.TextTemplating.dll
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\bin\Debug\net8.0\System.ClientModel.dll
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\bin\Debug\net8.0\System.CodeDom.dll
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\bin\Debug\net8.0\System.Composition.AttributedModel.dll
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\bin\Debug\net8.0\System.Composition.Convention.dll
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\bin\Debug\net8.0\System.Composition.Hosting.dll
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\bin\Debug\net8.0\System.Composition.Runtime.dll
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\bin\Debug\net8.0\System.Composition.TypedParts.dll
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\bin\Debug\net8.0\System.Configuration.ConfigurationManager.dll
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\bin\Debug\net8.0\System.IdentityModel.Tokens.Jwt.dll
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\bin\Debug\net8.0\System.Memory.Data.dll
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\bin\Debug\net8.0\System.Runtime.Caching.dll
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\bin\Debug\net8.0\System.Security.Cryptography.ProtectedData.dll
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\bin\Debug\net8.0\cs\Microsoft.CodeAnalysis.resources.dll
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\bin\Debug\net8.0\de\Microsoft.CodeAnalysis.resources.dll
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\bin\Debug\net8.0\es\Microsoft.CodeAnalysis.resources.dll
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\bin\Debug\net8.0\fr\Microsoft.CodeAnalysis.resources.dll
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\bin\Debug\net8.0\it\Microsoft.CodeAnalysis.resources.dll
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\bin\Debug\net8.0\ja\Microsoft.CodeAnalysis.resources.dll
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\bin\Debug\net8.0\ko\Microsoft.CodeAnalysis.resources.dll
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\bin\Debug\net8.0\pl\Microsoft.CodeAnalysis.resources.dll
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\bin\Debug\net8.0\pt-BR\Microsoft.CodeAnalysis.resources.dll
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\bin\Debug\net8.0\ru\Microsoft.CodeAnalysis.resources.dll
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\bin\Debug\net8.0\tr\Microsoft.CodeAnalysis.resources.dll
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\bin\Debug\net8.0\zh-Hans\Microsoft.CodeAnalysis.resources.dll
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\bin\Debug\net8.0\zh-Hant\Microsoft.CodeAnalysis.resources.dll
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\bin\Debug\net8.0\cs\Microsoft.CodeAnalysis.CSharp.resources.dll
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\bin\Debug\net8.0\de\Microsoft.CodeAnalysis.CSharp.resources.dll
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\bin\Debug\net8.0\es\Microsoft.CodeAnalysis.CSharp.resources.dll
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\bin\Debug\net8.0\fr\Microsoft.CodeAnalysis.CSharp.resources.dll
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\bin\Debug\net8.0\it\Microsoft.CodeAnalysis.CSharp.resources.dll
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\bin\Debug\net8.0\ja\Microsoft.CodeAnalysis.CSharp.resources.dll
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\bin\Debug\net8.0\ko\Microsoft.CodeAnalysis.CSharp.resources.dll
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\bin\Debug\net8.0\pl\Microsoft.CodeAnalysis.CSharp.resources.dll
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\bin\Debug\net8.0\pt-BR\Microsoft.CodeAnalysis.CSharp.resources.dll
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\bin\Debug\net8.0\ru\Microsoft.CodeAnalysis.CSharp.resources.dll
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\bin\Debug\net8.0\tr\Microsoft.CodeAnalysis.CSharp.resources.dll
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\bin\Debug\net8.0\zh-Hans\Microsoft.CodeAnalysis.CSharp.resources.dll
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\bin\Debug\net8.0\zh-Hant\Microsoft.CodeAnalysis.CSharp.resources.dll
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\bin\Debug\net8.0\cs\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\bin\Debug\net8.0\de\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\bin\Debug\net8.0\es\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\bin\Debug\net8.0\fr\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\bin\Debug\net8.0\it\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\bin\Debug\net8.0\ja\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\bin\Debug\net8.0\ko\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\bin\Debug\net8.0\pl\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\bin\Debug\net8.0\pt-BR\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\bin\Debug\net8.0\ru\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\bin\Debug\net8.0\tr\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\bin\Debug\net8.0\zh-Hans\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\bin\Debug\net8.0\zh-Hant\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\bin\Debug\net8.0\cs\Microsoft.CodeAnalysis.Workspaces.resources.dll
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\bin\Debug\net8.0\de\Microsoft.CodeAnalysis.Workspaces.resources.dll
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\bin\Debug\net8.0\es\Microsoft.CodeAnalysis.Workspaces.resources.dll
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\bin\Debug\net8.0\fr\Microsoft.CodeAnalysis.Workspaces.resources.dll
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\bin\Debug\net8.0\it\Microsoft.CodeAnalysis.Workspaces.resources.dll
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\bin\Debug\net8.0\ja\Microsoft.CodeAnalysis.Workspaces.resources.dll
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\bin\Debug\net8.0\ko\Microsoft.CodeAnalysis.Workspaces.resources.dll
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\bin\Debug\net8.0\pl\Microsoft.CodeAnalysis.Workspaces.resources.dll
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\bin\Debug\net8.0\pt-BR\Microsoft.CodeAnalysis.Workspaces.resources.dll
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\bin\Debug\net8.0\ru\Microsoft.CodeAnalysis.Workspaces.resources.dll
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\bin\Debug\net8.0\tr\Microsoft.CodeAnalysis.Workspaces.resources.dll
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\bin\Debug\net8.0\zh-Hans\Microsoft.CodeAnalysis.Workspaces.resources.dll
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\bin\Debug\net8.0\zh-Hant\Microsoft.CodeAnalysis.Workspaces.resources.dll
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\bin\Debug\net8.0\runtimes\unix\lib\net6.0\Microsoft.Data.SqlClient.dll
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\bin\Debug\net8.0\runtimes\win\lib\net6.0\Microsoft.Data.SqlClient.dll
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\bin\Debug\net8.0\runtimes\win-arm\native\Microsoft.Data.SqlClient.SNI.dll
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\bin\Debug\net8.0\runtimes\win-arm64\native\Microsoft.Data.SqlClient.SNI.dll
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\bin\Debug\net8.0\runtimes\win-x64\native\Microsoft.Data.SqlClient.SNI.dll
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\bin\Debug\net8.0\runtimes\win-x86\native\Microsoft.Data.SqlClient.SNI.dll
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\bin\Debug\net8.0\runtimes\win\lib\net6.0\System.Runtime.Caching.dll
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\obj\Debug\net8.0\LTWEB_QuaMonHai_CuoiKy.csproj.AssemblyReference.cache
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\obj\Debug\net8.0\rpswa.dswa.cache.json
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\obj\Debug\net8.0\LTWEB_QuaMonHai_CuoiKy.GeneratedMSBuildEditorConfig.editorconfig
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\obj\Debug\net8.0\LTWEB_QuaMonHai_CuoiKy.AssemblyInfoInputs.cache
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\obj\Debug\net8.0\LTWEB_QuaMonHai_CuoiKy.AssemblyInfo.cs
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\obj\Debug\net8.0\LTWEB_QuaMonHai_CuoiKy.csproj.CoreCompileInputs.cache
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\obj\Debug\net8.0\LTWEB_QuaMonHai_CuoiKy.MvcApplicationPartsAssemblyInfo.cache
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\obj\Debug\net8.0\LTWEB_QuaMonHai_CuoiKy.RazorAssemblyInfo.cache
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\obj\Debug\net8.0\LTWEB_QuaMonHai_CuoiKy.RazorAssemblyInfo.cs
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\obj\Debug\net8.0\rjimswa.dswa.cache.json
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\obj\Debug\net8.0\rjsmrazor.dswa.cache.json
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\obj\Debug\net8.0\rjsmcshtml.dswa.cache.json
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\obj\Debug\net8.0\scopedcss\Views\Shared\_Layout.cshtml.rz.scp.css
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\obj\Debug\net8.0\scopedcss\bundle\LTWEB_QuaMonHai_CuoiKy.styles.css
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\obj\Debug\net8.0\scopedcss\projectbundle\LTWEB_QuaMonHai_CuoiKy.bundle.scp.css
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\obj\Debug\net8.0\staticwebassets.build.json
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\obj\Debug\net8.0\staticwebassets.build.json.cache
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\obj\Debug\net8.0\staticwebassets.development.json
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\obj\Debug\net8.0\staticwebassets.build.endpoints.json
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\obj\Debug\net8.0\LTWEB_Qu.C0212FBA.Up2Date
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\obj\Debug\net8.0\LTWEB_QuaMonHai_CuoiKy.dll
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\obj\Debug\net8.0\refint\LTWEB_QuaMonHai_CuoiKy.dll
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\obj\Debug\net8.0\LTWEB_QuaMonHai_CuoiKy.pdb
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\obj\Debug\net8.0\LTWEB_QuaMonHai_CuoiKy.genruntimeconfig.cache
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\obj\Debug\net8.0\ref\LTWEB_QuaMonHai_CuoiKy.dll
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\obj\Debug\net8.0\scopedcss\Views\Shared\_Layout_Backup.cshtml.rz.scp.css
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\bin\Debug\net8.0\Microsoft.AspNetCore.Razor.Language.dll
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\bin\Debug\net8.0\Microsoft.Build.dll
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\bin\Debug\net8.0\Microsoft.Build.Framework.dll
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\bin\Debug\net8.0\Microsoft.CodeAnalysis.AnalyzerUtilities.dll
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\bin\Debug\net8.0\Microsoft.CodeAnalysis.CSharp.Features.dll
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\bin\Debug\net8.0\Microsoft.CodeAnalysis.Elfie.dll
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\bin\Debug\net8.0\Microsoft.CodeAnalysis.Features.dll
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\bin\Debug\net8.0\Microsoft.CodeAnalysis.Razor.dll
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\bin\Debug\net8.0\Microsoft.CodeAnalysis.Scripting.dll
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\bin\Debug\net8.0\Microsoft.DiaSymReader.dll
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\bin\Debug\net8.0\Microsoft.DotNet.Scaffolding.Shared.dll
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\bin\Debug\net8.0\Microsoft.NET.StringTools.dll
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\bin\Debug\net8.0\Microsoft.VisualStudio.Web.CodeGeneration.dll
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\bin\Debug\net8.0\Microsoft.VisualStudio.Web.CodeGeneration.Core.dll
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\bin\Debug\net8.0\dotnet-aspnet-codegenerator-design.dll
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\bin\Debug\net8.0\Microsoft.VisualStudio.Web.CodeGeneration.EntityFrameworkCore.dll
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\bin\Debug\net8.0\Microsoft.VisualStudio.Web.CodeGeneration.Templating.dll
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\bin\Debug\net8.0\Microsoft.VisualStudio.Web.CodeGeneration.Utils.dll
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\bin\Debug\net8.0\Microsoft.VisualStudio.Web.CodeGenerators.Mvc.dll
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\bin\Debug\net8.0\Newtonsoft.Json.dll
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\bin\Debug\net8.0\NuGet.Common.dll
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\bin\Debug\net8.0\NuGet.Configuration.dll
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\bin\Debug\net8.0\NuGet.DependencyResolver.Core.dll
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\bin\Debug\net8.0\NuGet.Frameworks.dll
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\bin\Debug\net8.0\NuGet.LibraryModel.dll
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\bin\Debug\net8.0\NuGet.Packaging.dll
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\bin\Debug\net8.0\NuGet.ProjectModel.dll
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\bin\Debug\net8.0\NuGet.Protocol.dll
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\bin\Debug\net8.0\NuGet.Versioning.dll
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\bin\Debug\net8.0\System.Reflection.MetadataLoadContext.dll
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\bin\Debug\net8.0\af\Humanizer.resources.dll
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\bin\Debug\net8.0\ar\Humanizer.resources.dll
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\bin\Debug\net8.0\az\Humanizer.resources.dll
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\bin\Debug\net8.0\bg\Humanizer.resources.dll
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\bin\Debug\net8.0\bn-BD\Humanizer.resources.dll
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\bin\Debug\net8.0\cs\Humanizer.resources.dll
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\bin\Debug\net8.0\da\Humanizer.resources.dll
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\bin\Debug\net8.0\de\Humanizer.resources.dll
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\bin\Debug\net8.0\el\Humanizer.resources.dll
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\bin\Debug\net8.0\es\Humanizer.resources.dll
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\bin\Debug\net8.0\fa\Humanizer.resources.dll
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\bin\Debug\net8.0\fi-FI\Humanizer.resources.dll
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\bin\Debug\net8.0\fr\Humanizer.resources.dll
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\bin\Debug\net8.0\fr-BE\Humanizer.resources.dll
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\bin\Debug\net8.0\he\Humanizer.resources.dll
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\bin\Debug\net8.0\hr\Humanizer.resources.dll
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\bin\Debug\net8.0\hu\Humanizer.resources.dll
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\bin\Debug\net8.0\hy\Humanizer.resources.dll
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\bin\Debug\net8.0\id\Humanizer.resources.dll
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\bin\Debug\net8.0\is\Humanizer.resources.dll
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\bin\Debug\net8.0\it\Humanizer.resources.dll
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\bin\Debug\net8.0\ja\Humanizer.resources.dll
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\bin\Debug\net8.0\ko-KR\Humanizer.resources.dll
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\bin\Debug\net8.0\ku\Humanizer.resources.dll
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\bin\Debug\net8.0\lv\Humanizer.resources.dll
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\bin\Debug\net8.0\ms-MY\Humanizer.resources.dll
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\bin\Debug\net8.0\mt\Humanizer.resources.dll
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\bin\Debug\net8.0\nb\Humanizer.resources.dll
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\bin\Debug\net8.0\nb-NO\Humanizer.resources.dll
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\bin\Debug\net8.0\nl\Humanizer.resources.dll
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\bin\Debug\net8.0\pl\Humanizer.resources.dll
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\bin\Debug\net8.0\pt\Humanizer.resources.dll
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\bin\Debug\net8.0\ro\Humanizer.resources.dll
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\bin\Debug\net8.0\ru\Humanizer.resources.dll
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\bin\Debug\net8.0\sk\Humanizer.resources.dll
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\bin\Debug\net8.0\sl\Humanizer.resources.dll
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\bin\Debug\net8.0\sr\Humanizer.resources.dll
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\bin\Debug\net8.0\sr-Latn\Humanizer.resources.dll
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\bin\Debug\net8.0\sv\Humanizer.resources.dll
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\bin\Debug\net8.0\th-TH\Humanizer.resources.dll
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\bin\Debug\net8.0\tr\Humanizer.resources.dll
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\bin\Debug\net8.0\uk\Humanizer.resources.dll
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\bin\Debug\net8.0\uz-Cyrl-UZ\Humanizer.resources.dll
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\bin\Debug\net8.0\uz-Latn-UZ\Humanizer.resources.dll
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\bin\Debug\net8.0\vi\Humanizer.resources.dll
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\bin\Debug\net8.0\zh-CN\Humanizer.resources.dll
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\bin\Debug\net8.0\zh-Hans\Humanizer.resources.dll
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\bin\Debug\net8.0\zh-Hant\Humanizer.resources.dll
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\bin\Debug\net8.0\cs\Microsoft.CodeAnalysis.CSharp.Features.resources.dll
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\bin\Debug\net8.0\de\Microsoft.CodeAnalysis.CSharp.Features.resources.dll
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\bin\Debug\net8.0\es\Microsoft.CodeAnalysis.CSharp.Features.resources.dll
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\bin\Debug\net8.0\fr\Microsoft.CodeAnalysis.CSharp.Features.resources.dll
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\bin\Debug\net8.0\it\Microsoft.CodeAnalysis.CSharp.Features.resources.dll
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\bin\Debug\net8.0\ja\Microsoft.CodeAnalysis.CSharp.Features.resources.dll
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\bin\Debug\net8.0\ko\Microsoft.CodeAnalysis.CSharp.Features.resources.dll
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\bin\Debug\net8.0\pl\Microsoft.CodeAnalysis.CSharp.Features.resources.dll
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\bin\Debug\net8.0\pt-BR\Microsoft.CodeAnalysis.CSharp.Features.resources.dll
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\bin\Debug\net8.0\ru\Microsoft.CodeAnalysis.CSharp.Features.resources.dll
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\bin\Debug\net8.0\tr\Microsoft.CodeAnalysis.CSharp.Features.resources.dll
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\bin\Debug\net8.0\zh-Hans\Microsoft.CodeAnalysis.CSharp.Features.resources.dll
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\bin\Debug\net8.0\zh-Hant\Microsoft.CodeAnalysis.CSharp.Features.resources.dll
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\bin\Debug\net8.0\cs\Microsoft.CodeAnalysis.Features.resources.dll
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\bin\Debug\net8.0\de\Microsoft.CodeAnalysis.Features.resources.dll
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\bin\Debug\net8.0\es\Microsoft.CodeAnalysis.Features.resources.dll
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\bin\Debug\net8.0\fr\Microsoft.CodeAnalysis.Features.resources.dll
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\bin\Debug\net8.0\it\Microsoft.CodeAnalysis.Features.resources.dll
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\bin\Debug\net8.0\ja\Microsoft.CodeAnalysis.Features.resources.dll
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\bin\Debug\net8.0\ko\Microsoft.CodeAnalysis.Features.resources.dll
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\bin\Debug\net8.0\pl\Microsoft.CodeAnalysis.Features.resources.dll
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\bin\Debug\net8.0\pt-BR\Microsoft.CodeAnalysis.Features.resources.dll
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\bin\Debug\net8.0\ru\Microsoft.CodeAnalysis.Features.resources.dll
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\bin\Debug\net8.0\tr\Microsoft.CodeAnalysis.Features.resources.dll
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\bin\Debug\net8.0\zh-Hans\Microsoft.CodeAnalysis.Features.resources.dll
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\bin\Debug\net8.0\zh-Hant\Microsoft.CodeAnalysis.Features.resources.dll
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\bin\Debug\net8.0\cs\Microsoft.CodeAnalysis.Scripting.resources.dll
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\bin\Debug\net8.0\de\Microsoft.CodeAnalysis.Scripting.resources.dll
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\bin\Debug\net8.0\es\Microsoft.CodeAnalysis.Scripting.resources.dll
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\bin\Debug\net8.0\fr\Microsoft.CodeAnalysis.Scripting.resources.dll
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\bin\Debug\net8.0\it\Microsoft.CodeAnalysis.Scripting.resources.dll
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\bin\Debug\net8.0\ja\Microsoft.CodeAnalysis.Scripting.resources.dll
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\bin\Debug\net8.0\ko\Microsoft.CodeAnalysis.Scripting.resources.dll
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\bin\Debug\net8.0\pl\Microsoft.CodeAnalysis.Scripting.resources.dll
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\bin\Debug\net8.0\pt-BR\Microsoft.CodeAnalysis.Scripting.resources.dll
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\bin\Debug\net8.0\ru\Microsoft.CodeAnalysis.Scripting.resources.dll
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\bin\Debug\net8.0\tr\Microsoft.CodeAnalysis.Scripting.resources.dll
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\bin\Debug\net8.0\zh-Hans\Microsoft.CodeAnalysis.Scripting.resources.dll
-D:\Codes\LTWEB\LTWEB_QuaMonHai_CuoiKy\bin\Debug\net8.0\zh-Hant\Microsoft.CodeAnalysis.Scripting.resources.dll
-H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\appsettings.Development.json
-H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\appsettings.json
-H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\LTWEB_QuaMonHai_CuoiKy.staticwebassets.runtime.json
-H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\LTWEB_QuaMonHai_CuoiKy.staticwebassets.endpoints.json
-H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\LTWEB_QuaMonHai_CuoiKy.exe
-H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\LTWEB_QuaMonHai_CuoiKy.deps.json
-H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\LTWEB_QuaMonHai_CuoiKy.runtimeconfig.json
-H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\LTWEB_QuaMonHai_CuoiKy.dll
-H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\LTWEB_QuaMonHai_CuoiKy.pdb
-H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\Azure.Core.dll
-H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\Azure.Identity.dll
-H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\Humanizer.dll
-H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\Microsoft.AspNetCore.Razor.Language.dll
-H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\Microsoft.Bcl.AsyncInterfaces.dll
-H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\Microsoft.Build.dll
-H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\Microsoft.Build.Framework.dll
-H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\Microsoft.CodeAnalysis.AnalyzerUtilities.dll
-H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\Microsoft.CodeAnalysis.dll
-H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\Microsoft.CodeAnalysis.CSharp.dll
-H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\Microsoft.CodeAnalysis.CSharp.Features.dll
-H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\Microsoft.CodeAnalysis.CSharp.Workspaces.dll
-H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\Microsoft.CodeAnalysis.Elfie.dll
-H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\Microsoft.CodeAnalysis.Features.dll
-H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\Microsoft.CodeAnalysis.Razor.dll
-H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\Microsoft.CodeAnalysis.Scripting.dll
-H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\Microsoft.CodeAnalysis.Workspaces.dll
-H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\Microsoft.Data.SqlClient.dll
-H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\Microsoft.DiaSymReader.dll
-H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\Microsoft.DotNet.Scaffolding.Shared.dll
-H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.dll
-H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.Abstractions.dll
-H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.Design.dll
-H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.Relational.dll
-H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.SqlServer.dll
-H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\Microsoft.Extensions.Caching.Memory.dll
-H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\Microsoft.Extensions.DependencyInjection.dll
-H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll
-H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\Microsoft.Extensions.DependencyModel.dll
-H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\Microsoft.Extensions.Logging.dll
-H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\Microsoft.Extensions.Logging.Abstractions.dll
-H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\Microsoft.Extensions.Options.dll
-H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\Microsoft.Identity.Client.dll
-H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\Microsoft.Identity.Client.Extensions.Msal.dll
-H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\Microsoft.IdentityModel.Abstractions.dll
-H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\Microsoft.IdentityModel.JsonWebTokens.dll
-H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\Microsoft.IdentityModel.Logging.dll
-H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\Microsoft.IdentityModel.Protocols.dll
-H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
-H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\Microsoft.IdentityModel.Tokens.dll
-H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\Microsoft.NET.StringTools.dll
-H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\Microsoft.SqlServer.Server.dll
-H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\Microsoft.VisualStudio.Web.CodeGeneration.dll
-H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\Microsoft.VisualStudio.Web.CodeGeneration.Core.dll
-H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\dotnet-aspnet-codegenerator-design.dll
-H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\Microsoft.VisualStudio.Web.CodeGeneration.EntityFrameworkCore.dll
-H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\Microsoft.VisualStudio.Web.CodeGeneration.Templating.dll
-H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\Microsoft.VisualStudio.Web.CodeGeneration.Utils.dll
-H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\Microsoft.VisualStudio.Web.CodeGenerators.Mvc.dll
-H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\Mono.TextTemplating.dll
-H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\Newtonsoft.Json.dll
-H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\NuGet.Common.dll
-H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\NuGet.Configuration.dll
-H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\NuGet.DependencyResolver.Core.dll
-H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\NuGet.Frameworks.dll
-H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\NuGet.LibraryModel.dll
-H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\NuGet.Packaging.dll
-H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\NuGet.ProjectModel.dll
-H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\NuGet.Protocol.dll
-H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\NuGet.Versioning.dll
-H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\System.ClientModel.dll
-H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\System.CodeDom.dll
-H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\System.Composition.AttributedModel.dll
-H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\System.Composition.Convention.dll
-H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\System.Composition.Hosting.dll
-H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\System.Composition.Runtime.dll
-H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\System.Composition.TypedParts.dll
-H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\System.Configuration.ConfigurationManager.dll
-H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\System.IdentityModel.Tokens.Jwt.dll
-H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\System.Memory.Data.dll
-H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\System.Reflection.MetadataLoadContext.dll
-H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\System.Runtime.Caching.dll
-H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\System.Security.Cryptography.ProtectedData.dll
-H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\af\Humanizer.resources.dll
-H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\ar\Humanizer.resources.dll
-H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\az\Humanizer.resources.dll
-H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\bg\Humanizer.resources.dll
-H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\bn-BD\Humanizer.resources.dll
-H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\cs\Humanizer.resources.dll
-H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\da\Humanizer.resources.dll
-H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\de\Humanizer.resources.dll
-H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\el\Humanizer.resources.dll
-H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\es\Humanizer.resources.dll
-H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\fa\Humanizer.resources.dll
-H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\fi-FI\Humanizer.resources.dll
-H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\fr\Humanizer.resources.dll
-H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\fr-BE\Humanizer.resources.dll
-H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\he\Humanizer.resources.dll
-H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\hr\Humanizer.resources.dll
-H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\hu\Humanizer.resources.dll
-H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\hy\Humanizer.resources.dll
-H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\id\Humanizer.resources.dll
-H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\is\Humanizer.resources.dll
-H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\it\Humanizer.resources.dll
-H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\ja\Humanizer.resources.dll
-H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\ko-KR\Humanizer.resources.dll
-H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\ku\Humanizer.resources.dll
-H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\lv\Humanizer.resources.dll
-H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\ms-MY\Humanizer.resources.dll
-H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\mt\Humanizer.resources.dll
-H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\nb\Humanizer.resources.dll
-H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\nb-NO\Humanizer.resources.dll
-H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\nl\Humanizer.resources.dll
-H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\pl\Humanizer.resources.dll
-H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\pt\Humanizer.resources.dll
-H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\ro\Humanizer.resources.dll
-H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\ru\Humanizer.resources.dll
-H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\sk\Humanizer.resources.dll
-H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\sl\Humanizer.resources.dll
-H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\sr\Humanizer.resources.dll
-H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\sr-Latn\Humanizer.resources.dll
-H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\sv\Humanizer.resources.dll
-H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\th-TH\Humanizer.resources.dll
-H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\tr\Humanizer.resources.dll
-H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\uk\Humanizer.resources.dll
-H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\uz-Cyrl-UZ\Humanizer.resources.dll
-H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\uz-Latn-UZ\Humanizer.resources.dll
-H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\vi\Humanizer.resources.dll
-H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\zh-CN\Humanizer.resources.dll
-H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\zh-Hans\Humanizer.resources.dll
-H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\zh-Hant\Humanizer.resources.dll
-H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\cs\Microsoft.CodeAnalysis.resources.dll
-H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\de\Microsoft.CodeAnalysis.resources.dll
-H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\es\Microsoft.CodeAnalysis.resources.dll
-H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\fr\Microsoft.CodeAnalysis.resources.dll
-H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\it\Microsoft.CodeAnalysis.resources.dll
-H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\ja\Microsoft.CodeAnalysis.resources.dll
-H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\ko\Microsoft.CodeAnalysis.resources.dll
-H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\pl\Microsoft.CodeAnalysis.resources.dll
-H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\pt-BR\Microsoft.CodeAnalysis.resources.dll
-H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\ru\Microsoft.CodeAnalysis.resources.dll
-H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\tr\Microsoft.CodeAnalysis.resources.dll
-H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\zh-Hans\Microsoft.CodeAnalysis.resources.dll
-H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\zh-Hant\Microsoft.CodeAnalysis.resources.dll
-H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\cs\Microsoft.CodeAnalysis.CSharp.resources.dll
-H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\de\Microsoft.CodeAnalysis.CSharp.resources.dll
-H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\es\Microsoft.CodeAnalysis.CSharp.resources.dll
-H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\fr\Microsoft.CodeAnalysis.CSharp.resources.dll
-H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\it\Microsoft.CodeAnalysis.CSharp.resources.dll
-H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\ja\Microsoft.CodeAnalysis.CSharp.resources.dll
-H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\ko\Microsoft.CodeAnalysis.CSharp.resources.dll
-H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\pl\Microsoft.CodeAnalysis.CSharp.resources.dll
-H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\pt-BR\Microsoft.CodeAnalysis.CSharp.resources.dll
-H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\ru\Microsoft.CodeAnalysis.CSharp.resources.dll
-H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\tr\Microsoft.CodeAnalysis.CSharp.resources.dll
-H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\zh-Hans\Microsoft.CodeAnalysis.CSharp.resources.dll
-H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\zh-Hant\Microsoft.CodeAnalysis.CSharp.resources.dll
-H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\cs\Microsoft.CodeAnalysis.CSharp.Features.resources.dll
-H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\de\Microsoft.CodeAnalysis.CSharp.Features.resources.dll
-H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\es\Microsoft.CodeAnalysis.CSharp.Features.resources.dll
-H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\fr\Microsoft.CodeAnalysis.CSharp.Features.resources.dll
-H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\it\Microsoft.CodeAnalysis.CSharp.Features.resources.dll
-H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\ja\Microsoft.CodeAnalysis.CSharp.Features.resources.dll
-H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\ko\Microsoft.CodeAnalysis.CSharp.Features.resources.dll
-H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\pl\Microsoft.CodeAnalysis.CSharp.Features.resources.dll
-H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\pt-BR\Microsoft.CodeAnalysis.CSharp.Features.resources.dll
-H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\ru\Microsoft.CodeAnalysis.CSharp.Features.resources.dll
-H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\tr\Microsoft.CodeAnalysis.CSharp.Features.resources.dll
-H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\zh-Hans\Microsoft.CodeAnalysis.CSharp.Features.resources.dll
-H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\zh-Hant\Microsoft.CodeAnalysis.CSharp.Features.resources.dll
-H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\cs\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
-H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\de\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
-H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\es\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
-H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\fr\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
-H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\it\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
-H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\ja\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
-H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\ko\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
-H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\pl\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
-H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\pt-BR\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
-H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\ru\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
-H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\tr\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
-H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\zh-Hans\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
-H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\zh-Hant\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
-H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\cs\Microsoft.CodeAnalysis.Features.resources.dll
-H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\de\Microsoft.CodeAnalysis.Features.resources.dll
-H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\es\Microsoft.CodeAnalysis.Features.resources.dll
-H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\fr\Microsoft.CodeAnalysis.Features.resources.dll
-H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\it\Microsoft.CodeAnalysis.Features.resources.dll
-H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\ja\Microsoft.CodeAnalysis.Features.resources.dll
-H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\ko\Microsoft.CodeAnalysis.Features.resources.dll
-H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\pl\Microsoft.CodeAnalysis.Features.resources.dll
-H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\pt-BR\Microsoft.CodeAnalysis.Features.resources.dll
-H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\ru\Microsoft.CodeAnalysis.Features.resources.dll
-H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\tr\Microsoft.CodeAnalysis.Features.resources.dll
-H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\zh-Hans\Microsoft.CodeAnalysis.Features.resources.dll
-H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\zh-Hant\Microsoft.CodeAnalysis.Features.resources.dll
-H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\cs\Microsoft.CodeAnalysis.Scripting.resources.dll
-H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\de\Microsoft.CodeAnalysis.Scripting.resources.dll
-H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\es\Microsoft.CodeAnalysis.Scripting.resources.dll
-H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\fr\Microsoft.CodeAnalysis.Scripting.resources.dll
-H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\it\Microsoft.CodeAnalysis.Scripting.resources.dll
-H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\ja\Microsoft.CodeAnalysis.Scripting.resources.dll
-H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\ko\Microsoft.CodeAnalysis.Scripting.resources.dll
-H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\pl\Microsoft.CodeAnalysis.Scripting.resources.dll
-H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\pt-BR\Microsoft.CodeAnalysis.Scripting.resources.dll
-H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\ru\Microsoft.CodeAnalysis.Scripting.resources.dll
-H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\tr\Microsoft.CodeAnalysis.Scripting.resources.dll
-H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\zh-Hans\Microsoft.CodeAnalysis.Scripting.resources.dll
-H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\zh-Hant\Microsoft.CodeAnalysis.Scripting.resources.dll
-H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\cs\Microsoft.CodeAnalysis.Workspaces.resources.dll
-H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\de\Microsoft.CodeAnalysis.Workspaces.resources.dll
-H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\es\Microsoft.CodeAnalysis.Workspaces.resources.dll
-H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\fr\Microsoft.CodeAnalysis.Workspaces.resources.dll
-H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\it\Microsoft.CodeAnalysis.Workspaces.resources.dll
-H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\ja\Microsoft.CodeAnalysis.Workspaces.resources.dll
-H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\ko\Microsoft.CodeAnalysis.Workspaces.resources.dll
-H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\pl\Microsoft.CodeAnalysis.Workspaces.resources.dll
-H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\pt-BR\Microsoft.CodeAnalysis.Workspaces.resources.dll
-H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\ru\Microsoft.CodeAnalysis.Workspaces.resources.dll
-H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\tr\Microsoft.CodeAnalysis.Workspaces.resources.dll
-H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\zh-Hans\Microsoft.CodeAnalysis.Workspaces.resources.dll
-H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\zh-Hant\Microsoft.CodeAnalysis.Workspaces.resources.dll
-H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\runtimes\unix\lib\net6.0\Microsoft.Data.SqlClient.dll
-H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\runtimes\win\lib\net6.0\Microsoft.Data.SqlClient.dll
-H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\runtimes\win-arm\native\Microsoft.Data.SqlClient.SNI.dll
-H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\runtimes\win-arm64\native\Microsoft.Data.SqlClient.SNI.dll
-H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\runtimes\win-x64\native\Microsoft.Data.SqlClient.SNI.dll
-H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\runtimes\win-x86\native\Microsoft.Data.SqlClient.SNI.dll
-H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\runtimes\win\lib\net6.0\System.Runtime.Caching.dll
-H:\App\GitHub\QuaMonHaiFinalProject\obj\Debug\net8.0\LTWEB_QuaMonHai_CuoiKy.csproj.AssemblyReference.cache
-H:\App\GitHub\QuaMonHaiFinalProject\obj\Debug\net8.0\rpswa.dswa.cache.json
-H:\App\GitHub\QuaMonHaiFinalProject\obj\Debug\net8.0\LTWEB_QuaMonHai_CuoiKy.GeneratedMSBuildEditorConfig.editorconfig
-H:\App\GitHub\QuaMonHaiFinalProject\obj\Debug\net8.0\LTWEB_QuaMonHai_CuoiKy.AssemblyInfoInputs.cache
-H:\App\GitHub\QuaMonHaiFinalProject\obj\Debug\net8.0\LTWEB_QuaMonHai_CuoiKy.AssemblyInfo.cs
-H:\App\GitHub\QuaMonHaiFinalProject\obj\Debug\net8.0\LTWEB_QuaMonHai_CuoiKy.csproj.CoreCompileInputs.cache
-H:\App\GitHub\QuaMonHaiFinalProject\obj\Debug\net8.0\LTWEB_QuaMonHai_CuoiKy.MvcApplicationPartsAssemblyInfo.cache
-H:\App\GitHub\QuaMonHaiFinalProject\obj\Debug\net8.0\LTWEB_QuaMonHai_CuoiKy.RazorAssemblyInfo.cache
-H:\App\GitHub\QuaMonHaiFinalProject\obj\Debug\net8.0\LTWEB_QuaMonHai_CuoiKy.RazorAssemblyInfo.cs
-H:\App\GitHub\QuaMonHaiFinalProject\obj\Debug\net8.0\LTWEB_QuaMonHai_CuoiKy.sourcelink.json
-H:\App\GitHub\QuaMonHaiFinalProject\obj\Debug\net8.0\rjimswa.dswa.cache.json
-H:\App\GitHub\QuaMonHaiFinalProject\obj\Debug\net8.0\rjsmrazor.dswa.cache.json
-H:\App\GitHub\QuaMonHaiFinalProject\obj\Debug\net8.0\rjsmcshtml.dswa.cache.json
-H:\App\GitHub\QuaMonHaiFinalProject\obj\Debug\net8.0\scopedcss\Views\Shared\_Layout.cshtml.rz.scp.css
-H:\App\GitHub\QuaMonHaiFinalProject\obj\Debug\net8.0\scopedcss\Views\Shared\_Layout_Backup.cshtml.rz.scp.css
-H:\App\GitHub\QuaMonHaiFinalProject\obj\Debug\net8.0\scopedcss\bundle\LTWEB_QuaMonHai_CuoiKy.styles.css
-H:\App\GitHub\QuaMonHaiFinalProject\obj\Debug\net8.0\scopedcss\projectbundle\LTWEB_QuaMonHai_CuoiKy.bundle.scp.css
-H:\App\GitHub\QuaMonHaiFinalProject\obj\Debug\net8.0\staticwebassets.build.json
-H:\App\GitHub\QuaMonHaiFinalProject\obj\Debug\net8.0\staticwebassets.build.json.cache
-H:\App\GitHub\QuaMonHaiFinalProject\obj\Debug\net8.0\staticwebassets.development.json
-H:\App\GitHub\QuaMonHaiFinalProject\obj\Debug\net8.0\staticwebassets.build.endpoints.json
-H:\App\GitHub\QuaMonHaiFinalProject\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt
-H:\App\GitHub\QuaMonHaiFinalProject\obj\Debug\net8.0\LTWEB_Qu.C0212FBA.Up2Date
-H:\App\GitHub\QuaMonHaiFinalProject\obj\Debug\net8.0\LTWEB_QuaMonHai_CuoiKy.dll
-H:\App\GitHub\QuaMonHaiFinalProject\obj\Debug\net8.0\refint\LTWEB_QuaMonHai_CuoiKy.dll
-H:\App\GitHub\QuaMonHaiFinalProject\obj\Debug\net8.0\LTWEB_QuaMonHai_CuoiKy.pdb
-H:\App\GitHub\QuaMonHaiFinalProject\obj\Debug\net8.0\LTWEB_QuaMonHai_CuoiKy.genruntimeconfig.cache
-H:\App\GitHub\QuaMonHaiFinalProject\obj\Debug\net8.0\ref\LTWEB_QuaMonHai_CuoiKy.dll
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\appsettings.Development.json
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\appsettings.json
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\LTWEB_QuaMonHai_CuoiKy.staticwebassets.runtime.json
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\LTWEB_QuaMonHai_CuoiKy.staticwebassets.endpoints.json
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\LTWEB_QuaMonHai_CuoiKy.exe
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\LTWEB_QuaMonHai_CuoiKy.deps.json
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\LTWEB_QuaMonHai_CuoiKy.runtimeconfig.json
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\LTWEB_QuaMonHai_CuoiKy.dll
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\LTWEB_QuaMonHai_CuoiKy.pdb
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\Azure.Core.dll
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\Azure.Identity.dll
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\Humanizer.dll
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\Microsoft.AspNetCore.Razor.Language.dll
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\Microsoft.Bcl.AsyncInterfaces.dll
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\Microsoft.Build.dll
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\Microsoft.Build.Framework.dll
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\Microsoft.CodeAnalysis.AnalyzerUtilities.dll
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\Microsoft.CodeAnalysis.dll
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\Microsoft.CodeAnalysis.CSharp.dll
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\Microsoft.CodeAnalysis.CSharp.Features.dll
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\Microsoft.CodeAnalysis.CSharp.Workspaces.dll
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\Microsoft.CodeAnalysis.Elfie.dll
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\Microsoft.CodeAnalysis.Features.dll
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\Microsoft.CodeAnalysis.Razor.dll
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\Microsoft.CodeAnalysis.Scripting.dll
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\Microsoft.CodeAnalysis.Workspaces.dll
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\Microsoft.Data.SqlClient.dll
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\Microsoft.DiaSymReader.dll
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\Microsoft.DotNet.Scaffolding.Shared.dll
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.dll
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.Abstractions.dll
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.Design.dll
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.Relational.dll
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.SqlServer.dll
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\Microsoft.Extensions.Caching.Memory.dll
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\Microsoft.Extensions.DependencyInjection.dll
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\Microsoft.Extensions.DependencyModel.dll
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\Microsoft.Extensions.Logging.dll
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\Microsoft.Extensions.Logging.Abstractions.dll
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\Microsoft.Extensions.Options.dll
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\Microsoft.Identity.Client.dll
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\Microsoft.Identity.Client.Extensions.Msal.dll
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\Microsoft.IdentityModel.Abstractions.dll
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\Microsoft.IdentityModel.JsonWebTokens.dll
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\Microsoft.IdentityModel.Logging.dll
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\Microsoft.IdentityModel.Protocols.dll
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\Microsoft.IdentityModel.Tokens.dll
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\Microsoft.NET.StringTools.dll
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\Microsoft.SqlServer.Server.dll
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\Microsoft.VisualStudio.Web.CodeGeneration.dll
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\Microsoft.VisualStudio.Web.CodeGeneration.Core.dll
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\dotnet-aspnet-codegenerator-design.dll
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\Microsoft.VisualStudio.Web.CodeGeneration.EntityFrameworkCore.dll
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\Microsoft.VisualStudio.Web.CodeGeneration.Templating.dll
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\Microsoft.VisualStudio.Web.CodeGeneration.Utils.dll
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\Microsoft.VisualStudio.Web.CodeGenerators.Mvc.dll
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\Mono.TextTemplating.dll
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\Newtonsoft.Json.dll
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\NuGet.Common.dll
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\NuGet.Configuration.dll
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\NuGet.DependencyResolver.Core.dll
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\NuGet.Frameworks.dll
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\NuGet.LibraryModel.dll
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\NuGet.Packaging.dll
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\NuGet.ProjectModel.dll
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\NuGet.Protocol.dll
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\NuGet.Versioning.dll
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\System.ClientModel.dll
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\System.CodeDom.dll
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\System.Composition.AttributedModel.dll
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\System.Composition.Convention.dll
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\System.Composition.Hosting.dll
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\System.Composition.Runtime.dll
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\System.Composition.TypedParts.dll
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\System.Configuration.ConfigurationManager.dll
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\System.IdentityModel.Tokens.Jwt.dll
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\System.Memory.Data.dll
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\System.Reflection.MetadataLoadContext.dll
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\System.Runtime.Caching.dll
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\System.Security.Cryptography.ProtectedData.dll
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\af\Humanizer.resources.dll
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\ar\Humanizer.resources.dll
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\az\Humanizer.resources.dll
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\bg\Humanizer.resources.dll
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\bn-BD\Humanizer.resources.dll
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\cs\Humanizer.resources.dll
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\da\Humanizer.resources.dll
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\de\Humanizer.resources.dll
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\el\Humanizer.resources.dll
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\es\Humanizer.resources.dll
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\fa\Humanizer.resources.dll
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\fi-FI\Humanizer.resources.dll
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\fr\Humanizer.resources.dll
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\fr-BE\Humanizer.resources.dll
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\he\Humanizer.resources.dll
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\hr\Humanizer.resources.dll
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\hu\Humanizer.resources.dll
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\hy\Humanizer.resources.dll
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\id\Humanizer.resources.dll
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\is\Humanizer.resources.dll
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\it\Humanizer.resources.dll
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\ja\Humanizer.resources.dll
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\ko-KR\Humanizer.resources.dll
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\ku\Humanizer.resources.dll
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\lv\Humanizer.resources.dll
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\ms-MY\Humanizer.resources.dll
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\mt\Humanizer.resources.dll
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\nb\Humanizer.resources.dll
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\nb-NO\Humanizer.resources.dll
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\nl\Humanizer.resources.dll
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\pl\Humanizer.resources.dll
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\pt\Humanizer.resources.dll
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\ro\Humanizer.resources.dll
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\ru\Humanizer.resources.dll
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\sk\Humanizer.resources.dll
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\sl\Humanizer.resources.dll
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\sr\Humanizer.resources.dll
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\sr-Latn\Humanizer.resources.dll
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\sv\Humanizer.resources.dll
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\th-TH\Humanizer.resources.dll
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\tr\Humanizer.resources.dll
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\uk\Humanizer.resources.dll
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\uz-Cyrl-UZ\Humanizer.resources.dll
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\uz-Latn-UZ\Humanizer.resources.dll
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\vi\Humanizer.resources.dll
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\zh-CN\Humanizer.resources.dll
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\zh-Hans\Humanizer.resources.dll
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\zh-Hant\Humanizer.resources.dll
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\cs\Microsoft.CodeAnalysis.resources.dll
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\de\Microsoft.CodeAnalysis.resources.dll
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\es\Microsoft.CodeAnalysis.resources.dll
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\fr\Microsoft.CodeAnalysis.resources.dll
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\it\Microsoft.CodeAnalysis.resources.dll
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\ja\Microsoft.CodeAnalysis.resources.dll
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\ko\Microsoft.CodeAnalysis.resources.dll
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\pl\Microsoft.CodeAnalysis.resources.dll
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\pt-BR\Microsoft.CodeAnalysis.resources.dll
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\ru\Microsoft.CodeAnalysis.resources.dll
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\tr\Microsoft.CodeAnalysis.resources.dll
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\zh-Hans\Microsoft.CodeAnalysis.resources.dll
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\zh-Hant\Microsoft.CodeAnalysis.resources.dll
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\cs\Microsoft.CodeAnalysis.CSharp.resources.dll
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\de\Microsoft.CodeAnalysis.CSharp.resources.dll
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\es\Microsoft.CodeAnalysis.CSharp.resources.dll
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\fr\Microsoft.CodeAnalysis.CSharp.resources.dll
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\it\Microsoft.CodeAnalysis.CSharp.resources.dll
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\ja\Microsoft.CodeAnalysis.CSharp.resources.dll
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\ko\Microsoft.CodeAnalysis.CSharp.resources.dll
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\pl\Microsoft.CodeAnalysis.CSharp.resources.dll
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\pt-BR\Microsoft.CodeAnalysis.CSharp.resources.dll
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\ru\Microsoft.CodeAnalysis.CSharp.resources.dll
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\tr\Microsoft.CodeAnalysis.CSharp.resources.dll
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\zh-Hans\Microsoft.CodeAnalysis.CSharp.resources.dll
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\zh-Hant\Microsoft.CodeAnalysis.CSharp.resources.dll
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\cs\Microsoft.CodeAnalysis.CSharp.Features.resources.dll
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\de\Microsoft.CodeAnalysis.CSharp.Features.resources.dll
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\es\Microsoft.CodeAnalysis.CSharp.Features.resources.dll
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\fr\Microsoft.CodeAnalysis.CSharp.Features.resources.dll
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\it\Microsoft.CodeAnalysis.CSharp.Features.resources.dll
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\ja\Microsoft.CodeAnalysis.CSharp.Features.resources.dll
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\ko\Microsoft.CodeAnalysis.CSharp.Features.resources.dll
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\pl\Microsoft.CodeAnalysis.CSharp.Features.resources.dll
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\pt-BR\Microsoft.CodeAnalysis.CSharp.Features.resources.dll
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\ru\Microsoft.CodeAnalysis.CSharp.Features.resources.dll
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\tr\Microsoft.CodeAnalysis.CSharp.Features.resources.dll
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\zh-Hans\Microsoft.CodeAnalysis.CSharp.Features.resources.dll
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\zh-Hant\Microsoft.CodeAnalysis.CSharp.Features.resources.dll
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\cs\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\de\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\es\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\fr\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\it\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\ja\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\ko\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\pl\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\pt-BR\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\ru\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\tr\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\zh-Hans\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\zh-Hant\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\cs\Microsoft.CodeAnalysis.Features.resources.dll
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\de\Microsoft.CodeAnalysis.Features.resources.dll
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\es\Microsoft.CodeAnalysis.Features.resources.dll
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\fr\Microsoft.CodeAnalysis.Features.resources.dll
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\it\Microsoft.CodeAnalysis.Features.resources.dll
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\ja\Microsoft.CodeAnalysis.Features.resources.dll
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\ko\Microsoft.CodeAnalysis.Features.resources.dll
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\pl\Microsoft.CodeAnalysis.Features.resources.dll
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\pt-BR\Microsoft.CodeAnalysis.Features.resources.dll
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\ru\Microsoft.CodeAnalysis.Features.resources.dll
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\tr\Microsoft.CodeAnalysis.Features.resources.dll
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\zh-Hans\Microsoft.CodeAnalysis.Features.resources.dll
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\zh-Hant\Microsoft.CodeAnalysis.Features.resources.dll
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\cs\Microsoft.CodeAnalysis.Scripting.resources.dll
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\de\Microsoft.CodeAnalysis.Scripting.resources.dll
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\es\Microsoft.CodeAnalysis.Scripting.resources.dll
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\fr\Microsoft.CodeAnalysis.Scripting.resources.dll
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\it\Microsoft.CodeAnalysis.Scripting.resources.dll
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\ja\Microsoft.CodeAnalysis.Scripting.resources.dll
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\ko\Microsoft.CodeAnalysis.Scripting.resources.dll
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\pl\Microsoft.CodeAnalysis.Scripting.resources.dll
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\pt-BR\Microsoft.CodeAnalysis.Scripting.resources.dll
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\ru\Microsoft.CodeAnalysis.Scripting.resources.dll
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\tr\Microsoft.CodeAnalysis.Scripting.resources.dll
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\zh-Hans\Microsoft.CodeAnalysis.Scripting.resources.dll
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\zh-Hant\Microsoft.CodeAnalysis.Scripting.resources.dll
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\cs\Microsoft.CodeAnalysis.Workspaces.resources.dll
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\de\Microsoft.CodeAnalysis.Workspaces.resources.dll
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\es\Microsoft.CodeAnalysis.Workspaces.resources.dll
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\fr\Microsoft.CodeAnalysis.Workspaces.resources.dll
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\it\Microsoft.CodeAnalysis.Workspaces.resources.dll
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\ja\Microsoft.CodeAnalysis.Workspaces.resources.dll
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\ko\Microsoft.CodeAnalysis.Workspaces.resources.dll
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\pl\Microsoft.CodeAnalysis.Workspaces.resources.dll
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\pt-BR\Microsoft.CodeAnalysis.Workspaces.resources.dll
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\ru\Microsoft.CodeAnalysis.Workspaces.resources.dll
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\tr\Microsoft.CodeAnalysis.Workspaces.resources.dll
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\zh-Hans\Microsoft.CodeAnalysis.Workspaces.resources.dll
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\zh-Hant\Microsoft.CodeAnalysis.Workspaces.resources.dll
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\runtimes\unix\lib\net6.0\Microsoft.Data.SqlClient.dll
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\runtimes\win\lib\net6.0\Microsoft.Data.SqlClient.dll
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\runtimes\win-arm\native\Microsoft.Data.SqlClient.SNI.dll
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\runtimes\win-arm64\native\Microsoft.Data.SqlClient.SNI.dll
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\runtimes\win-x64\native\Microsoft.Data.SqlClient.SNI.dll
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\runtimes\win-x86\native\Microsoft.Data.SqlClient.SNI.dll
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\runtimes\win\lib\net6.0\System.Runtime.Caching.dll
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\obj\Debug\net8.0\LTWEB_QuaMonHai_CuoiKy.csproj.AssemblyReference.cache
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\obj\Debug\net8.0\rpswa.dswa.cache.json
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\obj\Debug\net8.0\LTWEB_QuaMonHai_CuoiKy.GeneratedMSBuildEditorConfig.editorconfig
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\obj\Debug\net8.0\LTWEB_QuaMonHai_CuoiKy.AssemblyInfoInputs.cache
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\obj\Debug\net8.0\LTWEB_QuaMonHai_CuoiKy.AssemblyInfo.cs
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\obj\Debug\net8.0\LTWEB_QuaMonHai_CuoiKy.csproj.CoreCompileInputs.cache
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\obj\Debug\net8.0\LTWEB_QuaMonHai_CuoiKy.MvcApplicationPartsAssemblyInfo.cache
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\obj\Debug\net8.0\LTWEB_QuaMonHai_CuoiKy.RazorAssemblyInfo.cache
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\obj\Debug\net8.0\LTWEB_QuaMonHai_CuoiKy.RazorAssemblyInfo.cs
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\obj\Debug\net8.0\rjimswa.dswa.cache.json
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\obj\Debug\net8.0\rjsmrazor.dswa.cache.json
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\obj\Debug\net8.0\rjsmcshtml.dswa.cache.json
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\obj\Debug\net8.0\scopedcss\Views\Shared\_Layout.cshtml.rz.scp.css
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\obj\Debug\net8.0\scopedcss\Views\Shared\_Layout_Backup.cshtml.rz.scp.css
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\obj\Debug\net8.0\scopedcss\bundle\LTWEB_QuaMonHai_CuoiKy.styles.css
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\obj\Debug\net8.0\scopedcss\projectbundle\LTWEB_QuaMonHai_CuoiKy.bundle.scp.css
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\obj\Debug\net8.0\staticwebassets.build.json
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\obj\Debug\net8.0\staticwebassets.build.json.cache
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\obj\Debug\net8.0\staticwebassets.development.json
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\obj\Debug\net8.0\staticwebassets.build.endpoints.json
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\obj\Debug\net8.0\LTWEB_Qu.C0212FBA.Up2Date
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\obj\Debug\net8.0\LTWEB_QuaMonHai_CuoiKy.dll
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\obj\Debug\net8.0\refint\LTWEB_QuaMonHai_CuoiKy.dll
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\obj\Debug\net8.0\LTWEB_QuaMonHai_CuoiKy.pdb
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\obj\Debug\net8.0\LTWEB_QuaMonHai_CuoiKy.genruntimeconfig.cache
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\obj\Debug\net8.0\ref\LTWEB_QuaMonHai_CuoiKy.dll
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\AutoMapper.dll
+E:\Codin\Code\LaptrinhWeb_SQL\BaiTapNhom\ƯEB TEST\bin\Debug\net8.0\AutoMapper.Extensions.Microsoft.DependencyInjection.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\appsettings.Development.json
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\appsettings.json
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\LTWEB_QuaMonHai_CuoiKy.staticwebassets.runtime.json
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\LTWEB_QuaMonHai_CuoiKy.staticwebassets.endpoints.json
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\LTWEB_QuaMonHai_CuoiKy.exe
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\LTWEB_QuaMonHai_CuoiKy.deps.json
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\LTWEB_QuaMonHai_CuoiKy.runtimeconfig.json
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\LTWEB_QuaMonHai_CuoiKy.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\LTWEB_QuaMonHai_CuoiKy.pdb
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\AutoMapper.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\AutoMapper.Extensions.Microsoft.DependencyInjection.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\Azure.Core.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\Azure.Identity.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\Humanizer.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\Microsoft.AspNetCore.Razor.Language.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\Microsoft.Bcl.AsyncInterfaces.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\Microsoft.Build.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\Microsoft.Build.Framework.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\Microsoft.CodeAnalysis.AnalyzerUtilities.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\Microsoft.CodeAnalysis.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\Microsoft.CodeAnalysis.CSharp.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\Microsoft.CodeAnalysis.CSharp.Features.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\Microsoft.CodeAnalysis.CSharp.Workspaces.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\Microsoft.CodeAnalysis.Elfie.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\Microsoft.CodeAnalysis.Features.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\Microsoft.CodeAnalysis.Razor.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\Microsoft.CodeAnalysis.Scripting.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\Microsoft.CodeAnalysis.Workspaces.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\Microsoft.Data.SqlClient.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\Microsoft.DiaSymReader.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\Microsoft.DotNet.Scaffolding.Shared.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.Abstractions.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.Design.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.Relational.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.SqlServer.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\Microsoft.Extensions.Caching.Memory.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\Microsoft.Extensions.DependencyInjection.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\Microsoft.Extensions.DependencyModel.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\Microsoft.Extensions.Logging.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\Microsoft.Extensions.Logging.Abstractions.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\Microsoft.Extensions.Options.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\Microsoft.Identity.Client.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\Microsoft.Identity.Client.Extensions.Msal.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\Microsoft.IdentityModel.Abstractions.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\Microsoft.IdentityModel.JsonWebTokens.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\Microsoft.IdentityModel.Logging.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\Microsoft.IdentityModel.Protocols.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\Microsoft.IdentityModel.Tokens.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\Microsoft.NET.StringTools.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\Microsoft.SqlServer.Server.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\Microsoft.VisualStudio.Web.CodeGeneration.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\Microsoft.VisualStudio.Web.CodeGeneration.Core.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\dotnet-aspnet-codegenerator-design.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\Microsoft.VisualStudio.Web.CodeGeneration.EntityFrameworkCore.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\Microsoft.VisualStudio.Web.CodeGeneration.Templating.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\Microsoft.VisualStudio.Web.CodeGeneration.Utils.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\Microsoft.VisualStudio.Web.CodeGenerators.Mvc.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\Mono.TextTemplating.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\Newtonsoft.Json.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\NuGet.Common.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\NuGet.Configuration.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\NuGet.DependencyResolver.Core.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\NuGet.Frameworks.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\NuGet.LibraryModel.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\NuGet.Packaging.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\NuGet.ProjectModel.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\NuGet.Protocol.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\NuGet.Versioning.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\System.ClientModel.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\System.CodeDom.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\System.Composition.AttributedModel.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\System.Composition.Convention.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\System.Composition.Hosting.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\System.Composition.Runtime.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\System.Composition.TypedParts.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\System.Configuration.ConfigurationManager.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\System.IdentityModel.Tokens.Jwt.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\System.Memory.Data.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\System.Reflection.MetadataLoadContext.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\System.Runtime.Caching.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\System.Security.Cryptography.ProtectedData.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\af\Humanizer.resources.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\ar\Humanizer.resources.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\az\Humanizer.resources.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\bg\Humanizer.resources.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\bn-BD\Humanizer.resources.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\cs\Humanizer.resources.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\da\Humanizer.resources.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\de\Humanizer.resources.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\el\Humanizer.resources.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\es\Humanizer.resources.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\fa\Humanizer.resources.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\fi-FI\Humanizer.resources.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\fr\Humanizer.resources.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\fr-BE\Humanizer.resources.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\he\Humanizer.resources.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\hr\Humanizer.resources.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\hu\Humanizer.resources.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\hy\Humanizer.resources.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\id\Humanizer.resources.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\is\Humanizer.resources.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\it\Humanizer.resources.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\ja\Humanizer.resources.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\ko-KR\Humanizer.resources.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\ku\Humanizer.resources.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\lv\Humanizer.resources.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\ms-MY\Humanizer.resources.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\mt\Humanizer.resources.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\nb\Humanizer.resources.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\nb-NO\Humanizer.resources.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\nl\Humanizer.resources.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\pl\Humanizer.resources.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\pt\Humanizer.resources.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\ro\Humanizer.resources.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\ru\Humanizer.resources.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\sk\Humanizer.resources.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\sl\Humanizer.resources.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\sr\Humanizer.resources.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\sr-Latn\Humanizer.resources.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\sv\Humanizer.resources.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\th-TH\Humanizer.resources.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\tr\Humanizer.resources.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\uk\Humanizer.resources.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\uz-Cyrl-UZ\Humanizer.resources.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\uz-Latn-UZ\Humanizer.resources.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\vi\Humanizer.resources.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\zh-CN\Humanizer.resources.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\zh-Hans\Humanizer.resources.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\zh-Hant\Humanizer.resources.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\cs\Microsoft.CodeAnalysis.resources.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\de\Microsoft.CodeAnalysis.resources.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\es\Microsoft.CodeAnalysis.resources.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\fr\Microsoft.CodeAnalysis.resources.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\it\Microsoft.CodeAnalysis.resources.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\ja\Microsoft.CodeAnalysis.resources.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\ko\Microsoft.CodeAnalysis.resources.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\pl\Microsoft.CodeAnalysis.resources.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\pt-BR\Microsoft.CodeAnalysis.resources.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\ru\Microsoft.CodeAnalysis.resources.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\tr\Microsoft.CodeAnalysis.resources.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\zh-Hans\Microsoft.CodeAnalysis.resources.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\zh-Hant\Microsoft.CodeAnalysis.resources.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\cs\Microsoft.CodeAnalysis.CSharp.resources.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\de\Microsoft.CodeAnalysis.CSharp.resources.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\es\Microsoft.CodeAnalysis.CSharp.resources.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\fr\Microsoft.CodeAnalysis.CSharp.resources.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\it\Microsoft.CodeAnalysis.CSharp.resources.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\ja\Microsoft.CodeAnalysis.CSharp.resources.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\ko\Microsoft.CodeAnalysis.CSharp.resources.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\pl\Microsoft.CodeAnalysis.CSharp.resources.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\pt-BR\Microsoft.CodeAnalysis.CSharp.resources.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\ru\Microsoft.CodeAnalysis.CSharp.resources.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\tr\Microsoft.CodeAnalysis.CSharp.resources.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\zh-Hans\Microsoft.CodeAnalysis.CSharp.resources.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\zh-Hant\Microsoft.CodeAnalysis.CSharp.resources.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\cs\Microsoft.CodeAnalysis.CSharp.Features.resources.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\de\Microsoft.CodeAnalysis.CSharp.Features.resources.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\es\Microsoft.CodeAnalysis.CSharp.Features.resources.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\fr\Microsoft.CodeAnalysis.CSharp.Features.resources.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\it\Microsoft.CodeAnalysis.CSharp.Features.resources.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\ja\Microsoft.CodeAnalysis.CSharp.Features.resources.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\ko\Microsoft.CodeAnalysis.CSharp.Features.resources.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\pl\Microsoft.CodeAnalysis.CSharp.Features.resources.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\pt-BR\Microsoft.CodeAnalysis.CSharp.Features.resources.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\ru\Microsoft.CodeAnalysis.CSharp.Features.resources.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\tr\Microsoft.CodeAnalysis.CSharp.Features.resources.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\zh-Hans\Microsoft.CodeAnalysis.CSharp.Features.resources.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\zh-Hant\Microsoft.CodeAnalysis.CSharp.Features.resources.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\cs\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\de\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\es\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\fr\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\it\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\ja\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\ko\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\pl\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\pt-BR\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\ru\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\tr\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\zh-Hans\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\zh-Hant\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\cs\Microsoft.CodeAnalysis.Features.resources.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\de\Microsoft.CodeAnalysis.Features.resources.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\es\Microsoft.CodeAnalysis.Features.resources.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\fr\Microsoft.CodeAnalysis.Features.resources.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\it\Microsoft.CodeAnalysis.Features.resources.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\ja\Microsoft.CodeAnalysis.Features.resources.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\ko\Microsoft.CodeAnalysis.Features.resources.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\pl\Microsoft.CodeAnalysis.Features.resources.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\pt-BR\Microsoft.CodeAnalysis.Features.resources.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\ru\Microsoft.CodeAnalysis.Features.resources.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\tr\Microsoft.CodeAnalysis.Features.resources.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\zh-Hans\Microsoft.CodeAnalysis.Features.resources.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\zh-Hant\Microsoft.CodeAnalysis.Features.resources.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\cs\Microsoft.CodeAnalysis.Scripting.resources.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\de\Microsoft.CodeAnalysis.Scripting.resources.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\es\Microsoft.CodeAnalysis.Scripting.resources.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\fr\Microsoft.CodeAnalysis.Scripting.resources.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\it\Microsoft.CodeAnalysis.Scripting.resources.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\ja\Microsoft.CodeAnalysis.Scripting.resources.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\ko\Microsoft.CodeAnalysis.Scripting.resources.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\pl\Microsoft.CodeAnalysis.Scripting.resources.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\pt-BR\Microsoft.CodeAnalysis.Scripting.resources.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\ru\Microsoft.CodeAnalysis.Scripting.resources.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\tr\Microsoft.CodeAnalysis.Scripting.resources.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\zh-Hans\Microsoft.CodeAnalysis.Scripting.resources.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\zh-Hant\Microsoft.CodeAnalysis.Scripting.resources.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\cs\Microsoft.CodeAnalysis.Workspaces.resources.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\de\Microsoft.CodeAnalysis.Workspaces.resources.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\es\Microsoft.CodeAnalysis.Workspaces.resources.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\fr\Microsoft.CodeAnalysis.Workspaces.resources.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\it\Microsoft.CodeAnalysis.Workspaces.resources.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\ja\Microsoft.CodeAnalysis.Workspaces.resources.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\ko\Microsoft.CodeAnalysis.Workspaces.resources.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\pl\Microsoft.CodeAnalysis.Workspaces.resources.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\pt-BR\Microsoft.CodeAnalysis.Workspaces.resources.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\ru\Microsoft.CodeAnalysis.Workspaces.resources.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\tr\Microsoft.CodeAnalysis.Workspaces.resources.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\zh-Hans\Microsoft.CodeAnalysis.Workspaces.resources.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\zh-Hant\Microsoft.CodeAnalysis.Workspaces.resources.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\runtimes\unix\lib\net6.0\Microsoft.Data.SqlClient.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\runtimes\win\lib\net6.0\Microsoft.Data.SqlClient.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\runtimes\win-arm\native\Microsoft.Data.SqlClient.SNI.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\runtimes\win-arm64\native\Microsoft.Data.SqlClient.SNI.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\runtimes\win-x64\native\Microsoft.Data.SqlClient.SNI.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\runtimes\win-x86\native\Microsoft.Data.SqlClient.SNI.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\runtimes\win\lib\net6.0\System.Runtime.Caching.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\obj\Debug\net8.0\LTWEB_QuaMonHai_CuoiKy.csproj.AssemblyReference.cache
+E:\Codin\GitHub\QuaMonHaiFinalProject\obj\Debug\net8.0\rpswa.dswa.cache.json
+E:\Codin\GitHub\QuaMonHaiFinalProject\obj\Debug\net8.0\LTWEB_QuaMonHai_CuoiKy.GeneratedMSBuildEditorConfig.editorconfig
+E:\Codin\GitHub\QuaMonHaiFinalProject\obj\Debug\net8.0\LTWEB_QuaMonHai_CuoiKy.AssemblyInfoInputs.cache
+E:\Codin\GitHub\QuaMonHaiFinalProject\obj\Debug\net8.0\LTWEB_QuaMonHai_CuoiKy.AssemblyInfo.cs
+E:\Codin\GitHub\QuaMonHaiFinalProject\obj\Debug\net8.0\LTWEB_QuaMonHai_CuoiKy.csproj.CoreCompileInputs.cache
+E:\Codin\GitHub\QuaMonHaiFinalProject\obj\Debug\net8.0\LTWEB_QuaMonHai_CuoiKy.MvcApplicationPartsAssemblyInfo.cache
+E:\Codin\GitHub\QuaMonHaiFinalProject\obj\Debug\net8.0\LTWEB_QuaMonHai_CuoiKy.RazorAssemblyInfo.cache
+E:\Codin\GitHub\QuaMonHaiFinalProject\obj\Debug\net8.0\LTWEB_QuaMonHai_CuoiKy.RazorAssemblyInfo.cs
+E:\Codin\GitHub\QuaMonHaiFinalProject\obj\Debug\net8.0\LTWEB_QuaMonHai_CuoiKy.sourcelink.json
+E:\Codin\GitHub\QuaMonHaiFinalProject\obj\Debug\net8.0\rjimswa.dswa.cache.json
+E:\Codin\GitHub\QuaMonHaiFinalProject\obj\Debug\net8.0\rjsmrazor.dswa.cache.json
+E:\Codin\GitHub\QuaMonHaiFinalProject\obj\Debug\net8.0\rjsmcshtml.dswa.cache.json
+E:\Codin\GitHub\QuaMonHaiFinalProject\obj\Debug\net8.0\scopedcss\Views\Shared\_Layout.cshtml.rz.scp.css
+E:\Codin\GitHub\QuaMonHaiFinalProject\obj\Debug\net8.0\scopedcss\Views\Shared\_Layout_Backup.cshtml.rz.scp.css
+E:\Codin\GitHub\QuaMonHaiFinalProject\obj\Debug\net8.0\scopedcss\bundle\LTWEB_QuaMonHai_CuoiKy.styles.css
+E:\Codin\GitHub\QuaMonHaiFinalProject\obj\Debug\net8.0\scopedcss\projectbundle\LTWEB_QuaMonHai_CuoiKy.bundle.scp.css
+E:\Codin\GitHub\QuaMonHaiFinalProject\obj\Debug\net8.0\staticwebassets.build.json
+E:\Codin\GitHub\QuaMonHaiFinalProject\obj\Debug\net8.0\staticwebassets.build.json.cache
+E:\Codin\GitHub\QuaMonHaiFinalProject\obj\Debug\net8.0\staticwebassets.development.json
+E:\Codin\GitHub\QuaMonHaiFinalProject\obj\Debug\net8.0\staticwebassets.build.endpoints.json
+E:\Codin\GitHub\QuaMonHaiFinalProject\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt
+E:\Codin\GitHub\QuaMonHaiFinalProject\obj\Debug\net8.0\LTWEB_Qu.C0212FBA.Up2Date
+E:\Codin\GitHub\QuaMonHaiFinalProject\obj\Debug\net8.0\LTWEB_QuaMonHai_CuoiKy.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\obj\Debug\net8.0\refint\LTWEB_QuaMonHai_CuoiKy.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\obj\Debug\net8.0\LTWEB_QuaMonHai_CuoiKy.pdb
+E:\Codin\GitHub\QuaMonHaiFinalProject\obj\Debug\net8.0\LTWEB_QuaMonHai_CuoiKy.genruntimeconfig.cache
+E:\Codin\GitHub\QuaMonHaiFinalProject\obj\Debug\net8.0\ref\LTWEB_QuaMonHai_CuoiKy.dll
