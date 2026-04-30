@@ -1,36 +1,71 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using LTWEB_QuaMonHai_CuoiKy.Data;
+using LTWEB_QuaMonHai_CuoiKy.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using LTWEB_QuaMonHai_CuoiKy.Data;
-using LTWEB_QuaMonHai_CuoiKy.Models;
 
-namespace LTWEB_QuaMonHai_CuoiKy.Controllers
-{
-    public class HangHoasController : Controller
-    {
+namespace LTWEB_QuaMonHai_CuoiKy.Controllers {
+    public class HangHoasController : Controller {
         private readonly Hshop2023Context _context;
 
-        public HangHoasController(Hshop2023Context context)
-        {
+        public HangHoasController(Hshop2023Context context) {
             _context = context;
         }
 
         // GET: HangHoas
-        public async Task<IActionResult> Index()
-        {
-            var hshop2023Context = _context.HangHoas.Include(h => h.MaLoaiNavigation).Include(h => h.MaNccNavigation);
-            return View(await hshop2023Context.ToListAsync());
+        public async Task<IActionResult> Index(int? loaiId, string searchQuery, string priceRange, int page = 1) {
+            int pageSize = 9;
+
+            ViewBag.DanhMucs = await _context.Loais.AsNoTracking().ToListAsync();
+            ViewBag.CurrentLoai = loaiId;
+
+            var query = _context.HangHoas
+                                .Include(h => h.MaLoaiNavigation)
+                                .AsNoTracking()
+                                .AsQueryable();
+
+            if (loaiId.HasValue) {
+                query = query.Where(h => h.MaLoai == loaiId.Value);
+            }
+
+            if (!string.IsNullOrEmpty(searchQuery)) {
+                query = query.Where(h => h.TenHh.Contains(searchQuery));
+            }
+
+            if (!string.IsNullOrEmpty(priceRange)) {
+                switch (priceRange) {
+                    case "under50":
+                        query = query.Where(h => h.DonGia < 50);
+                        break;
+                    case "50to100":
+                        query = query.Where(h => h.DonGia >= 50 && h.DonGia <= 100);
+                        break;
+                    case "over100":
+                        query = query.Where(h => h.DonGia > 100);
+                        break;
+                }
+            }
+
+            int totalItems = await query.CountAsync();
+            int totalPages = (int)Math.Ceiling(totalItems / (double)pageSize);
+
+            if (page < 1) page = 1;
+            if (page > totalPages && totalPages > 0) page = totalPages;
+
+            var items = await query
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+
+            ViewBag.CurrentPage = page;
+            ViewBag.TotalPages = totalPages;
+
+            return View(items);
         }
 
         // GET: HangHoas/Details/5
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null)
-            {
+        public async Task<IActionResult> Details(int? id) {
+            if (id == null) {
                 return NotFound();
             }
 
@@ -38,8 +73,7 @@ namespace LTWEB_QuaMonHai_CuoiKy.Controllers
                 .Include(h => h.MaLoaiNavigation)
                 .Include(h => h.MaNccNavigation)
                 .FirstOrDefaultAsync(m => m.MaHh == id);
-            if (hangHoa == null)
-            {
+            if (hangHoa == null) {
                 return NotFound();
             }
 
@@ -47,91 +81,108 @@ namespace LTWEB_QuaMonHai_CuoiKy.Controllers
         }
 
         // GET: HangHoas/Create
-        public IActionResult Create()
-        {
-            ViewData["MaLoai"] = new SelectList(_context.Loais, "MaLoai", "MaLoai");
-            ViewData["MaNcc"] = new SelectList(_context.NhaCungCaps, "MaNcc", "MaNcc");
+        public IActionResult Create() {
+            ViewData["MaLoai"] = new SelectList(_context.Loais, "MaLoai", "TenLoai");
+            ViewData["MaNcc"] = new SelectList(_context.NhaCungCaps, "MaNcc", "TenCongTy");
             return View();
         }
 
         // POST: HangHoas/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("MaHh,TenHh,TenAlias,MaLoai,MoTaDonVi,DonGia,Hinh,NgaySx,GiamGia,SoLanXem,MoTa,MaNcc")] HangHoa hangHoa)
-        {
-            if (ModelState.IsValid)
-            {
+        public async Task<IActionResult> Create([Bind("MaHh,TenHh,TenAlias,MaLoai,MoTaDonVi,DonGia,Hinh,NgaySx,GiamGia,SoLanXem,MoTa,MaNcc")] HangHoa hangHoa, IFormFile? fHinh) {
+            // Bỏ qua kiểm tra các trường Navigation để Form hợp lệ
+            ModelState.Remove("MaLoaiNavigation");
+            ModelState.Remove("MaNccNavigation");
+            ModelState.Remove("fHinh");
+
+            if (ModelState.IsValid) {
+                // Xử lý upload hình ảnh
+                if (fHinh != null && fHinh.Length > 0) {
+                    hangHoa.Hinh = await LuuFileHinh(fHinh);
+                }
+                else {
+                    hangHoa.Hinh = "no-image.jpg";
+                }
+
                 _context.Add(hangHoa);
                 await _context.SaveChangesAsync();
+                TempData["Success"] = "Thêm mới sản phẩm thành công!";
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["MaLoai"] = new SelectList(_context.Loais, "MaLoai", "MaLoai", hangHoa.MaLoai);
-            ViewData["MaNcc"] = new SelectList(_context.NhaCungCaps, "MaNcc", "MaNcc", hangHoa.MaNcc);
+            ViewData["MaLoai"] = new SelectList(_context.Loais, "MaLoai", "TenLoai", hangHoa.MaLoai);
+            ViewData["MaNcc"] = new SelectList(_context.NhaCungCaps, "MaNcc", "TenCongTy", hangHoa.MaNcc);
             return View(hangHoa);
         }
 
+        // Hàm hỗ trợ lưu file hình
+        private async Task<string> LuuFileHinh(IFormFile file) {
+            var fileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
+            var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Hinh", "HangHoa", fileName);
+
+            using (var stream = new FileStream(path, FileMode.Create)) {
+                await file.CopyToAsync(stream);
+            }
+            return fileName;
+        }
+
         // GET: HangHoas/Edit/5
-        public async Task<IActionResult> Edit(int? id)
-        {
-            if (id == null)
-            {
+        public async Task<IActionResult> Edit(int? id) {
+            if (id == null) {
                 return NotFound();
             }
 
             var hangHoa = await _context.HangHoas.FindAsync(id);
-            if (hangHoa == null)
-            {
+            if (hangHoa == null) {
                 return NotFound();
             }
-            ViewData["MaLoai"] = new SelectList(_context.Loais, "MaLoai", "MaLoai", hangHoa.MaLoai);
-            ViewData["MaNcc"] = new SelectList(_context.NhaCungCaps, "MaNcc", "MaNcc", hangHoa.MaNcc);
+            ViewData["MaLoai"] = new SelectList(_context.Loais, "MaLoai", "TenLoai", hangHoa.MaLoai);
+            ViewData["MaNcc"] = new SelectList(_context.NhaCungCaps, "MaNcc", "TenCongTy", hangHoa.MaNcc);
             return View(hangHoa);
         }
 
         // POST: HangHoas/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("MaHh,TenHh,TenAlias,MaLoai,MoTaDonVi,DonGia,Hinh,NgaySx,GiamGia,SoLanXem,MoTa,MaNcc")] HangHoa hangHoa)
-        {
-            if (id != hangHoa.MaHh)
-            {
+        public async Task<IActionResult> Edit(int id, [Bind("MaHh,TenHh,TenAlias,MaLoai,MoTaDonVi,DonGia,Hinh,NgaySx,GiamGia,SoLanXem,MoTa,MaNcc")] HangHoa hangHoa, IFormFile? fHinh) {
+            if (id != hangHoa.MaHh) {
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
-            {
-                try
-                {
+            // Bỏ qua kiểm tra các trường Navigation để Form hợp lệ
+            ModelState.Remove("MaLoaiNavigation");
+            ModelState.Remove("MaNccNavigation");
+            ModelState.Remove("fHinh");
+
+            if (ModelState.IsValid) {
+                try {
+                    // Xử lý lưu ảnh mới nếu người dùng tải lên
+                    if (fHinh != null && fHinh.Length > 0) {
+                        hangHoa.Hinh = await LuuFileHinh(fHinh);
+                    }
+
                     _context.Update(hangHoa);
                     await _context.SaveChangesAsync();
+                    TempData["Success"] = "Cập nhật sản phẩm thành công!";
                 }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!HangHoaExists(hangHoa.MaHh))
-                    {
+                catch (DbUpdateConcurrencyException) {
+                    if (!HangHoaExists(hangHoa.MaHh)) {
                         return NotFound();
                     }
-                    else
-                    {
+                    else {
                         throw;
                     }
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["MaLoai"] = new SelectList(_context.Loais, "MaLoai", "MaLoai", hangHoa.MaLoai);
-            ViewData["MaNcc"] = new SelectList(_context.NhaCungCaps, "MaNcc", "MaNcc", hangHoa.MaNcc);
+            ViewData["MaLoai"] = new SelectList(_context.Loais, "MaLoai", "TenLoai", hangHoa.MaLoai);
+            ViewData["MaNcc"] = new SelectList(_context.NhaCungCaps, "MaNcc", "TenCongTy", hangHoa.MaNcc);
             return View(hangHoa);
         }
 
         // GET: HangHoas/Delete/5
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null)
-            {
+        public async Task<IActionResult> Delete(int? id) {
+            if (id == null) {
                 return NotFound();
             }
 
@@ -139,8 +190,7 @@ namespace LTWEB_QuaMonHai_CuoiKy.Controllers
                 .Include(h => h.MaLoaiNavigation)
                 .Include(h => h.MaNccNavigation)
                 .FirstOrDefaultAsync(m => m.MaHh == id);
-            if (hangHoa == null)
-            {
+            if (hangHoa == null) {
                 return NotFound();
             }
 
@@ -150,20 +200,18 @@ namespace LTWEB_QuaMonHai_CuoiKy.Controllers
         // POST: HangHoas/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
+        public async Task<IActionResult> DeleteConfirmed(int id) {
             var hangHoa = await _context.HangHoas.FindAsync(id);
-            if (hangHoa != null)
-            {
+            if (hangHoa != null) {
                 _context.HangHoas.Remove(hangHoa);
+                TempData["Success"] = "Đã xóa sản phẩm!";
             }
 
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool HangHoaExists(int id)
-        {
+        private bool HangHoaExists(int id) {
             return _context.HangHoas.Any(e => e.MaHh == id);
         }
     }

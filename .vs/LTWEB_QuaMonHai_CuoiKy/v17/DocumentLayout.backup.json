@@ -3,6 +3,10 @@
   "WorkspaceRootPath": "H:\\App\\GitHub\\QuaMonHaiFinalProject\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{8DB76715-FA3E-463F-9AB4-2F44CF88B5A7}|LTWEB_QuaMonHai_CuoiKy.csproj|h:\\app\\github\\quamonhaifinalproject\\controllers\\hanghoascontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{8DB76715-FA3E-463F-9AB4-2F44CF88B5A7}|LTWEB_QuaMonHai_CuoiKy.csproj|solutionrelative:controllers\\hanghoascontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{8DB76715-FA3E-463F-9AB4-2F44CF88B5A7}|LTWEB_QuaMonHai_CuoiKy.csproj|h:\\app\\github\\quamonhaifinalproject\\views\\hanghoas\\details.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
       "RelativeMoniker": "D:0:0:{8DB76715-FA3E-463F-9AB4-2F44CF88B5A7}|LTWEB_QuaMonHai_CuoiKy.csproj|solutionrelative:views\\hanghoas\\details.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
@@ -18,7 +22,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 4,
+          "SelectedChildIndex": 3,
           "Children": [
             {
               "$type": "Bookmark",
@@ -34,7 +38,20 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 0,
+              "Title": "HangHoasController.cs",
+              "DocumentMoniker": "H:\\App\\GitHub\\QuaMonHaiFinalProject\\Controllers\\HangHoasController.cs",
+              "RelativeDocumentMoniker": "Controllers\\HangHoasController.cs",
+              "ToolTip": "H:\\App\\GitHub\\QuaMonHaiFinalProject\\Controllers\\HangHoasController.cs*",
+              "RelativeToolTip": "Controllers\\HangHoasController.cs*",
+              "ViewState": "AgIAALwAAAAAAAAAAAAcwN0AAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-04-30T16:40:58.598Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
               "Title": "Hshop2023Context.cs",
               "DocumentMoniker": "H:\\App\\GitHub\\QuaMonHaiFinalProject\\Data\\Hshop2023Context.cs",
               "RelativeDocumentMoniker": "Data\\Hshop2023Context.cs",
@@ -42,12 +59,11 @@
               "RelativeToolTip": "Data\\Hshop2023Context.cs",
               "ViewState": "AgIAAB8AAAAAAAAAAAAYwAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-30T16:23:54.679Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-04-30T16:23:54.679Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 1,
               "Title": "Details.cshtml",
               "DocumentMoniker": "H:\\App\\GitHub\\QuaMonHaiFinalProject\\Views\\HangHoas\\Details.cshtml",
               "RelativeDocumentMoniker": "Views\\HangHoas\\Details.cshtml",
