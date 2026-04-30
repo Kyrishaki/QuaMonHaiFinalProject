@@ -25,13 +25,30 @@ namespace LTWEB_QuaMonHai_CuoiKy.Controllers
         }
 
         [HttpPost]
-        public IActionResult DangKy(RegisterVM model)
+        public IActionResult DangKy(RegisterVM model, IFormFile Hinh )
         {
             if(ModelState.IsValid)
             {
-                var khachHang = _mapper.Map<KhachHang>(model);
-                khachHang.RandomKey = MyUtil.GenerateRandomKey();
+                try
+                {
+                    var khachHang = _mapper.Map<KhachHang>(model);
+                    khachHang.RandomKey = MyUtil.GenerateRandomKey();
+                    khachHang.MatKhau = model.MatKhau.ToMd5Hash(khachHang.RandomKey);
+                    khachHang.HieuLuc = true;//sẽ xử lý khi dùng Mail để activee
+                    khachHang.VaiTro = 0;
 
+                    if (Hinh != null)
+                    {
+                        khachHang.Hinh = MyUtil.UploadHinh(Hinh, "khachHang");
+                    }
+                    db.Add(khachHang);
+                    db.SaveChanges();
+                    return RedirectToAction("Index", "HangHoa");
+                }
+                catch (Exception ex)
+                {
+
+                }
 
             }    
             return View();

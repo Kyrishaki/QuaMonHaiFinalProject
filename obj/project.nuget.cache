@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "u8xrbHupgCU=",
+  "dgSpecHash": "W04laVF9DxQ=",
   "success": true,
-  "projectFilePath": "E:\\Codin\\Code\\LaptrinhWeb_SQL\\BaiTapNhom\\ƯEB TEST\\LTWEB_QuaMonHai_CuoiKy.csproj",
+  "projectFilePath": "E:\\Codin\\GitHub\\QuaMonHaiFinalProject\\LTWEB_QuaMonHai_CuoiKy.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Lenovo\\.nuget\\packages\\automapper\\12.0.1\\automapper.12.0.1.nupkg.sha512",
     "C:\\Users\\Lenovo\\.nuget\\packages\\automapper.extensions.microsoft.dependencyinjection\\12.0.1\\automapper.extensions.microsoft.dependencyinjection.12.0.1.nupkg.sha512",

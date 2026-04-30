@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "E:\\Codin\\Code\\LaptrinhWeb_SQL\\BaiTapNhom\\ƯEB TEST\\LTWEB_QuaMonHai_CuoiKy.csproj": {}
+    "E:\\Codin\\GitHub\\QuaMonHaiFinalProject\\LTWEB_QuaMonHai_CuoiKy.csproj": {}
   },
   "projects": {
-    "E:\\Codin\\Code\\LaptrinhWeb_SQL\\BaiTapNhom\\ƯEB TEST\\LTWEB_QuaMonHai_CuoiKy.csproj": {
+    "E:\\Codin\\GitHub\\QuaMonHaiFinalProject\\LTWEB_QuaMonHai_CuoiKy.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "E:\\Codin\\Code\\LaptrinhWeb_SQL\\BaiTapNhom\\ƯEB TEST\\LTWEB_QuaMonHai_CuoiKy.csproj",
+        "projectUniqueName": "E:\\Codin\\GitHub\\QuaMonHaiFinalProject\\LTWEB_QuaMonHai_CuoiKy.csproj",
         "projectName": "LTWEB_QuaMonHai_CuoiKy",
-        "projectPath": "E:\\Codin\\Code\\LaptrinhWeb_SQL\\BaiTapNhom\\ƯEB TEST\\LTWEB_QuaMonHai_CuoiKy.csproj",
+        "projectPath": "E:\\Codin\\GitHub\\QuaMonHaiFinalProject\\LTWEB_QuaMonHai_CuoiKy.csproj",
         "packagesPath": "C:\\Users\\Lenovo\\.nuget\\packages\\",
-        "outputPath": "E:\\Codin\\Code\\LaptrinhWeb_SQL\\BaiTapNhom\\ƯEB TEST\\obj\\",
+        "outputPath": "E:\\Codin\\GitHub\\QuaMonHaiFinalProject\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "E:\\Visual Studio\\Shared\\NuGetPackages"
