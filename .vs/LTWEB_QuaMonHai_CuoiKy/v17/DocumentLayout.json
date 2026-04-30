@@ -3,8 +3,36 @@
   "WorkspaceRootPath": "E:\\Codin\\GitHub\\QuaMonHaiFinalProject\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{8DB76715-FA3E-463F-9AB4-2F44CF88B5A7}|LTWEB_QuaMonHai_CuoiKy.csproj|e:\\codin\\github\\quamonhaifinalproject\\viewmodels\\registervm.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{8DB76715-FA3E-463F-9AB4-2F44CF88B5A7}|LTWEB_QuaMonHai_CuoiKy.csproj|solutionrelative:viewmodels\\registervm.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8DB76715-FA3E-463F-9AB4-2F44CF88B5A7}|LTWEB_QuaMonHai_CuoiKy.csproj|e:\\codin\\github\\quamonhaifinalproject\\viewmodels\\loginvm.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{8DB76715-FA3E-463F-9AB4-2F44CF88B5A7}|LTWEB_QuaMonHai_CuoiKy.csproj|solutionrelative:viewmodels\\loginvm.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8DB76715-FA3E-463F-9AB4-2F44CF88B5A7}|LTWEB_QuaMonHai_CuoiKy.csproj|e:\\codin\\github\\quamonhaifinalproject\\views\\khachhang\\profile.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{8DB76715-FA3E-463F-9AB4-2F44CF88B5A7}|LTWEB_QuaMonHai_CuoiKy.csproj|solutionrelative:views\\khachhang\\profile.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8DB76715-FA3E-463F-9AB4-2F44CF88B5A7}|LTWEB_QuaMonHai_CuoiKy.csproj|e:\\codin\\github\\quamonhaifinalproject\\views\\khachhang\\dangky.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{8DB76715-FA3E-463F-9AB4-2F44CF88B5A7}|LTWEB_QuaMonHai_CuoiKy.csproj|solutionrelative:views\\khachhang\\dangky.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8DB76715-FA3E-463F-9AB4-2F44CF88B5A7}|LTWEB_QuaMonHai_CuoiKy.csproj|e:\\codin\\github\\quamonhaifinalproject\\views\\khachhang\\dangnhap.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{8DB76715-FA3E-463F-9AB4-2F44CF88B5A7}|LTWEB_QuaMonHai_CuoiKy.csproj|solutionrelative:views\\khachhang\\dangnhap.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8DB76715-FA3E-463F-9AB4-2F44CF88B5A7}|LTWEB_QuaMonHai_CuoiKy.csproj|e:\\codin\\github\\quamonhaifinalproject\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{8DB76715-FA3E-463F-9AB4-2F44CF88B5A7}|LTWEB_QuaMonHai_CuoiKy.csproj|solutionrelative:program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{8DB76715-FA3E-463F-9AB4-2F44CF88B5A7}|LTWEB_QuaMonHai_CuoiKy.csproj|e:\\codin\\github\\quamonhaifinalproject\\controllers\\khachhangcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{8DB76715-FA3E-463F-9AB4-2F44CF88B5A7}|LTWEB_QuaMonHai_CuoiKy.csproj|solutionrelative:controllers\\khachhangcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8DB76715-FA3E-463F-9AB4-2F44CF88B5A7}|LTWEB_QuaMonHai_CuoiKy.csproj|e:\\codin\\github\\quamonhaifinalproject\\views\\shared\\_navbar.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{8DB76715-FA3E-463F-9AB4-2F44CF88B5A7}|LTWEB_QuaMonHai_CuoiKy.csproj|solutionrelative:views\\shared\\_navbar.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{8DB76715-FA3E-463F-9AB4-2F44CF88B5A7}|LTWEB_QuaMonHai_CuoiKy.csproj|e:\\codin\\github\\quamonhaifinalproject\\helpers\\myutil.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -15,32 +43,8 @@
       "RelativeMoniker": "D:0:0:{8DB76715-FA3E-463F-9AB4-2F44CF88B5A7}|LTWEB_QuaMonHai_CuoiKy.csproj|solutionrelative:helpers\\dataencryptionextensions.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{8DB76715-FA3E-463F-9AB4-2F44CF88B5A7}|LTWEB_QuaMonHai_CuoiKy.csproj|e:\\codin\\github\\quamonhaifinalproject\\controllers\\hanghoascontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{8DB76715-FA3E-463F-9AB4-2F44CF88B5A7}|LTWEB_QuaMonHai_CuoiKy.csproj|solutionrelative:controllers\\hanghoascontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{8DB76715-FA3E-463F-9AB4-2F44CF88B5A7}|LTWEB_QuaMonHai_CuoiKy.csproj|e:\\codin\\github\\quamonhaifinalproject\\viewmodels\\loginvm.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{8DB76715-FA3E-463F-9AB4-2F44CF88B5A7}|LTWEB_QuaMonHai_CuoiKy.csproj|solutionrelative:viewmodels\\loginvm.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{8DB76715-FA3E-463F-9AB4-2F44CF88B5A7}|LTWEB_QuaMonHai_CuoiKy.csproj|e:\\codin\\github\\quamonhaifinalproject\\viewmodels\\registervm.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{8DB76715-FA3E-463F-9AB4-2F44CF88B5A7}|LTWEB_QuaMonHai_CuoiKy.csproj|solutionrelative:viewmodels\\registervm.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{8DB76715-FA3E-463F-9AB4-2F44CF88B5A7}|LTWEB_QuaMonHai_CuoiKy.csproj|e:\\codin\\github\\quamonhaifinalproject\\views\\khachhang\\dangky.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{8DB76715-FA3E-463F-9AB4-2F44CF88B5A7}|LTWEB_QuaMonHai_CuoiKy.csproj|solutionrelative:views\\khachhang\\dangky.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{8DB76715-FA3E-463F-9AB4-2F44CF88B5A7}|LTWEB_QuaMonHai_CuoiKy.csproj|e:\\codin\\github\\quamonhaifinalproject\\views\\shared\\_navbar.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{8DB76715-FA3E-463F-9AB4-2F44CF88B5A7}|LTWEB_QuaMonHai_CuoiKy.csproj|solutionrelative:views\\shared\\_navbar.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{8DB76715-FA3E-463F-9AB4-2F44CF88B5A7}|LTWEB_QuaMonHai_CuoiKy.csproj|e:\\codin\\github\\quamonhaifinalproject\\helpers\\automapperprofile.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{8DB76715-FA3E-463F-9AB4-2F44CF88B5A7}|LTWEB_QuaMonHai_CuoiKy.csproj|solutionrelative:helpers\\automapperprofile.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{8DB76715-FA3E-463F-9AB4-2F44CF88B5A7}|LTWEB_QuaMonHai_CuoiKy.csproj|e:\\codin\\github\\quamonhaifinalproject\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{8DB76715-FA3E-463F-9AB4-2F44CF88B5A7}|LTWEB_QuaMonHai_CuoiKy.csproj|solutionrelative:program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -50,48 +54,102 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 6,
+          "SelectedChildIndex": 9,
           "Children": [
             {
               "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "DangNhap.cshtml",
+              "DocumentMoniker": "E:\\Codin\\GitHub\\QuaMonHaiFinalProject\\Views\\KhachHang\\DangNhap.cshtml",
+              "RelativeDocumentMoniker": "Views\\KhachHang\\DangNhap.cshtml",
+              "ToolTip": "E:\\Codin\\GitHub\\QuaMonHaiFinalProject\\Views\\KhachHang\\DangNhap.cshtml",
+              "RelativeToolTip": "Views\\KhachHang\\DangNhap.cshtml",
+              "ViewState": "AgIAAAMAAAAAAAAAAAAAAA4AAAA6AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-04-30T14:44:57.395Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "DangKy.cshtml",
+              "DocumentMoniker": "E:\\Codin\\GitHub\\QuaMonHaiFinalProject\\Views\\KhachHang\\DangKy.cshtml",
+              "RelativeDocumentMoniker": "Views\\KhachHang\\DangKy.cshtml",
+              "ToolTip": "E:\\Codin\\GitHub\\QuaMonHaiFinalProject\\Views\\KhachHang\\DangKy.cshtml",
+              "RelativeToolTip": "Views\\KhachHang\\DangKy.cshtml",
+              "ViewState": "AgIAABUAAAAAAAAAAAAAABMAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-04-22T13:31:18.148Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
               "DocumentIndex": 2,
-              "Title": "DataEncryptionExtensions.cs",
-              "DocumentMoniker": "E:\\Codin\\GitHub\\QuaMonHaiFinalProject\\Helpers\\DataEncryptionExtensions.cs",
-              "RelativeDocumentMoniker": "Helpers\\DataEncryptionExtensions.cs",
-              "ToolTip": "E:\\Codin\\GitHub\\QuaMonHaiFinalProject\\Helpers\\DataEncryptionExtensions.cs",
-              "RelativeToolTip": "Helpers\\DataEncryptionExtensions.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAACsAAAAFAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-29T03:51:26.393Z"
+              "Title": "Profile.cshtml",
+              "DocumentMoniker": "E:\\Codin\\GitHub\\QuaMonHaiFinalProject\\Views\\KhachHang\\Profile.cshtml",
+              "RelativeDocumentMoniker": "Views\\KhachHang\\Profile.cshtml",
+              "ToolTip": "E:\\Codin\\GitHub\\QuaMonHaiFinalProject\\Views\\KhachHang\\Profile.cshtml",
+              "RelativeToolTip": "Views\\KhachHang\\Profile.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAsAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-04-30T15:40:34.253Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 1,
+              "Title": "LoginVM.cs",
+              "DocumentMoniker": "E:\\Codin\\GitHub\\QuaMonHaiFinalProject\\ViewModels\\LoginVM.cs",
+              "RelativeDocumentMoniker": "ViewModels\\LoginVM.cs",
+              "ToolTip": "E:\\Codin\\GitHub\\QuaMonHaiFinalProject\\ViewModels\\LoginVM.cs",
+              "RelativeToolTip": "ViewModels\\LoginVM.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAqwBAAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-04-22T12:56:18.864Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "_Navbar.cshtml",
+              "DocumentMoniker": "E:\\Codin\\GitHub\\QuaMonHaiFinalProject\\Views\\Shared\\_Navbar.cshtml",
+              "RelativeDocumentMoniker": "Views\\Shared\\_Navbar.cshtml",
+              "ToolTip": "E:\\Codin\\GitHub\\QuaMonHaiFinalProject\\Views\\Shared\\_Navbar.cshtml",
+              "RelativeToolTip": "Views\\Shared\\_Navbar.cshtml",
+              "ViewState": "AgIAABgAAAAAAAAAAAAAADAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-04-29T03:08:46.863Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "Program.cs",
+              "DocumentMoniker": "E:\\Codin\\GitHub\\QuaMonHaiFinalProject\\Program.cs",
+              "RelativeDocumentMoniker": "Program.cs",
+              "ToolTip": "E:\\Codin\\GitHub\\QuaMonHaiFinalProject\\Program.cs",
+              "RelativeToolTip": "Program.cs",
+              "ViewState": "AgIAAAkAAAAAAAAAAAAAACAAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-04-29T03:36:05.248Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
               "Title": "MyUtil.cs",
               "DocumentMoniker": "E:\\Codin\\GitHub\\QuaMonHaiFinalProject\\Helpers\\MyUtil.cs",
               "RelativeDocumentMoniker": "Helpers\\MyUtil.cs",
               "ToolTip": "E:\\Codin\\GitHub\\QuaMonHaiFinalProject\\Helpers\\MyUtil.cs",
               "RelativeToolTip": "Helpers\\MyUtil.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABUAAAAkAAAAAAAAAA==",
+              "ViewState": "AgIAAAUAAAAAAAAAAAD4vxMAAAAdAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-04-29T03:44:56.062Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 9,
-              "Title": "Program.cs",
-              "DocumentMoniker": "E:\\Codin\\GitHub\\QuaMonHaiFinalProject\\Program.cs",
-              "RelativeDocumentMoniker": "Program.cs",
-              "ToolTip": "E:\\Codin\\GitHub\\QuaMonHaiFinalProject\\Program.cs",
-              "RelativeToolTip": "Program.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABAAAAAyAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-29T03:36:05.248Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 8,
+              "DocumentIndex": 10,
               "Title": "AutoMapperProfile.cs",
               "DocumentMoniker": "E:\\Codin\\GitHub\\QuaMonHaiFinalProject\\Helpers\\AutoMapperProfile.cs",
               "RelativeDocumentMoniker": "Helpers\\AutoMapperProfile.cs",
@@ -103,76 +161,41 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
-              "Title": "_Navbar.cshtml",
-              "DocumentMoniker": "E:\\Codin\\GitHub\\QuaMonHaiFinalProject\\Views\\Shared\\_Navbar.cshtml",
-              "RelativeDocumentMoniker": "Views\\Shared\\_Navbar.cshtml",
-              "ToolTip": "E:\\Codin\\GitHub\\QuaMonHaiFinalProject\\Views\\Shared\\_Navbar.cshtml",
-              "RelativeToolTip": "Views\\Shared\\_Navbar.cshtml",
-              "ViewState": "AgIAAA8AAAAAAAAAAAAAACsAAAArAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2026-04-29T03:08:46.863Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 6,
-              "Title": "DangKy.cshtml",
-              "DocumentMoniker": "E:\\Codin\\GitHub\\QuaMonHaiFinalProject\\Views\\KhachHang\\DangKy.cshtml",
-              "RelativeDocumentMoniker": "Views\\KhachHang\\DangKy.cshtml",
-              "ToolTip": "E:\\Codin\\GitHub\\QuaMonHaiFinalProject\\Views\\KhachHang\\DangKy.cshtml",
-              "RelativeToolTip": "Views\\KhachHang\\DangKy.cshtml",
-              "ViewState": "AgIAADYAAAAAAAAAAAAAAEMAAAAWAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2026-04-22T13:31:18.148Z"
+              "DocumentIndex": 9,
+              "Title": "DataEncryptionExtensions.cs",
+              "DocumentMoniker": "E:\\Codin\\GitHub\\QuaMonHaiFinalProject\\Helpers\\DataEncryptionExtensions.cs",
+              "RelativeDocumentMoniker": "Helpers\\DataEncryptionExtensions.cs",
+              "ToolTip": "E:\\Codin\\GitHub\\QuaMonHaiFinalProject\\Helpers\\DataEncryptionExtensions.cs",
+              "RelativeToolTip": "Helpers\\DataEncryptionExtensions.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAACsAAAAFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-04-29T03:51:26.393Z"
             },
             {
               "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "KhachHangController.cs",
-              "DocumentMoniker": "E:\\Codin\\GitHub\\QuaMonHaiFinalProject\\Controllers\\KhachHangController.cs",
-              "RelativeDocumentMoniker": "Controllers\\KhachHangController.cs",
-              "ToolTip": "E:\\Codin\\GitHub\\QuaMonHaiFinalProject\\Controllers\\KhachHangController.cs",
-              "RelativeToolTip": "Controllers\\KhachHangController.cs",
-              "ViewState": "AgIAABsAAAAAAAAAAAA5wDAAAAARAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-22T13:22:28.677Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 5,
               "Title": "RegisterVM.cs",
               "DocumentMoniker": "E:\\Codin\\GitHub\\QuaMonHaiFinalProject\\ViewModels\\RegisterVM.cs",
               "RelativeDocumentMoniker": "ViewModels\\RegisterVM.cs",
               "ToolTip": "E:\\Codin\\GitHub\\QuaMonHaiFinalProject\\ViewModels\\RegisterVM.cs",
               "RelativeToolTip": "ViewModels\\RegisterVM.cs",
-              "ViewState": "AgIAAAgAAAAAAAAAAAAQwCcAAAA5AAAAAAAAAA==",
+              "ViewState": "AgIAABAAAAAAAAAAAAAgwCMAAAAqAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-22T13:10:29.039Z"
+              "WhenOpened": "2026-04-22T13:10:29.039Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "LoginVM.cs",
-              "DocumentMoniker": "E:\\Codin\\GitHub\\QuaMonHaiFinalProject\\ViewModels\\LoginVM.cs",
-              "RelativeDocumentMoniker": "ViewModels\\LoginVM.cs",
-              "ToolTip": "E:\\Codin\\GitHub\\QuaMonHaiFinalProject\\ViewModels\\LoginVM.cs",
-              "RelativeToolTip": "ViewModels\\LoginVM.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAQAAAAYAAAAAAAAAA==",
+              "DocumentIndex": 6,
+              "Title": "KhachHangController.cs",
+              "DocumentMoniker": "E:\\Codin\\GitHub\\QuaMonHaiFinalProject\\Controllers\\KhachHangController.cs",
+              "RelativeDocumentMoniker": "Controllers\\KhachHangController.cs",
+              "ToolTip": "E:\\Codin\\GitHub\\QuaMonHaiFinalProject\\Controllers\\KhachHangController.cs",
+              "RelativeToolTip": "Controllers\\KhachHangController.cs",
+              "ViewState": "AgIAAHgAAAAAAAAAAAAMwIgAAAAhAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-22T12:56:18.864Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "HangHoasController.cs",
-              "DocumentMoniker": "E:\\Codin\\GitHub\\QuaMonHaiFinalProject\\Controllers\\HangHoasController.cs",
-              "RelativeDocumentMoniker": "Controllers\\HangHoasController.cs",
-              "ToolTip": "E:\\Codin\\GitHub\\QuaMonHaiFinalProject\\Controllers\\HangHoasController.cs",
-              "RelativeToolTip": "Controllers\\HangHoasController.cs",
-              "ViewState": "AgIAAJUAAAAAAAAAAAAAwC0AAAAhAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-22T12:35:52.358Z"
+              "WhenOpened": "2026-04-22T13:22:28.677Z",
+              "EditorCaption": ""
             }
           ]
         }

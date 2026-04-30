@@ -10,16 +10,17 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<Hshop2023Context>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("Hshop2023ConnectionString")));
 
+
+// https://docs.automapper.org/en/stable/Dependency-injection.html
+builder.Services.AddAutoMapper(typeof(AutoMapperProfile));
+
 //Khai báo service authentication
-builder.Services.AddAuthentication
-    (CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(options =>
+//https://learn.microsoft.com/en-us/aspnet/core/security/authentication/cookie?view=aspnetcore-8.0](https://learn.microsoft.com/en-us/aspnet/core/security/authentication/cookie?view=aspnetcore-8.0
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(options =>
     {
         options.LoginPath = "/KhachHang/DangNhap";
         options.AccessDeniedPath = "/AccessDenied"; //Dang nhap roi chua co quyen se toi dia chi nay
     });
-
-// https://docs.automapper.org/en/stable/Dependency-injection.html
-builder.Services.AddAutoMapper(typeof(AutoMapperProfile));
 
 var app = builder.Build();
 
@@ -35,6 +36,8 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
+
+app.UseAuthentication();
 
 app.UseAuthorization();
 
