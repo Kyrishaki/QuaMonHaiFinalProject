@@ -7347,23 +7347,23 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\MHT\\.nuget\\packages\\": {},
+    "C:\\Users\\Admin\\.nuget\\packages\\": {},
     "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\Codes\\LTWEB\\LTWEB_QuaMonHai_CuoiKy\\LTWEB_QuaMonHai_CuoiKy.csproj",
+      "projectUniqueName": "H:\\App\\GitHub\\QuaMonHaiFinalProject\\LTWEB_QuaMonHai_CuoiKy.csproj",
       "projectName": "LTWEB_QuaMonHai_CuoiKy",
-      "projectPath": "D:\\Codes\\LTWEB\\LTWEB_QuaMonHai_CuoiKy\\LTWEB_QuaMonHai_CuoiKy.csproj",
-      "packagesPath": "C:\\Users\\MHT\\.nuget\\packages\\",
-      "outputPath": "D:\\Codes\\LTWEB\\LTWEB_QuaMonHai_CuoiKy\\obj\\",
+      "projectPath": "H:\\App\\GitHub\\QuaMonHaiFinalProject\\LTWEB_QuaMonHai_CuoiKy.csproj",
+      "packagesPath": "C:\\Users\\Admin\\.nuget\\packages\\",
+      "outputPath": "H:\\App\\GitHub\\QuaMonHaiFinalProject\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
       ],
       "configFilePaths": [
-        "C:\\Users\\MHT\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\Admin\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
@@ -7435,7 +7435,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.308/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.313/PortableRuntimeIdentifierGraph.json"
       }
     }
   }

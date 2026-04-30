@@ -1,0 +1,91 @@
+﻿@{
+    // Tự động nhận diện Controller hiện tại để link phân trang không bị nhảy nhầm
+    var currentController = ViewContext.RouteData.Values["controller"]?.ToString();
+    var currentAction = ViewContext.RouteData.Values["action"]?.ToString() ?? "Index";
+
+    int currentPage = ViewBag.CurrentPage ?? 1;
+    int totalPages = ViewBag.TotalPages ?? 1;
+}
+
+@if (totalPages > 1) {
+    <div class="col-12 text-center mt-5">
+        <nav aria-label="Page navigation">
+            <ul class="pagination justify-content-center mb-0">
+
+                <!-- 1. NÚT TUA TỚI ĐẦU -->
+                <li class="page-item @(currentPage == 1 ? "disabled" : "")">
+                    <a class="page-link shadow-sm" asp-action="@currentAction" asp-controller="@currentController"
+                       asp-route-page="1"
+                       asp-route-loaiId="@ViewBag.CurrentLoai"
+                       asp-route-searchQuery="@Context.Request.Query["searchQuery"]"
+                       asp-route-priceRange="@Context.Request.Query["priceRange"]">
+                        <i class="fa fa-angle-double-left"></i> Đầu
+                    </a>
+                </li>
+
+                <!-- 2. NÚT TUA LẠI 1 SỐ (TRƯỚC) -->
+                <li class="page-item @(currentPage == 1 ? "disabled" : "")">
+                    <a class="page-link shadow-sm" asp-action="@currentAction" asp-controller="@currentController"
+                       asp-route-page="@(currentPage - 1)"
+                       asp-route-loaiId="@ViewBag.CurrentLoai"
+                       asp-route-searchQuery="@Context.Request.Query["searchQuery"]"
+                       asp-route-priceRange="@Context.Request.Query["priceRange"]">
+                        <i class="fa fa-angle-left"></i> Trước
+                    </a>
+                </li>
+
+                <!-- 3. DANH SÁCH CÁC TRANG -->
+                @{
+                    int startPage = Math.Max(1, currentPage - 2);
+                    int endPage = Math.Min(totalPages, currentPage + 2);
+
+                    if (startPage > 1) {
+                        <li class="page-item">
+                            <a class="page-link shadow-sm" asp-action="@currentAction" asp-controller="@currentController" asp-route-page="1" asp-route-loaiId="@ViewBag.CurrentLoai" asp-route-searchQuery="@Context.Request.Query["searchQuery"]" asp-route-priceRange="@Context.Request.Query["priceRange"]">1</a>
+                        </li>
+                        if (startPage > 2) {
+                            <li class="page-item disabled"><span class="page-link shadow-sm border-0 bg-transparent text-muted">...</span></li>
+                        }
+                    }
+
+                    for (int i = startPage; i <= endPage; i++) {
+                        <li class="page-item @(i == currentPage ? "active" : "")">
+                            <a class="page-link shadow-sm" asp-action="@currentAction" asp-controller="@currentController" asp-route-page="@i" asp-route-loaiId="@ViewBag.CurrentLoai" asp-route-searchQuery="@Context.Request.Query["searchQuery"]" asp-route-priceRange="@Context.Request.Query["priceRange"]">@i</a>
+                        </li>
+                    }
+
+                    if (endPage < totalPages) {
+                        if (endPage < totalPages - 1) {
+                            <li class="page-item disabled"><span class="page-link shadow-sm border-0 bg-transparent text-muted">...</span></li>
+                        }
+                        <li class="page-item">
+                            <a class="page-link shadow-sm" asp-action="@currentAction" asp-controller="@currentController" asp-route-page="@totalPages" asp-route-loaiId="@ViewBag.CurrentLoai" asp-route-searchQuery="@Context.Request.Query["searchQuery"]" asp-route-priceRange="@Context.Request.Query["priceRange"]">@totalPages</a>
+                        </li>
+                    }
+                }
+
+                <!-- 4. NÚT TUA QUA 1 SỐ (TIẾP) -->
+                <li class="page-item @(currentPage == totalPages ? "disabled" : "")">
+                    <a class="page-link shadow-sm" asp-action="@currentAction" asp-controller="@currentController"
+                       asp-route-page="@(currentPage + 1)"
+                       asp-route-loaiId="@ViewBag.CurrentLoai"
+                       asp-route-searchQuery="@Context.Request.Query["searchQuery"]"
+                       asp-route-priceRange="@Context.Request.Query["priceRange"]">
+                        Tiếp <i class="fa fa-angle-right"></i>
+                    </a>
+                </li>
+
+                <!-- 5. NÚT TUA TỚI CUỐI -->
+                <li class="page-item @(currentPage == totalPages ? "disabled" : "")">
+                    <a class="page-link shadow-sm" asp-action="@currentAction" asp-controller="@currentController"
+                       asp-route-page="@totalPages"
+                       asp-route-loaiId="@ViewBag.CurrentLoai"
+                       asp-route-searchQuery="@Context.Request.Query["searchQuery"]"
+                       asp-route-priceRange="@Context.Request.Query["priceRange"]">
+                        Cuối <i class="fa fa-angle-double-right"></i>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+}

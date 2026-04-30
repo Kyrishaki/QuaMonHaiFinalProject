@@ -1,90 +1,90 @@
 ﻿@model IEnumerable<LTWEB_QuaMonHai_CuoiKy.Models.HangHoa>
 
 @{
+    ViewData["Title"] = "Cửa hàng của chúng tôi";
     int currentPage = ViewBag.CurrentPage ?? 1;
     int totalPages = ViewBag.TotalPages ?? 1;
 }
 
-<div id="tab-1" class="tab-pane fade show p-0 active">
+<div class="container py-5" style="max-width: 1200px;">
+    <div class="d-flex justify-content-between align-items-center mb-4 border-bottom pb-3">
+        <h2 class="m-0 text-dark">Sản Phẩm Của Chúng Tôi</h2>
+    </div>
+
     <div class="row g-4">
-        @foreach (var item in Model)
-        {
-            @* col-lg-4 tạo ra 3 cột trên 1 hàng (12 / 4 = 3) *@
-            <div class="col-xl-4 col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
-                <div class="product-item">
-                    <div class="position-relative bg-light overflow-hidden">
-                        <img class="img-fluid w-100" src="~/Hinh/HangHoa/@item.Hinh" alt="@item.TenHh">
-                        <div class="bg-secondary rounded text-white position-absolute start-0 top-0 m-4 py-1 px-3">
-                            @* Hiển thị loại sản phẩm *@
-                            @{
-                                // Lưu ý: Để hiện tên loại ở trang chủ, bạn cần .Include(h => h.MaLoaiNavigation) trong Controller
-                                // Nếu không, đoạn này có thể để trống hoặc hiển thị "Sản phẩm"
-                            }
-                            Sản phẩm
+        <!-- SIDEBAR -->
+        <div class="col-lg-3 col-md-4">
+            <partial name="_Sidebar" />
+        </div>
+
+        <!-- DANH SÁCH SẢN PHẨM -->
+        <div class="col-lg-9 col-md-8">
+            <div class="row g-3">
+                @foreach (var item in Model) {
+                    <div class="col-sm-6 col-lg-4">
+                        <div class="card h-100 shadow-sm border-0 rounded-3 overflow-hidden product-card position-relative">
+
+                            <div class="bg-secondary rounded text-white position-absolute start-0 top-0 m-3 py-1 px-2" style="z-index: 10; font-size: 0.8rem; background-color: rgba(129, 196, 8, 0.9) !important;">
+                                @(item.MaLoaiNavigation != null ? item.MaLoaiNavigation.TenLoai : "Sản phẩm")
+                            </div>
+
+                            <img src="@Url.Content("~/img/Hinh/HangHoa/" + (string.IsNullOrEmpty(item.Hinh) ? "no-image.jpg" : item.Hinh))"
+                                 class="card-img-top"
+                                 style="height: 220px; width: 100%; object-fit: cover; object-position: center;"
+                                 alt="@item.TenHh">
+
+                            <div class="card-body d-flex flex-column text-center p-3">
+                                <h6 class="card-title text-truncate mb-1" title="@item.TenHh">@item.TenHh</h6>
+                                <p class="text-primary fw-bold fs-5 mb-3" style="color: #81c408 !important;">$@item.DonGia</p>
+
+                                <!-- ĐÃ FIX: Thêm icon mắt vào nút Chi tiết -->
+                                <div class="btn-group mt-auto w-100 shadow-sm rounded-pill overflow-hidden">
+                                    <a asp-action="Details" asp-controller="HangHoas" asp-route-id="@item.MaHh" class="btn btn-sm btn-light border-end text-info">
+                                        <i class="fa fa-eye me-1"></i> Chi tiết
+                                    </a>
+                                    <a href="#" class="btn btn-sm btn-light text-success">
+                                        <i class="fa fa-shopping-cart me-1"></i> Thêm giỏ
+                                    </a>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    <div class="text-center p-4">
-                        <a class="d-block h5 mb-2" href="">@item.TenHh</a>
-                        <span class="text-primary me-1">$@item.DonGia</span>
-                        <span class="text-body text-decoration-line-through">$@((item.DonGia ?? 0) * 1.2)</span>
-                    </div>
-                    <div class="d-flex border-top">
-                        <small class="w-50 text-center border-end py-2">
-                            <a class="text-body" href=""><i class="fa fa-eye text-primary me-2"></i>Xem chi tiết</a>
-                        </small>
-                        <small class="w-50 text-center py-2">
-                            <a class="text-body" href=""><i class="fa fa-shopping-bag text-primary me-2"></i>Thêm giỏ</a>
-                        </small>
-                    </div>
-                </div>
+                }
             </div>
-        }
-
-        @* THANH PHÂN TRANG *@
-        @if (totalPages > 1)
-        {
-            <div class="col-12 text-center wow fadeInUp" data-wow-delay="0.1s" style="margin-top: 50px;">
-                <nav>
-                    <ul class="pagination justify-content-center mb-0">
-                        @if (currentPage > 1)
-                        {
-                            <li class="page-item">
-                                <a class="page-link" href="@Url.Action("Index", new { page = currentPage - 1 })">&laquo;</a>
-                            </li>
-                        }
-
-                        @for (int i = 1; i <= totalPages; i++)
-                        {
-                            <li class="page-item @(i == currentPage ? "active" : "")">
-                                <a class="page-link" href="@Url.Action("Index", new { page = i })">@i</a>
-                            </li>
-                        }
-
-                        @if (currentPage < totalPages)
-                        {
-                            <li class="page-item">
-                                <a class="page-link" href="@Url.Action("Index", new { page = currentPage + 1 })">&raquo;</a>
-                            </li>
-                        }
-                    </ul>
-                </nav>
-            </div>
-        }
+            <!-- THANH PHÂN TRANG -->
+            <partial name="_NumberBar" />
+        </div>
     </div>
 </div>
 
 <style>
+    .product-card {
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 .5rem 1rem rgba(0,0,0,.15) !important;
+        }
+
+    /* ĐÃ FIX: Đổi màu thanh phân trang thành Xanh lá (Green) */
     .pagination .page-link {
         color: #81c408;
-        border: 1px solid #dee2e6;
-        margin: 0 4px;
-        padding: 10px 20px;
+        border: none;
         border-radius: 5px;
+        margin: 0 4px;
+        font-weight: 500;
+        cursor: pointer;
     }
 
     .pagination .page-item.active .page-link {
         background-color: #81c408;
-        border-color: #81c408;
         color: white;
+    }
+
+    .pagination .page-item.disabled .page-link {
+        color: #6c757d;
+        background-color: transparent;
+        pointer-events: none;
     }
 </style>

@@ -1,84 +1,133 @@
 ﻿@model LTWEB_QuaMonHai_CuoiKy.Models.HangHoa
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Chi tiết sản phẩm";
 }
 
-<h1>Details</h1>
+<div class="container-fluid py-5 mt-4 px-xl-5">
 
-<div>
-    <h4>HangHoa</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.TenHh)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.TenHh)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.TenAlias)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.TenAlias)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.MoTaDonVi)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.MoTaDonVi)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.DonGia)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.DonGia)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Hinh)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Hinh)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.NgaySx)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.NgaySx)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.GiamGia)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.GiamGia)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.SoLanXem)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.SoLanXem)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.MoTa)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.MoTa)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.MaLoaiNavigation)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.MaLoaiNavigation.MaLoai)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.MaNccNavigation)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.MaNccNavigation.MaNcc)
-        </dd>
-    </dl>
+    <!-- NÚT QUAY LẠI -->
+    <div class="mb-4">
+        <a asp-action="Index" asp-controller="Home" class="btn btn-outline-success rounded-pill px-4 shadow-sm">
+            <i class="fa fa-arrow-left me-2"></i>Tiếp tục mua sắm
+        </a>
+    </div>
+
+    <div class="card shadow-sm border-0 rounded-3 overflow-hidden">
+        <div class="row g-0">
+            <!-- CỘT ẢNH (Đã sửa để ảnh to hơn, tràn viền và bỏ nền xám) -->
+            <div class="col-lg-5 bg-white d-flex align-items-center justify-content-center p-3 p-md-4 border-end">
+                <img class="img-fluid w-100"
+                     src="@(Model.Hinh != null && Model.Hinh.StartsWith("http") ? Model.Hinh : Url.Content("~/img/Hinh/HangHoa/" + (string.IsNullOrEmpty(Model.Hinh) ? "no-image.jpg" : Model.Hinh)))"
+                     alt="@Model.TenHh" style="object-fit: contain; max-height: 600px; transition: transform 0.3s ease;"
+                     onmouseover="this.style.transform='scale(1.05)'"
+                     onmouseout="this.style.transform='scale(1)'">
+            </div>
+
+            <!-- CỘT THÔNG TIN -->
+            <div class="col-lg-7 p-4 p-md-5">
+                <h2 class="fw-bold text-dark mb-2">@Model.TenHh</h2>
+                <p class="text-muted fs-6 mb-4">Alias: @Model.TenAlias</p>
+
+                <!-- GIÁ VÀ GIẢM GIÁ -->
+                <div class="row mb-4 bg-light p-3 rounded-3">
+                    <div class="col-6">
+                        <p class="mb-1 text-muted">Giá bán lẻ</p>
+                        <h2 class="fw-bold mb-0" style="color: #81c408;">$@Model.DonGia</h2>
+                    </div>
+                    @if (Model.GiamGia > 0) {
+                        <div class="col-6 border-start">
+                            <p class="mb-1 text-muted">Khuyến mãi</p>
+                            <h3 class="text-danger fw-bold mb-0">-@Model.GiamGia %</h3>
+                        </div>
+                    }
+                </div>
+
+                <!-- THÔNG SỐ CƠ BẢN -->
+                <ul class="list-group list-group-flush mb-4 fs-5">
+                    <li class="list-group-item d-flex justify-content-between px-0 bg-transparent border-bottom">
+                        <span class="text-muted"><i class="fa fa-tag me-2 text-success"></i>Danh mục:</span>
+                        <span class="fw-bold text-dark">@(Model.MaLoaiNavigation?.TenLoai ?? "N/A")</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between px-0 bg-transparent border-bottom">
+                        <span class="text-muted"><i class="fa fa-building me-2 text-success"></i>Nhà cung cấp:</span>
+                        <span class="fw-bold text-dark">@(Model.MaNccNavigation?.TenCongTy ?? "N/A")</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between px-0 bg-transparent border-bottom">
+                        <span class="text-muted"><i class="fa fa-box me-2 text-success"></i>Đơn vị tính:</span>
+                        <span class="fw-bold text-dark">@Model.MoTaDonVi</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between px-0 bg-transparent border-bottom">
+                        <span class="text-muted"><i class="fa fa-eye me-2 text-success"></i>Lượt xem:</span>
+                        <span class="fw-bold text-info">@Model.SoLanXem</span>
+                    </li>
+                </ul>
+
+                <!-- CHỌN SỐ LƯỢNG VÀ THÊM VÀO GIỎ HÀNG -->
+                <div class="d-flex align-items-center mt-5 pt-3 border-top flex-wrap gap-3">
+                    <div class="input-group quantity shadow-sm rounded-pill overflow-hidden border border-success" style="width: 160px; height: 50px;">
+                        <button class="btn btn-light btn-minus border-end" type="button" onclick="decreaseQty()">
+                            <i class="fa fa-minus text-success"></i>
+                        </button>
+
+                        <input type="text" id="quantityInput" class="form-control text-center border-0 fw-bold fs-5" value="1" data-max="99" readonly>
+
+                        <button class="btn btn-light btn-plus border-start" type="button" onclick="increaseQty()">
+                            <i class="fa fa-plus text-success"></i>
+                        </button>
+                    </div>
+
+                    <a href="#" class="btn rounded-pill px-5 shadow-sm d-flex align-items-center justify-content-center text-white fw-bold" style="background-color: #81c408; height: 50px; font-size: 1.1rem; transition: 0.3s;">
+                        <i class="fa fa-shopping-cart me-2 fs-4"></i> Thêm vào giỏ hàng
+                    </a>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- MÔ TẢ CHI TIẾT SẢN PHẨM Ở DƯỚI CÙNG -->
+        <div class="card-footer bg-white p-4 p-md-5 border-top">
+            <h4 class="fw-bold text-dark mb-4 border-bottom pb-2">Mô tả sản phẩm</h4>
+            <p class="text-secondary mb-0 fs-5 lh-lg" style="white-space: pre-line;">
+                @(string.IsNullOrEmpty(Model.MoTa) ? "Sản phẩm này hiện chưa có mô tả chi tiết." : Model.MoTa)
+            </p>
+        </div>
+    </div>
 </div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.MaHh">Edit</a> |
-    <a asp-action="Index">Back to List</a>
-</div>
+
+<script>
+    // Đã nâng cấp hàm tăng/giảm để nhận diện giới hạn kho hàng (data-max)
+    function increaseQty() {
+        var input = document.getElementById('quantityInput');
+        var max = parseInt(input.getAttribute('data-max'), 10);
+        var value = parseInt(input.value, 10);
+        value = isNaN(value) ? 0 : value;
+
+        // Kiểm tra không cho vượt quá kho hàng
+        if (value < max) {
+            value++;
+            input.value = value;
+        } else {
+            alert('Bạn chỉ có thể mua tối đa ' + max + ' sản phẩm!');
+        }
+    }
+
+    function decreaseQty() {
+        var input = document.getElementById('quantityInput');
+        var value = parseInt(input.value, 10);
+        value = isNaN(value) ? 0 : value;
+        value <= 1 ? value = 1 : value--;
+        input.value = value;
+    }
+</script>
+
+<style>
+    .quantity .btn:hover {
+        background-color: #f1f8e9;
+    }
+
+    .btn.rounded-pill.text-white:hover {
+        background-color: #72ae07 !important;
+        transform: translateY(-2px);
+    }
+</style>

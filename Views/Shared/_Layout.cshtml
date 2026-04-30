@@ -1,12 +1,10 @@
 ﻿<!DOCTYPE html>
-<html lang="en">
+<html lang="vi">
 
 <head>
     <meta charset="utf-8">
-    <title>Foody - Organic Food Website Template</title>
+    <title>Foody - Cửa Hàng Thực Phẩm Hữu Cơ</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <meta content="" name="keywords">
-    <meta content="" name="description">
 
     <!-- Favicon -->
     <link href="~/img/favicon.ico" rel="icon">
@@ -36,29 +34,24 @@
         <div class="spinner-border text-primary" role="status"></div>
     </div>
     <!-- Spinner End -->
+
     <partial view name="_Navbar" />
 
-    <partial view name="_Header" />
+    <!-- Chỉ gọi Header (Breadcrumb) nếu đây không phải là Trang chủ -->
+    @if (ViewData["Title"]?.ToString() != "Trang chủ") {
+        <partial view name="_Header" />
+    }
 
-    <partial view name="_ProductTitle" />
 
-    <div class="tab-content">
-        
-        <main>
-            @RenderBody()
-        </main>
-    </div>
-    
-    <partial view name="_FirmVisit"/>
-
-    <partial view name="_Testimonial" />
+    <!-- Nội dung chính của từng trang sẽ hiển thị ở đây -->
+    <main>
+        @RenderBody()
+    </main>
 
     <partial view name="_Footer" />
-    
-    
+
     <!-- Back to Top -->
     <a href="#" class="btn btn-lg btn-primary btn-lg-square rounded-circle back-to-top"><i class="bi bi-arrow-up"></i></a>
-
 
     <!-- JavaScript Libraries -->
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
@@ -71,8 +64,6 @@
     <!-- Template Javascript -->
     <script src="~/js/main.js"></script>
 
-
     @await RenderSectionAsync("Scripts", required: false)
 </body>
-
 </html>

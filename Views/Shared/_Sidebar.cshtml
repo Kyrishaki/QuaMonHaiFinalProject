@@ -1,0 +1,87 @@
+﻿@{
+    // Tự động lấy tên Controller và Action hiện tại (Home hoặc HangHoas)
+    var currentController = ViewContext.RouteData.Values["controller"]?.ToString();
+    var currentAction = ViewContext.RouteData.Values["action"]?.ToString() ?? "Index";
+}
+
+<!-- 1. Thanh Tìm Kiếm -->
+<div class="card border-0 shadow-sm mb-4 rounded-3">
+    <div class="card-body bg-light">
+        <h5 class="card-title fw-bold mb-3"><i class="fa fa-search text-primary me-2"></i>Tìm kiếm</h5>
+        <form asp-action="@currentAction" asp-controller="@currentController" method="get">
+            <div class="input-group">
+                <input type="hidden" name="loaiId" value="@ViewBag.CurrentLoai" />
+                <input type="hidden" name="priceRange" value="@Context.Request.Query["priceRange"]" />
+                <input type="text" class="form-control bg-white" placeholder="Tên sản phẩm..." name="searchQuery" value="@Context.Request.Query["searchQuery"]">
+                <button class="btn text-white" type="submit" style="background-color: #81c408;"><i class="fa fa-search"></i></button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- 2. Lọc Theo Loại Sản Phẩm -->
+<div class="card border-0 shadow-sm mb-4 rounded-3">
+    <div class="card-body">
+        <h5 class="card-title fw-bold border-bottom pb-2 mb-3">Danh Mục</h5>
+        <div class="d-flex flex-column gap-2">
+            <a asp-action="@currentAction" asp-controller="@currentController" asp-route-loaiId="" asp-route-searchQuery="@Context.Request.Query["searchQuery"]" asp-route-priceRange="@Context.Request.Query["priceRange"]"
+               class="text-decoration-none d-flex justify-content-between align-items-center @(ViewBag.CurrentLoai == null ? "text-success fw-bold" : "text-dark")">
+                <span>Tất cả sản phẩm</span>
+            </a>
+
+            @if (ViewBag.DanhMucs != null) {
+                foreach (var loai in ViewBag.DanhMucs) {
+                    <a asp-action="@currentAction" asp-controller="@currentController" asp-route-loaiId="@loai.MaLoai" asp-route-searchQuery="@Context.Request.Query["searchQuery"]" asp-route-priceRange="@Context.Request.Query["priceRange"]"
+                       class="text-decoration-none d-flex justify-content-between align-items-center @(ViewBag.CurrentLoai == loai.MaLoai ? "text-success fw-bold" : "text-dark")">
+                        <span>@loai.TenLoai</span>
+                    </a>
+                }
+            }
+        </div>
+    </div>
+</div>
+
+<!-- 3. Lọc Theo Giá -->
+<div class="card border-0 shadow-sm mb-4 rounded-3">
+    <div class="card-body">
+        <h5 class="card-title fw-bold border-bottom pb-2 mb-3">Mức Giá</h5>
+        <form asp-action="@currentAction" asp-controller="@currentController" method="get">
+            <input type="hidden" name="searchQuery" value="@Context.Request.Query["searchQuery"]" />
+            <input type="hidden" name="loaiId" value="@ViewBag.CurrentLoai" />
+
+            @{
+                var currentPriceRange = Context.Request.Query["priceRange"].ToString();
+            }
+
+            <div class="form-check mb-2">
+                <input class="form-check-input" type="radio" name="priceRange" id="price1" value="under50" @(currentPriceRange == "under50" ? "checked" : "")>
+                <label class="form-check-label" for="price1">Dưới $50</label>
+            </div>
+            <div class="form-check mb-2">
+                <input class="form-check-input" type="radio" name="priceRange" id="price2" value="50to100" @(currentPriceRange == "50to100" ? "checked" : "")>
+                <label class="form-check-label" for="price2">Từ $50 - $100</label>
+            </div>
+            <div class="form-check mb-2">
+                <input class="form-check-input" type="radio" name="priceRange" id="price3" value="over100" @(currentPriceRange == "over100" ? "checked" : "")>
+                <label class="form-check-label" for="price3">Trên $100</label>
+            </div>
+
+            <div class="d-flex gap-2 mt-3">
+                <button class="btn btn-outline-success btn-sm w-100 rounded-pill" type="submit">Lọc giá</button>
+                @if (!string.IsNullOrEmpty(currentPriceRange)) {
+                    <a asp-action="@currentAction" asp-controller="@currentController" asp-route-loaiId="@ViewBag.CurrentLoai" asp-route-searchQuery="@Context.Request.Query["searchQuery"]" class="btn btn-outline-secondary btn-sm w-100 rounded-pill">Bỏ lọc</a>
+                }
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- 4. Banner Quảng Cáo (Đã back lại cho bạn!) -->
+<div class="card border-0 shadow-sm rounded-3 overflow-hidden position-relative">
+    <img src="~/img/carousel-1.jpg" class="img-fluid" alt="Quảng cáo" style="height: 300px; object-fit: cover;">
+    <div class="position-absolute top-0 start-0 w-100 h-100 d-flex flex-column justify-content-center align-items-center p-3" style="background: rgba(0,0,0,0.4);">
+        <h4 class="text-white fw-bold text-center">Siêu Sale Cuối Tuần</h4>
+        <p class="text-white text-center small mb-3">Giảm giá lên đến 50% cho rau xanh hữu cơ.</p>
+        <a href="#" class="btn btn-primary rounded-pill px-4" style="background-color: #81c408; border-color: #81c408;">Mua Ngay</a>
+    </div>
+</div>
