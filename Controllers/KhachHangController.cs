@@ -81,7 +81,7 @@ namespace LTWEB_QuaMonHai_CuoiKy.Controllers
                  kh.MaKh == model.UserName);
                 if (khachHang == null)
                 {
-                    ModelState.AddModelError("loi", "Không có khách hàng này");
+                    ModelState.AddModelError("loi", "Tài khoản hoặc mật khẩu không đúng");
                 }
                 else
                 {
@@ -95,7 +95,7 @@ namespace LTWEB_QuaMonHai_CuoiKy.Controllers
                         if(khachHang.MatKhau != model.Password.ToMd5Hash
                             (khachHang.RandomKey))
                         {
-                            ModelState.AddModelError("loi","Sai thông tin đăng nhập ");
+                            ModelState.AddModelError("loi", "Tài khoản hoặc mật khẩu không đúng ");
                         }
                         else
                         {

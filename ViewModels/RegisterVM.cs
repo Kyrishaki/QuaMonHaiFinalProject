@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using LTWEB_QuaMonHai_CuoiKy.Helpers;
+using System.ComponentModel.DataAnnotations;
 
 namespace LTWEB_QuaMonHai_CuoiKy.ViewModels
 {
@@ -28,6 +29,7 @@ namespace LTWEB_QuaMonHai_CuoiKy.ViewModels
 
         [Display(Name = "Ngày sinh")]
         [DataType(DataType.Date)]
+        [AgeRange]
         public DateTime? NgaySinh { get; set; }
 
 
@@ -37,13 +39,14 @@ namespace LTWEB_QuaMonHai_CuoiKy.ViewModels
 
 
         [Display(Name = "Điện Thoại")]
-        [MaxLength(24, ErrorMessage = "Tối đa 24 ký tự")]
-        [RegularExpression(@"0[9875]\d{8}", ErrorMessage ="Chưa đúng định dạng di động VN")]
+        [MaxLength(10, ErrorMessage = "Số điện thoại tối đa là 10 ký tự")]
+        [RegularExpression(@"^0(3|5|7|8|9)\d{8}$", ErrorMessage = "Số điện thoại phải đủ 10 số và đúng định dạng VN ")]
         public string DienThoai { get; set; }
 
 
         [Display(Name = "Email")]
-        [EmailAddress(ErrorMessage ="Chưa đúng định dạng email")]
+        [Required(ErrorMessage = "Vui lòng nhập Email")]
+        [RegularExpression(@"^[^@\s]+@[^@\s]+\.[^@\s]+$", ErrorMessage = "Email phải có định dạng hợp lệ (ví dụ: abc@gmail.com)")]
         public string Email { get; set; }
 
 
