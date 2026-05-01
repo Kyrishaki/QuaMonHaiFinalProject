@@ -17,121 +17,121 @@ build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = LTWEB_QuaMonHai_CuoiKy
 build_property.RootNamespace = LTWEB_QuaMonHai_CuoiKy
-build_property.ProjectDir = D:\Github\QuaMonHaiFinalProject\
+build_property.ProjectDir = H:\App\GitHub\QuaMonHaiFinalProject\
 build_property.EnableComHosting = 
 build_property.EnableGeneratedComInterfaceComImportInterop = 
 build_property.RazorLangVersion = 8.0
 build_property.SupportLocalizedComponentNames = 
 build_property.GenerateRazorMetadataSourceChecksumAttributes = 
-build_property.MSBuildProjectDirectory = D:\Github\QuaMonHaiFinalProject
+build_property.MSBuildProjectDirectory = H:\App\GitHub\QuaMonHaiFinalProject
 build_property._RazorSourceGeneratorDebug = 
 build_property.EffectiveAnalysisLevelStyle = 8.0
 build_property.EnableCodeStyleSeverity = 
 
-[D:/Github/QuaMonHaiFinalProject/Views/Cart/Index.cshtml]
+[H:/App/GitHub/QuaMonHaiFinalProject/Views/Cart/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2FydFxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Github/QuaMonHaiFinalProject/Views/HangHoas/Create.cshtml]
+[H:/App/GitHub/QuaMonHaiFinalProject/Views/HangHoas/Create.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSGFuZ0hvYXNcQ3JlYXRlLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Github/QuaMonHaiFinalProject/Views/HangHoas/Delete.cshtml]
+[H:/App/GitHub/QuaMonHaiFinalProject/Views/HangHoas/Delete.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSGFuZ0hvYXNcRGVsZXRlLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Github/QuaMonHaiFinalProject/Views/HangHoas/Details.cshtml]
+[H:/App/GitHub/QuaMonHaiFinalProject/Views/HangHoas/Details.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSGFuZ0hvYXNcRGV0YWlscy5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Github/QuaMonHaiFinalProject/Views/HangHoas/Edit.cshtml]
+[H:/App/GitHub/QuaMonHaiFinalProject/Views/HangHoas/Edit.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSGFuZ0hvYXNcRWRpdC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Github/QuaMonHaiFinalProject/Views/HangHoas/Index.cshtml]
+[H:/App/GitHub/QuaMonHaiFinalProject/Views/HangHoas/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSGFuZ0hvYXNcSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Github/QuaMonHaiFinalProject/Views/Home/Index.cshtml]
+[H:/App/GitHub/QuaMonHaiFinalProject/Views/Home/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Github/QuaMonHaiFinalProject/Views/Home/Privacy.cshtml]
+[H:/App/GitHub/QuaMonHaiFinalProject/Views/Home/Privacy.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxQcml2YWN5LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Github/QuaMonHaiFinalProject/Views/KhachHang/DangKy.cshtml]
+[H:/App/GitHub/QuaMonHaiFinalProject/Views/KhachHang/DangKy.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcS2hhY2hIYW5nXERhbmdLeS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Github/QuaMonHaiFinalProject/Views/KhachHang/DangNhap.cshtml]
+[H:/App/GitHub/QuaMonHaiFinalProject/Views/KhachHang/DangNhap.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcS2hhY2hIYW5nXERhbmdOaGFwLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Github/QuaMonHaiFinalProject/Views/KhachHang/Profile.cshtml]
+[H:/App/GitHub/QuaMonHaiFinalProject/Views/KhachHang/Profile.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcS2hhY2hIYW5nXFByb2ZpbGUuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Github/QuaMonHaiFinalProject/Views/Shared/Error.cshtml]
+[H:/App/GitHub/QuaMonHaiFinalProject/Views/Shared/Error.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXEVycm9yLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Github/QuaMonHaiFinalProject/Views/Shared/Test.cshtml]
+[H:/App/GitHub/QuaMonHaiFinalProject/Views/Shared/Test.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXFRlc3QuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Github/QuaMonHaiFinalProject/Views/Shared/_FirmVisit.cshtml]
+[H:/App/GitHub/QuaMonHaiFinalProject/Views/Shared/_FirmVisit.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9GaXJtVmlzaXQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Github/QuaMonHaiFinalProject/Views/Shared/_Footer.cshtml]
+[H:/App/GitHub/QuaMonHaiFinalProject/Views/Shared/_Footer.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9Gb290ZXIuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Github/QuaMonHaiFinalProject/Views/Shared/_Header.cshtml]
+[H:/App/GitHub/QuaMonHaiFinalProject/Views/Shared/_Header.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9IZWFkZXIuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Github/QuaMonHaiFinalProject/Views/Shared/_Navbar.cshtml]
+[H:/App/GitHub/QuaMonHaiFinalProject/Views/Shared/_Navbar.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9OYXZiYXIuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Github/QuaMonHaiFinalProject/Views/Shared/_NumberBar.cshtml]
+[H:/App/GitHub/QuaMonHaiFinalProject/Views/Shared/_NumberBar.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9OdW1iZXJCYXIuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Github/QuaMonHaiFinalProject/Views/Shared/_Product.cshtml]
+[H:/App/GitHub/QuaMonHaiFinalProject/Views/Shared/_Product.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9Qcm9kdWN0LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Github/QuaMonHaiFinalProject/Views/Shared/_ProductTitle.cshtml]
+[H:/App/GitHub/QuaMonHaiFinalProject/Views/Shared/_ProductTitle.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9Qcm9kdWN0VGl0bGUuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Github/QuaMonHaiFinalProject/Views/Shared/_Sidebar.cshtml]
+[H:/App/GitHub/QuaMonHaiFinalProject/Views/Shared/_Sidebar.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9TaWRlYmFyLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Github/QuaMonHaiFinalProject/Views/Shared/_Testimonial.cshtml]
+[H:/App/GitHub/QuaMonHaiFinalProject/Views/Shared/_Testimonial.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9UZXN0aW1vbmlhbC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Github/QuaMonHaiFinalProject/Views/Shared/_ValidationScriptsPartial.cshtml]
+[H:/App/GitHub/QuaMonHaiFinalProject/Views/Shared/_ValidationScriptsPartial.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Github/QuaMonHaiFinalProject/Views/_ViewImports.cshtml]
+[H:/App/GitHub/QuaMonHaiFinalProject/Views/_ViewImports.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdJbXBvcnRzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Github/QuaMonHaiFinalProject/Views/_ViewStart.cshtml]
+[H:/App/GitHub/QuaMonHaiFinalProject/Views/_ViewStart.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdTdGFydC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Github/QuaMonHaiFinalProject/Views/Shared/_Layout.cshtml]
+[H:/App/GitHub/QuaMonHaiFinalProject/Views/Shared/_Layout.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9MYXlvdXQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = b-tbrcehvtfb
 
-[D:/Github/QuaMonHaiFinalProject/Views/Shared/_Layout_Backup.cshtml]
+[H:/App/GitHub/QuaMonHaiFinalProject/Views/Shared/_Layout_Backup.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9MYXlvdXRfQmFja3VwLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = b-igi9fhy3sd

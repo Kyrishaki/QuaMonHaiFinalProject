@@ -1,5 +1,6 @@
 ﻿using LTWEB_QuaMonHai_CuoiKy.Data;
 using LTWEB_QuaMonHai_CuoiKy.Models;
+using Microsoft.AspNetCore.Authorization; // THÊM THƯ VIỆN NÀY DÙNG CHO BẢO MẬT
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -12,7 +13,7 @@ namespace LTWEB_QuaMonHai_CuoiKy.Controllers {
             _context = context;
         }
 
-        // GET: HangHoas
+        // GET: HangHoas (Mở cho tất cả mọi người xem danh sách)
         public async Task<IActionResult> Index(int? loaiId, string searchQuery, string priceRange, int page = 1) {
             int pageSize = 9;
 
@@ -63,7 +64,7 @@ namespace LTWEB_QuaMonHai_CuoiKy.Controllers {
             return View(items);
         }
 
-        // GET: HangHoas/Details/5
+        // GET: HangHoas/Details/5 (Mở cho tất cả mọi người xem chi tiết)
         public async Task<IActionResult> Details(int? id) {
             if (id == null) {
                 return NotFound();
@@ -80,7 +81,10 @@ namespace LTWEB_QuaMonHai_CuoiKy.Controllers {
             return View(hangHoa);
         }
 
+        // ================= KHU VỰC BẢO MẬT: CHỈ ADMIN MỚI ĐƯỢC VÀO =================
+
         // GET: HangHoas/Create
+        [Authorize(Roles = "Admin")]
         public IActionResult Create() {
             ViewData["MaLoai"] = new SelectList(_context.Loais, "MaLoai", "TenLoai");
             ViewData["MaNcc"] = new SelectList(_context.NhaCungCaps, "MaNcc", "TenCongTy");
@@ -90,14 +94,13 @@ namespace LTWEB_QuaMonHai_CuoiKy.Controllers {
         // POST: HangHoas/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Create([Bind("MaHh,TenHh,TenAlias,MaLoai,MoTaDonVi,DonGia,Hinh,NgaySx,GiamGia,SoLanXem,MoTa,MaNcc")] HangHoa hangHoa, IFormFile? fHinh) {
-            // Bỏ qua kiểm tra các trường Navigation để Form hợp lệ
             ModelState.Remove("MaLoaiNavigation");
             ModelState.Remove("MaNccNavigation");
             ModelState.Remove("fHinh");
 
             if (ModelState.IsValid) {
-                // Xử lý upload hình ảnh
                 if (fHinh != null && fHinh.Length > 0) {
                     hangHoa.Hinh = await LuuFileHinh(fHinh);
                 }
@@ -115,7 +118,6 @@ namespace LTWEB_QuaMonHai_CuoiKy.Controllers {
             return View(hangHoa);
         }
 
-        // Hàm hỗ trợ lưu file hình
         private async Task<string> LuuFileHinh(IFormFile file) {
             var fileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
             var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Hinh", "HangHoa", fileName);
@@ -127,6 +129,7 @@ namespace LTWEB_QuaMonHai_CuoiKy.Controllers {
         }
 
         // GET: HangHoas/Edit/5
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(int? id) {
             if (id == null) {
                 return NotFound();
@@ -144,19 +147,18 @@ namespace LTWEB_QuaMonHai_CuoiKy.Controllers {
         // POST: HangHoas/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(int id, [Bind("MaHh,TenHh,TenAlias,MaLoai,MoTaDonVi,DonGia,Hinh,NgaySx,GiamGia,SoLanXem,MoTa,MaNcc")] HangHoa hangHoa, IFormFile? fHinh) {
             if (id != hangHoa.MaHh) {
                 return NotFound();
             }
 
-            // Bỏ qua kiểm tra các trường Navigation để Form hợp lệ
             ModelState.Remove("MaLoaiNavigation");
             ModelState.Remove("MaNccNavigation");
             ModelState.Remove("fHinh");
 
             if (ModelState.IsValid) {
                 try {
-                    // Xử lý lưu ảnh mới nếu người dùng tải lên
                     if (fHinh != null && fHinh.Length > 0) {
                         hangHoa.Hinh = await LuuFileHinh(fHinh);
                     }
@@ -181,6 +183,7 @@ namespace LTWEB_QuaMonHai_CuoiKy.Controllers {
         }
 
         // GET: HangHoas/Delete/5
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int? id) {
             if (id == null) {
                 return NotFound();
@@ -200,6 +203,7 @@ namespace LTWEB_QuaMonHai_CuoiKy.Controllers {
         // POST: HangHoas/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteConfirmed(int id) {
             var hangHoa = await _context.HangHoas.FindAsync(id);
             if (hangHoa != null) {

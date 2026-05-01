@@ -1,10 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.ComponentModel.DataAnnotations; // Add this using directive
 
 namespace LTWEB_QuaMonHai_CuoiKy.Models;
 
-public partial class BanBe
-{
+public partial class BanBe {
+    [Key] // Tell EF Core this is the Primary Key
     public int MaBb { get; set; }
 
     public string? MaKh { get; set; }

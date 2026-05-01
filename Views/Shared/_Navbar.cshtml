@@ -40,14 +40,31 @@
                     <small class="fa fa-search text-body"></small>
                 </a>
 
-                <!-- BẮT ĐẦU: KHU VỰC TÀI KHOẢN (ĐĂNG NHẬP / ĐĂNG KÝ) -->
+                <!-- BẮT ĐẦU: KHU VỰC TÀI KHOẢN -->
                 <div class="nav-item dropdown ms-3">
-                    <a href="#" class="btn-sm-square bg-white rounded-circle dropdown-toggle" data-bs-toggle="dropdown" style="display: flex; align-items: center; justify-content: center; text-decoration: none;">
-                        <small class="fa fa-user text-body"></small>
+                    <a href="#" class="nav-link dropdown-toggle d-flex align-items-center gap-2" data-bs-toggle="dropdown" style="padding: 0.5rem 1rem;">
+                        <i class="fa fa-user text-body fs-5"></i>
+                        @if (User.Identity.IsAuthenticated) {
+                            // Hiển thị tên người dùng nếu đã đăng nhập
+                            <span class="fw-bold text-primary">@User.Identity.Name</span>
+                        }
                     </a>
                     <div class="dropdown-menu dropdown-menu-end m-0 shadow-sm border-0">
-                        <a asp-controller="KhachHang" asp-action="DangNhap" class="dropdown-item"><i class="fa fa-sign-in-alt me-2 text-primary"></i>Đăng nhập</a>
-                        <a asp-controller="KhachHang" asp-action="DangKy" class="dropdown-item"><i class="fa fa-user-plus me-2 text-primary"></i>Đăng ký tài khoản</a>
+                        @if (User.Identity.IsAuthenticated) {
+                            <a asp-controller="KhachHang" asp-action="Profile" class="dropdown-item"><i class="fa fa-id-card me-2 text-info"></i>Hồ sơ của tôi</a>
+
+                            // Nếu là Admin, có thể thêm link vào trang quản trị riêng
+                            @if (User.IsInRole("Admin")) {
+                                <a asp-controller="HangHoas" asp-action="Index" class="dropdown-item"><i class="fa fa-cogs me-2 text-warning"></i>Quản lý sản phẩm</a>
+                            }
+
+                            <hr class="dropdown-divider">
+                            <a asp-controller="KhachHang" asp-action="DangXuat" class="dropdown-item text-danger"><i class="fa fa-sign-out-alt me-2"></i>Đăng xuất</a>
+                        }
+                        else {
+                            <a asp-controller="KhachHang" asp-action="DangNhap" class="dropdown-item"><i class="fa fa-sign-in-alt me-2 text-primary"></i>Đăng nhập</a>
+                            <a asp-controller="KhachHang" asp-action="DangKy" class="dropdown-item"><i class="fa fa-user-plus me-2 text-primary"></i>Đăng ký tài khoản</a>
+                        }
                     </div>
                 </div>
                 <!-- KẾT THÚC: KHU VỰC TÀI KHOẢN -->

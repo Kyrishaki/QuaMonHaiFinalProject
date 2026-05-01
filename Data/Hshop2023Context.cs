@@ -1,19 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using LTWEB_QuaMonHai_CuoiKy.Models;
+﻿using LTWEB_QuaMonHai_CuoiKy.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace LTWEB_QuaMonHai_CuoiKy.Data;
 
-public partial class Hshop2023Context : DbContext
-{
-    public Hshop2023Context()
-    {
+public partial class Hshop2023Context : DbContext {
+    public Hshop2023Context() {
     }
 
     public Hshop2023Context(DbContextOptions<Hshop2023Context> options)
-        : base(options)
-    {
+        : base(options) {
     }
 
     public virtual DbSet<BanBe> BanBes { get; set; }
@@ -52,40 +47,37 @@ public partial class Hshop2023Context : DbContext
 
     public virtual DbSet<YeuThich> YeuThiches { get; set; }
 
+    public virtual DbSet<GioHang> GioHangs { get; set; }
+
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseSqlServer("Data Source=localhost; Initial Catalog=Hshop2023; Persist Security Info=True; User ID=sa; Password=123456; Trust Server Certificate=True;");
+        => optionsBuilder.UseSqlServer("Data Source=100.89.34.103; Initial Catalog=Hshop2023; Persist Security Info=True; User ID=sa; Password=QuaMonHai; Trust Server Certificate=True;");
 
-    protected override void OnModelCreating(ModelBuilder modelBuilder)
-    {
-        modelBuilder.Entity<BanBe>(entity =>
-        {
-            entity.HasKey(e => e.MaBb).HasName("PK_Promotions");
+    protected override void OnModelCreating(ModelBuilder modelBuilder) {
+        modelBuilder.Entity<GioHang>(entity => {
+            // Cấu hình khóa chính kép (Composite Key) vì 1 giỏ hàng định danh bởi Khách và Hàng
+            entity.HasKey(e => new { e.MaKh, e.MaHh });
 
-            entity.ToTable("BanBe");
+            entity.ToTable("GioHang");
 
-            entity.Property(e => e.MaBb).HasColumnName("MaBB");
-            entity.Property(e => e.Email).HasMaxLength(50);
-            entity.Property(e => e.HoTen).HasMaxLength(50);
+            entity.Property(e => e.MaKh).HasMaxLength(20).HasColumnName("MaKH");
             entity.Property(e => e.MaHh).HasColumnName("MaHH");
-            entity.Property(e => e.MaKh)
-                .HasMaxLength(20)
-                .HasColumnName("MaKH");
-            entity.Property(e => e.NgayGui)
-                .HasDefaultValueSql("(getdate())")
-                .HasColumnType("datetime");
+            entity.Property(e => e.SoLuong).HasDefaultValue(1);
 
-            entity.HasOne(d => d.MaHhNavigation).WithMany(p => p.BanBes)
-                .HasForeignKey(d => d.MaHh)
-                .HasConstraintName("FK_QuangBa_HangHoa");
-
-            entity.HasOne(d => d.MaKhNavigation).WithMany(p => p.BanBes)
+            // Thiết lập mối quan hệ với bảng Khách Hàng
+            entity.HasOne(d => d.MaKhNavigation)
+                .WithMany() // Nếu trong model Khách hàng bạn không tạo List<GioHang> thì để trống
                 .HasForeignKey(d => d.MaKh)
-                .HasConstraintName("FK_BanBe_KhachHang");
+                .HasConstraintName("FK_GioHang_KhachHang");
+
+            // Thiết lập mối quan hệ với bảng Hàng Hóa
+            entity.HasOne(d => d.MaHhNavigation)
+                .WithMany()
+                .HasForeignKey(d => d.MaHh)
+                .HasConstraintName("FK_GioHang_HangHoa");
         });
 
-        modelBuilder.Entity<ChiTietHd>(entity =>
-        {
+        modelBuilder.Entity<ChiTietHd>(entity => {
             entity.HasKey(e => e.MaCt).HasName("PK_OrderDetails");
 
             entity.ToTable("ChiTietHD");
@@ -105,8 +97,7 @@ public partial class Hshop2023Context : DbContext
                 .HasConstraintName("FK_OrderDetails_Products");
         });
 
-        modelBuilder.Entity<ChuDe>(entity =>
-        {
+        modelBuilder.Entity<ChuDe>(entity => {
             entity.HasKey(e => e.MaCd);
 
             entity.ToTable("ChuDe");
@@ -125,8 +116,7 @@ public partial class Hshop2023Context : DbContext
                 .HasConstraintName("FK_ChuDe_NhanVien");
         });
 
-        modelBuilder.Entity<GopY>(entity =>
-        {
+        modelBuilder.Entity<GopY>(entity => {
             entity.HasKey(e => e.MaGy);
 
             entity.ToTable("GopY");
@@ -149,8 +139,7 @@ public partial class Hshop2023Context : DbContext
                 .HasConstraintName("FK_GopY_ChuDe");
         });
 
-        modelBuilder.Entity<HangHoa>(entity =>
-        {
+        modelBuilder.Entity<HangHoa>(entity => {
             entity.HasKey(e => e.MaHh).HasName("PK_Products");
 
             entity.ToTable("HangHoa");
@@ -180,8 +169,7 @@ public partial class Hshop2023Context : DbContext
                 .HasConstraintName("FK_Products_Suppliers");
         });
 
-        modelBuilder.Entity<HoaDon>(entity =>
-        {
+        modelBuilder.Entity<HoaDon>(entity => {
             entity.HasKey(e => e.MaHd).HasName("PK_Orders");
 
             entity.ToTable("HoaDon");
@@ -227,8 +215,7 @@ public partial class Hshop2023Context : DbContext
                 .HasConstraintName("FK_HoaDon_TrangThai");
         });
 
-        modelBuilder.Entity<HoiDap>(entity =>
-        {
+        modelBuilder.Entity<HoiDap>(entity => {
             entity.HasKey(e => e.MaHd);
 
             entity.ToTable("HoiDap");
@@ -248,8 +235,7 @@ public partial class Hshop2023Context : DbContext
                 .HasConstraintName("FK_HoiDap_NhanVien");
         });
 
-        modelBuilder.Entity<KhachHang>(entity =>
-        {
+        modelBuilder.Entity<KhachHang>(entity => {
             entity.HasKey(e => e.MaKh).HasName("PK_Customers");
 
             entity.ToTable("KhachHang");
@@ -273,8 +259,7 @@ public partial class Hshop2023Context : DbContext
                 .IsUnicode(false);
         });
 
-        modelBuilder.Entity<Loai>(entity =>
-        {
+        modelBuilder.Entity<Loai>(entity => {
             entity.HasKey(e => e.MaLoai).HasName("PK_Categories");
 
             entity.ToTable("Loai");
@@ -284,8 +269,7 @@ public partial class Hshop2023Context : DbContext
             entity.Property(e => e.TenLoaiAlias).HasMaxLength(50);
         });
 
-        modelBuilder.Entity<NhaCungCap>(entity =>
-        {
+        modelBuilder.Entity<NhaCungCap>(entity => {
             entity.HasKey(e => e.MaNcc).HasName("PK_Suppliers");
 
             entity.ToTable("NhaCungCap");
@@ -301,8 +285,7 @@ public partial class Hshop2023Context : DbContext
             entity.Property(e => e.TenCongTy).HasMaxLength(50);
         });
 
-        modelBuilder.Entity<NhanVien>(entity =>
-        {
+        modelBuilder.Entity<NhanVien>(entity => {
             entity.HasKey(e => e.MaNv);
 
             entity.ToTable("NhanVien");
@@ -315,8 +298,7 @@ public partial class Hshop2023Context : DbContext
             entity.Property(e => e.MatKhau).HasMaxLength(50);
         });
 
-        modelBuilder.Entity<PhanCong>(entity =>
-        {
+        modelBuilder.Entity<PhanCong>(entity => {
             entity.HasKey(e => e.MaPc);
 
             entity.ToTable("PhanCong");
@@ -344,8 +326,7 @@ public partial class Hshop2023Context : DbContext
                 .HasConstraintName("FK_PhanCong_PhongBan");
         });
 
-        modelBuilder.Entity<PhanQuyen>(entity =>
-        {
+        modelBuilder.Entity<PhanQuyen>(entity => {
             entity.HasKey(e => e.MaPq);
 
             entity.ToTable("PhanQuyen");
@@ -365,8 +346,7 @@ public partial class Hshop2023Context : DbContext
                 .HasConstraintName("FK_PhanQuyen_TrangWeb");
         });
 
-        modelBuilder.Entity<PhongBan>(entity =>
-        {
+        modelBuilder.Entity<PhongBan>(entity => {
             entity.HasKey(e => e.MaPb);
 
             entity.ToTable("PhongBan");
@@ -380,8 +360,7 @@ public partial class Hshop2023Context : DbContext
                 .HasColumnName("TenPB");
         });
 
-        modelBuilder.Entity<TrangThai>(entity =>
-        {
+        modelBuilder.Entity<TrangThai>(entity => {
             entity.HasKey(e => e.MaTrangThai);
 
             entity.ToTable("TrangThai");
@@ -391,8 +370,7 @@ public partial class Hshop2023Context : DbContext
             entity.Property(e => e.TenTrangThai).HasMaxLength(50);
         });
 
-        modelBuilder.Entity<TrangWeb>(entity =>
-        {
+        modelBuilder.Entity<TrangWeb>(entity => {
             entity.HasKey(e => e.MaTrang);
 
             entity.ToTable("TrangWeb");
@@ -403,8 +381,7 @@ public partial class Hshop2023Context : DbContext
                 .HasColumnName("URL");
         });
 
-        modelBuilder.Entity<VChiTietHoaDon>(entity =>
-        {
+        modelBuilder.Entity<VChiTietHoaDon>(entity => {
             entity
                 .HasNoKey()
                 .ToView("vChiTietHoaDon");
@@ -417,8 +394,7 @@ public partial class Hshop2023Context : DbContext
                 .HasColumnName("TenHH");
         });
 
-        modelBuilder.Entity<YeuThich>(entity =>
-        {
+        modelBuilder.Entity<YeuThich>(entity => {
             entity.HasKey(e => e.MaYt).HasName("PK_Favorites");
 
             entity.ToTable("YeuThich");

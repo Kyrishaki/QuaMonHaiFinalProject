@@ -1,12 +1,9 @@
-﻿namespace LTWEB_QuaMonHai_CuoiKy.ViewModels
-{
-    public class CartItem
-    {
+﻿namespace LTWEB_QuaMonHai_CuoiKy.ViewModels {
+    public class CartItem {
         public int MaHh { get; set; }
-        public string Hinh { get; set; } 
+        public string Hinh { get; set; }
         public string TenHh { get; set; }
         public double DonGia { get; set; }
-
         public int SoLuong { get; set; }
 
     }

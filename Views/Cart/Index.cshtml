@@ -1,7 +1,10 @@
 ﻿@model IEnumerable<LTWEB_QuaMonHai_CuoiKy.ViewModels.CartItem>
 
+@{
+    ViewData["Title"] = "Giỏ Hàng";
+}
+
 <style>
-    /* CSS Của Bạn (Giữ nguyên) */
     .cart-container-root {
         background-color: #f5f5f5;
         font-size: 14px;
@@ -45,17 +48,6 @@
         color: #ee4d2d !important;
     }
 
-    .btn-orange {
-        background-color: #ee4d2d;
-        color: white;
-        border: none;
-    }
-
-        .btn-orange:hover {
-            background-color: #d73211;
-            color: white;
-        }
-
     .cart-header {
         font-weight: 500;
         color: #888;
@@ -77,9 +69,11 @@
 
 <div class="cart-container-root">
     <div class="container">
+        <h2 class="mb-4 fw-bold"><i class="fa fa-shopping-cart me-2 text-success"></i>Giỏ Hàng Của Bạn</h2>
+
         <!-- Header Giỏ Hàng -->
         <div class="row py-3 px-2 mb-3 rounded shadow-sm cart-header d-none d-md-flex align-items-center mx-0">
-            <div class="col-md-1 text-center">chọn</div>
+            <div class="col-md-1 text-center">Chọn</div>
             <div class="col-md-4">Sản Phẩm</div>
             <div class="col-md-2 text-center">Đơn Giá</div>
             <div class="col-md-2 text-center">Số Lượng</div>
@@ -89,54 +83,51 @@
 
         <!-- Danh sách sản phẩm -->
         <div id="cart-list">
-            @if (Model != null && Model.Any())
-            {
-                @foreach (var item in Model)
-                {
-                    // LƯU Ý QUAN TRỌNG: Thêm id cho dòng sản phẩm (row-@item.MaHh) để JS dễ tìm
+            @if (Model != null && Model.Any()) {
+                @foreach (var item in Model) {
                     <div class="row bg-white py-3 px-2 mb-2 rounded shadow-sm align-items-center cart-item-row mx-0" id="row-@item.MaHh">
-
+                        <!-- Checkbox chọn sản phẩm -->
                         <div class="col-md-1 text-center">
                             <input type="checkbox" class="form-check-input item-checkbox" data-id="@item.MaHh">
                         </div>
 
+                        <!-- Hình ảnh và tên -->
                         <div class="col-md-4 d-flex align-items-center">
-                            <img src="~/img/Hinh/HangHoa/@item.Hinh" class="product-img rounded me-3" alt="@item.Hinh">
+                            <img src="~/img/Hinh/HangHoa/@item.Hinh" class="product-img rounded me-3" alt="@item.TenHh">
                             <div><div class="fw-bold text-truncate" style="max-width: 250px;">@item.TenHh</div></div>
                         </div>
 
+                        <!-- Đơn giá (USD) -->
                         <div class="col-md-2 text-center">
                             <span class="unit-price" data-price="@item.DonGia">@string.Format("{0:N0}$", item.DonGia)</span>
                         </div>
 
+                        <!-- Số lượng (Cập nhật qua Controller) -->
                         <div class="col-md-2 d-flex justify-content-center">
                             <div class="d-flex border rounded">
-                                <!-- Nút Trừ -->
-                                <a href="/Cart/UpdateQuantity?id=@item.MaHh&delta=-1" class="qty-btn text-decoration-none">-</a>
-
-                                <!-- Ô số lượng -->
+                                <a asp-action="UpdateQuantity" asp-route-id="@item.MaHh" asp-route-delta="-1" class="qty-btn text-decoration-none">-</a>
                                 <input type="text" class="qty-input" value="@item.SoLuong" readonly>
-
-                                <!-- Nút Cộng -->
-                                <a href="/Cart/UpdateQuantity?id=@item.MaHh&delta=1" class="qty-btn text-decoration-none">+</a>
+                                <a asp-action="UpdateQuantity" asp-route-id="@item.MaHh" asp-route-delta="1" class="qty-btn text-decoration-none">+</a>
                             </div>
                         </div>
 
+                        <!-- Thành tiền của sản phẩm đó -->
                         <div class="col-md-2 text-center text-orange fw-bold">
-                            <!-- Nơi hiển thị thành tiền của 1 món: Thêm id -->
                             <span class="item-total" id="item-total-@item.MaHh">@string.Format("{0:N0}$", item.DonGia * item.SoLuong)</span>
                         </div>
 
+                        <!-- Nút Xóa -->
                         <div class="col-md-1 text-center">
-                            <a href="/Cart/Delete?id=@item.MaHh" class="btn btn-sm btn-outline-danger remove-btn">Xóa</a>
+                            <a asp-action="Delete" asp-route-id="@item.MaHh" class="btn btn-sm btn-outline-danger shadow-sm">Xóa</a>
                         </div>
                     </div>
                 }
             }
-            else
-            {
+            else {
                 <div class="bg-white p-5 text-center rounded shadow-sm">
-                    <p class="text-muted">Giỏ hàng của bạn đang trống.</p>
+                    <i class="fa fa-shopping-basket fa-3x text-muted mb-3"></i>
+                    <p class="text-muted fs-5">Giỏ hàng của bạn đang trống.</p>
+                    <a href="/" class="btn btn-success px-4 rounded-pill">Tiếp tục mua sắm</a>
                 </div>
             }
         </div>
@@ -146,18 +137,17 @@
             <div class="col-md-6">
                 <div class="form-check">
                     <input class="form-check-input" type="checkbox" id="checkAllFooter">
-                    <label class="form-check-label" for="checkAllFooter">Chọn Tất Cả</label>
+                    <label class="form-check-label fw-bold" for="checkAllFooter">Chọn Tất Cả</label>
                 </div>
             </div>
             <div class="col-md-6 text-end">
-                <span>Tổng thanh toán (<span id="selected-count">@Model.Count()</span> sản phẩm):</span>
+                <span>Tổng thanh toán (<span id="selected-count" class="fw-bold text-primary">0</span> sản phẩm):</span>
+                <span id="final-total" class="text-orange fs-3 fw-bold ms-3">0$</span>
 
-                <!-- Nơi hiển thị TỔNG TIỀN: -->
-                <span id="final-total" class="text-orange fs-3 fw-bold ms-3">
-                    0$
-                </span>
-
-                <button class="btn btn-success btn-lg px-5 ms-3">Mua Hàng</button>
+                <!-- Nút Mua Hàng: Mặc định bị vô hiệu hóa cho đến khi chọn sản phẩm -->
+                <a asp-action="Checkout" id="btn-checkout" class="btn btn-success btn-lg px-5 ms-3 shadow disabled">
+                    Mua Hàng
+                </a>
             </div>
         </div>
     </div>
@@ -166,23 +156,31 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
     $(document).ready(function () {
-        
-        // 1. Khi bấm chọn tất cả
-        $('#checkAll, #checkAllFooter').change(function () {
+
+        // Khởi động lại trạng thái khi load trang
+        calculateCheckedTotal();
+
+        // 1. Khi bấm Chọn Tất Cả
+        $('#checkAllFooter').change(function () {
             var isChecked = $(this).prop('checked');
-            $('.item-checkbox, #checkAll, #checkAllFooter').prop('checked', isChecked);
+            $('.item-checkbox').prop('checked', isChecked);
             calculateCheckedTotal();
         });
 
-        // 2. Khi bấm chọn từng món
+        // 2. Khi bấm chọn từng món lẻ
         $('.item-checkbox').change(function () {
+            // Kiểm tra nếu tất cả đã chọn thì tích luôn "Chọn tất cả"
+            var allChecked = $('.item-checkbox:checked').length === $('.item-checkbox').length;
+            $('#checkAllFooter').prop('checked', allChecked);
+
             calculateCheckedTotal();
         });
 
-        // 3. Hàm tính tổng tiền (chỉ cộng những món được TÍCH DẤU)
+        // 3. Hàm tính tổng tiền dựa trên các sản phẩm được tích chọn
         function calculateCheckedTotal() {
             let total = 0;
             let count = 0;
+
             $('.item-checkbox:checked').each(function () {
                 let row = $(this).closest('.cart-item-row');
                 let price = parseFloat(row.find('.unit-price').data('price'));
@@ -194,9 +192,16 @@
                 }
             });
 
-            // Cập nhật tổng số lượng và tổng tiền xuống Footer
-            $('#final-total').text(new Intl.NumberFormat('vi-VN').format(total) + '$');
+            // Cập nhật lên giao diện Footer (Định dạng USD)
+            $('#final-total').text(new Intl.NumberFormat('en-US').format(total) + '$');
             $('#selected-count').text(count);
+
+            // Bật/Tắt nút Mua Hàng
+            if (count > 0) {
+                $('#btn-checkout').removeClass('disabled');
+            } else {
+                $('#btn-checkout').addClass('disabled');
+            }
         }
     });
 </script>

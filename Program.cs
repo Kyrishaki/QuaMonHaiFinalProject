@@ -23,7 +23,8 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
 // BỔ SUNG CẤU HÌNH SESSION Ở ĐÂY
 builder.Services.AddDistributedMemoryCache();
 builder.Services.AddSession(options => {
-    options.IdleTimeout = TimeSpan.FromSeconds(10);
+    // ĐÃ SỬA: Đổi từ FromSeconds(10) thành FromMinutes(30) để giỏ hàng không bị xóa quá nhanh
+    options.IdleTimeout = TimeSpan.FromMinutes(30);
     options.Cookie.HttpOnly = true;
     options.Cookie.IsEssential = true;
 });
