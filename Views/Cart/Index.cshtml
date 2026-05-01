@@ -1,0 +1,125 @@
+﻿@model IEnumerable<LTWEB_QuaMonHai_CuoiKy.ViewModels.CartItem>
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6 col-lg-5">
+            <!-- Giới hạn độ rộng của khung giỏ hàng -->
+
+            <div class="cart-container shadow-sm">
+                <!-- Tiêu đề -->
+                <div class="p-3 border-bottom d-flex align-items-center justify-content-between">
+                    <div class="d-flex align-items-center">
+                        <i class="fas fa-shopping-cart me-2"></i>
+                        <h5 class="mb-0 fw-bold">Giỏ hàng của bạn</h5>
+                    </div>
+                </div>
+
+                <!-- Danh sách sản phẩm -->
+                <div class="p-3" style="min-height: 200px;">
+
+                    <!-- VÒNG LẶP FOREACH GIỎ HÀNG Ở ĐÂY -->
+                    @foreach (var item in Model)
+                    {
+                        <div class="d-flex align-items-center justify-content-between mb-4 border-bottom pb-3">
+                            <!-- Khối bên trái: Ảnh và Thông tin -->
+                            <div class="d-flex align-items-center gap-3">
+                                <div class="cart-item-img rounded" style="width: 70px; height: 70px; overflow: hidden;">
+                                    <img src="~/img/@item.Hinh" alt="@item.Hinh" class="w-100 h-100 object-fit-cover" />
+                                </div>
+                                <div>
+                                    <h6 class="mb-0 fw-bold">@item.TenHh</h6>
+                                    <p class="text-success small mb-0">@item.DonGia $</p>
+                                </div>
+                            </div>
+
+                            <!-- Khối bên phải: Bộ tăng giảm và Xóa nằm kế bên nhau -->
+                            <div class="d-flex align-items-center gap-3">
+                                <!-- Bộ tăng giảm -->
+                                <div class="d-flex align-items-center border rounded bg-light">
+                                    <button onclick="changeQty(this, -1)" class="btn btn-sm px-2 border-0">
+                                        <i class="fas fa-minus fa-xs"></i>
+                                    </button>
+
+                                    <input type="text"
+                                           class="form-control form-control-sm text-center border-0 bg-light qty-input"
+                                           style="width: 40px; font-weight: bold;"
+                                           value="@item.SoLuong"
+                                           readonly>
+
+                                    <button onclick="changeQty(this, 1)" class="btn btn-sm px-2 border-0">
+                                        <i class="fas fa-plus fa-xs"></i>
+                                    </button>
+                                </div>
+
+                                <!-- Icon Xóa -->
+                                <a asp-controller="Cart" asp-action="Delete" asp-route-id="@item.MaHh" class="text-danger shadow-none">
+                                    <i class="bi bi-trash fs-5"></i>
+                                </a>
+                            </div>
+                        </div>
+
+                      
+                    }
+
+
+
+                    <!-- KẾT THÚC VÒNG LẶP GIỎ HÀNG -->
+
+                </div>
+
+                <!-- Tổng kết -->
+                <div class="p-3 bg-white border-top">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <span class="text-secondary">Tổng cộng:</span>
+                        <div class="d-flex align-items-baseline">
+                            <span class="h4 fw-bold mb-0 me-1">@Model.Sum(x =>x.DonGia * x.SoLuong )</span>
+                            <span class="fw-bold" style="text-decoration: underline; font-size: 0.9rem;">$</span>
+                        </div>
+                    </div>
+                    <button class="btn-checkout">Đặt Hàng</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script>
+
+       function changeQty(btn, delta) {
+
+        // Tìm thẻ input nằm cùng hàng với nút
+
+        const input = btn.parentElement.querySelector('.qty-input');
+
+        let currentQty = parseInt(input.value);
+
+
+
+        // Tính toán số lượng mới
+
+        currentQty += delta;
+
+        if (currentQty < 1) currentQty = 1;
+
+
+
+        // Cập nhật giá trị vào input
+
+        input.value = currentQty;
+
+
+
+        // Gọi hàm tính lại tổng tiền (như đã hướng dẫn ở trên)
+
+        updateTotal();
+
+
+
+        // (Tùy chọn) Gửi AJAX lên Controller để cập nhật Database/Session tại đây
+
+        // updateCartOnServer(productId, currentQty);
+
+    }
+
+</script>
