@@ -7,8 +7,17 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<Hshop2023Context>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("Hshop2023ConnectionString")));
+
+builder.Services.AddDistributedMemoryCache();
+builder.Services.AddSession(options =>
+{
+    options.Cookie.Name = ".LTWEB_QuaMonHai_CuoiKy.Session";
+    options.IdleTimeout = TimeSpan.FromSeconds(30);
+    options.Cookie.IsEssential = true;
+});
 var app = builder.Build();
 
+app.UseSession();
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
