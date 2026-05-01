@@ -3,6 +3,30 @@
   "WorkspaceRootPath": "H:\\App\\GitHub\\QuaMonHaiFinalProject\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{8DB76715-FA3E-463F-9AB4-2F44CF88B5A7}|LTWEB_QuaMonHai_CuoiKy.csproj|h:\\app\\github\\quamonhaifinalproject\\controllers\\homecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{8DB76715-FA3E-463F-9AB4-2F44CF88B5A7}|LTWEB_QuaMonHai_CuoiKy.csproj|solutionrelative:controllers\\homecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8DB76715-FA3E-463F-9AB4-2F44CF88B5A7}|LTWEB_QuaMonHai_CuoiKy.csproj|h:\\app\\github\\quamonhaifinalproject\\views\\cart\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{8DB76715-FA3E-463F-9AB4-2F44CF88B5A7}|LTWEB_QuaMonHai_CuoiKy.csproj|solutionrelative:views\\cart\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8DB76715-FA3E-463F-9AB4-2F44CF88B5A7}|LTWEB_QuaMonHai_CuoiKy.csproj|h:\\app\\github\\quamonhaifinalproject\\views\\home\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{8DB76715-FA3E-463F-9AB4-2F44CF88B5A7}|LTWEB_QuaMonHai_CuoiKy.csproj|solutionrelative:views\\home\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8DB76715-FA3E-463F-9AB4-2F44CF88B5A7}|LTWEB_QuaMonHai_CuoiKy.csproj|h:\\app\\github\\quamonhaifinalproject\\views\\hanghoas\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{8DB76715-FA3E-463F-9AB4-2F44CF88B5A7}|LTWEB_QuaMonHai_CuoiKy.csproj|solutionrelative:views\\hanghoas\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8DB76715-FA3E-463F-9AB4-2F44CF88B5A7}|LTWEB_QuaMonHai_CuoiKy.csproj|h:\\app\\github\\quamonhaifinalproject\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{8DB76715-FA3E-463F-9AB4-2F44CF88B5A7}|LTWEB_QuaMonHai_CuoiKy.csproj|solutionrelative:program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8DB76715-FA3E-463F-9AB4-2F44CF88B5A7}|LTWEB_QuaMonHai_CuoiKy.csproj|h:\\app\\github\\quamonhaifinalproject\\views\\shared\\_navbar.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{8DB76715-FA3E-463F-9AB4-2F44CF88B5A7}|LTWEB_QuaMonHai_CuoiKy.csproj|solutionrelative:views\\shared\\_navbar.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{8DB76715-FA3E-463F-9AB4-2F44CF88B5A7}|LTWEB_QuaMonHai_CuoiKy.csproj|h:\\app\\github\\quamonhaifinalproject\\controllers\\hanghoascontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{8DB76715-FA3E-463F-9AB4-2F44CF88B5A7}|LTWEB_QuaMonHai_CuoiKy.csproj|solutionrelative:controllers\\hanghoascontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
@@ -39,19 +63,97 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
+              "Title": "HomeController.cs",
+              "DocumentMoniker": "H:\\App\\GitHub\\QuaMonHaiFinalProject\\Controllers\\HomeController.cs",
+              "RelativeDocumentMoniker": "Controllers\\HomeController.cs",
+              "ToolTip": "H:\\App\\GitHub\\QuaMonHaiFinalProject\\Controllers\\HomeController.cs",
+              "RelativeToolTip": "Controllers\\HomeController.cs",
+              "ViewState": "AgIAACEAAAAAAAAAAAAcwEYAAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-01T08:08:16.445Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "Index.cshtml",
+              "DocumentMoniker": "H:\\App\\GitHub\\QuaMonHaiFinalProject\\Views\\Cart\\Index.cshtml",
+              "RelativeDocumentMoniker": "Views\\Cart\\Index.cshtml",
+              "ToolTip": "H:\\App\\GitHub\\QuaMonHaiFinalProject\\Views\\Cart\\Index.cshtml",
+              "RelativeToolTip": "Views\\Cart\\Index.cshtml",
+              "ViewState": "AgIAAAwAAAAAAAAAAAAAAB8AAAAmAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-05-01T08:00:39.636Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "Index.cshtml",
+              "DocumentMoniker": "H:\\App\\GitHub\\QuaMonHaiFinalProject\\Views\\HangHoas\\Index.cshtml",
+              "RelativeDocumentMoniker": "Views\\HangHoas\\Index.cshtml",
+              "ToolTip": "H:\\App\\GitHub\\QuaMonHaiFinalProject\\Views\\HangHoas\\Index.cshtml",
+              "RelativeToolTip": "Views\\HangHoas\\Index.cshtml",
+              "ViewState": "AgIAAD0AAAAAAAAAAAAcwGIAAAAHAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-05-01T07:58:58.044Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "Program.cs",
+              "DocumentMoniker": "H:\\App\\GitHub\\QuaMonHaiFinalProject\\Program.cs",
+              "RelativeDocumentMoniker": "Program.cs",
+              "ToolTip": "H:\\App\\GitHub\\QuaMonHaiFinalProject\\Program.cs",
+              "RelativeToolTip": "Program.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABQAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-01T07:58:00.271Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "_Navbar.cshtml",
+              "DocumentMoniker": "H:\\App\\GitHub\\QuaMonHaiFinalProject\\Views\\Shared\\_Navbar.cshtml",
+              "RelativeDocumentMoniker": "Views\\Shared\\_Navbar.cshtml",
+              "ToolTip": "H:\\App\\GitHub\\QuaMonHaiFinalProject\\Views\\Shared\\_Navbar.cshtml",
+              "RelativeToolTip": "Views\\Shared\\_Navbar.cshtml",
+              "ViewState": "AgIAAB4AAAAAAAAAAAAAADYAAABYAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-05-01T07:53:07.402Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "Index.cshtml",
+              "DocumentMoniker": "H:\\App\\GitHub\\QuaMonHaiFinalProject\\Views\\Home\\Index.cshtml",
+              "RelativeDocumentMoniker": "Views\\Home\\Index.cshtml",
+              "ToolTip": "H:\\App\\GitHub\\QuaMonHaiFinalProject\\Views\\Home\\Index.cshtml",
+              "RelativeToolTip": "Views\\Home\\Index.cshtml",
+              "ViewState": "AgIAABAAAAAAAAAAAAAUwDEAAAAmAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-05-01T07:53:03.621Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
               "Title": "HangHoasController.cs",
               "DocumentMoniker": "H:\\App\\GitHub\\QuaMonHaiFinalProject\\Controllers\\HangHoasController.cs",
               "RelativeDocumentMoniker": "Controllers\\HangHoasController.cs",
-              "ToolTip": "H:\\App\\GitHub\\QuaMonHaiFinalProject\\Controllers\\HangHoasController.cs*",
-              "RelativeToolTip": "Controllers\\HangHoasController.cs*",
-              "ViewState": "AgIAALwAAAAAAAAAAAAcwN0AAAABAAAAAAAAAA==",
+              "ToolTip": "H:\\App\\GitHub\\QuaMonHaiFinalProject\\Controllers\\HangHoasController.cs",
+              "RelativeToolTip": "Controllers\\HangHoasController.cs",
+              "ViewState": "AgIAALgAAAAAAAAAAAAcwNkAAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-04-30T16:40:58.598Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 8,
               "Title": "Hshop2023Context.cs",
               "DocumentMoniker": "H:\\App\\GitHub\\QuaMonHaiFinalProject\\Data\\Hshop2023Context.cs",
               "RelativeDocumentMoniker": "Data\\Hshop2023Context.cs",
@@ -63,7 +165,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 7,
               "Title": "Details.cshtml",
               "DocumentMoniker": "H:\\App\\GitHub\\QuaMonHaiFinalProject\\Views\\HangHoas\\Details.cshtml",
               "RelativeDocumentMoniker": "Views\\HangHoas\\Details.cshtml",
@@ -71,8 +173,7 @@
               "RelativeToolTip": "Views\\HangHoas\\Details.cshtml",
               "ViewState": "AgIAACgAAAAAAAAAAAAQwEcAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2026-04-30T16:22:30.315Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-04-30T16:22:30.315Z"
             }
           ]
         }
