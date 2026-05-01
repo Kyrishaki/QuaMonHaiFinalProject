@@ -1,125 +1,203 @@
 ﻿@model IEnumerable<LTWEB_QuaMonHai_CuoiKy.ViewModels.CartItem>
 
-<div class="container py-5">
-    <div class="row justify-content-center">
-        <div class="col-md-6 col-lg-5">
-            <!-- Giới hạn độ rộng của khung giỏ hàng -->
+<style>
+    /* CSS Của Bạn (Giữ nguyên) */
+    .cart-container-root {
+        background-color: #f5f5f5;
+        font-size: 14px;
+        padding: 20px 0;
+    }
 
-            <div class="cart-container shadow-sm">
-                <!-- Tiêu đề -->
-                <div class="p-3 border-bottom d-flex align-items-center justify-content-between">
-                    <div class="d-flex align-items-center">
-                        <i class="fas fa-shopping-cart me-2"></i>
-                        <h5 class="mb-0 fw-bold">Giỏ hàng của bạn</h5>
-                    </div>
-                </div>
+    .product-img {
+        width: 80px;
+        height: 80px;
+        object-fit: cover;
+        border: 1px solid #dee2e6;
+    }
 
-                <!-- Danh sách sản phẩm -->
-                <div class="p-3" style="min-height: 200px;">
+    .qty-input {
+        width: 50px;
+        text-align: center;
+        border: 1px solid #dee2e6;
+        border-left: 0;
+        border-right: 0;
+        outline: none;
+    }
 
-                    <!-- VÒNG LẶP FOREACH GIỎ HÀNG Ở ĐÂY -->
-                    @foreach (var item in Model)
-                    {
-                        <div class="d-flex align-items-center justify-content-between mb-4 border-bottom pb-3">
-                            <!-- Khối bên trái: Ảnh và Thông tin -->
-                            <div class="d-flex align-items-center gap-3">
-                                <div class="cart-item-img rounded" style="width: 70px; height: 70px; overflow: hidden;">
-                                    <img src="~/img/Hinh/HangHoa/@item.Hinh" alt="@item.Hinh" class="w-100 h-100 object-fit-cover" />
-                                </div>
-                                <div>
-                                    <h6 class="mb-0 fw-bold">@item.TenHh</h6>
-                                    <p class="text-success small mb-0">@item.DonGia $</p>
-                                </div>
-                            </div>
+    .qty-btn {
+        width: 32px;
+        height: 32px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #fff;
+        border: 1px solid #dee2e6;
+        cursor: pointer;
+        color: #666;
+        text-decoration: none !important;
+    }
 
-                            <!-- Khối bên phải: Bộ tăng giảm và Xóa nằm kế bên nhau -->
-                            <div class="d-flex align-items-center gap-3">
-                                <!-- Bộ tăng giảm -->
-                                <div class="d-flex align-items-center border rounded bg-light">
-                                    <button onclick="changeQty(this, -1)" class="btn btn-sm px-2 border-0">
-                                        <i class="fas fa-minus fa-xs"></i>
-                                    </button>
+        .qty-btn:hover {
+            background: #f8f8f8;
+        }
 
-                                    <input type="text"
-                                           class="form-control form-control-sm text-center border-0 bg-light qty-input"
-                                           style="width: 40px; font-weight: bold;"
-                                           value="@item.SoLuong"
-                                           readonly>
+    .text-orange {
+        color: #ee4d2d !important;
+    }
 
-                                    <button onclick="changeQty(this, 1)" class="btn btn-sm px-2 border-0">
-                                        <i class="fas fa-plus fa-xs"></i>
-                                    </button>
-                                </div>
+    .btn-orange {
+        background-color: #ee4d2d;
+        color: white;
+        border: none;
+    }
 
-                                <!-- Icon Xóa -->
-                                <a asp-controller="Cart" asp-action="Delete" asp-route-id="@item.MaHh" class="text-danger shadow-none">
-                                    <i class="bi bi-trash fs-5"></i>
-                                </a>
+        .btn-orange:hover {
+            background-color: #d73211;
+            color: white;
+        }
+
+    .cart-header {
+        font-weight: 500;
+        color: #888;
+        background: #fff;
+    }
+
+    .sticky-bottom-custom {
+        position: sticky;
+        bottom: 0;
+        background: #fff;
+        z-index: 1000;
+        box-shadow: 0 -2px 10px rgba(0,0,0,0.05);
+    }
+
+    .cart-item-row {
+        transition: background-color 0.2s;
+    }
+</style>
+
+<div class="cart-container-root">
+    <div class="container">
+        <!-- Header Giỏ Hàng -->
+        <div class="row py-3 px-2 mb-3 rounded shadow-sm cart-header d-none d-md-flex align-items-center mx-0">
+            <!-- ... Giữ nguyên Header ... -->
+            <div class="col-md-1 text-center"><input type="checkbox" class="form-check-input" id="checkAll"></div>
+            <div class="col-md-4">Sản Phẩm</div>
+            <div class="col-md-2 text-center">Đơn Giá</div>
+            <div class="col-md-2 text-center">Số Lượng</div>
+            <div class="col-md-2 text-center">Số Tiền</div>
+            <div class="col-md-1 text-center">Thao Tác</div>
+        </div>
+
+        <!-- Danh sách sản phẩm -->
+        <div id="cart-list">
+            @if (Model != null && Model.Any())
+            {
+                @foreach (var item in Model)
+                {
+                    // LƯU Ý QUAN TRỌNG: Thêm id cho dòng sản phẩm (row-@item.MaHh) để JS dễ tìm
+                    <div class="row bg-white py-3 px-2 mb-2 rounded shadow-sm align-items-center cart-item-row mx-0" id="row-@item.MaHh">
+
+                        <div class="col-md-1 text-center">
+                            <input type="checkbox" class="form-check-input item-checkbox" data-id="@item.MaHh">
+                        </div>
+
+                        <div class="col-md-4 d-flex align-items-center">
+                            <img src="~/img/Hinh/HangHoa/@item.Hinh" class="product-img rounded me-3" alt="@item.Hinh">
+                            <div><div class="fw-bold text-truncate" style="max-width: 250px;">@item.TenHh</div></div>
+                        </div>
+
+                        <div class="col-md-2 text-center">
+                            <span class="unit-price" data-price="@item.DonGia">@string.Format("{0:N0}$", item.DonGia)</span>
+                        </div>
+
+                        <div class="col-md-2 d-flex justify-content-center">
+                            <div class="d-flex border rounded">
+                                <!-- Nút Trừ -->
+                                <a href="/Cart/UpdateQuantity?id=@item.MaHh&delta=-1" class="qty-btn text-decoration-none">-</a>
+
+                                <!-- Ô số lượng -->
+                                <input type="text" class="qty-input" value="@item.SoLuong" readonly>
+
+                                <!-- Nút Cộng -->
+                                <a href="/Cart/UpdateQuantity?id=@item.MaHh&delta=1" class="qty-btn text-decoration-none">+</a>
                             </div>
                         </div>
 
-                      
-                    }
+                        <div class="col-md-2 text-center text-orange fw-bold">
+                            <!-- Nơi hiển thị thành tiền của 1 món: Thêm id -->
+                            <span class="item-total" id="item-total-@item.MaHh">@string.Format("{0:N0}$", item.DonGia * item.SoLuong)</span>
+                        </div>
 
-
-
-                    <!-- KẾT THÚC VÒNG LẶP GIỎ HÀNG -->
-
-                </div>
-
-                <!-- Tổng kết -->
-                <div class="p-3 bg-white border-top">
-                    <div class="d-flex justify-content-between align-items-center mb-3">
-                        <span class="text-secondary">Tổng cộng:</span>
-                        <div class="d-flex align-items-baseline">
-                            <span class="h4 fw-bold mb-0 me-1">@Model.Sum(x =>x.DonGia * x.SoLuong )</span>
-                            <span class="fw-bold" style="text-decoration: underline; font-size: 0.9rem;">$</span>
+                        <div class="col-md-1 text-center">
+                            <a href="/Cart/Delete?id=@item.MaHh" class="btn btn-sm btn-outline-danger remove-btn">Xóa</a>
                         </div>
                     </div>
-                    <button class="btn-checkout">Đặt Hàng</button>
+                }
+            }
+            else
+            {
+                <div class="bg-white p-5 text-center rounded shadow-sm">
+                    <p class="text-muted">Giỏ hàng của bạn đang trống.</p>
+                </div>
+            }
+        </div>
+
+        <!-- Footer Thanh Toán -->
+        <div class="row py-3 px-4 mt-4 rounded shadow-sm sticky-bottom-custom align-items-center border-top mx-0">
+            <div class="col-md-6">
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="checkAllFooter">
+                    <label class="form-check-label" for="checkAllFooter">Chọn Tất Cả</label>
                 </div>
             </div>
+            <div class="col-md-6 text-end">
+                <span>Tổng thanh toán (<span id="selected-count">@Model.Count()</span> sản phẩm):</span>
 
+                <!-- Nơi hiển thị TỔNG TIỀN: -->
+                <span id="final-total" class="text-orange fs-3 fw-bold ms-3">
+                    0$
+                </span>
+
+                <button class="btn btn-success btn-lg px-5 ms-3">Mua Hàng</button>
+            </div>
         </div>
     </div>
 </div>
 
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
+    $(document).ready(function () {
+        
+        // 1. Khi bấm chọn tất cả
+        $('#checkAll, #checkAllFooter').change(function () {
+            var isChecked = $(this).prop('checked');
+            $('.item-checkbox, #checkAll, #checkAllFooter').prop('checked', isChecked);
+            calculateCheckedTotal();
+        });
 
-       function changeQty(btn, delta) {
+        // 2. Khi bấm chọn từng món
+        $('.item-checkbox').change(function () {
+            calculateCheckedTotal();
+        });
 
-        // Tìm thẻ input nằm cùng hàng với nút
+        // 3. Hàm tính tổng tiền (chỉ cộng những món được TÍCH DẤU)
+        function calculateCheckedTotal() {
+            let total = 0;
+            let count = 0;
+            $('.item-checkbox:checked').each(function () {
+                let row = $(this).closest('.cart-item-row');
+                let price = parseFloat(row.find('.unit-price').data('price'));
+                let qty = parseInt(row.find('.qty-input').val());
 
-        const input = btn.parentElement.querySelector('.qty-input');
+                if(!isNaN(price) && !isNaN(qty)) {
+                    total += price * qty;
+                    count++;
+                }
+            });
 
-        let currentQty = parseInt(input.value);
-
-
-
-        // Tính toán số lượng mới
-
-        currentQty += delta;
-
-        if (currentQty < 1) currentQty = 1;
-
-
-
-        // Cập nhật giá trị vào input
-
-        input.value = currentQty;
-
-
-
-        // Gọi hàm tính lại tổng tiền (như đã hướng dẫn ở trên)
-
-        updateTotal();
-
-
-
-        // (Tùy chọn) Gửi AJAX lên Controller để cập nhật Database/Session tại đây
-
-        // updateCartOnServer(productId, currentQty);
-
-    }
-
+            // Cập nhật tổng số lượng và tổng tiền xuống Footer
+            $('#final-total').text(new Intl.NumberFormat('vi-VN').format(total) + '$');
+            $('#selected-count').text(count);
+        }
+    });
 </script>

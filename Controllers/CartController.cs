@@ -61,5 +61,25 @@ namespace LTWEB_QuaMonHai_CuoiKy.Controllers
             return RedirectToAction("Index");
 
         }
+
+        public IActionResult UpdateQuantity(int id, int delta)
+        {
+            // 1. Lấy giỏ hàng hiện tại
+            var gioHang = cart();
+            var item = gioHang.SingleOrDefault(x => x.MaHh == id);
+
+            // 2. Thay đổi số lượng
+            if (item != null)
+            {
+                item.SoLuong += delta;
+                if (item.SoLuong < 1)
+                {
+                    item.SoLuong = 1; 
+                }
+            }    
+            HttpContext.Session.Set("cart", gioHang);
+            return RedirectToAction("Index");
+        }
+
     }
 }
