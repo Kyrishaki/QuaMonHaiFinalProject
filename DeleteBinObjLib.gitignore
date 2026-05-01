@@ -1,0 +1,10 @@
+# Bỏ qua thư mục build
+[Bb]in/
+[Oo]bj/
+
+# Bỏ qua thư mục thư viện (nếu có)
+[Ll]ib/
+
+# Bỏ qua cấu hình ẩn của Visual Studio
+.vs/
+*.user
