@@ -21,7 +21,7 @@ public class AgeRangeAttribute : ValidationAttribute
                     return new ValidationResult($"Tuổi giới hạn là 100.");
                 }
             }
-        return ValidationResult.Success;
+            return ValidationResult.Success;
+        }
     }
-}
 }

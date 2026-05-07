@@ -2,13 +2,13 @@
 <div class="container-fluid fixed-top px-0 wow fadeIn" data-wow-delay="0.1s">
     <div class="top-bar row gx-0 align-items-center d-none d-lg-flex">
         <div class="col-lg-6 px-5 text-start">
-            <small><i class="fa fa-map-marker-alt me-2"></i>123 Đường Số 1, Biên Hòa, Đồng Nai</small>
-            <small class="ms-4"><i class="fa fa-envelope me-2"></i>cskh@foody.vn</small>
+            <small><i class="fa fa-map-marker-alt me-2"></i>Thành phố Biên Hòa, Đồng Nai</small>
+            <small class="ms-4"><i class="fa fa-envelope me-2"></i>QuaMonHai@Gmail.com.vn</small>
         </div>
         <div class="col-lg-6 px-5 text-end">
             <small>Theo dõi chúng tôi:</small>
             <a class="text-body ms-3" href="#"><i class="fab fa-facebook-f"></i></a>
-            <a class="text-body ms-3" href="#"><i class="fab fa-twitter"></i></a>
+            <a class="text-body ms-3" href="#"><i class="fab fa-twitter-x"></i></a>
             <a class="text-body ms-3" href="#"><i class="fab fa-linkedin-in"></i></a>
             <a class="text-body ms-3" href="#"><i class="fab fa-instagram"></i></a>
         </div>
@@ -16,15 +16,42 @@
 
     <nav class="navbar navbar-expand-lg navbar-light py-lg-0 px-lg-5 wow fadeIn" data-wow-delay="0.1s">
         <a asp-controller="Home" asp-action="Index" class="navbar-brand ms-4 ms-lg-0">
-            <h1 class="fw-bold text-primary m-0">F<span class="text-secondary">oo</span>dy</h1>
+            <!-- Nhúng phông chữ nghệ thuật từ Google Fonts -->
+            <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
+
+            <!-- Kiểu dáng CSS cho chữ ký -->
+            <style>
+                .my-signature {
+                    font-family: 'Great Vibes', cursive;
+                    font-size: 2.5rem; 
+                    margin: 0;
+                    padding: 10px;
+                    display: inline-block;
+                    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.15); /* Chỉnh lại bóng đổ nhẹ hơn cho hợp với chữ nhỏ */
+                    transform: rotate(-3deg);
+                }
+
+                .sig-green {
+                    color: #2E7D32;
+                }
+
+                .sig-orange {
+                    color: #FF8C00;
+                }
+            </style>
+
+            <!-- Nội dung chữ ký -->
+            <h1 class="my-signature">
+                <span class="sig-green">Qu</span><span class="sig-orange">a</span><span class="sig-green">M</span><span class="sig-orange">o</span><span class="sig-green">nH</span><span class="sig-orange">a</span><span class="sig-green">i</span>
+            </h1>
         </a>
         <button type="button" class="navbar-toggler me-4" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarCollapse">
             <div class="navbar-nav ms-auto p-4 p-lg-0">
-                <a asp-controller="Home" asp-action="Index" class="nav-item nav-link active">Trang chủ</a>
-                <a asp-controller="HangHoas" asp-action="Index" class="nav-item nav-link">Cửa hàng</a>
+                <a asp-controller="Home" asp-action="Home" class="nav-item nav-link active">Trang chủ</a>
+                <a asp-controller="Home" asp-action="Index" class="nav-item nav-link">Cửa hàng</a>
                 <a asp-controller="Home" asp-action="Privacy" class="nav-item nav-link">Bảo mật</a>
                 <div class="nav-item dropdown">
                     <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Trang thông tin</a>

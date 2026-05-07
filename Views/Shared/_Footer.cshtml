@@ -3,7 +3,34 @@
     <div class="container py-5">
         <div class="row g-5">
             <div class="col-lg-3 col-md-6">
-                <h1 class="fw-bold text-primary mb-4">F<span class="text-secondary">oo</span>dy</h1>
+                <!-- Nhúng phông chữ nghệ thuật từ Google Fonts -->
+                <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
+
+                <!-- Kiểu dáng CSS cho chữ ký -->
+                <style>
+                    .my-signature {
+                        font-family: 'Great Vibes', cursive;
+                        font-size: 2.5rem; /* Đã giảm kích thước chữ tại đây */
+                        margin: 0;
+                        padding: 10px;
+                        display: inline-block;
+                        text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.15); /* Chỉnh lại bóng đổ nhẹ hơn cho hợp với chữ nhỏ */
+                        transform: rotate(-3deg);
+                    }
+
+                    .sig-green {
+                        color: #2E7D32;
+                    }
+
+                    .sig-orange {
+                        color: #FF8C00;
+                    }
+                </style>
+
+                <!-- Nội dung chữ ký -->
+                <h1 class="my-signature">
+                    <span class="sig-green">Qu</span><span class="sig-orange">a</span><span class="sig-green">M</span><span class="sig-orange">o</span><span class="sig-green">nH</span><span class="sig-orange">a</span><span class="sig-green">i</span>
+                </h1>
                 <p>Hệ thống cung cấp thực phẩm hữu cơ sạch, an toàn và đạt tiêu chuẩn chất lượng cao nhất cho gia đình bạn.</p>
                 <div class="d-flex pt-2">
                     <a class="btn btn-square btn-outline-light rounded-circle me-1" href=""><i class="fab fa-twitter"></i></a>
@@ -40,10 +67,10 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
-                    &copy; <a href="#">Foody VietNam</a>, Mọi quyền được bảo lưu.
+                    &copy; <a href="#">QuaMonGroup Cooperation</a>, Mọi quyền được bảo lưu.
                 </div>
                 <div class="col-md-6 text-center text-md-end">
-                    Thiết kế bởi <a href="#">Nhóm Đồ Án LTWEB</a>
+                    Thiết kế bởi <a href="https://htmlcodex.com/">HTML Codex</a>
                 </div>
             </div>
         </div>

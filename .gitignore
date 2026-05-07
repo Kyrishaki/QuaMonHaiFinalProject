@@ -1,0 +1,11 @@
+# Bỏ qua các thư mục build của C#
+[Bb]in/
+[Oo]bj/
+
+# Bỏ qua thư mục cấu hình cá nhân của Visual Studio
+.vs/
+*.user
+
+# Bỏ qua file cache
+*.cache
+*.suo

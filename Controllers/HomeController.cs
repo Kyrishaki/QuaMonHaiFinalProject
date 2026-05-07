@@ -13,6 +13,10 @@ namespace LTWEB_QuaMonHai_CuoiKy.Controllers {
             _logger = logger;
             _context = context;
         }
+        public IActionResult Home()
+        {
+            return View();
+        }
 
         public async Task<IActionResult> Index(int? loaiId, string searchQuery, string priceRange, int page = 1) {
             int pageSize = 9; // Số sản phẩm trên mỗi trang
