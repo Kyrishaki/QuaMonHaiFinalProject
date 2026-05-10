@@ -7,6 +7,12 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+// ===================================================
+// THÊM DÒNG NÀY ĐỂ KHẮC PHỤC LỖI VIEW Ở _Navbar
+builder.Services.AddHttpContextAccessor();
+// ===================================================
+
 builder.Services.AddDbContext<Hshop2023Context>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("Hshop2023ConnectionString")));
 
@@ -21,7 +27,6 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
 
 // ---------------------------------------------------
 // BỔ SUNG CẤU HÌNH SESSION Ở ĐÂY
-builder.Services.AddSession();
 builder.Services.AddDistributedMemoryCache();
 builder.Services.AddSession(options => {
     // ĐÃ SỬA: Đổi từ FromSeconds(10) thành FromMinutes(30) để giỏ hàng không bị xóa quá nhanh
@@ -51,10 +56,9 @@ app.UseSession();
 // ---------------------------------------------------
 
 app.UseAuthentication();
-
 app.UseAuthorization();
 
-app.UseSession();
+// Đã xóa một dòng app.UseSession() bị dư thừa ở đây
 
 app.MapControllerRoute(
     name: "default",

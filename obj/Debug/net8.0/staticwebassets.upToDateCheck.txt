@@ -336,9 +336,6 @@ wwwroot\img\Hinh\NhaCC\samsung.jpg
 wwwroot\img\Hinh\NhaCC\shopping_cart.png
 wwwroot\img\Hinh\NhaCC\sonny-ericsson.jpg
 wwwroot\img\Hinh\Others\shopping_cart.png
-wwwroot\img\Hinh\QC\QC1.jpg
-wwwroot\img\Hinh\QC\QC2.jpg
-wwwroot\img\Hinh\QC\QC3.jpg
 wwwroot\img\icon-1.png
 wwwroot\img\icon-2.png
 wwwroot\img\icon-3.png
@@ -528,3 +525,6 @@ wwwroot\scss\bootstrap\scss\_type.scss
 wwwroot\scss\bootstrap\scss\_utilities.scss
 wwwroot\scss\bootstrap\scss\_variables.scss
 wwwroot\testimonial.html
+wwwroot\img\Hinh\QC\QC1.jpg
+wwwroot\img\Hinh\QC\QC2.jpg
+wwwroot\img\Hinh\QC\QC3.jpg

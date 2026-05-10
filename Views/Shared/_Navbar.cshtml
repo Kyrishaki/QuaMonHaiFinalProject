@@ -1,4 +1,14 @@
-﻿@using System.Security.Claims
+﻿@using Microsoft.AspNetCore.Http
+@using LTWEB_QuaMonHai_CuoiKy.Helpers
+@using LTWEB_QuaMonHai_CuoiKy.ViewModels
+@inject IHttpContextAccessor HttpContextAccessor
+
+@{
+    // Lấy số lượng sản phẩm trong giỏ hàng từ Session
+    var cartSession = HttpContextAccessor.HttpContext.Session.Get<List<CartItem>>("MyCart");
+    int soLuongGioHang = cartSession != null ? cartSession.Sum(c => c.SoLuong) : 0;
+}
+
 <div class="container-fluid custom-sticky px-0">
     <div class="top-bar row gx-0 align-items-center d-none d-lg-flex border-bottom">
         <div class="col-lg-6 px-5 text-start">
@@ -21,10 +31,10 @@
         <button type="button" class="navbar-toggler me-4" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
             <span class="navbar-toggler-icon"></span>
         </button>
+
         <div class="collapse navbar-collapse" id="navbarCollapse">
             <div class="navbar-nav ms-auto p-4 p-lg-0">
-                <a asp-controller="Home" asp-action="Index" class="nav-item nav-link active">Trang chủ</a>
-                <a asp-controller="HangHoas" asp-action="Index" class="nav-item nav-link">Cửa hàng</a>
+                <a asp-controller="Home" asp-action="Index" class="nav-item nav-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "Home" ? "active text-primary" : "")">Trang chủ</a>
                 <a asp-controller="Home" asp-action="Privacy" class="nav-item nav-link">Bảo mật</a>
                 <div class="nav-item dropdown">
                     <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Trang tin</a>
@@ -35,6 +45,7 @@
                 </div>
                 <a href="#" class="nav-item nav-link">Liên hệ</a>
             </div>
+
             <div class="d-none d-lg-flex ms-2 align-items-center">
                 <a class="btn-sm-square bg-white rounded-circle ms-3 shadow-sm border text-decoration-none d-flex align-items-center justify-content-center" href="#" data-bs-toggle="modal" data-bs-target="#searchModal">
                     <i class="fa fa-search text-primary"></i>
@@ -71,8 +82,14 @@
                     </div>
                 </div>
 
-                <a class="btn-sm-square bg-white rounded-circle ms-3 shadow-sm border text-decoration-none d-flex align-items-center justify-content-center" href="~/Cart/Index">
+                <a class="btn-sm-square bg-white rounded-circle ms-3 shadow-sm border text-decoration-none d-flex align-items-center justify-content-center position-relative" asp-controller="Cart" asp-action="Index">
                     <i class="fa fa-shopping-bag text-primary"></i>
+
+                    @if (soLuongGioHang > 0) {
+                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="font-size: 0.65rem;">
+                            @soLuongGioHang
+                        </span>
+                    }
                 </a>
             </div>
         </div>
@@ -86,41 +103,38 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body d-flex align-items-center justify-content-center">
-                <div class="input-group" style="max-width: 600px;">
-                    <input type="text" class="form-control bg-transparent border-primary p-3" placeholder="Tìm sản phẩm...">
-                    <button class="btn btn-primary px-4"><i class="fa fa-search"></i></button>
-                </div>
+                <form asp-controller="Home" asp-action="Index" method="get" class="input-group" style="max-width: 600px;">
+                    <input type="text" name="searchQuery" class="form-control bg-transparent border-primary p-3" placeholder="Tìm sản phẩm...">
+                    <button type="submit" class="btn btn-primary px-4"><i class="fa fa-search"></i></button>
+                </form>
             </div>
         </div>
     </div>
 </div>
 
 <style>
-    /* CSS QUAN TRỌNG ĐỂ FIX LỖI MẤT NAVBAR */
+    /* ... (Phần CSS cũ giữ nguyên) ... */
     .custom-sticky {
-        position: fixed !important; /* Luôn cố định */
+        position: fixed !important;
         top: 0 !important;
         left: 0;
         right: 0;
         width: 100% !important;
-        z-index: 2000 !important; /* Đảm bảo nằm trên cùng */
-        background-color: #ffffff !important; /* Ép nền trắng để không bị trong suốt */
+        z-index: 2000 !important;
+        background-color: #ffffff !important;
         display: block !important;
         visibility: visible !important;
         transition: all 0.3s ease;
     }
 
-    /* Đẩy toàn bộ nội dung trang xuống dưới để không bị Navbar che mất */
     body {
-        padding-top: 20px !important; /* Tăng padding-top để chừa chỗ cho Navbar cố định */
+        padding-top: 20px !important;
     }
 
-    /* Ẩn Top-bar khi cuộn xuống (tùy chọn) */
     .custom-sticky.scrolled .top-bar {
         display: none !important;
     }
 
-    /* Vô hiệu hóa các class sticky-top cũ của template nếu có xung đột */
     .sticky-top {
         position: fixed !important;
         top: 0 !important;
@@ -128,13 +142,10 @@
 </style>
 
 <script>
-    // Script phụ trợ để thêm hiệu ứng đổ bóng khi cuộn trang
+    // ... (Phần JS phụ trợ giữ nguyên) ...
     window.addEventListener('scroll', function() {
         const navbar = document.querySelector('.custom-sticky');
-        if (window.scrollY > 50) {
-            navbar.classList.add('shadow', 'scrolled');
-        } else {
-            navbar.classList.remove('shadow', 'scrolled');
-        }
+        if (window.scrollY > 50) { navbar.classList.add('shadow', 'scrolled'); }
+        else { navbar.classList.remove('shadow', 'scrolled'); }
     });
 </script>
