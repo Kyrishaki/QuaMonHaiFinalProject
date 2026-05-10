@@ -3,6 +3,8 @@
     ViewData["Title"] = "Đăng Nhập";
 }
 
+<script src="https://www.google.com/recaptcha/api.js" async defer></script>
+
 <div class="container-fluid py-5">
     <div class="container py-5">
         <h1 class="mb-4">Đăng nhập</h1>
@@ -23,6 +25,11 @@
                     <input asp-for="@Model.Password" type="password" class="form-control">
                     <span asp-validation-for="@Model.Password" class="text-danger"></span>
                 </div>
+
+                <div class="col-12 mt-3">
+                    <div class="g-recaptcha" data-sitekey="6Le8keIsAAAAAPCu8dhEDryM6Q1ngRM1EBCgy0mq"></div>
+                </div>
+
                 <div class="row g-4 text-center align-items-center justify-content-center pt-4">
                     <button type="submit" class="btn border-secondary py-3 px-4 text-uppercase w-100 text-primary">Đăng nhập </button>
                     <a asp-control="KhachHang" asp-action="QuanMatKhau" class="btn border-danger">Quên mật khẩu </a>
@@ -33,3 +40,20 @@
     </div>
 </div>
 
+@section Scripts {
+    <script>
+        // Gán mã token vào ViewModel trước khi submit
+        $('form').submit(function(e) {
+            var response = grecaptcha.getResponse();
+            if(response.length == 0) {
+                alert("Vui lòng xác thực bạn không phải là robot.");
+                return false;
+            }
+            $('<input>').attr({
+                type: 'hidden',
+                name: 'RecaptchaResponse',
+                value: response
+            }).appendTo('form');
+        });
+    </script>
+}

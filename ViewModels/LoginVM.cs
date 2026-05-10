@@ -13,5 +13,7 @@ namespace LTWEB_QuaMonHai_CuoiKy.ViewModels
         [Required(ErrorMessage = "Chưa nhập mật khẩu")]
         [DataType(DataType.Password)]
         public string Password { get; set; }
+
+        public string? RecaptchaResponse { get; set; }
     }
 }

@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using System.Security.Claims;
 
 namespace LTWEB_QuaMonHai_CuoiKy.Controllers {
@@ -75,7 +76,32 @@ namespace LTWEB_QuaMonHai_CuoiKy.Controllers {
         [HttpPost]
         public async Task<IActionResult> DangNhap(LoginVM model, string? ReturnUrl) {
             ViewBag.ReturnUrl = ReturnUrl;
-            if (ModelState.IsValid) {
+            if (ModelState.IsValid) 
+            {
+                var captchaResponse = Request.Form["g-recaptcha-response"];
+                if (string.IsNullOrEmpty(captchaResponse))
+                {
+                    ModelState.AddModelError("loi", "Vui lòng xác nhận bạn không phải là robot.");
+                    return View(model);
+                }
+
+                using (var client = new HttpClient())
+                {
+                    // Thay bằng Secret Key thật của bạn từ Google Admin Console
+                    var secretKey = "6Le8keIsAAAAAETHXhiZSiJjEgKlxLekZwigeg57";
+                    var response = await client.PostAsync($"https://www.google.com/recaptcha/api/siteverify?secret={secretKey}&response={captchaResponse}", null);
+                    var jsonString = await response.Content.ReadAsStringAsync();
+
+                    // Sử dụng thư viện Newtonsoft.Json đã cài
+                    dynamic jsonData = JsonConvert.DeserializeObject(jsonString);
+
+                    if (jsonData.success != "true")
+                    {
+                        ModelState.AddModelError("loi", "Xác thực robot không hợp lệ.");
+                        return View(model);
+                    }
+                }
+
                 var khachHang = db.KhachHangs.SingleOrDefault(kh => kh.MaKh == model.UserName);
 
                 if (khachHang == null) {
