@@ -256,3 +256,8 @@ E:\Codin\GitHub\QuaMonHaiFinalProject\obj\Debug\net8.0\refint\LTWEB_QuaMonHai_Cu
 E:\Codin\GitHub\QuaMonHaiFinalProject\obj\Debug\net8.0\LTWEB_QuaMonHai_CuoiKy.pdb
 E:\Codin\GitHub\QuaMonHaiFinalProject\obj\Debug\net8.0\LTWEB_QuaMonHai_CuoiKy.genruntimeconfig.cache
 E:\Codin\GitHub\QuaMonHaiFinalProject\obj\Debug\net8.0\ref\LTWEB_QuaMonHai_CuoiKy.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\BouncyCastle.Cryptography.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\MailKit.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\MimeKit.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\System.Security.Cryptography.Pkcs.dll
+E:\Codin\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\runtimes\win\lib\net8.0\System.Security.Cryptography.Pkcs.dll

@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("LTWEB_QuaMonHai_CuoiKy")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+4abbc64551013b384fcd751fb8c0122491ee89df")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+fd996232f666ac0ec7ddd1f42d2d8dca6bba38b3")]
 [assembly: System.Reflection.AssemblyProductAttribute("LTWEB_QuaMonHai_CuoiKy")]
 [assembly: System.Reflection.AssemblyTitleAttribute("LTWEB_QuaMonHai_CuoiKy")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

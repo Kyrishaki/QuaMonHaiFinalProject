@@ -51,5 +51,10 @@ namespace LTWEB_QuaMonHai_CuoiKy.ViewModels
 
 
         public string? Hinh { get; set; }
+
+
+        [Display(Name = "Mã xác nhận Email")]
+        [Required(ErrorMessage = "Vui lòng nhập mã xác nhận")]
+        public string VerificationCode { get; set; }
     }
 }

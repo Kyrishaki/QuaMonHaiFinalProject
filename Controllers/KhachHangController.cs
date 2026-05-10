@@ -3,11 +3,17 @@ using LTWEB_QuaMonHai_CuoiKy.Data;
 using LTWEB_QuaMonHai_CuoiKy.Helpers;
 using LTWEB_QuaMonHai_CuoiKy.Models;
 using LTWEB_QuaMonHai_CuoiKy.ViewModels;
+using MailKit.Net.Smtp;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using MimeKit;
+using MimeKit;
 using Newtonsoft.Json;
+using System.Net;
+using System.Net.Mail;
 using System.Security.Claims;
 
 namespace LTWEB_QuaMonHai_CuoiKy.Controllers {
@@ -27,8 +33,18 @@ namespace LTWEB_QuaMonHai_CuoiKy.Controllers {
         }
 
         [HttpPost]
-        public IActionResult DangKy(RegisterVM model, IFormFile? Hinh) {
-            if (ModelState.IsValid) {
+        public IActionResult DangKy(RegisterVM model, IFormFile? Hinh) 
+        {
+            var sessionCode = HttpContext.Session.GetString("EmailVerifyCode");
+
+            if (model.VerificationCode != sessionCode)
+            {
+                ModelState.AddModelError("VerificationCode", "Mã xác thực không đúng!");
+                return View(model);
+            }
+
+            if (ModelState.IsValid) 
+            {
                 try {
                     // 1. Kiểm tra tài khoản đã tồn tại chưa để tránh lỗi trùng khóa chính
                     if (db.KhachHangs.Any(kh => kh.MaKh == model.MaKh)) {
@@ -65,6 +81,7 @@ namespace LTWEB_QuaMonHai_CuoiKy.Controllers {
             return View(model); // Trả về model để không mất dữ liệu đang nhập dở
         }
         #endregion
+
 
         #region Login in
         [HttpGet]
@@ -221,6 +238,81 @@ namespace LTWEB_QuaMonHai_CuoiKy.Controllers {
         public async Task<IActionResult> DangXuat() {
             await HttpContext.SignOutAsync();
             return Redirect("/");
+        }
+
+        //abc
+
+        [HttpPost]
+        public async Task<IActionResult> SendVerificationCode(string email)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(email)) return Json(new { success = false, message = "Email trống!" });
+
+                // 1. Tạo mã xác nhận và lưu vào Session
+                string otpCode = new Random().Next(100000, 999999).ToString();
+                HttpContext.Session.SetString("EmailVerifyCode", otpCode);
+
+                // 2. Tạo đối tượng MimeMessage (Để sửa lỗi 'string to MimeMessage')
+                var message = new MimeKit.MimeMessage();
+                message.From.Add(new MimeKit.MailboxAddress("HShop", "trathanhclassic123@gmail.com"));
+                message.To.Add(new MimeKit.MailboxAddress("", email));
+                message.Subject = "Mã xác thực đăng ký tài khoản";
+
+                // Nội dung Email
+                message.Body = new MimeKit.TextPart("html")
+                {
+                    Text = $"<h3>Mã xác thực của bạn là: <b style='color:red'>{otpCode}</b></h3>"
+                };
+
+                // 3. Gửi Mail bằng SmtpClient của MailKit
+                using (var client = new MailKit.Net.Smtp.SmtpClient())
+                {
+                    // 1. Kết nối với TLS bảo mật
+                    await client.ConnectAsync("smtp.gmail.com", 587, MailKit.Security.SecureSocketOptions.StartTls);
+
+                    // 2. Đăng nhập bằng App Password (16 ký tự viết liền)
+                    // THAY EMAIL VÀ MẬT KHẨU THẬT CỦA BẠN VÀO ĐÂY
+                    await client.AuthenticateAsync("trathanhclassic123@gmail.com", "sgpyhcoqqcpeziyj");
+
+                    // 3. Gửi đối tượng message (đảm bảo message.From cũng là email trên)
+                    await client.SendAsync(message);
+
+                    await client.DisconnectAsync(true);
+                }
+
+                return Json(new { success = true });
+            }
+            catch (Exception ex)
+            {
+                // Trả về lỗi để JavaScript biết và nhả nút bấm
+                return Json(new { success = false, message = "Lỗi gửi mail: " + ex.Message });
+            }
+        }
+
+        private async Task<int> SendMail(string toMail, string subject, string message)
+        {
+            try
+            {
+                // Dùng tên đầy đủ để tránh lỗi Ambiguous reference
+                using (var smtpClient = new System.Net.Mail.SmtpClient("smtp.gmail.com"))
+                {
+                    smtpClient.Port = 587;
+                    smtpClient.EnableSsl = true;
+                    smtpClient.Credentials = new NetworkCredential("bkc@gmail.com", "naslhfkxujtcezfa");
+
+                    var mail = new System.Net.Mail.MailMessage();
+                    mail.From = new MailAddress("bkc@gmail.com", "BKC EDU");
+                    mail.To.Add(toMail);
+                    mail.Subject = subject;
+                    mail.Body = message;
+                    mail.IsBodyHtml = true;
+
+                    await smtpClient.SendMailAsync(mail);
+                }
+                return 1;
+            }
+            catch { return 0; }
         }
     }
 }

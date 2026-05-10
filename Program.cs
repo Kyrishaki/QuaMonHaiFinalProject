@@ -21,6 +21,7 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
 
 // ---------------------------------------------------
 // BỔ SUNG CẤU HÌNH SESSION Ở ĐÂY
+builder.Services.AddSession();
 builder.Services.AddDistributedMemoryCache();
 builder.Services.AddSession(options => {
     // ĐÃ SỬA: Đổi từ FromSeconds(10) thành FromMinutes(30) để giỏ hàng không bị xóa quá nhanh
@@ -52,6 +53,8 @@ app.UseSession();
 app.UseAuthentication();
 
 app.UseAuthorization();
+
+app.UseSession();
 
 app.MapControllerRoute(
     name: "default",
