@@ -78,5 +78,12 @@ namespace LTWEB_QuaMonHai_CuoiKy.Controllers {
         public IActionResult Error() {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+        public IActionResult VeChungToi() {
+            // Đặt tiêu đề cho Breadcrumb động nhận diện
+            ViewData["Title"] = "Về chúng tôi";
+            ViewData["Breadcrumb_Parent"] = "Trang thông tin";
+            ViewData["Breadcrumb_ParentLink"] = "#";
+            return View();
+        }
     }
 }

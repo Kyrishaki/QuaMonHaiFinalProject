@@ -336,6 +336,9 @@ wwwroot\img\Hinh\NhaCC\samsung.jpg
 wwwroot\img\Hinh\NhaCC\shopping_cart.png
 wwwroot\img\Hinh\NhaCC\sonny-ericsson.jpg
 wwwroot\img\Hinh\Others\shopping_cart.png
+wwwroot\img\Hinh\QC\QC1.jpg
+wwwroot\img\Hinh\QC\QC2.jpg
+wwwroot\img\Hinh\QC\QC3.jpg
 wwwroot\img\icon-1.png
 wwwroot\img\icon-2.png
 wwwroot\img\icon-3.png
