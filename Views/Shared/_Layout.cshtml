@@ -28,7 +28,10 @@
     </div>
     <partial view name="_Navbar" />
 
-    @if (ViewData["Title"]?.ToString() == "Trang chủ") {
+    @if (ViewData["Title"]?.ToString() == "Cửa hàng của chúng tôi") {
+        <partial view name="_Header" />
+    }
+    @if (ViewData["Title"]?.ToString() == "Về Chúng Tôi") {
         <partial view name="_Header" />
     }
 
