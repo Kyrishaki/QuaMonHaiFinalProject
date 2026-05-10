@@ -113,7 +113,7 @@ namespace LTWEB_QuaMonHai_CuoiKy.Controllers {
 
                 using (var client = new HttpClient()) {
                     // Thay bằng Secret Key thật của bạn từ Google Admin Console
-                    var secretKey = "6Le8keIsAAAAAETHXhiZSiJjEgKlxLekZwigeg57";
+                    var secretKey = "6Le0Z-MsAAAAABmtR4FCdgxg4GekC-nY9L_4Tdob";
                     var response = await client.PostAsync($"https://www.google.com/recaptcha/api/siteverify?secret={secretKey}&response={captchaResponse}", null);
                     var jsonString = await response.Content.ReadAsStringAsync();
 

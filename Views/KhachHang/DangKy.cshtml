@@ -1,6 +1,7 @@
 ﻿@model LTWEB_QuaMonHai_CuoiKy.ViewModels.RegisterVM
 @{
     ViewData["Title"] = "Đăng Ký";
+    var showOtpSection = !ViewData.ModelState.IsValid || (Model != null && !string.IsNullOrEmpty(Model.Email)) ? "display: block;" : "display: none;";
 }
 <div class="container-fluid py-5" style="background-color: #f4f6f8;">
     <div class="container py-5">
@@ -9,9 +10,14 @@
                 <div class="card shadow-lg border-0 rounded-4 overflow-hidden">
                     <div class="card-header bg-primary text-white text-center py-4" style="background-color: #81c408 !important;">
                         <h2 class="mb-0 fw-bold text-white"><i class="fa fa-user-plus me-2"></i>Đăng ký Thành viên</h2>
-                        <p class="mb-0 text-white-50">Gia nhập cộng đồng Foody ngay hôm nay</p>
+                        <p class="mb-0 text-white-50">Gia nhập cộng đồng ngay hôm nay</p>
                     </div>
                     <div class="card-body p-4 p-md-5">
+
+                        @if (!ViewData.ModelState.IsValid) {
+                            <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
+                        }
+
                         <form asp-action="DangKy" enctype="multipart/form-data">
                             <div class="row g-4">
                                 <div class="col-md-6">
@@ -70,15 +76,15 @@
                                     <span asp-validation-for="Email" class="text-danger small"></span>
                                 </div>
 
-                                <div class="col-md-6" id="verificationSection" style="display: none;">
+                                <div class="col-md-6" id="verificationSection" style="@showOtpSection">
                                     <label class="form-label fw-bold text-muted">Mã xác thực <sup class="text-danger">*</sup></label>
-                                    <input asp-for="VerificationCode" class="form-control rounded-pill px-3" placeholder="Nhập mã 6 số">
-                                    <span asp-validation-for="VerificationCode" class="text-danger small"></span>
+                                    <input asp-for="VerificationCode" class="form-control rounded-pill px-3" placeholder="Nhập mã 6 số gửi về email">
+                                    <span asp-validation-for="VerificationCode" class="text-danger small fw-bold"></span>
                                 </div>
 
                                 <div class="col-12">
-                                    <label class="form-label fw-bold text-muted" for="Hinh">Hình đại diện <sup class="text-danger">*</sup></label>
-                                    <input type="file" name="Hinh" class="form-control rounded-pill px-3" accept="image/*" />
+                                    <label class="form-label fw-bold text-muted" for="Hinh">Hình đại diện</label>
+                                    <input type="file" name="Hinh" id="Hinh" class="form-control rounded-pill px-3" accept="image/*" />
                                 </div>
 
                                 <div class="col-12 text-center mt-5">
@@ -97,10 +103,23 @@
 </div>
 
 @section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+
     <script>
         $("#btnSendCode").click(function () {
             var email = $("#emailInput").val();
-            if(!email) { alert("Hãy nhập email!"); return; }
+
+            // Đã sửa: Gấp đôi ký hiệu @@ để Razor không biên dịch nhầm
+            var emailPattern = /^[^\s@@]+@@[^\s@@]+\.[^\s@@]+$/;
+
+            if(!email) {
+                alert("Hãy nhập email!");
+                return;
+            }
+            if(!emailPattern.test(email)) {
+                alert("Vui lòng nhập đúng định dạng email!");
+                return;
+            }
 
             var btn = $(this);
             btn.prop('disabled', true).text("Đang gửi...");
@@ -108,10 +127,13 @@
             $.post('/KhachHang/SendVerificationCode', { email: email }, function (res) {
                 if (res.success) {
                     $("#verificationSection").slideDown();
-                    alert("Đã gửi mã thành công!");
+                    alert("Đã gửi mã thành công! Vui lòng kiểm tra hộp thư (cả mục Spam).");
                 } else {
                     alert(res.message);
                 }
+                btn.prop('disabled', false).text("Gửi lại mã");
+            }).fail(function() {
+                alert("Lỗi kết nối đến server. Vui lòng thử lại sau.");
                 btn.prop('disabled', false).text("Gửi lại mã");
             });
         });
