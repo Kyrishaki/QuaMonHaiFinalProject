@@ -59,12 +59,11 @@ namespace LTWEB_QuaMonHai_CuoiKy.Controllers {
                     khachHang.RandomKey = MyUtil.GenerateRandomKey();
 
                     // 2. Mã hóa mật khẩu người dùng nhập vào kết hợp với RandomKey
-                    // Ghi chú: Nếu file RegisterVM.cs của bạn đặt tên biến là Password thì sửa "model.MatKhau" thành "model.Password"
                     khachHang.MatKhau = model.MatKhau.ToMd5Hash(khachHang.RandomKey);
 
                     // 3. Gán các giá trị mặc định hệ thống
-                    khachHang.HieuLuc = true; // SỬA LỖI: Kích hoạt tài khoản ngay lập tức
-                    khachHang.VaiTro = 0;     // SỬA LỖI: Phân quyền mặc định là Khách hàng (0: Khách, 1: Admin)
+                    khachHang.HieuLuc = true; // Kích hoạt tài khoản ngay lập tức
+                    khachHang.VaiTro = 0;     // Phân quyền mặc định là Khách hàng (0: Khách, 1: Admin)
 
                     // 4. Xử lý upload ảnh đại diện (nếu có)
                     if (Hinh != null && Hinh.Length > 0) {
@@ -237,6 +236,67 @@ namespace LTWEB_QuaMonHai_CuoiKy.Controllers {
 
             return View(model);
         }
+
+        // ===============================================
+        // BẮT ĐẦU: KHU VỰC XỬ LÝ ĐỔI MẬT KHẨU
+        // ===============================================
+
+        [Authorize]
+        [HttpGet]
+        public IActionResult DoiMatKhau() {
+            return View();
+        }
+
+        [Authorize]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult DoiMatKhau(ChangePasswordVM model) {
+            if (!ModelState.IsValid) {
+                return View(model);
+            }
+
+            var customerId = User.Claims.SingleOrDefault(c => c.Type == "CustomerID")?.Value;
+            if (string.IsNullOrEmpty(customerId)) {
+                return RedirectToAction("DangNhap");
+            }
+
+            var khachHang = db.KhachHangs.SingleOrDefault(kh => kh.MaKh == customerId);
+            if (khachHang == null) {
+                return NotFound();
+            }
+
+            // Kiểm tra mật khẩu hiện tại
+            var hashedOldPassword = model.OldPassword.ToMd5Hash(khachHang.RandomKey);
+            if (khachHang.MatKhau != hashedOldPassword) {
+                ModelState.AddModelError("OldPassword", "Mật khẩu hiện tại không chính xác.");
+                return View(model);
+            }
+
+            // Kiểm tra xem mật khẩu mới có trùng với mật khẩu cũ không
+            if (model.OldPassword == model.NewPassword) {
+                ModelState.AddModelError("NewPassword", "Mật khẩu mới không được trùng với mật khẩu hiện tại.");
+                return View(model);
+            }
+
+            try {
+                // Mã hóa mật khẩu mới và lưu lại
+                khachHang.MatKhau = model.NewPassword.ToMd5Hash(khachHang.RandomKey);
+
+                db.Update(khachHang);
+                db.SaveChanges();
+
+                TempData["Success"] = "Đổi mật khẩu thành công!";
+                return RedirectToAction("Profile");
+            }
+            catch (Exception ex) {
+                ModelState.AddModelError(string.Empty, "Có lỗi xảy ra trong quá trình đổi mật khẩu: " + ex.Message);
+                return View(model);
+            }
+        }
+
+        // ===============================================
+        // KẾT THÚC: KHU VỰC XỬ LÝ ĐỔI MẬT KHẨU
+        // ===============================================
 
         [Authorize]
         public async Task<IActionResult> DangXuat() {

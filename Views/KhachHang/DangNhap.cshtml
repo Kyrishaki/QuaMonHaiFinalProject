@@ -5,44 +5,66 @@
 
 <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 
-<div class="container-fluid py-5">
+<div class="container-fluid py-5" style="background-color: #f4f6f8;">
     <div class="container py-5">
-        <h1 class="mb-4">Đăng nhập</h1>
-        <form asp-action="DangNhap" asp-route-returnurl="@ViewBag.ReturnUrl">
-            <div class="text-danger" asp-validation-summary="All"></div>
-            <div class="row">
-
-                <div class="col-md-12 col-lg-6">
-                    <div class="form-item w-100">
-                        <label asp-for="@Model.UserName" class="form-label my-3"> </label><sup>*</sup>
-                        <input asp-for="@Model.UserName" type="text" class="form-control">
-                        <span asp-validation-for="@Model.UserName" class="text-danger"></span>
-                    </div>
+        <div class="row g-0 shadow-lg rounded-4 overflow-hidden bg-white" style="min-height: 600px;">
+            <div class="col-lg-6 d-none d-lg-flex flex-column justify-content-center align-items-center text-white position-relative" style="background: url('/img/vegetable-item-4.jpg') center/cover no-repeat;">
+                <div class="position-absolute top-0 start-0 w-100 h-100" style="background: rgba(129, 196, 8, 0.85);"></div>
+                <div class="position-relative z-1 text-center p-5">
+                    <h1 class="display-3 text-white fw-bold mb-4">Foody</h1>
+                    <h4 class="text-white mb-4">Hương vị thiên nhiên, sức khỏe gia đình!</h4>
+                    <p class="fs-5 mb-4">Chào mừng bạn quay trở lại. Đăng nhập ngay để khám phá hàng ngàn sản phẩm hữu cơ tươi sạch và nhận nhiều ưu đãi hấp dẫn.</p>
+                    <ul class="list-unstyled text-start d-inline-block fs-6">
+                        <li class="mb-2"><i class="fa fa-check-circle text-white me-2"></i> 100% Thực phẩm hữu cơ đạt chuẩn</li>
+                        <li class="mb-2"><i class="fa fa-check-circle text-white me-2"></i> Giao hàng siêu tốc trong 2 giờ</li>
+                        <li class="mb-2"><i class="fa fa-check-circle text-white me-2"></i> Tích điểm đổi quà tiện lợi</li>
+                    </ul>
                 </div>
-
-                <div class="col-md-12 col-lg-6">
-                    <label asp-for="@Model.Password" class="form-label my-3"> </label><sup>*</sup>
-                    <input asp-for="@Model.Password" type="password" class="form-control">
-                    <span asp-validation-for="@Model.Password" class="text-danger"></span>
-                </div>
-
-                <div class="col-12 mt-3">
-                    <div class="g-recaptcha" data-sitekey="6Le8keIsAAAAAPCu8dhEDryM6Q1ngRM1EBCgy0mq"></div>
-                </div>
-
-                <div class="row g-4 text-center align-items-center justify-content-center pt-4">
-                    <button type="submit" class="btn border-secondary py-3 px-4 text-uppercase w-100 text-primary">Đăng nhập </button>
-                    <a asp-control="KhachHang" asp-action="QuanMatKhau" class="btn border-danger">Quên mật khẩu </a>
-                </div>
-
             </div>
-        </form>
+
+            <div class="col-lg-6 p-5 d-flex flex-column justify-content-center">
+                <div class="text-center mb-5">
+                    <h2 class="text-primary fw-bold">Đăng Nhập</h2>
+                    <p class="text-muted">Vui lòng đăng nhập để tiếp tục</p>
+                </div>
+
+                <form asp-action="DangNhap" asp-route-returnurl="@ViewBag.ReturnUrl">
+                    <div class="text-danger mb-3" asp-validation-summary="All"></div>
+
+                    <div class="form-floating mb-4">
+                        <input asp-for="@Model.UserName" type="text" class="form-control rounded-pill px-4" id="floatingInput" placeholder="Tên đăng nhập">
+                        <label for="floatingInput" class="ms-3 text-muted">Tên đăng nhập *</label>
+                        <span asp-validation-for="@Model.UserName" class="text-danger small ms-3"></span>
+                    </div>
+
+                    <div class="form-floating mb-4">
+                        <input asp-for="@Model.Password" type="password" class="form-control rounded-pill px-4" id="floatingPassword" placeholder="Mật khẩu">
+                        <label for="floatingPassword" class="ms-3 text-muted">Mật khẩu *</label>
+                        <span asp-validation-for="@Model.Password" class="text-danger small ms-3"></span>
+                    </div>
+
+                    <div class="d-flex justify-content-center mb-4">
+                        <div class="g-recaptcha" data-sitekey="6Le8keIsAAAAAPCu8dhEDryM6Q1ngRM1EBCgy0mq"></div>
+                    </div>
+
+                    <div class="d-grid gap-3 mb-4">
+                        <button type="submit" class="btn text-white rounded-pill py-3 fw-bold shadow-sm" style="background-color: #81c408; font-size: 1.1rem;">
+                            ĐĂNG NHẬP
+                        </button>
+                    </div>
+
+                    <div class="d-flex justify-content-between align-items-center mt-2">
+                        <a asp-controller="KhachHang" asp-action="QuanMatKhau" class="text-danger text-decoration-none small"><i class="fa fa-lock me-1"></i> Quên mật khẩu?</a>
+                        <a asp-controller="KhachHang" asp-action="DangKy" class="text-primary text-decoration-none fw-bold small">Tạo tài khoản <i class="fa fa-arrow-right ms-1"></i></a>
+                    </div>
+                </form>
+            </div>
+        </div>
     </div>
 </div>
 
 @section Scripts {
     <script>
-        // Gán mã token vào ViewModel trước khi submit
         $('form').submit(function(e) {
             var response = grecaptcha.getResponse();
             if(response.length == 0) {
