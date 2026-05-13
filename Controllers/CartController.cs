@@ -1,21 +1,22 @@
 ﻿using LTWEB_QuaMonHai_CuoiKy.Data;
 using LTWEB_QuaMonHai_CuoiKy.Models;
 using LTWEB_QuaMonHai_CuoiKy.ViewModels;
-using Microsoft.AspNetCore.Authorization;
+using LTWEB_QuaMonHai_CuoiKy.Helpers;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 
 namespace LTWEB_QuaMonHai_CuoiKy.Controllers {
-    [Authorize] // Bắt buộc đăng nhập để sử dụng giỏ hàng cá nhân
     public class CartController : Controller {
         private readonly Hshop2023Context _Context;
+        public List<CartItem> shopCart => HttpContext.Session.Get<List<CartItem>>(mySetting.ShopCart) ?? new List<CartItem>();
+
 
         public CartController(Hshop2023Context context) {
             _Context = context;
         }
 
-        // Đã sửa lại hàm lấy CustomerId an toàn hơn
+        
         private string GetCustomerId() {
             var claim = User.Claims.SingleOrDefault(c => c.Type == "CustomerID")
                      ?? User.Claims.SingleOrDefault(c => c.Type == ClaimTypes.NameIdentifier);
@@ -23,22 +24,55 @@ namespace LTWEB_QuaMonHai_CuoiKy.Controllers {
             return claim?.Value ?? string.Empty;
         }
 
-        public async Task<IActionResult> Index() {
+       public async Task<IActionResult> Index()
+        {
             var customerId = GetCustomerId();
+            var sessionCart = shopCart; // List<CartItem> lấy từ Session
 
-            // Nếu không lấy được ID (phiên đăng nhập lỗi), bắt đăng nhập lại
-            if (string.IsNullOrEmpty(customerId)) {
-                return RedirectToAction("Login", "KhachHang");
+            // CHƯA ĐĂNG NHẬP
+            if (string.IsNullOrEmpty(customerId))
+            {
+                return View(sessionCart);
             }
 
-            // Lấy dữ liệu giỏ hàng từ Database[cite: 8]
+            //  ĐÃ ĐĂNG NHẬP (Thực hiện gộp giỏ hàng Session vào DB)
+            if (sessionCart.Any())
+            {
+                foreach (var item in sessionCart)
+                {
+                    // Kiểm tra xem món hàng trong Session đã có trong DB của User này chưa
+                    var dbItem = await _Context.GioHangs
+                        .SingleOrDefaultAsync(g => g.MaKh == customerId && g.MaHh == item.MaHh);
+
+                    if (dbItem != null)
+                    {
+                        dbItem.SoLuong += item.SoLuong; // Nếu có rồi thì cộng dồn
+                    }
+                    else
+                    {
+                        // Nếu chưa có thì thêm mới vào DB
+                        _Context.GioHangs.Add(new GioHang
+                        {
+                            MaKh = customerId,
+                            MaHh = item.MaHh,
+                            SoLuong = item.SoLuong
+                        });
+                    }
+                }
+
+                // Sau khi đã gộp xong vào Database, xóa sạch Session để tránh gộp lặp lại 
+                await _Context.SaveChangesAsync();
+                HttpContext.Session.Remove(mySetting.ShopCart);
+            }
+
+            // Lấy toàn bộ dữ liệu từ Database ra để hiển thị (bao gồm cả các món vừa được gộp)
             var gioHangDb = await _Context.GioHangs
                 .Include(g => g.MaHhNavigation)
                 .Where(g => g.MaKh == customerId)
                 .ToListAsync();
 
-            // Chuyển đổi từ Model Database sang ViewModel CartItem để hiển thị[cite: 8]
-            var cartItems = gioHangDb.Select(g => new CartItem {
+            var cartItems = gioHangDb.Select(g => new CartItem
+            {
                 MaHh = g.MaHh,
                 TenHh = g.MaHhNavigation.TenHh,
                 DonGia = g.MaHhNavigation.DonGia ?? 0,
@@ -49,54 +83,101 @@ namespace LTWEB_QuaMonHai_CuoiKy.Controllers {
             return View(cartItems);
         }
 
-        public async Task<IActionResult> AddToCart(int id, int quantity = 1) {
+        public async Task<IActionResult> AddToCart(int id, int quantity = 1)
+        {
             var customerId = GetCustomerId();
 
-            // Chặn không cho thêm vào giỏ nếu chưa có ID
-            if (string.IsNullOrEmpty(customerId)) {
-                return RedirectToAction("Login", "KhachHang");
+            // TRƯỜNG HỢP 1: CHƯA ĐĂNG NHẬP -> THAO TÁC TRÊN SESSION
+            if (string.IsNullOrEmpty(customerId))
+            {
+                var carlist = shopCart; // Lấy List từ thuộc tính shopCart (Session)
+                var item = carlist.SingleOrDefault(p => p.MaHh == id);
+
+                if (item == null)
+                {
+                    var hh = _Context.HangHoas.AsNoTracking().SingleOrDefault(p => p.MaHh == id);
+                    if (hh == null) return NotFound();
+
+                    carlist.Add(new CartItem
+                    {
+                        MaHh = id,
+                        TenHh = hh.TenHh,
+                        DonGia = hh.DonGia ?? 0,
+                        Hinh = hh.Hinh,
+                        SoLuong = quantity
+                    });
+                }
+                else
+                {
+                    item.SoLuong += quantity;
+                }
+
+                HttpContext.Session.Set(mySetting.ShopCart, carlist);
             }
+            // TRƯỜNG HỢP 2: ĐÃ ĐĂNG NHẬP -> THAO TÁC TRÊN DATABASE
+            else
+            {
+                var cartItem = await _Context.GioHangs
+                    .SingleOrDefaultAsync(g => g.MaKh == customerId && g.MaHh == id);
 
-            var hanghoa = await _Context.HangHoas.SingleOrDefaultAsync(p => p.MaHh == id);
-            if (hanghoa == null) return NotFound();
+                if (cartItem == null)
+                {
+                    // Kiểm tra hàng hóa tồn tại trước khi thêm vào bảng GioHang
+                    var exists = await _Context.HangHoas.AnyAsync(p => p.MaHh == id);
+                    if (!exists) return NotFound();
 
-            var cartItem = await _Context.GioHangs
-                .SingleOrDefaultAsync(g => g.MaKh == customerId && g.MaHh == id);
+                    _Context.GioHangs.Add(new GioHang
+                    {
+                        MaKh = customerId,
+                        MaHh = id,
+                        SoLuong = quantity
+                    });
+                }
+                else
+                {
+                    cartItem.SoLuong += quantity;
+                }
 
-            if (cartItem == null) {
-                cartItem = new GioHang {
-                    MaKh = customerId,
-                    MaHh = id,
-                    SoLuong = quantity
-                };
-                _Context.GioHangs.Add(cartItem);
-            }
-            else {
-                cartItem.SoLuong += quantity;
-                _Context.GioHangs.Update(cartItem);
-            }
-
-            await _Context.SaveChangesAsync();
-            return RedirectToAction("Index");
-        }
-
-        public async Task<IActionResult> Delete(int id) {
-            var customerId = GetCustomerId();
-            if (string.IsNullOrEmpty(customerId)) return RedirectToAction("Login", "KhachHang");
-
-            var itemToRemove = await _Context.GioHangs
-                .SingleOrDefaultAsync(g => g.MaKh == customerId && g.MaHh == id);
-
-            if (itemToRemove != null) {
-                _Context.GioHangs.Remove(itemToRemove);
                 await _Context.SaveChangesAsync();
             }
+
             return RedirectToAction("Index");
+        }
+        public async Task<IActionResult> Delete(int id) {
+            var customerId = GetCustomerId();
+            if (string.IsNullOrEmpty(customerId))
+            {
+                var carlist = shopCart;
+                var item = carlist.SingleOrDefault(p => p.MaHh == id);
+                if (item == null) return NotFound();
+                carlist.Remove(item);
+                HttpContext.Session.Set(mySetting.ShopCart, carlist);
+                return RedirectToAction("Index");
+            }
+
+                var itemToRemove = await _Context.GioHangs
+                    .SingleOrDefaultAsync(g => g.MaKh == customerId && g.MaHh == id);
+                if (itemToRemove != null) {
+                    _Context.GioHangs.Remove(itemToRemove);
+                    await _Context.SaveChangesAsync();
+                }
+                return RedirectToAction("Index");
         }
 
         public async Task<IActionResult> UpdateQuantity(int id, int delta) {
             var customerId = GetCustomerId();
-            if (string.IsNullOrEmpty(customerId)) return RedirectToAction("Login", "KhachHang");
+            if (string.IsNullOrEmpty(customerId))
+            {
+                var carlist = shopCart;
+                var updateItem = carlist.SingleOrDefault(p => p.MaHh == id);
+                if (updateItem != null) {
+                    updateItem.SoLuong += delta;
+                    if (updateItem.SoLuong < 1) {
+                        updateItem.SoLuong = 1;
+                    }
+                    HttpContext.Session.Set(mySetting.ShopCart, carlist);
+                }
+            }
 
             var item = await _Context.GioHangs
                 .SingleOrDefaultAsync(g => g.MaKh == customerId && g.MaHh == id);
@@ -114,81 +195,6 @@ namespace LTWEB_QuaMonHai_CuoiKy.Controllers {
             return RedirectToAction("Index");
         }
 
-        // ================= KHU VỰC THANH TOÁN (CHECKOUT) =================
-
-        [HttpGet]
-        public async Task<IActionResult> Checkout() {
-            var customerId = GetCustomerId();
-            if (string.IsNullOrEmpty(customerId)) return RedirectToAction("Login", "KhachHang");
-
-            var gioHangDb = await _Context.GioHangs
-                .Include(g => g.MaHhNavigation)
-                .Where(g => g.MaKh == customerId)
-                .ToListAsync();
-
-            if (!gioHangDb.Any()) return RedirectToAction("Index");
-
-            var khachHang = await _Context.KhachHangs.SingleOrDefaultAsync(kh => kh.MaKh == customerId);
-            ViewBag.Cart = gioHangDb;
-
-            return View(new CheckoutVM {
-                HoTen = khachHang?.HoTen ?? "",
-                DiaChi = khachHang?.DiaChi ?? ""
-            });
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Checkout(CheckoutVM model) {
-            var customerId = GetCustomerId();
-            if (string.IsNullOrEmpty(customerId)) return RedirectToAction("Login", "KhachHang");
-
-            var gioHangDb = await _Context.GioHangs
-                .Include(g => g.MaHhNavigation)
-                .Where(g => g.MaKh == customerId)
-                .ToListAsync();
-
-            if (!gioHangDb.Any()) return RedirectToAction("Index");
-
-            if (ModelState.IsValid) {
-                var hoadon = new HoaDon {
-                    MaKh = customerId,
-                    HoTen = model.HoTen,
-                    DiaChi = model.DiaChi,
-                    NgayDat = DateTime.Now,
-                    NgayCan = DateTime.Now.AddDays(3),
-                    MaTrangThai = 0,
-                    GhiChu = model.GhiChu,
-                    CachThanhToan = "COD",
-                    CachVanChuyen = "Giao hàng tiêu chuẩn",
-                    PhiVanChuyen = 5
-                };
-
-                _Context.HoaDons.Add(hoadon);
-                await _Context.SaveChangesAsync();
-
-                var cthds = gioHangDb.Select(item => new ChiTietHd {
-                    MaHd = hoadon.MaHd,
-                    MaHh = item.MaHh,
-                    SoLuong = item.SoLuong,
-                    DonGia = item.MaHhNavigation.DonGia ?? 0,
-                    GiamGia = 0
-                }).ToList();
-
-                _Context.ChiTietHds.AddRange(cthds);
-                _Context.GioHangs.RemoveRange(gioHangDb); // Xóa giỏ hàng sau khi đặt thành công[cite: 8]
-                await _Context.SaveChangesAsync();
-
-                return RedirectToAction("Success", new { id = hoadon.MaHd });
-            }
-
-            ViewBag.Cart = gioHangDb;
-            return View(model);
-        }
-
-        public IActionResult Success(int id) {
-            ViewBag.OrderId = id;
-            return View();
-        }
+        
     }
 }
