@@ -368,5 +368,143 @@ namespace LTWEB_QuaMonHai_CuoiKy.Controllers {
             }
             catch { return 0; }
         }
+
+        #region QuenMatKhau
+        // GET: KhachHang/QuenMatKhau
+        [HttpGet]
+        public IActionResult QuenMatKhau()
+        {
+            return View();
+        }
+
+        // POST: KhachHang/QuenMatKhau
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> QuenMatKhau(ForgotPasswordVM model)
+        {
+            if (!ModelState.IsValid) return View(model);
+
+            // Kiểm tra xem có tài khoản nào khớp cả MaKh (Username) và Email không
+            var khachHang = db.KhachHangs.SingleOrDefault(kh => kh.MaKh == model.UserName && kh.Email == model.Email);
+
+            if (khachHang == null)
+            {
+                ModelState.AddModelError(string.Empty, "Thông tin tài khoản hoặc Email không chính xác.");
+                return View(model);
+            }
+
+            if (!khachHang.HieuLuc)
+            {
+                ModelState.AddModelError(string.Empty, "Tài khoản này hiện đang bị khóa.");
+                return View(model);
+            }
+
+            try
+            {
+                // 1. Tạo mã OTP ngẫu nhiên gồm 6 số
+                string otpCode = new Random().Next(100000, 999999).ToString();
+
+                // 2. Lưu thông tin vào Session để phục vụ bước xác thực kế tiếp
+                HttpContext.Session.SetString("ResetPassword_OTP", otpCode);
+                HttpContext.Session.SetString("ResetPassword_User", khachHang.MaKh);
+
+                // 3. Gửi Email chứa OTP (Sử dụng lại MailKit cấu hình sẵn của bạn)
+                var message = new MimeKit.MimeMessage();
+                message.From.Add(new MimeKit.MailboxAddress("HShop", "trathanhclassic123@gmail.com"));
+                message.To.Add(new MimeKit.MailboxAddress(khachHang.HoTen, khachHang.Email));
+                message.Subject = "Mã xác thực đặt lại mật khẩu - Foody";
+                message.Body = new MimeKit.TextPart("html")
+                {
+                    Text = $"<h3>Chào {khachHang.HoTen},</h3><p>Yêu cầu đặt lại mật khẩu của bạn đã được tiếp nhận. Mã OTP xác thực là: <b style='color:red; font-size: 1.2rem;'>{otpCode}</b></p><p>Mã này có hiệu lực trong phiên làm việc hiện tại.</p>"
+                };
+
+                using (var client = new MailKit.Net.Smtp.SmtpClient())
+                {
+                    await client.ConnectAsync("smtp.gmail.com", 587, MailKit.Security.SecureSocketOptions.StartTls);
+                    await client.AuthenticateAsync("trathanhclassic123@gmail.com", "sgpyhcoqqcpeziyj");
+                    await client.SendAsync(message);
+                    await client.DisconnectAsync(true);
+                }
+
+                TempData["Success"] = "Mã xác thực đã được gửi đến Email của bạn.";
+                return RedirectToAction("DatLaiMatKhau");
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError(string.Empty, "Có lỗi xảy ra khi gửi mail: " + ex.Message);
+            }
+
+            return View(model);
+        }
+
+        // GET: KhachHang/DatLaiMatKhau
+        [HttpGet]
+        public IActionResult DatLaiMatKhau()
+        {
+            // Kiểm tra nếu chưa qua bước nhập Email thì không cho vào trang này
+            var username = HttpContext.Session.GetString("ResetPassword_User");
+            if (string.IsNullOrEmpty(username))
+            {
+                return RedirectToAction("QuenMatKhau");
+            }
+            return View();
+        }
+
+        // POST: KhachHang/DatLaiMatKhau
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult DatLaiMatKhau(ResetPasswordVM model)
+        {
+            if (!ModelState.IsValid) return View(model);
+
+            // 1. Lấy dữ liệu từ Session ra để đối chiếu
+            var sessionCode = HttpContext.Session.GetString("ResetPassword_OTP");
+            var username = HttpContext.Session.GetString("ResetPassword_User");
+
+            if (string.IsNullOrEmpty(sessionCode) || string.IsNullOrEmpty(username))
+            {
+                ModelState.AddModelError(string.Empty, "Phiên làm việc đã hết hạn. Vui lòng thực hiện lại từ đầu.");
+                return View(model);
+            }
+
+            // 2. Kiểm tra mã OTP người dùng nhập vào
+            if (model.VerificationCode != sessionCode)
+            {
+                ModelState.AddModelError("VerificationCode", "Mã OTP xác thực không chính xác.");
+                return View(model);
+            }
+
+            // 3. Tìm tài khoản cần đổi mật khẩu
+            var khachHang = db.KhachHangs.SingleOrDefault(kh => kh.MaKh == username);
+            if (khachHang == null)
+            {
+                ModelState.AddModelError(string.Empty, "Không tìm thấy tài khoản tương ứng.");
+                return View(model);
+            }
+
+            try
+            {
+                // 4. Sinh mã RandomKey mới và băm mật khẩu mới (theo cấu trúc giống trang Đăng ký của bạn)
+                khachHang.RandomKey = MyUtil.GenerateRandomKey();
+                khachHang.MatKhau = model.NewPassword.ToMd5Hash(khachHang.RandomKey);
+
+                db.Update(khachHang);
+                db.SaveChanges();
+
+                // 5. Xóa Session sau khi khôi phục thành công để bảo mật
+                HttpContext.Session.Remove("ResetPassword_OTP");
+                HttpContext.Session.Remove("ResetPassword_User");
+
+                TempData["Success"] = "Đặt lại mật khẩu thành công! Vui lòng đăng nhập lại bằng mật khẩu mới.";
+                return RedirectToAction("DangNhap");
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError(string.Empty, "Lỗi hệ thống: " + ex.Message);
+            }
+
+            return View(model);
+        }
+        #endregion
     }
 }
