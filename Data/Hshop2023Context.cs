@@ -1,4 +1,4 @@
-﻿using LTWEB_QuaMonHai_CuoiKy.Models;
+using LTWEB_QuaMonHai_CuoiKy.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace LTWEB_QuaMonHai_CuoiKy.Data;
@@ -49,6 +49,8 @@ public partial class Hshop2023Context : DbContext {
 
     public virtual DbSet<GioHang> GioHangs { get; set; }
 
+    public virtual DbSet<GiamGia> GiamGias { get; set; }
+
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
         => optionsBuilder.UseSqlServer("Data Source=0.tcp.ap.ngrok.io,26018; Initial Catalog=Hshop2023; Persist Security Info=True; User ID=sa; Password=QuaMonHai; Trust Server Certificate=True;");
@@ -95,6 +97,13 @@ public partial class Hshop2023Context : DbContext {
                 .HasForeignKey(d => d.MaHh)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_OrderDetails_Products");
+
+            // Quan hệ với bảng GiamGia (nullable - không bắt buộc)
+            entity.HasOne(d => d.MaGgNavigation)
+                .WithMany(p => p.ChiTietHds)
+                .HasForeignKey(d => d.MaGg)
+                .OnDelete(DeleteBehavior.SetNull)
+                .HasConstraintName("FK_ChiTietHD_GiamGia");
         });
 
         modelBuilder.Entity<ChuDe>(entity => {
@@ -416,6 +425,23 @@ public partial class Hshop2023Context : DbContext {
                 .HasForeignKey(d => d.MaKh)
                 .OnDelete(DeleteBehavior.Cascade)
                 .HasConstraintName("FK_Favorites_Customers");
+        });
+
+        modelBuilder.Entity<GiamGia>(entity => {
+            entity.HasKey(e => e.MaGg);
+
+            entity.ToTable("GiamGia");
+
+            entity.Property(e => e.MaGg)
+                .ValueGeneratedOnAdd()     // auto-increment
+                .HasColumnName("MaGG");
+
+            entity.Property(e => e.TenMa)
+                .HasMaxLength(50)
+                .IsRequired();
+
+            entity.Property(e => e.PhanTramGiam)
+                .HasDefaultValue(0.0);
         });
 
         OnModelCreatingPartial(modelBuilder);

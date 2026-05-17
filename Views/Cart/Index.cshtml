@@ -1,4 +1,4 @@
-﻿@model IEnumerable<LTWEB_QuaMonHai_CuoiKy.ViewModels.CartItem>
+@model IEnumerable<LTWEB_QuaMonHai_CuoiKy.ViewModels.CartItem>
 
 @{
     ViewData["Title"] = "Giỏ Hàng";
@@ -82,13 +82,14 @@
         </div>
 
         <!-- Danh sách sản phẩm -->
+        <p class="text-muted mb-3">Mặc định đã tick toàn bộ sản phẩm. Bạn có thể bỏ tick nếu không muốn mua.</p>
         <div id="cart-list">
             @if (Model != null && Model.Any()) {
                 @foreach (var item in Model) {
                     <div class="row bg-white py-3 px-2 mb-2 rounded shadow-sm align-items-center cart-item-row mx-0" id="row-@item.MaHh">
                         <!-- Checkbox chọn sản phẩm -->
                         <div class="col-md-1 text-center">
-                            <input type="checkbox" class="form-check-input item-checkbox" data-id="@item.MaHh">
+                            <input type="checkbox" class="form-check-input item-checkbox" data-id="@item.MaHh" checked>
                         </div>
 
                         <!-- Hình ảnh và tên -->
@@ -105,9 +106,9 @@
                         <!-- Số lượng (Cập nhật qua Controller) -->
                         <div class="col-md-2 d-flex justify-content-center">
                             <div class="d-flex border rounded">
-                                <a asp-action="UpdateQuantity" asp-route-id="@item.MaHh" asp-route-delta="-1" class="qty-btn text-decoration-none">-</a>
+                                <a href="javascript:void(0);" class="qty-btn qty-update" data-id="@item.MaHh" data-delta="-1">-</a>
                                 <input type="text" class="qty-input" value="@item.SoLuong" readonly>
-                                <a asp-action="UpdateQuantity" asp-route-id="@item.MaHh" asp-route-delta="1" class="qty-btn text-decoration-none">+</a>
+                                <a href="javascript:void(0);" class="qty-btn qty-update" data-id="@item.MaHh" data-delta="1">+</a>
                             </div>
                         </div>
 
@@ -118,7 +119,7 @@
 
                         <!-- Nút Xóa -->
                         <div class="col-md-1 text-center">
-                            <a asp-action="Delete" asp-route-id="@item.MaHh" class="btn btn-sm btn-outline-danger shadow-sm">Xóa</a>
+                            <button type="button" data-id="@item.MaHh" class="btn btn-sm btn-outline-danger shadow-sm delete-cart-item-ajax">Xóa</button>
                         </div>
                     </div>
                 }
@@ -144,8 +145,9 @@
                 <span>Tổng thanh toán (<span id="selected-count" class="fw-bold text-primary">0</span> sản phẩm):</span>
                 <span id="final-total" class="text-orange fs-3 fw-bold ms-3">0$</span>
 
+                <button type="button" id="btn-clear-cart" class="btn btn-outline-danger btn-lg px-4 ms-2 shadow">Xóa tất cả</button>
                 <!-- Nút Mua Hàng: Mặc định bị vô hiệu hóa cho đến khi chọn sản phẩm -->
-                <a asp-action="Checkout" id="btn-checkout" class="btn btn-success btn-lg px-5 ms-3 shadow disabled">
+                <a asp-action="Check_Out" id="btn-checkout" class="btn btn-success btn-lg px-5 ms-2 shadow disabled">
                     Mua Hàng
                 </a>
             </div>
@@ -153,7 +155,7 @@
     </div>
 </div>
 
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+@section Scripts {
 <script>
     $(document).ready(function () {
 
@@ -176,7 +178,43 @@
             calculateCheckedTotal();
         });
 
-        // 3. Hàm tính tổng tiền dựa trên các sản phẩm được tích chọn
+        // 3. Cập nhật số lượng qua AJAX
+        $('.qty-update').click(function(e) {
+            e.preventDefault();
+            var btn = $(this);
+            var id = btn.data('id');
+            var delta = parseInt(btn.data('delta'));
+            
+            $.ajax({
+                url: '@Url.Action("UpdateQuantityAjax", "Cart")',
+                type: 'GET',
+                data: { id: id, delta: delta },
+                success: function(res) {
+                    var row = $('#row-' + id);
+                    row.find('.qty-input').val(res.quantity);
+                    
+                    // Format lineTotal
+                    row.find('.item-total').text(new Intl.NumberFormat('en-US').format(res.lineTotal) + '$');
+                    
+                    calculateCheckedTotal();
+                    
+                    // Cập nhật lại số lượng trên badge giỏ hàng
+                    $.get('@Url.Action("CartCount", "Cart")', function(count) {
+                        var badge = $('.fa-shopping-bag').siblings('.badge');
+                        if (badge.length > 0) {
+                            badge.text(count);
+                        } else if (count > 0) {
+                            $('.fa-shopping-bag').parent().append('<span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="font-size: 0.65rem;">' + count + '</span>');
+                        }
+                    });
+                },
+                error: function(err) {
+                    console.log('Error updating quantity:', err);
+                }
+            });
+        });
+
+        // 4. Hàm tính tổng tiền dựa trên các sản phẩm được tích chọn
         function calculateCheckedTotal() {
             let total = 0;
             let count = 0;
@@ -199,9 +237,68 @@
             // Bật/Tắt nút Mua Hàng
             if (count > 0) {
                 $('#btn-checkout').removeClass('disabled');
+                
+                // Cập nhật URL truyền theo các sản phẩm đã chọn
+                let selectedIds = [];
+                $('.item-checkbox:checked').each(function () {
+                    selectedIds.push($(this).data('id'));
+                });
+                let checkoutUrl = '@Url.Action("Check_Out", "Cart")?' + selectedIds.map(id => 'selected=' + id).join('&');
+                $('#btn-checkout').attr('href', checkoutUrl);
             } else {
                 $('#btn-checkout').addClass('disabled');
+                $('#btn-checkout').attr('href', 'javascript:void(0)');
+            }
+        }
+
+        // Xóa một sản phẩm
+        $('.delete-cart-item-ajax').click(function() {
+            if(!confirm('Bạn có chắc chắn muốn xóa sản phẩm này khỏi giỏ hàng?')) return;
+            
+            var btn = $(this);
+            var id = btn.data('id');
+            
+            $.ajax({
+                url: '@Url.Action("DeleteAjax", "Cart")',
+                type: 'POST',
+                data: { id: id },
+                success: function(res) {
+                    if(res.success) {
+                        $('#row-' + id).fadeOut(300, function() {
+                            $(this).remove();
+                            calculateCheckedTotal();
+                            updateBadge(res.count);
+                            if(res.count === 0) location.reload();
+                        });
+                    }
+                }
+            });
+        });
+
+        // Xóa tất cả giỏ hàng
+        $('#btn-clear-cart').click(function() {
+            if(!confirm('Bạn có chắc chắn muốn xóa toàn bộ giỏ hàng không?')) return;
+            
+            $.ajax({
+                url: '@Url.Action("ClearCartAjax", "Cart")',
+                type: 'POST',
+                success: function(res) {
+                    if(res.success) {
+                        location.reload();
+                    }
+                }
+            });
+        });
+
+        function updateBadge(count) {
+            var badge = $('.fa-shopping-bag').siblings('.badge');
+            if (badge.length > 0) {
+                badge.text(count);
+                if(count === 0) badge.remove();
+            } else if (count > 0) {
+                $('.fa-shopping-bag').parent().append('<span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="font-size: 0.65rem;">' + count + '</span>');
             }
         }
     });
 </script>
+}

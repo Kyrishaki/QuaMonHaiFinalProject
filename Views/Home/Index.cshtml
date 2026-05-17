@@ -1,4 +1,4 @@
-﻿@model IEnumerable<LTWEB_QuaMonHai_CuoiKy.Models.HangHoa>
+@model IEnumerable<LTWEB_QuaMonHai_CuoiKy.Models.HangHoa>
 
 @{
     ViewData["Title"] = "Cửa hàng của chúng tôi";
@@ -40,9 +40,9 @@
                                         <i class="fa fa-eye me-1"></i> Chi tiết
                                     </a>
 
-                                    <a asp-action="AddToCart" asp-controller="Cart" asp-route-id="@item.MaHh" class="btn btn-sm btn-light text-success">
+                                    <button type="button" data-id="@item.MaHh" class="btn btn-sm btn-light text-success add-to-cart-ajax">
                                         <i class="fa fa-shopping-cart me-1"></i> Thêm giỏ
-                                    </a>
+                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -87,6 +87,7 @@
     }
 </style>
 
+@section Scripts {
 <script>
     document.addEventListener("DOMContentLoaded", function() {
         // Kiểm tra xem trên thanh địa chỉ có chứa biến "searchQuery" không
@@ -103,5 +104,48 @@
                 }
             }, 200);
         }
+
+        // Xử lý nút Thêm vào giỏ hàng bằng AJAX
+        $('.add-to-cart-ajax').click(function(e) {
+            e.preventDefault();
+            var id = $(this).data('id');
+            var qty = 1;
+            
+            $.ajax({
+                url: '@Url.Action("AddToCartAjax", "Cart")',
+                type: 'POST',
+                data: { id: id, quantity: qty },
+                success: function(res) {
+                    if(res.success) {
+                        // Cập nhật số lượng trên icon giỏ hàng
+                        var badge = $('.fa-shopping-bag').siblings('.badge');
+                        if (badge.length > 0) {
+                            badge.text(res.count);
+                        } else if (res.count > 0) {
+                            $('.fa-shopping-bag').parent().append('<span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="font-size: 0.65rem;">' + res.count + '</span>');
+                        }
+                        
+                        // Show toast
+                        showToast("Đã thêm sản phẩm vào giỏ hàng!");
+                    } else {
+                        alert(res.message || 'Có lỗi xảy ra');
+                    }
+                }
+            });
+        });
+
+        function showToast(message) {
+            $('#customToast').remove(); // remove existing
+            var toastHtml = '<div id="customToast" class="position-fixed bottom-0 end-0 p-3" style="z-index: 9999;">' +
+                            '<div class="toast align-items-center text-white bg-success border-0 show" role="alert" aria-live="assertive" aria-atomic="true">' +
+                            '<div class="d-flex"><div class="toast-body"><i class="fa fa-check-circle me-2"></i>' + message + '</div>' +
+                            '<button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close" onclick="$(this).closest(\'#customToast\').remove();"></button>' +
+                            '</div></div></div>';
+            $('body').append(toastHtml);
+            setTimeout(function() {
+                $('#customToast').fadeOut(500, function() { $(this).remove(); });
+            }, 3000);
+        }
     });
 </script>
+}

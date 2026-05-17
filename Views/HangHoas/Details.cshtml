@@ -1,4 +1,4 @@
-﻿@model LTWEB_QuaMonHai_CuoiKy.Models.HangHoa
+@model LTWEB_QuaMonHai_CuoiKy.Models.HangHoa
 
 @{
     ViewData["Title"] = "Chi tiết sản phẩm";
@@ -77,9 +77,9 @@
                         </button>
                     </div>
 
-                    <a href="#" class="btn rounded-pill px-5 shadow-sm d-flex align-items-center justify-content-center text-white fw-bold" style="background-color: #81c408; height: 50px; font-size: 1.1rem; transition: 0.3s;">
+                    <button type="button" id="addToCartBtn" data-id="@Model.MaHh" class="btn rounded-pill px-5 shadow-sm d-flex align-items-center justify-content-center text-white fw-bold" style="background-color: #81c408; height: 50px; font-size: 1.1rem; transition: 0.3s;">
                         <i class="fa fa-shopping-cart me-2 fs-4"></i> Thêm vào giỏ hàng
-                    </a>
+                    </button>
                 </div>
 
             </div>
@@ -95,6 +95,7 @@
     </div>
 </div>
 
+@section Scripts {
 <script>
     // Đã nâng cấp hàm tăng/giảm để nhận diện giới hạn kho hàng (data-max)
     function increaseQty() {
@@ -119,7 +120,51 @@
         value <= 1 ? value = 1 : value--;
         input.value = value;
     }
+
+    $(document).ready(function() {
+        $('#addToCartBtn').click(function(e) {
+            e.preventDefault();
+            var id = $(this).data('id');
+            var qty = parseInt($('#quantityInput').val());
+            
+            $.ajax({
+                url: '@Url.Action("AddToCartAjax", "Cart")',
+                type: 'POST',
+                data: { id: id, quantity: qty },
+                success: function(res) {
+                    if(res.success) {
+                        // Cập nhật số lượng trên icon giỏ hàng
+                        var badge = $('.fa-shopping-bag').siblings('.badge');
+                        if (badge.length > 0) {
+                            badge.text(res.count);
+                        } else if (res.count > 0) {
+                            $('.fa-shopping-bag').parent().append('<span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="font-size: 0.65rem;">' + res.count + '</span>');
+                        }
+                        
+                        // Show toast
+                        showToast("Đã thêm " + qty + " sản phẩm vào giỏ hàng!");
+                    } else {
+                        alert(res.message || 'Có lỗi xảy ra');
+                    }
+                }
+            });
+        });
+
+        function showToast(message) {
+            $('#customToast').remove();
+            var toastHtml = '<div id="customToast" class="position-fixed bottom-0 end-0 p-3" style="z-index: 9999;">' +
+                            '<div class="toast align-items-center text-white bg-success border-0 show" role="alert" aria-live="assertive" aria-atomic="true">' +
+                            '<div class="d-flex"><div class="toast-body"><i class="fa fa-check-circle me-2"></i>' + message + '</div>' +
+                            '<button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close" onclick="$(this).closest(\'#customToast\').remove();"></button>' +
+                            '</div></div></div>';
+            $('body').append(toastHtml);
+            setTimeout(function() {
+                $('#customToast').fadeOut(500, function() { $(this).remove(); });
+            }, 3000);
+        }
+    });
 </script>
+}
 
 <style>
     .quantity .btn:hover {

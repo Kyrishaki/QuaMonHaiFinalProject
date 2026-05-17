@@ -1,0 +1,107 @@
+@model LTWEB_QuaMonHai_CuoiKy.Models.HoaDon
+@{
+    ViewData["Title"] = "Đặt hàng thành công";
+}
+
+<style>
+    .success-wrapper {
+        margin: 60px auto;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 40px 16px;
+        background-color: #f5f5f5;
+    }
+
+    .success-card {
+        background: #fff;
+        border-radius: 16px;
+        box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+        padding: 48px 40px;
+        max-width: 600px;
+        width: 100%;
+    }
+
+    .success-icon {
+        width: 80px;
+        height: 80px;
+        background: #d1fae5;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 24px;
+    }
+
+    .success-icon i {
+        font-size: 2.5rem;
+        color: #16a34a;
+    }
+</style>
+
+<div class="success-wrapper">
+    <div class="success-card">
+        <div class="success-icon">
+            <i class="fas fa-check"></i>
+        </div>
+
+        <h1 class="text-center text-2xl font-bold text-gray-800 mb-2">Đặt hàng thành công!</h1>
+        <p class="text-center text-gray-500 mb-6">
+            Cảm ơn bạn đã mua sắm tại <span class="text-green-600 font-semibold">Qua Môn Nhóm</span>
+        </p>
+
+        @if (Model != null)
+        {
+            <div class="bg-gray-50 rounded-lg p-6 mb-6 text-sm text-gray-700">
+                <div class="flex justify-between border-b pb-3 mb-3">
+                    <span class="font-medium">Mã đơn hàng:</span>
+                    <span class="font-bold text-gray-900">#@Model.MaHd</span>
+                </div>
+                <div class="flex justify-between border-b pb-3 mb-3">
+                    <span class="font-medium">Người nhận:</span>
+                    <span class="text-right">@Model.HoTen</span>
+                </div>
+                <div class="flex justify-between border-b pb-3 mb-3">
+                    <span class="font-medium">Địa chỉ giao:</span>
+                    <span class="text-right max-w-xs">@Model.DiaChi</span>
+                </div>
+                <div class="flex justify-between pb-3 mb-3">
+                    <span class="font-medium">Thanh toán:</span>
+                    <span class="text-right">@(Model.CachThanhToan == "cod" ? "Thanh toán khi nhận hàng" : Model.CachThanhToan)</span>
+                </div>
+            </div>
+
+            <div class="border rounded-lg overflow-hidden mb-6">
+                <div class="bg-gray-100 px-4 py-2 font-medium text-gray-700 text-sm">Chi tiết sản phẩm</div>
+                <div class="p-4">
+                    @foreach (var cthd in Model.ChiTietHds)
+                    {
+                        <div class="flex justify-between items-center mb-3 last:mb-0 text-sm">
+                            <div class="flex items-center gap-3">
+                                <img src="~/img/Hinh/HangHoa/@cthd.MaHhNavigation.Hinh" class="w-12 h-12 object-cover border rounded" />
+                                <div>
+                                    <p class="text-gray-800 truncate w-48">@cthd.MaHhNavigation.TenHh</p>
+                                    <p class="text-gray-500">x @cthd.SoLuong</p>
+                                </div>
+                            </div>
+                            <div class="font-medium text-gray-800">@((cthd.DonGia * cthd.SoLuong).ToString("N0"))₫</div>
+                        </div>
+                    }
+                </div>
+                <div class="bg-gray-50 px-4 py-3 border-t text-right">
+                    <span class="text-gray-600 text-sm">Tổng cộng (bao gồm phí vận chuyển):</span>
+                    <span class="text-xl font-bold text-green-600 ml-2">@((Model.ChiTietHds.Sum(c => c.DonGia * c.SoLuong) + Model.PhiVanChuyen - Model.ChiTietHds.Sum(c => c.GiamGia)).ToString("N0"))₫</span>
+                </div>
+            </div>
+        }
+
+        <div class="flex gap-4 justify-center">
+            <a href="/Cart/OrderHistory" class="px-6 py-2 border border-green-600 text-green-600 font-medium rounded hover:bg-green-50 transition">
+                <i class="fa-solid fa-clock-rotate-left mr-2"></i> Lịch sử đơn hàng
+            </a>
+            <a href="/" class="px-6 py-2 bg-green-600 text-white font-medium rounded hover:bg-green-700 transition shadow-sm">
+                <i class="fa-solid fa-bag-shopping mr-2"></i> Tiếp tục mua sắm
+            </a>
+        </div>
+    </div>
+</div>
