@@ -61,6 +61,10 @@
                         <span class="text-muted"><i class="fa fa-eye me-2 text-success"></i>Lượt xem:</span>
                         <span class="fw-bold text-info">@Model.SoLanXem</span>
                     </li>
+                    <li class="list-group-item d-flex justify-content-between px-0 bg-transparent border-bottom">
+                        <span class="text-muted"><i class="fa fa-cubes me-2 text-success"></i>Số lượng còn:</span>
+                        <span class="fw-bold text-dark">@Model.SoLuong</span>
+                    </li>
                 </ul>
 
                 <!-- CHỌN SỐ LƯỢNG VÀ THÊM VÀO GIỎ HÀNG -->
@@ -70,7 +74,7 @@
                             <i class="fa fa-minus text-success"></i>
                         </button>
 
-                        <input type="text" id="quantityInput" class="form-control text-center border-0 fw-bold fs-5" value="1" data-max="99" readonly>
+                        <input type="text" id="quantityInput" class="form-control text-center border-0 fw-bold fs-5" value="1" data-max="@Model.SoLuong" readonly>
 
                         <button class="btn btn-light btn-plus border-start" type="button" onclick="increaseQty()">
                             <i class="fa fa-plus text-success"></i>

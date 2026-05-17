@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 
 namespace LTWEB_QuaMonHai_CuoiKy.Models;
@@ -28,6 +28,8 @@ public partial class HangHoa
     public string? MoTa { get; set; }
 
     public string MaNcc { get; set; } = null!;
+
+    public int SoLuong { get; set; }
 
     public virtual ICollection<BanBe> BanBes { get; set; } = new List<BanBe>();
 

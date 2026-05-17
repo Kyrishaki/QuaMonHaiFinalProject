@@ -53,7 +53,7 @@ public partial class Hshop2023Context : DbContext {
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseSqlServer("Data Source=0.tcp.ap.ngrok.io,26018; Initial Catalog=Hshop2023; Persist Security Info=True; User ID=sa; Password=QuaMonHai; Trust Server Certificate=True;");
+        => optionsBuilder.UseSqlServer("Server=localhost;Database=Hshop2023;User Id=sa;Password=123456;TrustServerCertificate=True;");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder) {
         modelBuilder.Entity<GioHang>(entity => {
@@ -168,6 +168,9 @@ public partial class Hshop2023Context : DbContext {
             entity.Property(e => e.TenHh)
                 .HasMaxLength(50)
                 .HasColumnName("TenHH");
+            entity.Property(e => e.SoLuong)
+                .HasDefaultValue(100)
+                .HasColumnName("SoLuong");
 
             entity.HasOne(d => d.MaLoaiNavigation).WithMany(p => p.HangHoas)
                 .HasForeignKey(d => d.MaLoai)

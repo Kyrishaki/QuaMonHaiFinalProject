@@ -1,0 +1,100 @@
+﻿IF NOT EXISTS (SELECT * FROM sys.databases WHERE name = 'Hshop2023')
+BEGIN
+  CREATE DATABASE Hshop2023;
+END;
+GO
+
+USE [Hshop2023]
+GO
+/****** Object:  Table [dbo].[ChiTietHD]    Script Date: 12/1/2023 7:35:08 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[ChiTietHD](
+	[MaCT] [int] IDENTITY(1,1) NOT NULL,
+	[MaHD] [int] NOT NULL,
+	[MaHH] [int] NOT NULL,
+	[DonGia] [float] NOT NULL,
+	[SoLuong] [int] NOT NULL,
+	[GiamGia] [float] NOT NULL,
+ CONSTRAINT [PK_OrderDetails] PRIMARY KEY CLUSTERED 
+(
+	[MaCT] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[HangHoa]    Script Date: 12/1/2023 7:35:08 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[HangHoa](
+	[MaHH] [int] IDENTITY(1,1) NOT NULL,
+	[TenHH] [nvarchar](50) NOT NULL,
+	[TenAlias] [nvarchar](50) NULL,
+	[MaLoai] [int] NOT NULL,
+	[MoTaDonVi] [nvarchar](50) NULL,
+	[DonGia] [float] NULL,
+	[Hinh] [nvarchar](50) NULL,
+	[NgaySX] [datetime] NOT NULL,
+	[GiamGia] [float] NOT NULL,
+	[SoLanXem] [int] NOT NULL,
+	[MoTa] [nvarchar](max) NULL,
+	[MaNCC] [nvarchar](50) NOT NULL,
+ CONSTRAINT [PK_Products] PRIMARY KEY CLUSTERED 
+(
+	[MaHH] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+/****** Object:  View [dbo].[vChiTietHoaDon]    Script Date: 12/1/2023 7:35:08 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE VIEW [dbo].[vChiTietHoaDon]
+AS 
+	SELECT cthd.*, TenHH
+	FROM ChiTietHD cthd JOIN HangHoa hh 
+		ON hh.MaHH = cthd.MaHH
+
+
+GO
+/****** Object:  Table [dbo].[BanBe]    Script Date: 12/1/2023 7:35:08 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[BanBe](
+	[MaBB] [int] IDENTITY(1,1) NOT NULL,
+	[MaKH] [nvarchar](20) NULL,
+	[MaHH] [int] NOT NULL,
+	[HoTen] [nvarchar](50) NULL,
+	[Email] [nvarchar](50) NOT NULL,
+	[NgayGui] [datetime] NOT NULL,
+	[GhiChu] [nvarchar](max) NULL,
+ CONSTRAINT [PK_Promotions] PRIMARY KEY CLUSTERED 
+(
+	[MaBB] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[ChuDe]    Script Date: 12/1/2023 7:35:08 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[ChuDe](
+	[MaCD] [int] IDENTITY(1,1) NOT NULL,
+	[TenCD] [nvarchar](50) NULL,
+	[MaNV] [nvarchar](50) NULL,
+ CONSTRAINT [PK_ChuDe] PRIMARY KEY CLUSTERED 
+(
+	[MaCD] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[GopY]    Script Date: 12/1/2023 7:35:08 AM ******/
+SET ANSI_NULLS ON
+GO

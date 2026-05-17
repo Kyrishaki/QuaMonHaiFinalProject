@@ -1,0 +1,182 @@
+Total SQL products parsed: 81
+Total DB products parsed: 81
+Total unique IDs: 81
+MaHH 1001:
+  Name: SQL='Aniseed Syrup 123' vs DB='D?ng h? cao c?p m?u 1001'
+MaHH 1002:
+  Name: SQL='Change' vs DB='D?ng h? cao c?p m?u 1002'
+MaHH 1003:
+  Name: SQL='Tên mới sửa' vs DB='Laptop siu m?ng 1003'
+MaHH 1004:
+  Name: SQL='Chef Anton''s Cajun Seasoning' vs DB='Laptop siu m?ng 1004'
+MaHH 1005:
+  Name: SQL='Chef Anton''s Gumbo Mix' vs DB='Laptop siu m?ng 1005'
+MaHH 1006:
+  Name: SQL='Grandma''s Boysenberry Spread' vs DB='Laptop siu m?ng 1006'
+MaHH 1007:
+  Name: SQL='Uncle Bob''s Organic Dried Pears' vs DB='Giy b?t th?i trang 1007'
+MaHH 1008:
+  Name: SQL='orthwoods Cranberry Sauce' vs DB='Laptop siu m?ng 1008'
+MaHH 1009:
+  Name: SQL='Mishi Kobe Niku' vs DB='Nh?n dnh d quy 1009'
+MaHH 1010:
+  Name: SQL='Ikura' vs DB='Vali du l?ch ch?ng xu?c 1010'
+MaHH 1011:
+  Name: SQL='Queso Cabrales' vs DB='Di?n tho?i thng minh 1011'
+MaHH 1012:
+  Name: SQL='Queso Manchego La Pastora' vs DB='Di?n tho?i thng minh 1012'
+MaHH 1013:
+  Name: SQL='Konbu' vs DB='Vali du l?ch ch?ng xu?c 1013'
+MaHH 1014:
+  Name: SQL='Tofu' vs DB='Giy b?t th?i trang 1014'
+MaHH 1015:
+  Name: SQL='Genen Shouyu' vs DB='Laptop siu m?ng 1015'
+MaHH 1016:
+  Name: SQL='Pavlova' vs DB='My ?nh chuyn nghi?p 1016'
+MaHH 1017:
+  Name: SQL='Alice Mutton' vs DB='Nh?n dnh d quy 1017'
+MaHH 1018:
+  Name: SQL='Carnarvon Tigers' vs DB='Vali du l?ch ch?ng xu?c 1018'
+MaHH 1019:
+  Name: SQL='Teatime Chocolate Biscuits' vs DB='My ?nh chuyn nghi?p 1019'
+MaHH 1020:
+  Name: SQL='Sir Rodney''s Marmalade' vs DB='My ?nh chuyn nghi?p 1020'
+MaHH 1021:
+  Name: SQL='Sir Rodney''s Scones' vs DB='My ?nh chuyn nghi?p 1021'
+MaHH 1022:
+  Name: SQL='Gustaf''s KnÃ¤ckebrÃ¶d' vs DB='Nu?c hoa quy?n ru 1022'
+MaHH 1023:
+  Name: SQL='TunnbrÃÂ¶d' vs DB='Nu?c hoa quy?n ru 1023'
+MaHH 1024:
+  Name: SQL='GuaranÃ¡ FantÃ¡stica' vs DB='D?ng h? cao c?p m?u 1024'
+MaHH 1025:
+  Name: SQL='uNuCa NuÃÂ-Nougat-Creme' vs DB='My ?nh chuyn nghi?p 1025'
+MaHH 1026:
+  Name: SQL='GumbÃ¤r GummibÃ¤rchen' vs DB='Nh?n dnh d quy 1026'
+  Category: SQL=1002 vs DB=1005
+MaHH 1027:
+  Name: SQL='Schoggi Schokolade' vs DB='Nh?n dnh d quy 1027'
+  Category: SQL=1002 vs DB=1005
+MaHH 1028:
+  Name: SQL='RÃ¶ssle Sauerkraut' vs DB='Giy b?t th?i trang 1028'
+MaHH 1029:
+  Name: SQL='ThÃ¼ringer Rostbratwurst' vs DB='Nh?n dnh d quy 1029'
+MaHH 1030:
+  Name: SQL='ord-Ost Matjeshering' vs DB='Vali du l?ch ch?ng xu?c 1030'
+MaHH 1031:
+  Name: SQL='Gorgonzola Telino' vs DB='Di?n tho?i thng minh 1031'
+MaHH 1032:
+  Name: SQL='Mascarpone Fabioli' vs DB='Di?n tho?i thng minh 1032'
+MaHH 1033:
+  Name: SQL='Geitost' vs DB='Di?n tho?i thng minh 1033'
+MaHH 1034:
+  Name: SQL='Sasquatch Ale' vs DB='D?ng h? cao c?p m?u 1034'
+MaHH 1035:
+  Name: SQL='Steeleye Stout' vs DB='Di?n tho?i thng minh 1035'
+  Category: SQL=1000 vs DB=1003
+MaHH 1036:
+  Name: SQL='Inlagd Sill' vs DB='Vali du l?ch ch?ng xu?c 1036'
+MaHH 1037:
+  Name: SQL='Gravad lax' vs DB='Vali du l?ch ch?ng xu?c 1037'
+MaHH 1038:
+  Name: SQL='CÃ´te de Blaye' vs DB='Nu?c hoa quy?n ru 1038'
+  Category: SQL=1000 vs DB=1004
+MaHH 1039:
+  Name: SQL='Chartreuse verte' vs DB='My ?nh chuyn nghi?p 1039'
+  Category: SQL=1000 vs DB=1002
+MaHH 1040:
+  Name: SQL='Boston Crab Meat' vs DB='My ?nh chuyn nghi?p 1040'
+  Category: SQL=1007 vs DB=1002
+MaHH 1041:
+  Name: SQL='Jack''s New England Clam Chowder' vs DB='Vali du l?ch ch?ng xu?c 1041'
+MaHH 1042:
+  Name: SQL='Singaporean Hokkien Fried Mee' vs DB='Di?n tho?i thng minh 1042'
+  Category: SQL=1004 vs DB=1003
+MaHH 1043:
+  Name: SQL='Ipoh Coffee' vs DB='D?ng h? cao c?p m?u 1043'
+MaHH 1044:
+  Name: SQL='Gula Malacca' vs DB='Nu?c hoa quy?n ru 1044'
+  Category: SQL=1001 vs DB=1004
+MaHH 1045:
+  Name: SQL='Rogede sild' vs DB='Vali du l?ch ch?ng xu?c 1045'
+MaHH 1046:
+  Name: SQL='Spegesild' vs DB='Vali du l?ch ch?ng xu?c 1046'
+MaHH 1047:
+  Name: SQL='Zaanse koeken' vs DB='My ?nh chuyn nghi?p 1047'
+MaHH 1048:
+  Name: SQL='Chocolade' vs DB='My ?nh chuyn nghi?p 1048'
+MaHH 1049:
+  Name: SQL='Maxilaku' vs DB='My ?nh chuyn nghi?p 1049'
+MaHH 1050:
+  Name: SQL='Valkoinen suklaa' vs DB='My ?nh chuyn nghi?p 1050'
+MaHH 1051:
+  Name: SQL='Manjimup Dried Apples' vs DB='Giy b?t th?i trang 1051'
+MaHH 1052:
+  Name: SQL='Filo Mix' vs DB='Di?n tho?i thng minh 1052'
+  Category: SQL=1004 vs DB=1003
+MaHH 1053:
+  Name: SQL='Perth Pasties' vs DB='Nh?n dnh d quy 1053'
+MaHH 1054:
+  Name: SQL='TourtiÃ¨re' vs DB='Nh?n dnh d quy 1054'
+MaHH 1055:
+  Name: SQL='PÃ¢tÃ© chinois' vs DB='Nh?n dnh d quy 1055'
+MaHH 1056:
+  Name: SQL='Gnocchi di nonna Alice' vs DB='Nu?c hoa quy?n ru 1056'
+MaHH 1057:
+  Name: SQL='Ravioli Angelo' vs DB='Nu?c hoa quy?n ru 1057'
+MaHH 1058:
+  Name: SQL='Escargots de Bourgogne' vs DB='Vali du l?ch ch?ng xu?c 1058'
+MaHH 1059:
+  Name: SQL='Raclette Courdavault' vs DB='Di?n tho?i thng minh 1067'
+MaHH 1060:
+  Name: SQL='Camembert Pierrot' vs DB='My ?nh chuyn nghi?p 1060'
+  Category: SQL=1003 vs DB=1002
+MaHH 1061:
+  Name: SQL='Sirop d''Ã©rable' vs DB='Laptop siu m?ng 1061'
+MaHH 1062:
+  Name: SQL='Tarte au sucre' vs DB='My ?nh chuyn nghi?p 1062'
+MaHH 1063:
+  Name: SQL='Vegie-spread' vs DB='Laptop siu m?ng 1063'
+MaHH 1064:
+  Name: SQL='Wimmers gute SemmelknÃ¶del' vs DB='Nu?c hoa quy?n ru 1064'
+MaHH 1065:
+  Name: SQL='Louisiana Fiery Hot Pepper Sauce' vs DB='Di?n tho?i thng minh 1065'
+  Category: SQL=1001 vs DB=1003
+MaHH 1066:
+  Name: SQL='Louisiana Hot Spiced Okra' vs DB='Di?n tho?i thng minh 1066'
+  Category: SQL=1001 vs DB=1003
+MaHH 1067:
+  Name: SQL='Laughing Lumberjack Lager' vs DB='My ?nh chuyn nghi?p 1067'
+  Category: SQL=1000 vs DB=1002
+MaHH 1068:
+  Name: SQL='Scottish Longbreads' vs DB='My ?nh chuyn nghi?p 1068'
+MaHH 1069:
+  Name: SQL='Gudbrandsdalsost' vs DB='Nu?c hoa quy?n ru 1069'
+  Category: SQL=1003 vs DB=1004
+MaHH 1070:
+  Name: SQL='Outback Lager' vs DB='D?ng h? cao c?p m?u 1070'
+MaHH 1071:
+  Name: SQL='Flotemysost' vs DB='Di?n tho?i thng minh 1071'
+MaHH 1072:
+  Name: SQL='Mozzarella di Giovanni' vs DB='Di?n tho?i thng minh 1072'
+MaHH 1073:
+  Name: SQL='RÃ¶d Kaviar' vs DB='Vali du l?ch ch?ng xu?c 1073'
+MaHH 1074:
+  Name: SQL='Longlife Tofu' vs DB='Giy b?t th?i trang 1074'
+MaHH 1075:
+  Name: SQL='RhÃ¶nbrÃ¤u Klosterbier' vs DB='D?ng h? cao c?p m?u 1075'
+MaHH 1076:
+  Name: SQL='LakkalikÃ¶Ã¶ri' vs DB='Nu?c hoa quy?n ru 1076'
+  Category: SQL=1000 vs DB=1004
+MaHH 1077:
+  Name: SQL='Original Frankfurter grÃ¼ne SoÃe' vs DB='Laptop siu m?ng 1077'
+MaHH 1081:
+  Name: SQL='Chai88888888' vs DB='D?ng h? cao c?p m?u 1081'
+MaHH 1083:
+  Name: SQL='Mishi Kobe Niku' vs DB='Nh?n dnh d quy 1083'
+MaHH 1084:
+  Name: SQL='Change-New' vs DB='D?ng h? cao c?p m?u 1084'
+MaHH 1085:
+  Name: SQL='Tên mới thêm' vs DB='Laptop siu m?ng 1085'
+
+Total different products: 81

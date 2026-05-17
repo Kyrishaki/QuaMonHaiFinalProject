@@ -1,21 +1,21 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "D:\\github\\QuaMonHaiFinalProject\\",
+  "WorkspaceRootPath": "H:\\App\\GitHub\\QuaMonHaiFinalProject\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{8DB76715-FA3E-463F-9AB4-2F44CF88B5A7}|LTWEB_QuaMonHai_CuoiKy.csproj|d:\\github\\quamonhaifinalproject\\views\\cart\\orderhistory.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "AbsoluteMoniker": "D:0:0:{8DB76715-FA3E-463F-9AB4-2F44CF88B5A7}|LTWEB_QuaMonHai_CuoiKy.csproj|h:\\app\\github\\quamonhaifinalproject\\views\\cart\\orderhistory.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
       "RelativeMoniker": "D:0:0:{8DB76715-FA3E-463F-9AB4-2F44CF88B5A7}|LTWEB_QuaMonHai_CuoiKy.csproj|solutionrelative:views\\cart\\orderhistory.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{8DB76715-FA3E-463F-9AB4-2F44CF88B5A7}|LTWEB_QuaMonHai_CuoiKy.csproj|d:\\github\\quamonhaifinalproject\\views\\cart\\check_out.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "AbsoluteMoniker": "D:0:0:{8DB76715-FA3E-463F-9AB4-2F44CF88B5A7}|LTWEB_QuaMonHai_CuoiKy.csproj|h:\\app\\github\\quamonhaifinalproject\\views\\cart\\check_out.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
       "RelativeMoniker": "D:0:0:{8DB76715-FA3E-463F-9AB4-2F44CF88B5A7}|LTWEB_QuaMonHai_CuoiKy.csproj|solutionrelative:views\\cart\\check_out.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{8DB76715-FA3E-463F-9AB4-2F44CF88B5A7}|LTWEB_QuaMonHai_CuoiKy.csproj|d:\\github\\quamonhaifinalproject\\views\\cart\\ordersuccess.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "AbsoluteMoniker": "D:0:0:{8DB76715-FA3E-463F-9AB4-2F44CF88B5A7}|LTWEB_QuaMonHai_CuoiKy.csproj|h:\\app\\github\\quamonhaifinalproject\\views\\cart\\ordersuccess.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
       "RelativeMoniker": "D:0:0:{8DB76715-FA3E-463F-9AB4-2F44CF88B5A7}|LTWEB_QuaMonHai_CuoiKy.csproj|solutionrelative:views\\cart\\ordersuccess.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{8DB76715-FA3E-463F-9AB4-2F44CF88B5A7}|LTWEB_QuaMonHai_CuoiKy.csproj|d:\\github\\quamonhaifinalproject\\controllers\\cartcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{8DB76715-FA3E-463F-9AB4-2F44CF88B5A7}|LTWEB_QuaMonHai_CuoiKy.csproj|h:\\app\\github\\quamonhaifinalproject\\controllers\\cartcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{8DB76715-FA3E-463F-9AB4-2F44CF88B5A7}|LTWEB_QuaMonHai_CuoiKy.csproj|solutionrelative:controllers\\cartcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
@@ -26,17 +26,29 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 0,
+          "SelectedChildIndex": 3,
           "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:131:0:{1fc202d4-d401-403c-9834-5b218574bb67}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:128:0:{75188d03-9892-4ae2-abf1-207126247ce5}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{40ea2e6b-2121-4bb8-a43e-c83c04b51041}"
+            },
             {
               "$type": "Document",
               "DocumentIndex": 0,
               "Title": "OrderHistory.cshtml",
-              "DocumentMoniker": "D:\\github\\QuaMonHaiFinalProject\\Views\\Cart\\OrderHistory.cshtml",
+              "DocumentMoniker": "H:\\App\\GitHub\\QuaMonHaiFinalProject\\Views\\Cart\\OrderHistory.cshtml",
               "RelativeDocumentMoniker": "Views\\Cart\\OrderHistory.cshtml",
-              "ToolTip": "D:\\github\\QuaMonHaiFinalProject\\Views\\Cart\\OrderHistory.cshtml",
+              "ToolTip": "H:\\App\\GitHub\\QuaMonHaiFinalProject\\Views\\Cart\\OrderHistory.cshtml",
               "RelativeToolTip": "Views\\Cart\\OrderHistory.cshtml",
-              "ViewState": "AgIAAD8AAAAAAAAAAAAAAFkAAAAwAAAAAAAAAA==",
+              "ViewState": "AgIAAD8AAAAAAAAAAAAAAFEAAABDAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
               "WhenOpened": "2026-05-16T14:48:30.476Z",
               "EditorCaption": ""
@@ -45,40 +57,37 @@
               "$type": "Document",
               "DocumentIndex": 2,
               "Title": "OrderSuccess.cshtml",
-              "DocumentMoniker": "D:\\github\\QuaMonHaiFinalProject\\Views\\Cart\\OrderSuccess.cshtml",
+              "DocumentMoniker": "H:\\App\\GitHub\\QuaMonHaiFinalProject\\Views\\Cart\\OrderSuccess.cshtml",
               "RelativeDocumentMoniker": "Views\\Cart\\OrderSuccess.cshtml",
-              "ToolTip": "D:\\github\\QuaMonHaiFinalProject\\Views\\Cart\\OrderSuccess.cshtml",
+              "ToolTip": "H:\\App\\GitHub\\QuaMonHaiFinalProject\\Views\\Cart\\OrderSuccess.cshtml",
               "RelativeToolTip": "Views\\Cart\\OrderSuccess.cshtml",
               "ViewState": "AgIAAFcAAAAAAAAAAAAAABUAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2026-05-16T08:14:04.271Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-05-16T08:14:04.271Z"
             },
             {
               "$type": "Document",
               "DocumentIndex": 1,
               "Title": "Check_Out.cshtml",
-              "DocumentMoniker": "D:\\github\\QuaMonHaiFinalProject\\Views\\Cart\\Check_Out.cshtml",
+              "DocumentMoniker": "H:\\App\\GitHub\\QuaMonHaiFinalProject\\Views\\Cart\\Check_Out.cshtml",
               "RelativeDocumentMoniker": "Views\\Cart\\Check_Out.cshtml",
-              "ToolTip": "D:\\github\\QuaMonHaiFinalProject\\Views\\Cart\\Check_Out.cshtml",
+              "ToolTip": "H:\\App\\GitHub\\QuaMonHaiFinalProject\\Views\\Cart\\Check_Out.cshtml",
               "RelativeToolTip": "Views\\Cart\\Check_Out.cshtml",
               "ViewState": "AgIAAG8BAAAAAAAAAAAAAOgAAABEAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2026-05-13T01:15:11.464Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-05-13T01:15:11.464Z"
             },
             {
               "$type": "Document",
               "DocumentIndex": 3,
               "Title": "CartController.cs",
-              "DocumentMoniker": "D:\\github\\QuaMonHaiFinalProject\\Controllers\\CartController.cs",
+              "DocumentMoniker": "H:\\App\\GitHub\\QuaMonHaiFinalProject\\Controllers\\CartController.cs",
               "RelativeDocumentMoniker": "Controllers\\CartController.cs",
-              "ToolTip": "D:\\github\\QuaMonHaiFinalProject\\Controllers\\CartController.cs",
+              "ToolTip": "H:\\App\\GitHub\\QuaMonHaiFinalProject\\Controllers\\CartController.cs",
               "RelativeToolTip": "Controllers\\CartController.cs",
               "ViewState": "AgIAAIIBAAAAAAAAAAAYwDcBAAANAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-05-12T03:23:07.002Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-05-12T03:23:07.002Z"
             }
           ]
         }
