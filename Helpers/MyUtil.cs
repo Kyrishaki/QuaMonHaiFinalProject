@@ -1,4 +1,4 @@
-﻿using System.Text;
+using System.Text;
 
 namespace LTWEB_QuaMonHai_CuoiKy.Helpers
 {
@@ -17,7 +17,7 @@ namespace LTWEB_QuaMonHai_CuoiKy.Helpers
                 }
                 return Hinh.FileName;
             }
-            catch (Exception ex)
+            catch (Exception)
             { 
                 return string.Empty;
             }

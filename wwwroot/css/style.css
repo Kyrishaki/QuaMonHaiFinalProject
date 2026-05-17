@@ -6,6 +6,22 @@
     --dark: #111111;
 }
 
+body {
+    font-family: 'Open Sans', sans-serif;
+}
+
+h1, h2, h3, h4, h5, h6, .display-1, .display-2, .display-3, .display-4, .display-5, .display-6 {
+    font-family: 'Lora', serif;
+}
+
+.auth-page-container {
+    padding-top: 0 !important;
+    background-color: #ffffff !important;
+}
+.auth-page-container > .container {
+    padding-top: 1.5rem !important;
+}
+
 .back-to-top {
     position: fixed;
     display: none;

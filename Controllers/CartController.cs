@@ -400,7 +400,7 @@ namespace LTWEB_QuaMonHai_CuoiKy.Controllers {
             {
                 TempData["Info"] = "Vui lòng đăng nhập để tiến hành thanh toán.";
                 string queryString = Request.QueryString.ToString();
-                return RedirectToAction("DangNhap", "KhachHang", new { ReturnUrl = "/Cart/Check_Out" + queryString });
+                return RedirectToAction("Login", "Customer", new { ReturnUrl = "/Cart/Check_Out" + queryString });
             }
 
             // Gộp Session vào DB nếu có
@@ -484,7 +484,7 @@ namespace LTWEB_QuaMonHai_CuoiKy.Controllers {
             if (string.IsNullOrEmpty(customerId))
             {
                 TempData["Error"] = "Vui lòng đăng nhập để đặt hàng.";
-                return RedirectToAction("DangNhap", "KhachHang", new { ReturnUrl = "/Cart/Check_Out" });
+                return RedirectToAction("Login", "Customer", new { ReturnUrl = "/Cart/Check_Out" });
             }
 
             // ====== BƯỚC 2: Lấy giỏ hàng từ DB ======
@@ -644,22 +644,63 @@ namespace LTWEB_QuaMonHai_CuoiKy.Controllers {
         // ============================================================
         // GET: /Cart/OrderHistory
         // ============================================================
-        public async Task<IActionResult> OrderHistory()
+        public async Task<IActionResult> OrderHistory(string searchQuery, int? statusId)
         {
             var customerId = GetCustomerId();
             if (string.IsNullOrEmpty(customerId))
             {
-                return RedirectToAction("DangNhap", "KhachHang", new { ReturnUrl = "/Cart/OrderHistory" });
+                return RedirectToAction("Login", "Customer", new { ReturnUrl = "/Cart/OrderHistory" });
             }
 
-            var dsHoaDon = await _Context.HoaDons
+            ViewBag.SearchQuery = searchQuery;
+            ViewBag.StatusId = statusId;
+
+            var query = _Context.HoaDons
                 .Include(h => h.ChiTietHds)
                 .ThenInclude(c => c.MaHhNavigation)
                 .Where(h => h.MaKh == customerId)
-                .OrderByDescending(h => h.NgayDat)
-                .ToListAsync();
+                .AsQueryable();
 
+            if (!string.IsNullOrEmpty(searchQuery))
+            {
+                query = query.Where(h => (h.HoTen != null && h.HoTen.Contains(searchQuery)) || 
+                                         h.MaHd.ToString() == searchQuery);
+            }
+
+            if (statusId.HasValue)
+            {
+                query = query.Where(h => h.MaTrangThai == statusId.Value);
+            }
+
+            var dsHoaDon = await query.OrderByDescending(h => h.NgayDat).ToListAsync();
             return View(dsHoaDon);
+        }
+
+        // ============================================================
+        // GET: /Cart/LookupOrder
+        // ============================================================
+        [HttpGet]
+        public async Task<IActionResult> LookupOrder(int? orderId)
+        {
+            ViewBag.OrderId = orderId;
+            if (orderId.HasValue)
+            {
+                var order = await _Context.HoaDons
+                    .Include(h => h.MaKhNavigation)
+                    .Include(h => h.ChiTietHds)
+                    .ThenInclude(c => c.MaHhNavigation)
+                    .FirstOrDefaultAsync(h => h.MaHd == orderId.Value);
+
+                if (order == null)
+                {
+                    ViewBag.ErrorMessage = "Không tìm thấy đơn hàng với mã số này. Vui lòng kiểm tra lại.";
+                }
+                else
+                {
+                    return View(order);
+                }
+            }
+            return View();
         }
         
     }

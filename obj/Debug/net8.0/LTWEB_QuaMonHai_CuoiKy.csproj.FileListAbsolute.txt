@@ -786,4 +786,5 @@ D:\github\QuaMonHaiFinalProject\obj\Debug\net8.0\refint\LTWEB_QuaMonHai_CuoiKy.d
 D:\github\QuaMonHaiFinalProject\obj\Debug\net8.0\LTWEB_QuaMonHai_CuoiKy.pdb
 D:\github\QuaMonHaiFinalProject\obj\Debug\net8.0\LTWEB_QuaMonHai_CuoiKy.genruntimeconfig.cache
 D:\github\QuaMonHaiFinalProject\obj\Debug\net8.0\ref\LTWEB_QuaMonHai_CuoiKy.dll
+H:\App\GitHub\QuaMonHaiFinalProject\bin\Debug\net8.0\scratch\parsed_products.json
 H:\App\GitHub\QuaMonHaiFinalProject\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt

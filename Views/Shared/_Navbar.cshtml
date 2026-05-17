@@ -1,12 +1,25 @@
-﻿@using Microsoft.AspNetCore.Http
+@using Microsoft.AspNetCore.Http
 @using LTWEB_QuaMonHai_CuoiKy.Helpers
 @using LTWEB_QuaMonHai_CuoiKy.ViewModels
 @inject IHttpContextAccessor HttpContextAccessor
+@inject LTWEB_QuaMonHai_CuoiKy.Data.Hshop2023Context DbContext
 
 @{
     // Lấy số lượng sản phẩm trong giỏ hàng từ Session
     var cartSession = HttpContextAccessor.HttpContext.Session.Get<List<CartItem>>("MyCart");
     int soLuongGioHang = cartSession != null ? cartSession.Sum(c => c.SoLuong) : 0;
+
+    // Lấy tên hiển thị mới nhất từ Database để tránh lỗi phông chữ từ Cookie cũ
+    string displayName = User.Identity?.Name ?? "";
+    if (User.Identity?.IsAuthenticated == true) {
+        var customerId = User.Claims.SingleOrDefault(c => c.Type == "CustomerID")?.Value;
+        if (!string.IsNullOrEmpty(customerId)) {
+            var khachHang = DbContext.KhachHangs.FirstOrDefault(kh => kh.MaKh == customerId);
+            if (khachHang != null) {
+                displayName = khachHang.HoTen;
+            }
+        }
+    }
 }
 
 <div class="container-fluid custom-sticky px-0">
@@ -18,7 +31,7 @@
         <div class="col-lg-6 px-5 text-end">
             <small class="text-muted">Theo dõi chúng tôi:</small>
             <a class="text-body ms-3" href="#"><i class="fab fa-facebook-f"></i></a>
-            <a class="text-body ms-3" href="#"><i class="fab fa-twitter"></i></a>
+            <a class="text-body ms-3" href="#"><i class="fab fa-x-twitter"></i></a>
             <a class="text-body ms-3" href="#"><i class="fab fa-linkedin-in"></i></a>
             <a class="text-body ms-3" href="#"><i class="fab fa-instagram"></i></a>
         </div>
@@ -43,6 +56,7 @@
                         <a asp-controller="Home" asp-action="VeChungToi" class="dropdown-item">Về chúng tôi</a>
                     </div>
                 </div>
+                <a asp-controller="Cart" asp-action="LookupOrder" class="nav-item nav-link @(ViewContext.RouteData.Values["action"]?.ToString() == "LookupOrder" ? "active text-primary" : "")">Tra cứu đơn hàng</a>
                 <a href="#" class="nav-item nav-link">Liên hệ</a>
             </div>
 
@@ -57,27 +71,36 @@
                             <i class="fa fa-user text-white" style="font-size: 0.8rem;"></i>
                         </div>
                         @if (User.Identity.IsAuthenticated) {
-                            <span class="fw-bold text-dark" style="font-size: 0.85rem;">@User.Identity.Name</span>
+                            <span class="fw-bold text-dark" style="font-size: 0.85rem;">@displayName</span>
                         }
                     </a>
                     <div class="dropdown-menu dropdown-menu-end mt-2 shadow border-0 rounded-3">
                         @if (User.Identity.IsAuthenticated) {
-                            <a asp-controller="KhachHang" asp-action="Profile" class="dropdown-item py-2">
+                            <a asp-controller="Customer" asp-action="Profile" class="dropdown-item py-2">
                                 <i class="fa fa-id-card me-2 text-info"></i>Hồ sơ cá nhân
+                            </a>
+                            <a asp-controller="Cart" asp-action="OrderHistory" class="dropdown-item py-2">
+                                <i class="fa fa-clock-rotate-left me-2 text-success"></i>Lịch sử mua hàng
                             </a>
                             @if (User.IsInRole("Admin")) {
                                 <a asp-controller="HangHoas" asp-action="Index" class="dropdown-item py-2">
-                                    <i class="fa fa-cogs me-2 text-warning"></i>Quản lý hệ thống
+                                    <i class="fa fa-cogs me-2 text-warning"></i>Quản lý sản phẩm
+                                </a>
+                                <a asp-controller="Admin" asp-action="UserManagement" class="dropdown-item py-2">
+                                    <i class="fa fa-users me-2 text-primary"></i>Quản lý người dùng
+                                </a>
+                                <a asp-controller="Admin" asp-action="OrderHistory" class="dropdown-item py-2">
+                                    <i class="fa fa-history me-2 text-info"></i>Quản lý đơn hàng
                                 </a>
                             }
                             <div class="dropdown-divider"></div>
-                            <a asp-controller="KhachHang" asp-action="DangXuat" class="dropdown-item py-2 text-danger">
+                            <a asp-controller="Customer" asp-action="Logout" class="dropdown-item py-2 text-danger">
                                 <i class="fa fa-sign-out-alt me-2"></i>Đăng xuất
                             </a>
                         }
                         else {
-                            <a asp-controller="KhachHang" asp-action="DangNhap" class="dropdown-item py-2">Đăng nhập</a>
-                            <a asp-controller="KhachHang" asp-action="DangKy" class="dropdown-item py-2">Đăng ký</a>
+                            <a asp-controller="Customer" asp-action="Login" class="dropdown-item py-2">Đăng nhập</a>
+                            <a asp-controller="Customer" asp-action="Register" class="dropdown-item py-2">Đăng ký</a>
                         }
                     </div>
                 </div>
@@ -129,6 +152,17 @@
 
     body {
         padding-top: 20px !important;
+    }
+
+    /* Fix layout overlap: Push main content down on pages without a header carousel */
+    #searchModal ~ main {
+        padding-top: 140px;
+    }
+
+    @@media (max-width: 991.98px) {
+        #searchModal ~ main {
+            padding-top: 80px;
+        }
     }
 
     .custom-sticky.scrolled .top-bar {

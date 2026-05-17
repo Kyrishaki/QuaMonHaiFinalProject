@@ -1,0 +1,245 @@
+@model IEnumerable<LTWEB_QuaMonHai_CuoiKy.Models.KhachHang>
+@{
+    ViewData["Title"] = "Quản Lý Người Dùng";
+}
+
+<div class="container py-5 mt-5">
+    <div class="row mb-4 align-items-center">
+        <div class="col-md-6">
+            <h2 class="text-primary fw-bold border-bottom pb-3 mb-0" style="font-family: 'Lora', serif;">
+                <i class="fa fa-users me-2"></i>Quản Lý Người Dùng
+            </h2>
+        </div>
+        <div class="col-md-6 text-md-end mt-3 mt-md-0">
+            <!-- Tìm kiếm thành viên -->
+            <form asp-action="UserManagement" method="get" class="d-flex justify-content-md-end gap-2">
+                <div class="input-group" style="max-width: 350px;">
+                    <input type="text" name="searchQuery" value="@ViewBag.SearchQuery" 
+                           class="form-control rounded-start-pill border-primary border-2 px-3" 
+                           placeholder="Tìm tài khoản, họ tên, email..." />
+                    <button type="submit" class="btn btn-primary rounded-end-pill px-4 shadow-sm">
+                        <i class="fa fa-search"></i>
+                    </button>
+                </div>
+                @if (!string.IsNullOrEmpty(ViewBag.SearchQuery))
+                {
+                    <a asp-action="UserManagement" class="btn btn-outline-secondary rounded-pill d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
+                        <i class="fa fa-times"></i>
+                    </a>
+                }
+            </form>
+        </div>
+    </div>
+
+    <!-- Hiển thị các thông báo thành công hoặc lỗi nếu có -->
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show shadow-sm rounded-3 mb-4" role="alert">
+            <div class="d-flex align-items-center">
+                <i class="fa fa-check-circle me-3 fa-2x"></i>
+                <div>
+                    <strong class="d-block">Thành công!</strong>
+                    <span>@TempData["Success"]</span>
+                </div>
+            </div>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show shadow-sm rounded-3 mb-4" role="alert">
+            <div class="d-flex align-items-center">
+                <i class="fa fa-exclamation-circle me-3 fa-2x"></i>
+                <div>
+                    <strong class="d-block">Có lỗi xảy ra!</strong>
+                    <span>@TempData["Error"]</span>
+                </div>
+            </div>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    <div class="card shadow-sm border-0 rounded-4 overflow-hidden">
+        <div class="card-header bg-primary py-3">
+            <h5 class="card-title text-white fw-bold mb-0 mb-0 d-flex align-items-center">
+                <i class="fa fa-list me-2"></i> Danh sách thành viên hệ thống (@Model.Count())
+            </h5>
+        </div>
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="table-light text-uppercase font-monospace" style="font-size: 0.85rem; letter-spacing: 0.5px;">
+                        <tr>
+                            <th class="ps-4">Thành viên</th>
+                            <th>Thông tin liên hệ</th>
+                            <th>Trạng thái</th>
+                            <th>Phân quyền</th>
+                            <th class="text-center pe-4" style="width: 280px;">Thao tác</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (!Model.Any())
+                        {
+                            <tr>
+                                <td colspan="5" class="text-center py-5 text-muted">
+                                    <i class="fa fa-search mb-3 fa-3x d-block text-secondary"></i>
+                                    Không tìm thấy thành viên nào khớp với từ khóa tìm kiếm.
+                                </td>
+                            </tr>
+                        }
+                        else
+                        {
+                            @foreach (var user in Model)
+                            {
+                                var isCurrentUser = User.Claims.FirstOrDefault(c => c.Type == "CustomerID")?.Value == user.MaKh;
+                                <tr>
+                                    <!-- Cột 1: Avatar + Tên đăng nhập -->
+                                    <td class="ps-4">
+                                        <div class="d-flex align-items-center gap-3">
+                                            <img src="@Url.Content("~/img/Hinh/khachHang/" + (string.IsNullOrEmpty(user.Hinh) ? "Photo.gif" : user.Hinh))" 
+                                                 alt="Avatar" class="rounded-circle img-thumbnail shadow-sm"
+                                                 style="width: 50px; height: 50px; object-fit: cover; border-color: @(user.VaiTro == 1 ? "#ffc107" : "#81c408");" />
+                                            <div>
+                                                <h6 class="fw-bold text-dark mb-0">@user.HoTen</h6>
+                                                <small class="text-muted font-monospace">@@@user.MaKh</small>
+                                            </div>
+                                        </div>
+                                    </td>
+
+                                    <!-- Cột 2: Email + Điện thoại -->
+                                    <td>
+                                        <div class="d-flex flex-column" style="font-size: 0.9rem;">
+                                            <span><i class="fa fa-envelope me-2 text-secondary" style="font-size: 0.8rem;"></i>@user.Email</span>
+                                            <span><i class="fa fa-phone me-2 text-secondary" style="font-size: 0.8rem;"></i>@(string.IsNullOrEmpty(user.DienThoai) ? "Chưa cập nhật" : user.DienThoai)</span>
+                                        </div>
+                                    </td>
+
+                                    <!-- Cột 3: Trạng thái (HieuLuc) -->
+                                    <td>
+                                        @if (user.HieuLuc)
+                                        {
+                                            <span class="badge bg-success-subtle text-success border border-success-subtle rounded-pill px-3 py-2 fw-bold">
+                                                <i class="fa fa-check-circle me-1"></i> Hoạt động
+                                            </span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge bg-danger-subtle text-danger border border-danger-subtle rounded-pill px-3 py-2 fw-bold">
+                                                <i class="fa fa-ban me-1"></i> Đang khóa
+                                            </span>
+                                        }
+                                    </td>
+
+                                    <!-- Cột 4: Quyền (VaiTro) -->
+                                    <td>
+                                        @if (user.VaiTro == 1)
+                                        {
+                                            <span class="badge bg-warning-subtle text-warning border border-warning-subtle rounded-pill px-3 py-2 fw-bold" style="color: #856404 !important;">
+                                                <i class="fa fa-star me-1 text-warning"></i> Admin
+                                            </span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge bg-info-subtle text-info border border-info-subtle rounded-pill px-3 py-2 fw-bold">
+                                                <i class="fa fa-user me-1"></i> Khách hàng
+                                            </span>
+                                        }
+                                    </td>
+
+                                    <!-- Cột 5: Nút thao tác -->
+                                    <td class="text-center pe-4">
+                                        @if (isCurrentUser)
+                                        {
+                                            <span class="badge bg-secondary-subtle text-secondary rounded-pill px-3 py-2 fw-bold">
+                                                <i class="fa fa-user-shield me-1"></i> Tài khoản của bạn
+                                            </span>
+                                        }
+                                        else
+                                        {
+                                            <div class="d-flex justify-content-center gap-2">
+                                                <!-- Form Khóa/Mở khóa -->
+                                                <form asp-action="ToggleHieuLuc" asp-route-id="@user.MaKh" method="post" 
+                                                      onsubmit="return confirm('Bạn có chắc chắn muốn @(user.HieuLuc ? "KHÓA" : "MỞ KHÓA") tài khoản @user.MaKh?');">
+                                                    @Html.AntiForgeryToken()
+                                                    @if (user.HieuLuc)
+                                                    {
+                                                        <button type="submit" class="btn btn-outline-danger btn-sm rounded-pill fw-bold px-3">
+                                                            <i class="fa fa-lock me-1"></i> Khóa
+                                                        </button>
+                                                    }
+                                                    else
+                                                    {
+                                                        <button type="submit" class="btn btn-outline-success btn-sm rounded-pill fw-bold px-3">
+                                                            <i class="fa fa-unlock me-1"></i> Mở khóa
+                                                        </button>
+                                                    }
+                                                </form>
+
+                                                <!-- Form Cấp/Thu hồi Quyền -->
+                                                <form asp-action="ChangeRole" asp-route-id="@user.MaKh" method="post" 
+                                                      onsubmit="return confirm('Bạn có chắc chắn muốn thay đổi vai trò của @user.MaKh?');">
+                                                    @Html.AntiForgeryToken()
+                                                    @if (user.VaiTro == 1)
+                                                    {
+                                                        <input type="hidden" name="vaiTro" value="0" />
+                                                        <button type="submit" class="btn btn-outline-warning btn-sm rounded-pill fw-bold px-3 text-dark">
+                                                            <i class="fa fa-arrow-down me-1"></i> Hạ quyền
+                                                        </button>
+                                                    }
+                                                    else
+                                                    {
+                                                        <input type="hidden" name="vaiTro" value="1" />
+                                                        <button type="submit" class="btn btn-outline-primary btn-sm rounded-pill fw-bold px-3">
+                                                            <i class="fa fa-arrow-up me-1"></i> Lên Admin
+                                                        </button>
+                                                    }
+                                                </form>
+                                            </div>
+                                        }
+                                    </td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    /* Premium styles for tables and badges */
+    .table-hover tbody tr:hover {
+        background-color: rgba(129, 196, 8, 0.03) !important;
+        transition: background-color 0.2s ease;
+    }
+    
+    .badge {
+        font-size: 0.8rem;
+    }
+    
+    .bg-success-subtle {
+        background-color: rgba(40, 167, 69, 0.1) !important;
+    }
+    
+    .bg-danger-subtle {
+        background-color: rgba(220, 53, 69, 0.1) !important;
+    }
+    
+    .bg-warning-subtle {
+        background-color: rgba(255, 193, 7, 0.15) !important;
+    }
+    
+    .bg-info-subtle {
+        background-color: rgba(23, 162, 184, 0.1) !important;
+    }
+
+    .bg-secondary-subtle {
+        background-color: rgba(108, 117, 125, 0.1) !important;
+    }
+
+    .card {
+        border: none;
+    }
+</style>

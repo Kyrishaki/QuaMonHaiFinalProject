@@ -1,9 +1,9 @@
-﻿@model LTWEB_QuaMonHai_CuoiKy.ViewModels.RegisterVM
+@model LTWEB_QuaMonHai_CuoiKy.ViewModels.RegisterVM
 @{
     ViewData["Title"] = "Đăng Ký";
     var showOtpSection = !ViewData.ModelState.IsValid || (Model != null && !string.IsNullOrEmpty(Model.Email)) ? "display: block;" : "display: none;";
 }
-<div class="container-fluid py-5" style="background-color: #f4f6f8;">
+<div class="container-fluid py-5 auth-page-container" style="background-color: #f4f6f8;">
     <div class="container py-5">
         <div class="row justify-content-center">
             <div class="col-lg-10">
@@ -18,7 +18,7 @@
                             <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
                         }
 
-                        <form asp-action="DangKy" enctype="multipart/form-data">
+                        <form asp-action="Register" enctype="multipart/form-data">
                             <div class="row g-4">
                                 <div class="col-md-6">
                                     <label asp-for="@Model.MaKh" class="form-label fw-bold text-muted">Tên đăng nhập <sup class="text-danger">*</sup></label>
@@ -91,7 +91,7 @@
                                     <button type="submit" class="btn text-white rounded-pill py-3 px-5 fw-bold shadow-sm" style="background-color: #81c408; font-size: 1.1rem; width: 100%; max-width: 400px;">
                                         ĐĂNG KÝ TÀI KHOẢN
                                     </button>
-                                    <p class="mt-3">Đã có tài khoản? <a asp-controller="KhachHang" asp-action="DangNhap" class="text-primary fw-bold">Đăng nhập tại đây</a></p>
+                                    <p class="mt-3">Đã có tài khoản? <a asp-controller="Customer" asp-action="Login" class="text-primary fw-bold">Đăng nhập tại đây</a></p>
                                 </div>
                             </div>
                         </form>
@@ -124,7 +124,7 @@
             var btn = $(this);
             btn.prop('disabled', true).text("Đang gửi...");
 
-            $.post('/KhachHang/SendVerificationCode', { email: email }, function (res) {
+            $.post('/Customer/SendVerificationCode', { email: email }, function (res) {
                 if (res.success) {
                     $("#verificationSection").slideDown();
                     alert("Đã gửi mã thành công! Vui lòng kiểm tra hộp thư (cả mục Spam).");

@@ -1,4 +1,4 @@
-﻿using System.Security.Cryptography;
+using System.Security.Cryptography;
 using System.Text;
 
 namespace LTWEB_QuaMonHai_CuoiKy.Helpers
@@ -8,18 +8,16 @@ namespace LTWEB_QuaMonHai_CuoiKy.Helpers
         #region [Hashing Extension]
         public static string ToSHA256Hash(this string password, string? saltKey)
         {
-            var sha256 = SHA256.Create();
+            using var sha256 = SHA256.Create();
             byte[] encryptedSHA256 = sha256.ComputeHash(Encoding.UTF8.GetBytes(string.Concat(password, saltKey)));
-            sha256.Clear();
 
             return Convert.ToBase64String(encryptedSHA256);
         }
 
         public static string ToSHA512Hash(this string password, string? saltKey)
         {
-            SHA512Managed sha512 = new SHA512Managed();
+            using var sha512 = SHA512.Create();
             byte[] encryptedSHA512 = sha512.ComputeHash(Encoding.UTF8.GetBytes(string.Concat(password, saltKey)));
-            sha512.Clear();
 
             return Convert.ToBase64String(encryptedSHA512);
         }

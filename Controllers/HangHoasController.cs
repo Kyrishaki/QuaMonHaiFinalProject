@@ -1,4 +1,4 @@
-﻿using LTWEB_QuaMonHai_CuoiKy.Data;
+using LTWEB_QuaMonHai_CuoiKy.Data;
 using LTWEB_QuaMonHai_CuoiKy.Models;
 using Microsoft.AspNetCore.Authorization; // THÊM THƯ VIỆN NÀY DÙNG CHO BẢO MẬT
 using Microsoft.AspNetCore.Mvc;

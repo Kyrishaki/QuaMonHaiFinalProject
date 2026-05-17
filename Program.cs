@@ -1,4 +1,4 @@
-﻿using LTWEB_QuaMonHai_CuoiKy.Data;
+using LTWEB_QuaMonHai_CuoiKy.Data;
 using LTWEB_QuaMonHai_CuoiKy.Helpers;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
@@ -21,7 +21,7 @@ builder.Services.AddAutoMapper(typeof(AutoMapperProfile));
 
 // Khai báo service authentication
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(options => {
-    options.LoginPath = "/KhachHang/DangNhap";
+    options.LoginPath = "/Customer/Login";
     options.AccessDeniedPath = "/AccessDenied"; // Dang nhap roi chua co quyen se toi dia chi nay
 });
 

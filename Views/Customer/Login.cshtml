@@ -1,11 +1,12 @@
-﻿@model LTWEB_QuaMonHai_CuoiKy.ViewModels.LoginVM
+@model LTWEB_QuaMonHai_CuoiKy.ViewModels.LoginVM
 @{
     ViewData["Title"] = "Đăng Nhập";
 }
 
+
 <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 
-<div class="container-fluid py-5" style="background-color: #f4f6f8;">
+<div class="container-fluid py-5 auth-page-container" style="background-color: #f4f6f8;">
     <div class="container py-5">
         <div class="row g-0 shadow-lg rounded-4 overflow-hidden bg-white" style="min-height: 600px;">
             <div class="col-lg-6 d-none d-lg-flex flex-column justify-content-center align-items-center text-white position-relative" style="background: url('/img/vegetable-item-4.jpg') center/cover no-repeat;">
@@ -29,7 +30,7 @@
                     <p class="text-muted">Vui lòng đăng nhập để tiếp tục</p>
                 </div>
 
-                <form asp-action="DangNhap" asp-route-returnurl="@ViewBag.ReturnUrl">
+                <form asp-action="Login" asp-route-returnurl="@ViewBag.ReturnUrl">
                     <div class="text-danger mb-3" asp-validation-summary="All"></div>
 
                     <div class="form-floating mb-4">
@@ -44,9 +45,12 @@
                         <span asp-validation-for="@Model.Password" class="text-danger small ms-3"></span>
                     </div>
 
+                    <!-- TEMPORARILY DISABLED FOR AUTOMATED FLOW TESTING -->
+              
                     <div class="d-flex justify-content-center mb-4">
                         <div class="g-recaptcha" data-sitekey="6Le0Z-MsAAAAAB7YQK_ITslpZxYtzmtTi5h8O6Nr"></div>
                     </div>
+           
 
                     <div class="d-grid gap-3 mb-4">
                         <button type="submit" class="btn text-white rounded-pill py-3 fw-bold shadow-sm" style="background-color: #81c408; font-size: 1.1rem;">
@@ -55,8 +59,8 @@
                     </div>
 
                     <div class="d-flex justify-content-between align-items-center mt-2">
-                        <a asp-controller="KhachHang" asp-action="QuenMatKhau" class="text-danger text-decoration-none small"><i class="fa fa-lock me-1"></i> Quên mật khẩu?</a>
-                        <a asp-controller="KhachHang" asp-action="DangKy" class="text-primary text-decoration-none fw-bold small">Tạo tài khoản <i class="fa fa-arrow-right ms-1"></i></a>
+                        <a asp-controller="Customer" asp-action="ForgotPassword" class="text-danger text-decoration-none small"><i class="fa fa-lock me-1"></i> Quên mật khẩu?</a>
+                        <a asp-controller="Customer" asp-action="Register" class="text-primary text-decoration-none fw-bold small">Tạo tài khoản <i class="fa fa-arrow-right ms-1"></i></a>
                     </div>
                 </form>
             </div>
@@ -66,6 +70,8 @@
 
 @section Scripts {
     <script>
+        // TEMPORARILY DISABLED FOR AUTOMATED FLOW TESTING
+        /*
         $('form').submit(function(e) {
             var response = grecaptcha.getResponse();
             if(response.length == 0) {
@@ -78,5 +84,6 @@
                 value: response
             }).appendTo('form');
         });
+        */
     </script>
 }

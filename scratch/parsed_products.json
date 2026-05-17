@@ -1,0 +1,407 @@
+[
+    {
+        "MaHH": 1001,
+        "TenHH": "Đồng hồ Swatch Gold Chronograph",
+        "MaLoai": 1000
+    },
+    {
+        "MaHH": 1002,
+        "TenHH": "Đồng hồ Tissot T-Touch Silver",
+        "MaLoai": 1000
+    },
+    {
+        "MaHH": 1003,
+        "TenHH": "Laptop HP Premium Minimalist",
+        "MaLoai": 1001
+    },
+    {
+        "MaHH": 1004,
+        "TenHH": "Laptop ASUS Core i5 Standard",
+        "MaLoai": 1001
+    },
+    {
+        "MaHH": 1005,
+        "TenHH": "Laptop Dell Inspiron Kayak Edition",
+        "MaLoai": 1001
+    },
+    {
+        "MaHH": 1006,
+        "TenHH": "Laptop ASUS Vivobook Slim",
+        "MaLoai": 1001
+    },
+    {
+        "MaHH": 1007,
+        "TenHH": "Giày bốt tuyết Black Winter Snow",
+        "MaLoai": 1006
+    },
+    {
+        "MaHH": 1008,
+        "TenHH": "Laptop HP Pavilion Silver Slim",
+        "MaLoai": 1001
+    },
+    {
+        "MaHH": 1009,
+        "TenHH": "Nhẫn vàng đính đá Opal & Diamonds",
+        "MaLoai": 1005
+    },
+    {
+        "MaHH": 1010,
+        "TenHH": "Vali balo Osprey Green Rolling",
+        "MaLoai": 1007
+    },
+    {
+        "MaHH": 1011,
+        "TenHH": "Điện thoại BlackBerry Bold Classic",
+        "MaLoai": 1003
+    },
+    {
+        "MaHH": 1012,
+        "TenHH": "Điện thoại LG Cookie KP500 Stylus",
+        "MaLoai": 1003
+    },
+    {
+        "MaHH": 1013,
+        "TenHH": "Vali Samsonite Classic Black Rolling",
+        "MaLoai": 1007
+    },
+    {
+        "MaHH": 1014,
+        "TenHH": "Giày bốt Sorel Beige Winter Boots",
+        "MaLoai": 1006
+    },
+    {
+        "MaHH": 1015,
+        "TenHH": "Laptop Toshiba Dynabook Professional",
+        "MaLoai": 1001
+    },
+    {
+        "MaHH": 1016,
+        "TenHH": "Máy ảnh Nikon D7000 DSLR Professional",
+        "MaLoai": 1002
+    },
+    {
+        "MaHH": 1017,
+        "TenHH": "Nhẫn bạc Celtic Knot Ring",
+        "MaLoai": 1005
+    },
+    {
+        "MaHH": 1018,
+        "TenHH": "Vali Samsonite Classic Blue Rolling",
+        "MaLoai": 1007
+    },
+    {
+        "MaHH": 1019,
+        "TenHH": "Máy ảnh Canon PowerShot SD1300 Blue",
+        "MaLoai": 1002
+    },
+    {
+        "MaHH": 1020,
+        "TenHH": "Máy ảnh Nikon COOLPIX Silver Pocket",
+        "MaLoai": 1002
+    },
+    {
+        "MaHH": 1021,
+        "TenHH": "Máy ảnh Nikon COOLPIX Lime Green",
+        "MaLoai": 1002
+    },
+    {
+        "MaHH": 1022,
+        "TenHH": "Nước hoa Guess for Women EDP Pink",
+        "MaLoai": 1004
+    },
+    {
+        "MaHH": 1023,
+        "TenHH": "Nước hoa Dolce & Gabbana Light Blue",
+        "MaLoai": 1004
+    },
+    {
+        "MaHH": 1024,
+        "TenHH": "Đồng hồ Citizen Eco-Drive Promaster",
+        "MaLoai": 1000
+    },
+    {
+        "MaHH": 1025,
+        "TenHH": "Máy ảnh Nikon COOLPIX Royal Blue",
+        "MaLoai": 1002
+    },
+    {
+        "MaHH": 1026,
+        "TenHH": "Máy ảnh Fujifilm FinePix Bridge Camera",
+        "MaLoai": 1002
+    },
+    {
+        "MaHH": 1027,
+        "TenHH": "Máy ảnh Canon PowerShot S95 Premium",
+        "MaLoai": 1002
+    },
+    {
+        "MaHH": 1028,
+        "TenHH": "Giày bốt Sorel Waterproof Active",
+        "MaLoai": 1006
+    },
+    {
+        "MaHH": 1029,
+        "TenHH": "Nhẫn bạc đính đá White Opal Stone",
+        "MaLoai": 1005
+    },
+    {
+        "MaHH": 1030,
+        "TenHH": "Vali balo High Sierra Grey Rolling",
+        "MaLoai": 1007
+    },
+    {
+        "MaHH": 1031,
+        "TenHH": "Điện thoại BlackBerry Curve AT&T",
+        "MaLoai": 1003
+    },
+    {
+        "MaHH": 1032,
+        "TenHH": "Điện thoại Nokia E71 QWERTY Silver",
+        "MaLoai": 1003
+    },
+    {
+        "MaHH": 1033,
+        "TenHH": "Điện thoại Nokia E71 QWERTY Metallic Grey",
+        "MaLoai": 1003
+    },
+    {
+        "MaHH": 1034,
+        "TenHH": "Đồng hồ Michael Kors Rose Gold",
+        "MaLoai": 1000
+    },
+    {
+        "MaHH": 1035,
+        "TenHH": "Đồng hồ TAG Heuer Aquaracer Special",
+        "MaLoai": 1000
+    },
+    {
+        "MaHH": 1036,
+        "TenHH": "Vali balo High Sierra Black Duffel",
+        "MaLoai": 1007
+    },
+    {
+        "MaHH": 1037,
+        "TenHH": "Vali Samsonite Burgundy Rolling",
+        "MaLoai": 1007
+    },
+    {
+        "MaHH": 1038,
+        "TenHH": "Đồng hồ Luminox Navy SEAL Sports",
+        "MaLoai": 1000
+    },
+    {
+        "MaHH": 1039,
+        "TenHH": "Đồng hồ TAG Heuer Carrera Chronograph",
+        "MaLoai": 1000
+    },
+    {
+        "MaHH": 1040,
+        "TenHH": "Vali Samsonite Essential Black Rolling",
+        "MaLoai": 1007
+    },
+    {
+        "MaHH": 1041,
+        "TenHH": "Vali Samsonite Purple Rolling",
+        "MaLoai": 1007
+    },
+    {
+        "MaHH": 1042,
+        "TenHH": "Nước hoa Paris Hilton Eau de Parfum",
+        "MaLoai": 1004
+    },
+    {
+        "MaHH": 1043,
+        "TenHH": "Đồng hồ Citizen Eco-Drive Chandler",
+        "MaLoai": 1000
+    },
+    {
+        "MaHH": 1044,
+        "TenHH": "Laptop Dell Latitude Business Slim",
+        "MaLoai": 1001
+    },
+    {
+        "MaHH": 1045,
+        "TenHH": "Vali Samsonite Red Premium Rolling",
+        "MaLoai": 1007
+    },
+    {
+        "MaHH": 1046,
+        "TenHH": "Vali London Fog Pegasus Brown Leather",
+        "MaLoai": 1007
+    },
+    {
+        "MaHH": 1047,
+        "TenHH": "Máy ảnh Panasonic LUMIX Red Compact",
+        "MaLoai": 1002
+    },
+    {
+        "MaHH": 1048,
+        "TenHH": "Máy ảnh Fujifilm FinePix J40 Black",
+        "MaLoai": 1002
+    },
+    {
+        "MaHH": 1049,
+        "TenHH": "Máy ảnh Canon PowerShot SX130 IS",
+        "MaLoai": 1002
+    },
+    {
+        "MaHH": 1050,
+        "TenHH": "Máy ảnh Nikon D3100 DSLR Starter",
+        "MaLoai": 1002
+    },
+    {
+        "MaHH": 1051,
+        "TenHH": "Giày bốt UGG Classic Pink Button",
+        "MaLoai": 1006
+    },
+    {
+        "MaHH": 1052,
+        "TenHH": "Nước hoa Paris Hilton Heiress Perfume",
+        "MaLoai": 1004
+    },
+    {
+        "MaHH": 1053,
+        "TenHH": "Nhẫn bạc đính đá Solitaire Diamond",
+        "MaLoai": 1005
+    },
+    {
+        "MaHH": 1054,
+        "TenHH": "Nhẫn bạc đính đá Moonstone Gem",
+        "MaLoai": 1005
+    },
+    {
+        "MaHH": 1055,
+        "TenHH": "Nhẫn bạc đính đá Orange Amber",
+        "MaLoai": 1005
+    },
+    {
+        "MaHH": 1056,
+        "TenHH": "Nước hoa Calvin Klein Eternity for Men",
+        "MaLoai": 1004
+    },
+    {
+        "MaHH": 1057,
+        "TenHH": "Nước hoa Nautica Blue Eau de Toilette",
+        "MaLoai": 1004
+    },
+    {
+        "MaHH": 1058,
+        "TenHH": "Vali London Fog Pegasus Brown Leather II",
+        "MaLoai": 1007
+    },
+    {
+        "MaHH": 1059,
+        "TenHH": "Điện thoại Nokia 5310 XpressMusic",
+        "MaLoai": 1003
+    },
+    {
+        "MaHH": 1060,
+        "TenHH": "Điện thoại Nokia C7 Touch Sleek",
+        "MaLoai": 1003
+    },
+    {
+        "MaHH": 1061,
+        "TenHH": "Laptop MSI Prestige Business",
+        "MaLoai": 1001
+    },
+    {
+        "MaHH": 1062,
+        "TenHH": "Máy ảnh Nikon COOLPIX Autumn Red",
+        "MaLoai": 1002
+    },
+    {
+        "MaHH": 1063,
+        "TenHH": "Laptop HP Essential Grey Slim",
+        "MaLoai": 1001
+    },
+    {
+        "MaHH": 1064,
+        "TenHH": "Nước hoa Britney Spears Fantasy Pink",
+        "MaLoai": 1004
+    },
+    {
+        "MaHH": 1065,
+        "TenHH": "Laptop MSI Dodgers Edition Gaming",
+        "MaLoai": 1001
+    },
+    {
+        "MaHH": 1066,
+        "TenHH": "Laptop ASUS ROG Premium Gaming",
+        "MaLoai": 1001
+    },
+    {
+        "MaHH": 1067,
+        "TenHH": "Đồng hồ TAG Heuer Carrera Silver Steel",
+        "MaLoai": 1000
+    },
+    {
+        "MaHH": 1068,
+        "TenHH": "Máy ảnh Canon PowerShot SD1300 Silver",
+        "MaLoai": 1002
+    },
+    {
+        "MaHH": 1069,
+        "TenHH": "Điện thoại BlackBerry Torch Slider",
+        "MaLoai": 1003
+    },
+    {
+        "MaHH": 1070,
+        "TenHH": "Đồng hồ Casio Pro Trek Tough Solar",
+        "MaLoai": 1000
+    },
+    {
+        "MaHH": 1071,
+        "TenHH": "Điện thoại Nokia N8 Touch Smartphone",
+        "MaLoai": 1003
+    },
+    {
+        "MaHH": 1072,
+        "TenHH": "Điện thoại Nokia Nseries Luxury Flip",
+        "MaLoai": 1003
+    },
+    {
+        "MaHH": 1073,
+        "TenHH": "Vali Samsonite Light Blue Hard-Shell",
+        "MaLoai": 1007
+    },
+    {
+        "MaHH": 1074,
+        "TenHH": "Giày bốt Black Fur Trimmed Winter",
+        "MaLoai": 1006
+    },
+    {
+        "MaHH": 1075,
+        "TenHH": "Đồng hồ Casio G-Shock Black",
+        "MaLoai": 1000
+    },
+    {
+        "MaHH": 1076,
+        "TenHH": "Đồng hồ Square Steel Chronograph Retro",
+        "MaLoai": 1000
+    },
+    {
+        "MaHH": 1077,
+        "TenHH": "Laptop HP Compaq Vintage Edition",
+        "MaLoai": 1001
+    },
+    {
+        "MaHH": 1081,
+        "TenHH": "Đồng hồ Casio G-Shock Analog-Digital",
+        "MaLoai": 1000
+    },
+    {
+        "MaHH": 1083,
+        "TenHH": "Nhẫn Claddagh Blue Heart Gem",
+        "MaLoai": 1005
+    },
+    {
+        "MaHH": 1084,
+        "TenHH": "Đồng hồ Casio Pro Trek Pathfinder",
+        "MaLoai": 1000
+    },
+    {
+        "MaHH": 1085,
+        "TenHH": "Laptop ASUS Zenbook Premium Ultra",
+        "MaLoai": 1001
+    }
+]
