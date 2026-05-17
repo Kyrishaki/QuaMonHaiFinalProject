@@ -1,0 +1,61 @@
+﻿@model LTWEB_QuaMonHai_CuoiKy.ViewModels.ResetPasswordVM
+@{
+    ViewData["Title"] = "Đặt Lại Mật Khẩu";
+}
+
+<div class="container-fluid py-5" style="background-color: #f4f6f8;">
+    <div class="container py-5">
+        <div class="row g-0 shadow-lg rounded-4 overflow-hidden bg-white" style="min-height: 550px;">
+            <div class="col-lg-6 d-none d-lg-flex flex-column justify-content-center align-items-center text-white position-relative" style="background: url('/img/vegetable-item-4.jpg') center/cover no-repeat;">
+                <div class="position-absolute top-0 start-0 w-100 h-100" style="background: rgba(129, 196, 8, 0.85);"></div>
+                <div class="position-relative z-1 text-center p-5">
+                    <h1 class="display-3 text-white fw-bold mb-4">QuaMonHai</h1>
+                    <h4 class="text-white mb-4">Xác thực tài khoản của bạn</h4>
+                    <p class="fs-5 mb-4">Vui lòng kiểm tra hộp thư đến (hoặc thư rác) trong Email để lấy mã OTP xác nhận đặt lại mật khẩu mới.</p>
+                </div>
+            </div>
+
+            <div class="col-lg-6 p-5 d-flex flex-column justify-content-center">
+                <div class="text-center mb-4">
+                    <h2 class="text-primary fw-bold">Đặt Lại Mật Khẩu</h2>
+                    <p class="text-muted">Nhập mã OTP vừa nhận được và thiết lập mật khẩu mới</p>
+                </div>
+
+                @if (TempData["Success"] != null)
+                {
+                    <div class="alert alert-success rounded-pill text-center py-2 mb-3 small">
+                        @TempData["Success"]
+                    </div>
+                }
+
+                <form asp-action="DatLaiMatKhau" method="post">
+                    <div class="text-danger mb-3" asp-validation-summary="ModelOnly"></div>
+
+                    <div class="form-floating mb-3">
+                        <input asp-for="VerificationCode" type="text" class="form-control rounded-pill px-4 text-primary" id="floatingOtp" placeholder="Mã OTP" autocomplete="off">
+                        <label for="floatingOtp" class="ms-3 text-muted">Nhập mã OTP (6 số) *</label>
+                        <span asp-validation-for="VerificationCode" class="text-danger small ms-3"></span>
+                    </div>
+
+                    <div class="form-floating mb-3">
+                        <input asp-for="NewPassword" type="password" class="form-control rounded-pill px-4" id="floatingNewPass" placeholder="Mật khẩu mới">
+                        <label for="floatingNewPass" class="ms-3 text-muted">Mật khẩu mới *</label>
+                        <span asp-validation-for="NewPassword" class="text-danger small ms-3"></span>
+                    </div>
+
+                    <div class="form-floating mb-4">
+                        <input asp-for="ConfirmPassword" type="password" class="form-control rounded-pill px-4" id="floatingConfirmPass" placeholder="Xác nhận mật khẩu">
+                        <label for="floatingConfirmPass" class="ms-3 text-muted">Xác nhận mật khẩu mới *</label>
+                        <span asp-validation-for="ConfirmPassword" class="text-danger small ms-3"></span>
+                    </div>
+
+                    <div class="d-grid gap-3 mb-4">
+                        <button type="submit" class="btn text-white rounded-pill py-3 fw-bold shadow-sm" style="background-color: #81c408; font-size: 1.1rem;">
+                            HOÀN TẤT ĐẶT LẠI MẬT KHẨU
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
