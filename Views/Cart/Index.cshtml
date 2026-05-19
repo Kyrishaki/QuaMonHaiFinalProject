@@ -82,14 +82,15 @@
         </div>
 
         <!-- Danh sách sản phẩm -->
-        <p class="text-muted mb-3">Mặc định đã tick toàn bộ sản phẩm. Bạn có thể bỏ tick nếu không muốn mua.</p>
+        <form asp-action="Check_Out" asp-controller="Cart" method="post">
         <div id="cart-list">
+            
             @if (Model != null && Model.Any()) {
                 @foreach (var item in Model) {
                     <div class="row bg-white py-3 px-2 mb-2 rounded shadow-sm align-items-center cart-item-row mx-0" id="row-@item.MaHh">
                         <!-- Checkbox chọn sản phẩm -->
                         <div class="col-md-1 text-center">
-                            <input type="checkbox" class="form-check-input item-checkbox" data-id="@item.MaHh" checked>
+                                <input type="checkbox" class="form-check-input item-checkbox" name="selectedIds" value="@item.MaHh">
                         </div>
 
                         <!-- Hình ảnh và tên -->
@@ -147,11 +148,12 @@
 
                 <button type="button" id="btn-clear-cart" class="btn btn-outline-danger btn-lg px-4 ms-2 shadow">Xóa tất cả</button>
                 <!-- Nút Mua Hàng: Mặc định bị vô hiệu hóa cho đến khi chọn sản phẩm -->
-                <a asp-action="Check_Out" id="btn-checkout" class="btn btn-success btn-lg px-5 ms-2 shadow disabled">
+                <button type="submit" class="btn btn-success btn-lg px-5 ms-2 shadow">
                     Mua Hàng
-                </a>
+                </button>
             </div>
         </div>
+        </form>
     </div>
 </div>
 
@@ -237,14 +239,7 @@
             // Bật/Tắt nút Mua Hàng
             if (count > 0) {
                 $('#btn-checkout').removeClass('disabled');
-                
-                // Cập nhật URL truyền theo các sản phẩm đã chọn
-                let selectedIds = [];
-                $('.item-checkbox:checked').each(function () {
-                    selectedIds.push($(this).data('id'));
-                });
-                let checkoutUrl = '@Url.Action("Check_Out", "Cart")?' + selectedIds.map(id => 'selected=' + id).join('&');
-                $('#btn-checkout').attr('href', checkoutUrl);
+                $('#btn-checkout').attr('href', '@Url.Action("Check_Out", "Cart")');
             } else {
                 $('#btn-checkout').addClass('disabled');
                 $('#btn-checkout').attr('href', 'javascript:void(0)');

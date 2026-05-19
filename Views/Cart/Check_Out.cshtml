@@ -147,8 +147,8 @@
                 {
                     foreach (var item in Model)
                     {
-                        <input type="hidden" name="selected" value="@item.MaHh" />
                         <!-- Product Item -->
+                        <input type="hidden" name="selectedIds" value="@item.MaHh" />
                         <div class="grid grid-cols-12 gap-4 items-center mb-4 last:mb-0">
                             <div class="col-span-6 flex gap-4">
                                 <img src="~/img/Hinh/HangHoa/@item.Hinh" alt="@item.TenHh" class="w-12 h-12 border object-cover">

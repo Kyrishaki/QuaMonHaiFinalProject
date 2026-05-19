@@ -390,7 +390,9 @@ namespace LTWEB_QuaMonHai_CuoiKy.Controllers {
         // Hiển thị trang checkout - YÊU CẦU đăng nhập (khách vãng lai bị redirect về DangNhap)
         // Load danh sách voucher từ DB vào ViewBag
         // ============================================================
-        public async Task<IActionResult> Check_Out(List<int> selected)
+        [HttpGet]
+        [HttpPost]
+        public async Task<IActionResult> Check_Out(List<int> selectedIds)
         {
             var customerId = GetCustomerId();
 
@@ -398,9 +400,12 @@ namespace LTWEB_QuaMonHai_CuoiKy.Controllers {
             // Khách vãng lai chưa đăng nhập → yêu cầu đăng nhập trước khi thanh toán
             if (string.IsNullOrEmpty(customerId))
             {
-                TempData["Info"] = "Vui lòng đăng nhập để tiến hành thanh toán.";
-                string queryString = Request.QueryString.ToString();
-                return RedirectToAction("DangNhap", "KhachHang", new { ReturnUrl = "/Cart/Check_Out" + queryString });
+                TempData["url"] = "/Cart/Check_Out";
+                if (selectedIds != null && selectedIds.Any())
+                {
+                    TempData["SavedItems"] = string.Join(",", selectedIds);
+                }
+                return RedirectToAction("DangNhap", "KhachHang");
             }
 
             // Gộp Session vào DB nếu có
@@ -436,11 +441,20 @@ namespace LTWEB_QuaMonHai_CuoiKy.Controllers {
                 .Where(g => g.MaKh == customerId)
                 .ToListAsync();
 
-            if (selected != null && selected.Any())
+            if ((selectedIds == null || !selectedIds.Any()) && TempData["SavedItems"] != null)
             {
-                gioHangDb = gioHangDb.Where(g => selected.Contains(g.MaHh)).ToList();
+                var savedString = TempData["SavedItems"].ToString();
+                selectedIds = savedString.Split(',').Select(int.Parse).ToList();
             }
-
+            if (selectedIds != null && selectedIds.Any())
+            {
+                gioHangDb = gioHangDb.Where(g => selectedIds.Contains(g.MaHh)).ToList();
+            }
+            else
+            {
+                // Nếu không chọn món nào mà bấm submit form thì bắt quay về giỏ hàng
+                return RedirectToAction("Index");
+            }
             var cartItems = gioHangDb.Select(g => new CartItem
             {
                 MaHh = g.MaHh,
@@ -450,11 +464,6 @@ namespace LTWEB_QuaMonHai_CuoiKy.Controllers {
                 SoLuong = g.SoLuong
             }).ToList();
 
-            // Giỏ hàng trống → quay về trang giỏ hàng
-            if (!cartItems.Any())
-            {
-                return RedirectToAction("Index");
-            }
 
             // Load danh sách voucher từ DB → đẩy vào ViewBag để View render
             ViewBag.Vouchers = await _Context.GiamGias.ToListAsync();
@@ -475,7 +484,7 @@ namespace LTWEB_QuaMonHai_CuoiKy.Controllers {
             string shipping_method,
             string payment_method,
             int? MaGg,
-            List<int> selected)
+            List<int> selectedIds)
         {
             var customerId = GetCustomerId();
 
@@ -483,7 +492,7 @@ namespace LTWEB_QuaMonHai_CuoiKy.Controllers {
             // MaKh là FK tham chiếu đến bảng KhachHang → bắt buộc phải đăng nhập
             if (string.IsNullOrEmpty(customerId))
             {
-                TempData["Error"] = "Vui lòng đăng nhập để đặt hàng.";
+               
                 return RedirectToAction("DangNhap", "KhachHang", new { ReturnUrl = "/Cart/Check_Out" });
             }
 
@@ -493,9 +502,9 @@ namespace LTWEB_QuaMonHai_CuoiKy.Controllers {
                 .Where(g => g.MaKh == customerId)
                 .ToListAsync();
 
-            if (selected != null && selected.Any())
+            if (selectedIds != null && selectedIds.Any())
             {
-                gioHangDb = gioHangDb.Where(g => selected.Contains(g.MaHh)).ToList();
+                gioHangDb = gioHangDb.Where(g => selectedIds.Contains(g.MaHh)).ToList();
             }
 
             var cartItems = gioHangDb.Select(g => new CartItem
@@ -612,7 +621,7 @@ namespace LTWEB_QuaMonHai_CuoiKy.Controllers {
             if (!string.IsNullOrEmpty(customerId))
             {
                 // Chỉ xóa các sản phẩm đã thanh toán
-                var gioHangCanXoa = _Context.GioHangs.Where(g => g.MaKh == customerId && selected.Contains(g.MaHh));
+                var gioHangCanXoa = _Context.GioHangs.Where(g => g.MaKh == customerId && selectedIds.Contains(g.MaHh));
                 _Context.GioHangs.RemoveRange(gioHangCanXoa);
                 await _Context.SaveChangesAsync();
             }
