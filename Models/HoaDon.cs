@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 
 namespace LTWEB_QuaMonHai_CuoiKy.Models;
@@ -30,6 +30,8 @@ public partial class HoaDon
     public string? MaNv { get; set; }
 
     public string? GhiChu { get; set; }
+
+    public int? SoDienThoai { get; set; }
 
     public virtual ICollection<ChiTietHd> ChiTietHds { get; set; } = new List<ChiTietHd>();
 

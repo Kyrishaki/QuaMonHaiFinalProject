@@ -71,6 +71,17 @@
     <div class="container">
         <h2 class="mb-4 fw-bold"><i class="fa fa-shopping-cart me-2 text-success"></i>Giỏ Hàng Của Bạn</h2>
 
+        <!-- ============ KHU VỰC HIỂN THỊ LỖI ============ -->
+        @if (TempData["Error"] != null)
+        {
+            <div class="alert alert-danger alert-dismissible fade show shadow-sm mb-4 border-0 border-start border-danger border-4" role="alert">
+                <i class="fa-solid fa-triangle-exclamation text-danger me-2 fs-5"></i>
+                <span class="fw-medium">@TempData["Error"]</span>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        }
+        <!-- ============================================== -->
+
         <!-- Header Giỏ Hàng -->
         <div class="row py-3 px-2 mb-3 rounded shadow-sm cart-header d-none d-md-flex align-items-center mx-0">
             <div class="col-md-1 text-center">Chọn</div>
@@ -148,9 +159,9 @@
 
                 <button type="button" id="btn-clear-cart" class="btn btn-outline-danger btn-lg px-4 ms-2 shadow">Xóa tất cả</button>
                 <!-- Nút Mua Hàng: Mặc định bị vô hiệu hóa cho đến khi chọn sản phẩm -->
-                <button type="submit" class="btn btn-success btn-lg px-5 ms-2 shadow">
-                    Mua Hàng
-                </button>
+                <button type="submit" id="btn-checkout" class="btn btn-success btn-lg px-5 ms-2 shadow" disabled>
+                        Mua Hàng
+                 </button>
             </div>
         </div>
         </form>
@@ -237,13 +248,14 @@
             $('#selected-count').text(count);
 
             // Bật/Tắt nút Mua Hàng
-            if (count > 0) {
-                $('#btn-checkout').removeClass('disabled');
-                $('#btn-checkout').attr('href', '@Url.Action("Check_Out", "Cart")');
-            } else {
-                $('#btn-checkout').addClass('disabled');
-                $('#btn-checkout').attr('href', 'javascript:void(0)');
-            }
+                   if (count > 0) 
+                   {
+                        $('#btn-checkout').prop('disabled', false); // Bật nút
+                   } 
+                   else 
+                   {
+                    $('#btn-checkout').prop('disabled', true);  // Tắt nút
+                   }
         }
 
         // Xóa một sản phẩm

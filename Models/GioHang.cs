@@ -1,10 +1,17 @@
-﻿namespace LTWEB_QuaMonHai_CuoiKy.Models {
-    public partial class GioHang {
-        public string MaKh { get; set; } = null!;
-        public int MaHh { get; set; }
-        public int SoLuong { get; set; }
+﻿using System;
+using System.Collections.Generic;
 
-        public virtual HangHoa MaHhNavigation { get; set; } = null!;
-        public virtual KhachHang MaKhNavigation { get; set; } = null!;
-    }
+namespace LTWEB_QuaMonHai_CuoiKy.Models;
+
+public partial class GioHang
+{
+    public string MaKh { get; set; } = null!;
+
+    public int MaHh { get; set; }
+
+    public int SoLuong { get; set; }
+
+    public virtual HangHoa MaHhNavigation { get; set; } = null!;
+
+    public virtual KhachHang MaKhNavigation { get; set; } = null!;
 }

@@ -27,30 +27,30 @@ namespace LTWEB_QuaMonHai_CuoiKy.Controllers {
        public async Task<IActionResult> Index()
         {
             var customerId = GetCustomerId();
-            var sessionCart = shopCart; // List<CartItem> lấy từ Session
+            var sessionCart = shopCart; // List<CartItem> láº¥y tá»« Session
 
-            // CHƯA ĐĂNG NHẬP
+            // CHÆ¯A ÄÄ‚NG NHáº¬P
             if (string.IsNullOrEmpty(customerId))
             {
                 return View(sessionCart);
             }
 
-            //  ĐÃ ĐĂNG NHẬP (Thực hiện gộp giỏ hàng Session vào DB)
+            //  ÄÃƒ ÄÄ‚NG NHáº¬P (Thá»±c hiá»‡n gá»™p giá» hÃ ng Session vÃ o DB)
             if (sessionCart.Any())
             {
                 foreach (var item in sessionCart)
                 {
-                    // Kiểm tra xem món hàng trong Session đã có trong DB của User này chưa
+                    // Kiá»ƒm tra xem mÃ³n hÃ ng trong Session Ä‘Ã£ cÃ³ trong DB cá»§a User nÃ y chÆ°a
                     var dbItem = await _Context.GioHangs
                         .SingleOrDefaultAsync(g => g.MaKh == customerId && g.MaHh == item.MaHh);
 
                     if (dbItem != null)
                     {
-                        dbItem.SoLuong += item.SoLuong; // Nếu có rồi thì cộng dồn
+                        dbItem.SoLuong += item.SoLuong; // Náº¿u cÃ³ rá»“i thÃ¬ cá»™ng dá»“n
                     }
                     else
                     {
-                        // Nếu chưa có thì thêm mới vào DB
+                        // Náº¿u chÆ°a cÃ³ thÃ¬ thÃªm má»›i vÃ o DB
                         _Context.GioHangs.Add(new GioHang
                         {
                             MaKh = customerId,
@@ -60,12 +60,12 @@ namespace LTWEB_QuaMonHai_CuoiKy.Controllers {
                     }
                 }
 
-                // Sau khi đã gộp xong vào Database, xóa sạch Session để tránh gộp lặp lại 
+                // Sau khi Ä‘Ã£ gá»™p xong vÃ o Database, xÃ³a sáº¡ch Session Ä‘á»ƒ trÃ¡nh gá»™p láº·p láº¡i 
                 await _Context.SaveChangesAsync();
                 HttpContext.Session.Remove(mySetting.ShopCart);
             }
 
-            // Lấy toàn bộ dữ liệu từ Database ra để hiển thị (bao gồm cả các món vừa được gộp)
+            // Láº¥y toÃ n bá»™ dá»¯ liá»‡u tá»« Database ra Ä‘á»ƒ hiá»ƒn thá»‹ (bao gá»“m cáº£ cÃ¡c mÃ³n vá»«a Ä‘Æ°á»£c gá»™p)
             var gioHangDb = await _Context.GioHangs
                 .Include(g => g.MaHhNavigation)
                 .Where(g => g.MaKh == customerId)
@@ -87,10 +87,10 @@ namespace LTWEB_QuaMonHai_CuoiKy.Controllers {
         {
             var customerId = GetCustomerId();
 
-            // TRƯỜNG HỢP 1: CHƯA ĐĂNG NHẬP -> THAO TÁC TRÊN SESSION
+            // TRÆ¯á»œNG Há»¢P 1: CHÆ¯A ÄÄ‚NG NHáº¬P -> THAO TÃC TRÃŠN SESSION
             if (string.IsNullOrEmpty(customerId))
             {
-                var carlist = shopCart; // Lấy List từ thuộc tính shopCart (Session)
+                var carlist = shopCart; // Láº¥y List tá»« thuá»™c tÃ­nh shopCart (Session)
                 var item = carlist.SingleOrDefault(p => p.MaHh == id);
 
                 if (item == null)
@@ -114,7 +114,7 @@ namespace LTWEB_QuaMonHai_CuoiKy.Controllers {
 
                 HttpContext.Session.Set(mySetting.ShopCart, carlist);
             }
-            // TRƯỜNG HỢP 2: ĐÃ ĐĂNG NHẬP -> THAO TÁC TRÊN DATABASE
+            // TRÆ¯á»œNG Há»¢P 2: ÄÃƒ ÄÄ‚NG NHáº¬P -> THAO TÃC TRÃŠN DATABASE
             else
             {
                 var cartItem = await _Context.GioHangs
@@ -122,7 +122,7 @@ namespace LTWEB_QuaMonHai_CuoiKy.Controllers {
 
                 if (cartItem == null)
                 {
-                    // Kiểm tra hàng hóa tồn tại trước khi thêm vào bảng GioHang
+                    // Kiá»ƒm tra hÃ ng hÃ³a tá»“n táº¡i trÆ°á»›c khi thÃªm vÃ o báº£ng GioHang
                     var exists = await _Context.HangHoas.AnyAsync(p => p.MaHh == id);
                     if (!exists) return NotFound();
 
@@ -183,7 +183,7 @@ namespace LTWEB_QuaMonHai_CuoiKy.Controllers {
                     if (item == null)
                     {
                         var hh = _Context.HangHoas.AsNoTracking().SingleOrDefault(p => p.MaHh == id);
-                        if (hh == null) return Json(new { success = false, message = "Sản phẩm không tồn tại" });
+                        if (hh == null) return Json(new { success = false, message = "Sáº£n pháº©m khÃ´ng tá»“n táº¡i" });
 
                         carlist.Add(new CartItem
                         {
@@ -208,7 +208,7 @@ namespace LTWEB_QuaMonHai_CuoiKy.Controllers {
                     if (cartItem == null)
                     {
                         var exists = await _Context.HangHoas.AnyAsync(p => p.MaHh == id);
-                        if (!exists) return Json(new { success = false, message = "Sản phẩm không tồn tại" });
+                        if (!exists) return Json(new { success = false, message = "Sáº£n pháº©m khÃ´ng tá»“n táº¡i" });
 
                         _Context.GioHangs.Add(new GioHang
                         {
@@ -294,7 +294,7 @@ namespace LTWEB_QuaMonHai_CuoiKy.Controllers {
         }
 
         // ----------------------------------------------------------------
-        // Existing full‑page reload version (kept for non‑AJAX fallback)
+        // Existing fullâ€‘page reload version (kept for nonâ€‘AJAX fallback)
         // ----------------------------------------------------------------
         public async Task<IActionResult> UpdateQuantity(int id, int delta) {
             var customerId = GetCustomerId();
@@ -326,7 +326,7 @@ namespace LTWEB_QuaMonHai_CuoiKy.Controllers {
         }
 
         // ----------------------------------------------------------------
-        // AJAX version – returns JSON with the new quantity and line total
+        // AJAX version â€“ returns JSON with the new quantity and line total
         // ----------------------------------------------------------------
         [HttpGet]
         public async Task<IActionResult> UpdateQuantityAjax(int id, int delta) {
@@ -354,7 +354,7 @@ namespace LTWEB_QuaMonHai_CuoiKy.Controllers {
                     if (item.SoLuong < 1) item.SoLuong = 1;
                     await _Context.SaveChangesAsync();
                     newQty = item.SoLuong;
-                    // Need price from related HangHoa – fetch it
+                    // Need price from related HangHoa â€“ fetch it
                     var hh = await _Context.HangHoas
                         .Where(h => h.MaHh == id)
                         .Select(h => h.DonGia ?? 0)
@@ -387,17 +387,19 @@ namespace LTWEB_QuaMonHai_CuoiKy.Controllers {
 
         // ============================================================
         // GET: /Cart/Check_Out
-        // Hiển thị trang checkout - YÊU CẦU đăng nhập (khách vãng lai bị redirect về DangNhap)
-        // Load danh sách voucher từ DB vào ViewBag
+        // Hiá»ƒn thá»‹ trang checkout - YÃŠU Cáº¦U Ä‘Äƒng nháº­p (khÃ¡ch vÃ£ng lai bá»‹ redirect vá» DangNhap)
+        // Load danh sÃ¡ch voucher tá»« DB vÃ o ViewBag
         // ============================================================
         [HttpGet]
         [HttpPost]
         public async Task<IActionResult> Check_Out(List<int> selectedIds)
         {
+            selectedIds ??= new List<int>();
+
             var customerId = GetCustomerId();
 
-            // ====== KIỂM TRA ĐĂNG NHẬP ======
-            // Khách vãng lai chưa đăng nhập → yêu cầu đăng nhập trước khi thanh toán
+            // ====== KIá»‚M TRA ÄÄ‚NG NHáº¬P ======
+            // KhÃ¡ch vÃ£ng lai chÆ°a Ä‘Äƒng nháº­p â†’ yÃªu cáº§u Ä‘Äƒng nháº­p trÆ°á»›c khi thanh toÃ¡n
             if (string.IsNullOrEmpty(customerId))
             {
                 TempData["url"] = "/Cart/Check_Out";
@@ -408,7 +410,7 @@ namespace LTWEB_QuaMonHai_CuoiKy.Controllers {
                 return RedirectToAction("DangNhap", "KhachHang");
             }
 
-            // Gộp Session vào DB nếu có
+            // Gá»™p Session vÃ o DB náº¿u cÃ³
             var sessionCart = shopCart;
             if (sessionCart.Any())
             {
@@ -435,24 +437,24 @@ namespace LTWEB_QuaMonHai_CuoiKy.Controllers {
                 HttpContext.Session.Remove(mySetting.ShopCart);
             }
 
-            // ĐÃ ĐĂNG NHẬP: lấy giỏ hàng từ Database
+            // ÄÃƒ ÄÄ‚NG NHáº¬P: láº¥y giá» hÃ ng tá»« Database
             var gioHangDb = await _Context.GioHangs
                 .Include(g => g.MaHhNavigation)
                 .Where(g => g.MaKh == customerId)
                 .ToListAsync();
 
-            if ((selectedIds == null || !selectedIds.Any()) && TempData["SavedItems"] != null)
+            if ((!selectedIds.Any()) && TempData["SavedItems"] != null)
             {
                 var savedString = TempData["SavedItems"].ToString();
                 selectedIds = savedString.Split(',').Select(int.Parse).ToList();
             }
-            if (selectedIds != null && selectedIds.Any())
+            if (selectedIds.Any())
             {
                 gioHangDb = gioHangDb.Where(g => selectedIds.Contains(g.MaHh)).ToList();
             }
             else
             {
-                // Nếu không chọn món nào mà bấm submit form thì bắt quay về giỏ hàng
+                // Náº¿u khÃ´ng chá»n mÃ³n nÃ o mÃ  báº¥m submit form thÃ¬ báº¯t quay vá» giá» hÃ ng
                 return RedirectToAction("Index");
             }
             var cartItems = gioHangDb.Select(g => new CartItem
@@ -465,15 +467,13 @@ namespace LTWEB_QuaMonHai_CuoiKy.Controllers {
             }).ToList();
 
 
-            // Load danh sách voucher từ DB → đẩy vào ViewBag để View render
+            // Load danh sÃ¡ch voucher tá»« DB â†’ Ä‘áº©y vÃ o ViewBag Ä‘á»ƒ View render
             ViewBag.Vouchers = await _Context.GiamGias.ToListAsync();
 
             return View(cartItems);
         }
-
-        // ============================================================
         // POST: /Cart/PlaceOrder
-        // Nhận dữ liệu từ form checkout, kiểm tra hợp lệ, lưu vào DB
+        // Nhan du lieu tu form checkout, kiem tra hop le, luu vao DB
         // ============================================================
         [HttpPost]
         public async Task<IActionResult> PlaceOrder(
@@ -484,159 +484,139 @@ namespace LTWEB_QuaMonHai_CuoiKy.Controllers {
             string shipping_method,
             string payment_method,
             int? MaGg,
-            List<int> selectedIds)
+            List<int>? selectedIds)
         {
             var customerId = GetCustomerId();
-
-            // ====== BƯỚC 1: Kiểm tra đăng nhập ======
-            // MaKh là FK tham chiếu đến bảng KhachHang → bắt buộc phải đăng nhập
             if (string.IsNullOrEmpty(customerId))
             {
-               
                 return RedirectToAction("DangNhap", "KhachHang", new { ReturnUrl = "/Cart/Check_Out" });
             }
 
-            // ====== BƯỚC 2: Lấy giỏ hàng từ DB ======
-            var gioHangDb = await _Context.GioHangs
-                .Include(g => g.MaHhNavigation)
-                .Where(g => g.MaKh == customerId)
-                .ToListAsync();
-
-            if (selectedIds != null && selectedIds.Any())
+            selectedIds ??= new List<int>();
+            if (!selectedIds.Any())
             {
-                gioHangDb = gioHangDb.Where(g => selectedIds.Contains(g.MaHh)).ToList();
-            }
-
-            var cartItems = gioHangDb.Select(g => new CartItem
-            {
-                MaHh = g.MaHh,
-                TenHh = g.MaHhNavigation.TenHh,
-                DonGia = g.MaHhNavigation.DonGia ?? 0,
-                Hinh = g.MaHhNavigation.Hinh,
-                SoLuong = g.SoLuong
-            }).ToList();
-
-            // ====== BƯỚC 2: Kiểm tra tính hợp lệ ======
-            if (!cartItems.Any())
-            {
-                TempData["Error"] = "Giỏ hàng trống, không thể đặt hàng.";
+                TempData["Error"] = "Vui lòng chọn sản phẩm để đặt hàng";
                 return RedirectToAction("Index");
             }
 
+            TempData["SavedItems"] = string.Join(",", selectedIds);
+
             if (string.IsNullOrWhiteSpace(HoTen) || string.IsNullOrWhiteSpace(DiaChi) || string.IsNullOrWhiteSpace(SoDienThoai))
             {
-                TempData["Error"] = "Vui lòng nhập đầy đủ thông tin (Họ tên, Địa chỉ, Số điện thoại).";
-                TempData["HoTen"] = HoTen;
-                TempData["DiaChi"] = DiaChi;
-                TempData["SoDienThoai"] = SoDienThoai;
-                ViewBag.Vouchers = await _Context.GiamGias.ToListAsync();
-                return View("Check_Out", cartItems);
+                TempData["Error"] = "Vui lòng điền đầy đủ thông tin nhận hàng";
+                return RedirectToAction("Check_Out");
             }
 
-            // Nối số điện thoại vào địa chỉ
-            string diaChiGiaoHang = $"{DiaChi} - SĐT: {SoDienThoai}";
-
-            // ====== BƯỚC 3: Xử lý voucher (nếu có) ======
-            double phanTramGiam = 0;
-            GiamGia? voucher = null;
-
-            if (MaGg.HasValue && MaGg.Value > 0)
+            if (!int.TryParse(SoDienThoai, out var soDienThoai))
             {
-                voucher = await _Context.GiamGias.FindAsync(MaGg.Value);
-                if (voucher != null)
-                {
-                    bool isValid = true;
-                    if (!voucher.TrangThai) isValid = false;
-                    if (voucher.NgayBatDau.HasValue && voucher.NgayBatDau.Value > DateTime.Now) isValid = false;
-                    if (voucher.NgayKetThuc.HasValue && voucher.NgayKetThuc.Value < DateTime.Now) isValid = false;
-                    
-                    double tongTienHang = cartItems.Sum(c => c.DonGia * c.SoLuong);
-                    if (voucher.GiaTriDonToiThieu.HasValue && tongTienHang < voucher.GiaTriDonToiThieu.Value) isValid = false;
-                    if (voucher.SoLanSuDung.HasValue && voucher.SoLanSuDung.Value <= 0) isValid = false;
+                TempData["Error"] = "Số điện thoại không hợp lệ";
+                return RedirectToAction("Check_Out");
+            }
 
-                    if (isValid)
-                    {
-                        phanTramGiam = voucher.PhanTramGiam;
-                        if (voucher.SoLanSuDung.HasValue) voucher.SoLanSuDung -= 1;
-                    }
-                    else
-                    {
-                        TempData["Error"] = "Voucher không hợp lệ, chưa đến hạn, hết hạn hoặc không đủ điều kiện.";
-                        TempData["HoTen"] = HoTen;
-                        TempData["DiaChi"] = DiaChi;
-                        TempData["SoDienThoai"] = SoDienThoai;
-                        ViewBag.Vouchers = await _Context.GiamGias.ToListAsync();
-                        return View("Check_Out", cartItems);
-                    }
+            var gioHangDb = await _Context.GioHangs
+                .Where(g => g.MaKh == customerId && selectedIds.Contains(g.MaHh))
+                .Include(g => g.MaHhNavigation)
+                .ToListAsync();
+
+            if (!gioHangDb.Any())
+            {
+                TempData["Error"] = "Giỏ hàng rỗng";
+                return RedirectToAction("Check_Out");
+            }
+
+            if (gioHangDb.Count != selectedIds.Distinct().Count())
+            {
+                TempData["Error"] = "Giỏ hàng có sản phẩm không hợp lệ";
+                return RedirectToAction("Check_Out");
+            }
+
+            var subtotal = gioHangDb.Sum(g => (g.MaHhNavigation.DonGia ?? 0) * g.SoLuong);
+            GiamGia? voucher = null;
+            if (MaGg.HasValue)
+            {
+                voucher = await _Context.GiamGias.SingleOrDefaultAsync(x => x.MaGg == MaGg.Value);
+                if (voucher == null)
+                {
+                    TempData["Error"] = "Mã giảm giá không tồn tại";
+                    return RedirectToAction("Check_Out");
+                }
+
+                var now = DateTime.Now;
+                if (!voucher.TrangThai
+                    || (voucher.NgayBatDau.HasValue && voucher.NgayBatDau.Value > now)
+                    || (voucher.NgayKetThuc.HasValue && voucher.NgayKetThuc.Value < now))
+                {
+                    TempData["Error"] = "Mã giảm giá đã hết hạn hoặc chưa được kích hoạt";
+                    return RedirectToAction("Check_Out");
+                }
+
+                if (voucher.GiaTriDonToiThieu.HasValue && subtotal < voucher.GiaTriDonToiThieu.Value)
+                {
+                    TempData["Error"] = "Đơn hàng chưa đạt giá trị tối thiểu để dùng mã giảm giá";
+                    return RedirectToAction("Check_Out");
                 }
             }
 
-            // ====== BƯỚC 4: Tính phí vận chuyển ======
-            double phiVanChuyen = shipping_method switch
+            string ptVanChuyen;
+            double phiVanChuyen;
+            switch (shipping_method)
             {
-                "express" => 20,
-                "economy" => 0,
-                _ => 5  // "standard" hoặc mặc định
-            };
+                case "standard":
+                    ptVanChuyen = "standard";
+                    phiVanChuyen = 2;
+                    break;
+                case "express":
+                    ptVanChuyen = "express";
+                    phiVanChuyen = 5;
+                    break;
+                default:
+                    TempData["Error"] = "Phương thức vận chuyển không hợp lệ";
+                    return RedirectToAction("Check_Out");
+            }
 
-            // ====== BƯỚC 5: Tạo Hóa Đơn ======
+            if (payment_method != "cod")
+            {
+                TempData["Error"] = "Phương thức thanh toán không hợp lệ";
+                return RedirectToAction("Check_Out");
+            }
+
+            var nowOrder = DateTime.Now;
             var hoaDon = new HoaDon
             {
                 MaKh = customerId,
-                NgayDat = DateTime.Now,
-                NgayCan = DateTime.Now.AddDays(3),
-                NgayGiao = DateTime.Now.AddDays(10),
+                NgayDat = nowOrder,
+                NgayCan = nowOrder.AddDays(5),
+                NgayGiao = nowOrder.AddDays(3),
                 HoTen = HoTen,
-                DiaChi = diaChiGiaoHang,
-                CachThanhToan = payment_method ?? "cod",
-                CachVanChuyen = shipping_method ?? "standard",
+                DiaChi = DiaChi,
+                SoDienThoai = soDienThoai,
+                CachThanhToan = payment_method,
+                CachVanChuyen = ptVanChuyen,
                 PhiVanChuyen = phiVanChuyen,
-                MaTrangThai = 0,    // 0 = Mới đặt
-                GhiChu = GhiChu
+                MaTrangThai = 1,
+                GhiChu = GhiChu,
+                ChiTietHds = gioHangDb.Select(g =>
+                {
+                    var lineTotal = (g.MaHhNavigation.DonGia ?? 0) * g.SoLuong;
+                    return new ChiTietHd
+                    {
+                        MaHh = g.MaHh,
+                        SoLuong = g.SoLuong,
+                        DonGia = g.MaHhNavigation.DonGia ?? 0,
+                        GiamGia = voucher == null ? 0 : lineTotal * voucher.PhanTramGiam / 100,
+                        MaGg = voucher?.MaGg
+                    };
+                }).ToList()
             };
 
             _Context.HoaDons.Add(hoaDon);
-            await _Context.SaveChangesAsync(); // Sau đây hoaDon.MaHd sẽ có giá trị
-
-            // ====== BƯỚC 7: Tạo Chi Tiết Hóa Đơn ======
-            foreach (var item in cartItems)
-            {
-                double giamGiaMonNay = item.DonGia * (phanTramGiam / 100);
-
-                var chiTiet = new ChiTietHd
-                {
-                    MaHd = hoaDon.MaHd,
-                    MaHh = item.MaHh,
-                    DonGia = item.DonGia,
-                    SoLuong = item.SoLuong,
-                    GiamGia = giamGiaMonNay,
-                    MaGg = voucher != null ? MaGg : null
-                };
-
-                _Context.ChiTietHds.Add(chiTiet);
-            }
+            _Context.GioHangs.RemoveRange(gioHangDb);
             await _Context.SaveChangesAsync();
+            TempData.Remove("SavedItems");
 
-            // ====== BƯỚC 8: Xóa giỏ hàng sau khi đặt thành công ======
-            if (!string.IsNullOrEmpty(customerId))
-            {
-                // Chỉ xóa các sản phẩm đã thanh toán
-                var gioHangCanXoa = _Context.GioHangs.Where(g => g.MaKh == customerId && selectedIds.Contains(g.MaHh));
-                _Context.GioHangs.RemoveRange(gioHangCanXoa);
-                await _Context.SaveChangesAsync();
-            }
-
-            // Xóa giỏ hàng trong Session
-            HttpContext.Session.Remove(mySetting.ShopCart);
-
-            // ====== BƯỚC 9: Chuyển sang trang thành công ======
             return RedirectToAction("OrderSuccess", new { id = hoaDon.MaHd });
         }
-
-        // ============================================================
         // GET: /Cart/OrderSuccess?id=42
-        // Hiển thị thông báo đặt hàng thành công
-        // ============================================================
         public async Task<IActionResult> OrderSuccess(int id)
         {
             var customerId = GetCustomerId();
@@ -669,7 +649,6 @@ namespace LTWEB_QuaMonHai_CuoiKy.Controllers {
                 .ToListAsync();
 
             return View(dsHoaDon);
+        }        
         }
-        
     }
-}
