@@ -58,6 +58,27 @@ public partial class Hshop2023Context : DbContext {
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder) {
+        modelBuilder.Entity<BanBe>(entity => {
+            entity.HasKey(e => e.MaBb);
+
+            entity.ToTable("BanBe");
+
+            entity.Property(e => e.MaBb).HasColumnName("MaBB");
+            entity.Property(e => e.MaHh).HasColumnName("MaHH");
+            entity.Property(e => e.MaKh)
+                .HasMaxLength(20)
+                .HasColumnName("MaKH");
+            entity.Property(e => e.NgayGui).HasColumnType("datetime");
+
+            entity.HasOne(d => d.MaHhNavigation).WithMany(p => p.BanBes)
+                .HasForeignKey(d => d.MaHh)
+                .HasConstraintName("FK_BanBe_HangHoa");
+
+            entity.HasOne(d => d.MaKhNavigation).WithMany(p => p.BanBes)
+                .HasForeignKey(d => d.MaKh)
+                .HasConstraintName("FK_BanBe_KhachHang");
+        });
+
         modelBuilder.Entity<GioHang>(entity => {
             // Cấu hình khóa chính kép (Composite Key) vì 1 giỏ hàng định danh bởi Khách và Hàng
             entity.HasKey(e => new { e.MaKh, e.MaHh });
@@ -70,13 +91,13 @@ public partial class Hshop2023Context : DbContext {
 
             // Thiết lập mối quan hệ với bảng Khách Hàng
             entity.HasOne(d => d.MaKhNavigation)
-                .WithMany() // Nếu trong model Khách hàng bạn không tạo List<GioHang> thì để trống
+                .WithMany(p => p.GioHangs)
                 .HasForeignKey(d => d.MaKh)
                 .HasConstraintName("FK_GioHang_KhachHang");
 
             // Thiết lập mối quan hệ với bảng Hàng Hóa
             entity.HasOne(d => d.MaHhNavigation)
-                .WithMany()
+                .WithMany(p => p.GioHangs)
                 .HasForeignKey(d => d.MaHh)
                 .HasConstraintName("FK_GioHang_HangHoa");
         });

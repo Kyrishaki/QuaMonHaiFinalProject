@@ -1,527 +1,374 @@
 @model IEnumerable<LTWEB_QuaMonHai_CuoiKy.ViewModels.CartItem>
 @{
     ViewData["Title"] = "Thanh Toán";
+    Layout = null;
 }
 
-@section Scripts {
-    <script src="https://cdn.tailwindcss.com"></script>
-}
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Thanh Toán - Qua Môn Nhóm</title>
 
-
-<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-<style>
-    body {
-        background-color: #f5f5f5;
-        color: #333;
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    }
-
-    .QuaMon-color {
-        color: green;
-    }
-
-    .QuaMon-bg {
-        background-color: green;
-    }
-
-    .QuaMon-border {
-        border-color: #ee4d2d;
-    }
-
-    .card-container {
-        background-color: white;
-        border-radius: 4px;
-        box-shadow: 0 1px 1px 0 rgba(0,0,0,.05);
-        margin-bottom: 12px;
-        padding: 24px;
-    }
-
-    /* Custom Checkbox/Radio */
-    .custom-radio input[type="radio"] {
-        display: none;
-    }
-
-    .custom-radio .radio-label {
-        border: 1px solid #e5e5e5;
-        padding: 10px 20px;
-        border-radius: 2px;
-        cursor: pointer;
-        transition: all 0.2s;
-    }
-
-    .custom-radio input[type="radio"]:checked + .radio-label {
-        border-color: #ee4d2d;
-        position: relative;
-    }
-
-        .custom-radio input[type="radio"]:checked + .radio-label::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            right: 0;
-            width: 15px;
-            height: 15px;
-            background-color: #ee4d2d;
-            clip-path: polygon(100% 0, 0 100%, 100% 100%);
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f5f5f5;
         }
 
-        .custom-radio input[type="radio"]:checked + .radio-label::before {
-            content: '✓';
-            position: absolute;
-            bottom: 0px;
-            right: 2px;
+        .text-quamon {
+            color: #198754;
+        }
+
+        .bg-quamon {
+            background-color: #198754;
             color: white;
-            font-size: 8px;
-            z-index: 1;
         }
-</style>
-<!-- Header -->
-<header class="bg-white border-b border-gray-200">
-    <div class="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
-        <div class="flex items-center gap-4">
-            <a href="/" class="QuaMon-color text-2xl font-bold flex items-center gap-2">
-                <i class="fa-solid fa-bag-shopping"></i>
-                Qua Môn Nhóm
+
+        /* Custom Radio cho Phương thức vận chuyển */
+        .shipping-label {
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .shipping-radio:checked + .shipping-label {
+            border-color: #198754 !important;
+            background-color: #f8fff9;
+        }
+    </style>
+</head>
+<body>
+    <header class="bg-white border-bottom py-3 mb-4 shadow-sm">
+        <div class="container d-flex align-items-center">
+            <a href="/" class="text-quamon fs-4 fw-bold text-decoration-none d-flex align-items-center gap-2">
+                <i class="fa-solid fa-bag-shopping"></i> Qua Môn Nhóm
             </a>
-            <span class="text-xl border-l border-gray-300 pl-4 text-gray-700">Thanh Toán</span>
+            <span class="fs-5 border-start ms-3 ps-3 text-secondary">Thanh Toán</span>
         </div>
-        <div class="text-sm text-gray-500">
-            <span>Cần trợ giúp?</span>
-        </div>
-    </div>
-</header>
+    </header>
 
-<!-- Main Content -->
-<main class="max-w-6xl mx-auto px-4 py-6">
+    <main class="container">
+        <form asp-action="PlaceOrder" asp-controller="Cart" method="POST">
 
-    <form asp-action="PlaceOrder" asp-controller="Cart" method="POST">
+            <input type="hidden" name="HoTen" id="hiddenHoTen" value="" />
+            <input type="hidden" name="DiaChi" id="hiddenDiaChi" value="" />
+            <input type="hidden" name="SoDienThoai" id="hiddenSoDienThoai" value="" />
+            <input type="hidden" name="MaGg" id="selectedMaGg" value="" />
 
-        <!-- Delivery Address -->
-        <div class="card-container">
-            <div class="flex items-center gap-2 QuaMon-color text-lg mb-4">
-                <i class="fa-solid fa-location-dot"></i>
-                <h2>Địa Chỉ Nhận Hàng</h2>
-            </div>
-            <!-- Hiển thị địa chỉ đã chọn -->
-            <div id="selectedAddressInfo" class="hidden mb-3 p-3 bg-gray-50 rounded border border-gray-200">
-                <div class="flex justify-between items-start">
-                    <div>
-                        <p class="font-semibold text-gray-800"><span id="addrName"></span></p>
-                        <p class="text-sm text-gray-600 mt-1" id="addrDetail"></p>
-                    </div>
-                    <span class="text-xs border border-green-500 text-green-600 px-2 py-0.5 rounded">Mặc định</span>
-                </div>
-            </div>
-            <div class="flex items-center gap-3">
-                <button type="button" id="btnOpenAddress" onclick="openAddressModal()"
-                        class="border border-blue-500 text-blue-500 hover:bg-blue-50 px-4 py-2 rounded flex items-center gap-2 transition-colors">
-                    <i class="fa-solid fa-plus"></i>
-                    Thêm địa chỉ
-                </button>
-            </div>
-            <!-- Hidden inputs gửi về server -->
-            <input type="hidden" name="HoTen" id="hiddenHoTen" value="@TempData["HoTen"]" />
-            <input type="hidden" name="DiaChi" id="hiddenDiaChi" value="@TempData["DiaChi"]" />
-            <input type="hidden" name="SoDienThoai" id="hiddenSoDienThoai" value="@TempData["SoDienThoai"]" />
-            
-            @if(TempData["Error"] != null) {
-                <div class="mt-3 p-3 bg-red-100 text-red-700 rounded border border-red-200">
-                    <i class="fa-solid fa-circle-exclamation mr-2"></i> @TempData["Error"]
+            @if (TempData["Error"] != null)
+            {
+                <div class="alert alert-danger mb-3">
+                    <i class="fa-solid fa-circle-exclamation me-2"></i> @TempData["Error"]
                 </div>
             }
-        </div>
 
-        <!-- Products -->
-        <div class="card-container p-0 overflow-hidden">
-            <!-- Header -->
-            <div class="grid grid-cols-12 gap-4 px-6 py-4 border-b border-gray-200 bg-gray-50 text-gray-500 text-sm">
-                <div class="col-span-6">Sản phẩm</div>
-                <div class="col-span-2 text-center">Đơn giá</div>
-                <div class="col-span-2 text-center">Số lượng</div>
-                <div class="col-span-2 text-right">Thành tiền</div>
-            </div>
+            <div class="card shadow-sm mb-3 border-0">
+                <div class="card-body">
+                    <h5 class="card-title text-quamon mb-3"><i class="fa-solid fa-location-dot me-2"></i>Địa Chỉ Nhận Hàng</h5>
 
-            <!-- Shop Section -->
-            <div class="px-6 py-4">
-                @if (Model != null)
-                {
-                    foreach (var item in Model)
-                    {
-                        <input type="hidden" name="selected" value="@item.MaHh" />
-                        <!-- Product Item -->
-                        <div class="grid grid-cols-12 gap-4 items-center mb-4 last:mb-0">
-                            <div class="col-span-6 flex gap-4">
-                                <img src="~/img/Hinh/HangHoa/@item.Hinh" alt="@item.TenHh" class="w-12 h-12 border object-cover">
-                                <div class="flex flex-col justify-center">
-                                    <span class="text-sm truncate w-64">@item.TenHh</span>
-                                </div>
-                            </div>
-                            <div class="col-span-2 text-center text-sm">@item.DonGia.ToString("N0")₫</div>
-                            <div class="col-span-2 text-center text-sm">@item.SoLuong</div>
-                            <div class="col-span-2 text-right text-sm font-semibold">@((item.DonGia * item.SoLuong).ToString("N0"))₫</div>
-                        </div>
-                    }
-                }
-            </div>
-
-            <!-- Shop Total -->
-            <div class="px-6 py-4 bg-gray-50 border-t border-gray-200 flex justify-end items-center gap-4 text-sm">
-                <span class="text-gray-600">Tổng số tiền (@(Model?.Sum(x => x.SoLuong) ?? 0) sản phẩm):</span>
-                <span class="QuaMon-color text-xl font-medium">@((Model?.Sum(x => x.DonGia * x.SoLuong) ?? 0).ToString("N0"))₫</span>
-            </div>
-        </div>
-
-        <!-- Shipping Method -->
-        <div class="card-container">
-            <div class="grid grid-cols-12 gap-4 items-start">
-                <div class="col-span-3">
-                    <h2 class="text-base font-medium text-gray-700">Phương thức vận chuyển</h2>
-                </div>
-                <div class="col-span-9">
-                    <div class="flex flex-col gap-3">
-                        <label class="flex items-start gap-3 p-3 border border-green-500 rounded bg-green-50 cursor-pointer">
-                            <input type="radio" name="shipping_method" value="standard" id="shipping_standard" checked
-                                   class="mt-1 accent-green-600"
-                                   onchange="updateShipping(5)">
-                            <div class="flex flex-col">
-                                <span class="font-medium text-gray-800">Giao hàng tiêu chuẩn</span>
-                                <span class="text-sm text-gray-500 mt-0.5">Nhận hàng trong 3 – 5 ngày</span>
-                            </div>
-                            <span class="ml-auto font-semibold text-green-600 whitespace-nowrap">5₫</span>
-                        </label>
-                        <label class="flex items-start gap-3 p-3 border border-gray-200 rounded hover:border-green-400 cursor-pointer transition-colors">
-                            <input type="radio" name="shipping_method" value="express" id="shipping_express"
-                                   class="mt-1 accent-green-600"
-                                   onchange="updateShipping(20)">
-                            <div class="flex flex-col">
-                                <span class="font-medium text-gray-800">Giao hàng nhanh</span>
-                                <span class="text-sm text-gray-500 mt-0.5">Nhận hàng trong 1 – 2 ngày</span>
-                            </div>
-                            <span class="ml-auto font-semibold text-gray-700 whitespace-nowrap">20₫</span>
-                        </label>
-                        <label class="flex items-start gap-3 p-3 border border-gray-200 rounded hover:border-green-400 cursor-pointer transition-colors">
-                            <input type="radio" name="shipping_method" value="economy" id="shipping_economy"
-                                   class="mt-1 accent-green-600"
-                                   onchange="updateShipping(0)">
-                            <div class="flex flex-col">
-                                <span class="font-medium text-gray-800">Giao hàng tiết kiệm</span>
-                                <span class="text-sm text-gray-500 mt-0.5">Nhận hàng trong 5 – 7 ngày</span>
-                            </div>
-                            <span class="ml-auto font-semibold text-green-600 whitespace-nowrap">Miễn phí</span>
-                        </label>
+                    <div id="selectedAddressInfo" class="d-none alert alert-light border mb-3">
+                        <p class="fw-bold mb-1" id="addrName"></p>
+                        <p class="text-muted mb-0 small" id="addrDetail"></p>
                     </div>
-                    <p class="text-xs text-gray-400 mt-3">* Phí vận chuyển có thể thay đổi theo khu vực.</p>
-                </div>
-            </div>
-        </div>
 
-        <!-- Vouchers & Coins -->
-        <div class="card-container">
-            <div class="flex justify-between items-center">
-                <div class="flex items-center gap-2">
-                    <i class="fa-solid fa-ticket QuaMon-color text-xl"></i>
-                    <span class="text-lg">Voucher Qua Môn</span>
-                </div>
-                <div class="flex items-center gap-3">
-                    <span id="selectedVoucherLabel" class="text-sm text-green-600 font-medium hidden"></span>
-                    <button type="button" id="btnOpenVoucher" onclick="openVoucherModal()"
-                            class="text-blue-500 hover:text-blue-700 border border-blue-300 hover:border-blue-500 px-3 py-1 rounded text-sm transition-colors">
-                        Chọn Voucher
+                    <button type="button" class="btn btn-outline-primary btn-sm" onclick="addressModalInstance.show()">
+                        <i class="fa-solid fa-plus me-1"></i> Thêm địa chỉ
                     </button>
                 </div>
             </div>
-            <input type="hidden" name="MaGg" id="selectedMaGg" value="" />
-        </div>
 
-        <!-- Payment Method -->
-        <div class="card-container">
-            <div class="flex justify-between items-start mb-6">
-                <h2 class="text-lg">Phương thức thanh toán</h2>
-
-                <div class="flex gap-2 flex-wrap justify-end w-2/3">
-                    <label class="custom-radio">
-                        <input type="radio" name="payment_method" value="cod" checked>
-                        <div class="radio-label text-sm">Thanh toán khi nhận hàng</div>
-                    </label>
+            <div class="card shadow-sm mb-3 border-0 overflow-hidden">
+                <div class="row g-0 bg-light border-bottom py-2 px-3 fw-bold text-secondary small text-center">
+                    <div class="col-6 text-start">Sản phẩm</div>
+                    <div class="col-2">Đơn giá</div>
+                    <div class="col-2">Số lượng</div>
+                    <div class="col-2 text-end">Thành tiền</div>
                 </div>
-            </div>
 
-            <!-- Dynamic Payment Details -->
-            
-        </div>
-
-        <!-- Summary & Submit -->
-        <div class="card-container bg-[#fafdff] border border-blue-100">
-            <div class="flex justify-end pt-4 pb-2 border-b border-gray-200/50">
-                <div class="w-80 flex flex-col gap-3 text-sm">
-                    <div class="flex justify-between">
-                        <span class="text-gray-600">Tổng tiền hàng</span>
-                        <span id="subtotalDisplay">@((Model?.Sum(x => x.DonGia * x.SoLuong) ?? 0).ToString("N0"))₫</span>
-                    </div>
-                    <div class="flex justify-between">
-                        <span class="text-gray-600">Phí vận chuyển</span>
-                        <span id="shippingDisplay">5₫</span>
-                    </div>
-                    <div id="discountRow" class="flex justify-between hidden">
-                        <span class="text-gray-600">Giảm giá voucher</span>
-                        <span id="discountDisplay" class="text-red-500 font-medium"></span>
-                    </div>
-                    <div class="flex justify-between items-center mt-2 pt-2 border-t border-gray-200">
-                        <span class="text-gray-600">Tổng thanh toán:</span>
-                        <span id="totalDisplay" class="QuaMon-color text-3xl font-medium">@((Model?.Sum(x => x.DonGia * x.SoLuong) ?? 0 + 5).ToString("N0"))₫</span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="flex justify-between items-center pt-6">
-                <div class="text-sm text-gray-500 w-2/3">
-                    Nhấn "Đặt hàng" đồng nghĩa với việc bạn đồng ý tuân theo <a href="#" class="text-blue-500 hover:underline">Điều khoản QuaMon</a>
-                </div>
-                <button type="submit" class="QuaMon-bg hover:bg-orange-600 text-white px-12 py-3 rounded text-lg font-medium shadow-sm transition-colors w-64">
-                    Đặt hàng
-                </button>
-            </div>
-        </div>
-
-    </form>
-</main>
-
-<!-- ============ MODAL ĐỊA CHỈ ============ -->
-<div id="addressModal" class="fixed inset-0 z-50 hidden flex items-center justify-center"
-     style="background: rgba(0,0,0,0.5);">
-    <div class="bg-white rounded-xl shadow-2xl w-full max-w-md mx-4 overflow-hidden">
-        <!-- Modal Header -->
-        <div class="flex items-center justify-between px-6 py-4 border-b border-gray-200">
-            <div class="flex items-center gap-2">
-                <i class="fa-solid fa-location-dot text-green-600 text-xl"></i>
-                <h3 class="text-lg font-semibold text-gray-800">Thêm địa chỉ nhận hàng</h3>
-            </div>
-            <button type="button" onclick="closeAddressModal()"
-                    class="text-gray-400 hover:text-gray-600 text-2xl leading-none">&times;</button>
-        </div>
-        <!-- Modal Body -->
-        <div class="p-6">
-            <div class="flex flex-col gap-4">
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Họ tên người nhận <span class="text-red-500">*</span></label>
-                    <input type="text" id="inputHoTen" placeholder="Nguyễn Văn A"
-                           class="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:border-green-500 focus:ring-1 focus:ring-green-500" />
-                </div>
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Số điện thoại <span class="text-red-500">*</span></label>
-                    <input type="text" id="inputDienThoai" placeholder="0987654321"
-                           class="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:border-green-500 focus:ring-1 focus:ring-green-500" />
-                </div>
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Địa chỉ chi tiết <span class="text-red-500">*</span></label>
-                    <textarea id="inputAddress" rows="3" placeholder="Số nhà, tên đường, phường/xã, quận/huyện, tỉnh/thành phố"
-                              class="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:border-green-500 focus:ring-1 focus:ring-green-500"></textarea>
-                </div>
-                <p id="addrError" class="text-red-500 text-sm hidden">Vui lòng điền đầy đủ thông tin.</p>
-            </div>
-        </div>
-        <!-- Modal Footer -->
-        <div class="flex justify-end gap-3 px-6 py-4 border-t border-gray-100 bg-gray-50">
-            <button type="button" onclick="closeAddressModal()"
-                    class="bg-gray-200 hover:bg-gray-300 text-gray-700 px-6 py-2 rounded text-sm font-medium transition-colors">
-                Hủy
-            </button>
-            <button type="button" onclick="saveAddress()"
-                    class="bg-green-500 hover:bg-green-600 text-white px-6 py-2 rounded text-sm font-medium transition-colors">
-                Xác nhận
-            </button>
-        </div>
-    </div>
-</div>
-
-<!-- ============ MODAL VOUCHER ============ -->
-<div id="voucherModal" class="fixed inset-0 z-50 hidden flex items-center justify-center"
-     style="background: rgba(0,0,0,0.5);">
-    <div class="bg-white rounded-xl shadow-2xl w-full max-w-lg mx-4 overflow-hidden">
-        <!-- Modal Header -->
-        <div class="flex items-center justify-between px-6 py-4 border-b border-gray-200">
-            <div class="flex items-center gap-2">
-                <i class="fa-solid fa-ticket text-green-600 text-xl"></i>
-                <h3 class="text-lg font-semibold text-gray-800">Chọn mã giảm giá</h3>
-            </div>
-            <button type="button" onclick="closeVoucherModal()"
-                    class="text-gray-400 hover:text-gray-600 text-2xl leading-none">&times;</button>
-        </div>
-        <!-- Modal Body: Render danh sách voucher từ ViewBag -->
-        <div class="p-6 max-h-96 overflow-y-auto">
-            <div id="voucherList" class="flex flex-col gap-3">
-                @if (ViewBag.Vouchers != null)
-                {
-                    foreach (var v in (List<LTWEB_QuaMonHai_CuoiKy.Models.GiamGia>)ViewBag.Vouchers)
+                <div class="card-body p-0">
+                    @if (Model != null)
                     {
-                        <div class="flex items-center justify-between border border-gray-200 rounded-lg p-4 hover:border-green-400 transition-colors">
-                            <div class="flex items-center gap-4">
-                                <div class="w-16 h-16 bg-gradient-to-br from-green-400 to-green-600 rounded-lg flex flex-col items-center justify-center text-white shadow">
-                                    <span class="text-xl font-bold">@v.PhanTramGiam%</span>
-                                    <span class="text-[10px] uppercase tracking-wide">giảm</span>
+                        foreach (var item in Model)
+                        {
+                            <input type="hidden" name="selectedIds" value="@item.MaHh" />
+                            <div class="row g-0 align-items-center py-3 px-3 border-bottom text-center">
+                                <div class="col-6 d-flex align-items-center text-start gap-3">
+                                    <img src="~/img/Hinh/HangHoa/@item.Hinh" alt="@item.TenHh" class="border" style="width: 50px; height: 50px; object-fit: cover;">
+                                    <span class="small text-truncate" style="max-width: 250px;">@item.TenHh</span>
                                 </div>
-                                <div>
-                                    <p class="font-semibold text-gray-800">@v.TenMa</p>
-                                    <p class="text-sm text-gray-500">Giảm @v.PhanTramGiam% toàn bộ đơn hàng</p>
-                                </div>
+                                <div class="col-2 small">@item.DonGia.ToString("N0")$</div>
+                                <div class="col-2 small">@item.SoLuong</div>
+                                <div class="col-2 text-end fw-bold small">@((item.DonGia * item.SoLuong).ToString("N0"))$</div>
                             </div>
-                            <button type="button"
-                                    onclick="applyVoucher(@v.MaGg, '@v.TenMa', @v.PhanTramGiam)"
-                                    class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded text-sm font-medium transition-colors">
-                                Áp dụng
-                            </button>
-                        </div>
+                        }
                     }
-                }
-                else
-                {
-                    <p class="text-gray-400 text-center py-4">Không có voucher nào khả dụng.</p>
-                }
+                </div>
+            </div>
+
+            <div class="card shadow-sm mb-3 border-0">
+                <div class="card-body">
+                    <h6 class="card-title fw-bold text-secondary mb-2">Ghi chú đơn hàng</h6>
+                    <textarea name="GhiChu" rows="2" class="form-control" placeholder="Lưu ý cho người bán..."></textarea>
+                </div>
+            </div>
+
+            <div class="card shadow-sm mb-3 border-0">
+                <div class="card-body">
+                    <h6 class="card-title fw-bold text-secondary mb-3">Phương thức vận chuyển</h6>
+                    <div class="d-flex flex-column gap-2">
+
+                        <div class="position-relative">
+                            <input type="radio" name="shipping_method" value="standard" id="ship_standard" class="shipping-radio d-none" data-price="2" checked onchange="calculateTotal()">
+                            <label for="ship_standard" class="shipping-label border rounded p-3 d-flex justify-content-between align-items-center w-100">
+                                <div><span class="fw-bold d-block">Giao hàng tiêu chuẩn</span><small class="text-muted">3-5 ngày</small></div>
+                                <span class="text-success fw-bold">2$</span>
+                            </label>
+                        </div>
+
+                        <div class="position-relative">
+                            <input type="radio" name="shipping_method" value="express" id="ship_express" class="shipping-radio d-none" data-price="5" onchange="calculateTotal()">
+                            <label for="ship_express" class="shipping-label border rounded p-3 d-flex justify-content-between align-items-center w-100">
+                                <div><span class="fw-bold d-block">Giao hàng nhanh</span><small class="text-muted">1-2 ngày</small></div>
+                                <span class="fw-bold">5$</span>
+                            </label>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="card shadow-sm mb-3 border-0">
+                <div class="card-body pb-0 border-bottom mb-3">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <div class="fs-5"><i class="fa-solid fa-ticket text-quamon me-2"></i>Voucher Qua Môn</div>
+                        <div class="d-flex align-items-center gap-2">
+                            <span id="selectedVoucherLabel" class="badge bg-success d-none"></span>
+                            <button type="button" class="btn btn-outline-primary btn-sm" onclick="voucherModalInstance.show()">Chọn Voucher</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body pt-0">
+                    <h6 class="fw-bold text-secondary mb-3">Phương thức thanh toán</h6>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="payment_method" value="cod" id="pay_cod" checked>
+                        <label class="form-check-label" for="pay_cod">Thanh toán khi nhận hàng</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card shadow-sm mb-4 border-primary">
+                <div class="card-body">
+                    <div class="row justify-content-end">
+                        <div class="col-md-5 col-lg-4">
+
+                            <div class="d-flex justify-content-between mb-2">
+                                <span class="text-muted">Tạm tính:</span>
+                                <span class="fw-bold" id="display-subtotal" data-value="@((Model?.Sum(x => x.DonGia * x.SoLuong) ?? 0))">
+                                    @((Model?.Sum(x => x.DonGia * x.SoLuong) ?? 0).ToString("N0"))$
+                                </span>
+                            </div>
+
+                            <div class="d-flex justify-content-between mb-2">
+                                <span class="text-muted">Phí vận chuyển:</span>
+                                <span class="fw-bold" id="display-shipping">2$</span>
+                            </div>
+
+                            <div class="d-flex justify-content-between mb-3 text-success d-none" id="discount-row">
+                                <span>Giảm giá (<span id="discount-percent-label">0</span>%):</span>
+                                <span class="fw-bold" id="display-discount">-0$</span>
+                            </div>
+
+                            <hr />
+
+                            <div class="d-flex justify-content-between align-items-center mb-4">
+                                <span class="text-muted fw-bold">Tổng thanh toán:</span>
+                                <span class="text-quamon fs-3 fw-bold" id="display-final">
+                                    @((Model?.Sum(x => x.DonGia * x.SoLuong) ?? 0).ToString("N0"))$
+                                </span>
+                            </div>
+
+                            <button type="submit" class="btn bg-quamon w-100 py-2 fs-5">Đặt hàng</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </main>
+
+    <div class="modal fade" id="addressModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title fw-bold">Thêm địa chỉ nhận hàng</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label fw-bold small">Họ tên *</label>
+                        <input type="text" id="inputHoTen" class="form-control" />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-bold small">Số điện thoại *</label>
+                        <input type="text" id="inputDienThoai" class="form-control" />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-bold small">Địa chỉ chi tiết *</label>
+                        <textarea id="inputAddress" rows="3" class="form-control"></textarea>
+                    </div>
+                    <p id="addrError" class="text-danger small d-none">Vui lòng điền đầy đủ thông tin.</p>
+                </div>
+                <div class="modal-footer bg-light">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                    <button type="button" onclick="saveAddress()" class="btn btn-success">Xác nhận</button>
+                </div>
             </div>
         </div>
-        <!-- Modal Footer -->
-        <div class="flex justify-between items-center px-6 py-4 border-t border-gray-100 bg-gray-50">
-            <button type="button" onclick="removeVoucher(); closeVoucherModal();"
-                    class="text-sm text-red-500 hover:text-red-700 transition-colors">
-                ✕ Bỏ mã giảm giá
-            </button>
-            <button type="button" onclick="closeVoucherModal()"
-                    class="bg-gray-200 hover:bg-gray-300 text-gray-700 px-6 py-2 rounded text-sm font-medium transition-colors">
-                Đóng
-            </button>
+    </div>
+
+    <div class="modal fade" id="voucherModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title fw-bold">Chọn mã giảm giá</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    @if (ViewBag.Vouchers != null)
+                    {
+                        foreach (var v in (List<LTWEB_QuaMonHai_CuoiKy.Models.GiamGia>)ViewBag.Vouchers)
+                        {
+                            <div class="d-flex justify-content-between align-items-center border rounded p-3 mb-2">
+                                <div>
+                                    <p class="fw-bold mb-0">@v.TenMa</p>
+                                    <small class="text-muted">Giảm @v.PhanTramGiam%</small>
+                                </div>
+                                <button type="button" onclick="applyVoucher(@v.MaGg, '@v.TenMa', @v.PhanTramGiam)" class="btn btn-success btn-sm">Áp dụng</button>
+                            </div>
+                        }
+                    }
+                </div>
+                <div class="modal-footer bg-light d-flex justify-content-between">
+                    <button type="button" onclick="removeVoucher()" class="btn btn-link text-danger text-decoration-none small">✕ Bỏ mã giảm giá</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                </div>
+            </div>
         </div>
     </div>
-</div>
 
-<script>
-    const subtotal = @(Model?.Sum(x => x.DonGia * x.SoLuong) ?? 0);
-    let currentShippingFee = 5;
-    let currentDiscountPercent = 0;
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // 1. CÁC BIẾN TOÀN CỤC ĐỂ LƯU TRẠNG THÁI
+        let currentDiscountPercent = 0; // Đang giảm bao nhiêu phần trăm
+        let addressModalInstance;
+        let voucherModalInstance;
 
-    // ============ TÍNH LẠI TỔNG HIỂN THỊ (client-side, chỉ để xem trước) ============
-    function recalcTotal() {
-        const discount = subtotal * (currentDiscountPercent / 100);
-        const total = subtotal - discount + currentShippingFee;
+        // Lấy giá trị Tạm tính ban đầu từ HTML (nhớ ép kiểu về số)
+        const baseSubTotalElement = document.getElementById('display-subtotal');
+        const baseSubTotal = baseSubTotalElement ? parseFloat(baseSubTotalElement.getAttribute('data-value')) : 0;
 
-        const discountRow = document.getElementById('discountRow');
-        if (currentDiscountPercent > 0) {
-            discountRow.classList.remove('hidden');
-            document.getElementById('discountDisplay').textContent =
-                '-' + discount.toLocaleString('vi-VN') + '₫';
-        } else {
-            discountRow.classList.add('hidden');
-        }
-        document.getElementById('totalDisplay').textContent = total.toLocaleString('vi-VN') + '₫';
-    }
+        document.addEventListener('DOMContentLoaded', function () {
+            // Khởi tạo Modal của Bootstrap
+            addressModalInstance = new bootstrap.Modal(document.getElementById('addressModal'));
+            voucherModalInstance = new bootstrap.Modal(document.getElementById('voucherModal'));
 
-    // ============ SHIPPING ============
-    function updateShipping(fee) {
-        currentShippingFee = fee;
-        document.getElementById('shippingDisplay').textContent =
-            fee === 0 ? 'Miễn phí' : fee.toLocaleString('vi-VN') + '₫';
-
-        document.querySelectorAll('input[name="shipping_method"]').forEach(radio => {
-            const label = radio.closest('label');
-            if (radio.checked) {
-                label.classList.add('border-green-500', 'bg-green-50');
-                label.classList.remove('border-gray-200');
-            } else {
-                label.classList.remove('border-green-500', 'bg-green-50');
-                label.classList.add('border-gray-200');
-            }
+            // GỌI HÀM TÍNH TOÁN NGAY KHI VỪA VÀO TRANG ĐỂ HIỂN THỊ GIÁ TRỊ MẶC ĐỊNH
+            calculateTotal();
         });
-        recalcTotal();
-    }
 
-    // ============ ĐỊA CHỈ MODAL ============
-    function openAddressModal() {
-        document.getElementById('addrError').classList.add('hidden');
-        document.getElementById('addressModal').classList.remove('hidden');
-    }
+        // ==========================================
+        // 2. HÀM TÍNH TOÁN CHÍNH (Nòng cốt)
+        // ==========================================
+        function calculateTotal() {
+            // A. Lấy phí ship đang được tích chọn (nếu có)
+            const checkedShip = document.querySelector('input[name="shipping_method"]:checked');
+            const shippingFee = checkedShip ? parseFloat(checkedShip.getAttribute('data-price')) : 0;
 
-    function closeAddressModal() {
-        document.getElementById('addressModal').classList.add('hidden');
-    }
+            // B. Tính tiền giảm giá (dựa trên Tạm tính)
+            const discountAmount = (baseSubTotal * currentDiscountPercent) / 100;
 
-    function saveAddress() {
-        const hoTen = document.getElementById('inputHoTen').value.trim();
-        const diaChi = document.getElementById('inputAddress').value.trim();
-        const sdt = document.getElementById('inputDienThoai').value.trim();
+            // C. Tính tổng thanh toán cuối cùng
+            const finalTotal = baseSubTotal + shippingFee - discountAmount;
 
-        if (!hoTen || !diaChi || !sdt) {
-            document.getElementById('addrError').classList.remove('hidden');
-            return;
+            // D. Đổ dữ liệu ra màn hình
+            document.getElementById('display-shipping').textContent = formatMoney(shippingFee);
+
+            // Xử lý dòng Giảm giá (Chỉ hiện khi có áp mã)
+            const discountRow = document.getElementById('discount-row');
+            if (currentDiscountPercent > 0) {
+                if(discountRow) discountRow.classList.remove('d-none'); // Hiện dòng giảm giá
+                document.getElementById('discount-percent-label').textContent = currentDiscountPercent;
+                document.getElementById('display-discount').textContent = '-' + formatMoney(discountAmount);
+            } else {
+                if(discountRow) discountRow.classList.add('d-none'); // Ẩn dòng giảm giá
+            }
+
+            // Hiện Tổng tiền cuối cùng
+            document.getElementById('display-final').textContent = formatMoney(finalTotal);
         }
-        document.getElementById('addrError').classList.add('hidden');
 
-        document.getElementById('addrName').textContent = hoTen + ' - ' + sdt;
-        document.getElementById('addrDetail').textContent = diaChi;
-        document.getElementById('selectedAddressInfo').classList.remove('hidden');
-
-        document.getElementById('hiddenHoTen').value = hoTen;
-        document.getElementById('hiddenDiaChi').value = diaChi;
-        document.getElementById('hiddenSoDienThoai').value = sdt;
-
-        document.getElementById('btnOpenAddress').innerHTML = '<i class="fa-solid fa-pen"></i> Thay đổi';
-        closeAddressModal();
-    }
-
-    document.getElementById('addressModal').addEventListener('click', function(e) {
-        if (e.target === this) closeAddressModal();
-    });
-
-    // ============ VOUCHER MODAL ============
-    function openVoucherModal() {
-        document.getElementById('voucherModal').classList.remove('hidden');
-    }
-
-    function closeVoucherModal() {
-        document.getElementById('voucherModal').classList.add('hidden');
-    }
-
-    function applyVoucher(maGg, tenMa, phanTramGiam) {
-        document.getElementById('selectedMaGg').value = maGg;
-        currentDiscountPercent = phanTramGiam;
-
-        const label = document.getElementById('selectedVoucherLabel');
-        label.textContent = `✔ ${tenMa} (-${phanTramGiam}%)`;
-        label.classList.remove('hidden');
-        document.getElementById('btnOpenVoucher').textContent = 'Thay đổi';
-
-        recalcTotal();
-        closeVoucherModal();
-    }
-
-    function removeVoucher() {
-        document.getElementById('selectedMaGg').value = '';
-        document.getElementById('selectedVoucherLabel').classList.add('hidden');
-        document.getElementById('btnOpenVoucher').textContent = 'Chọn Voucher';
-        currentDiscountPercent = 0;
-        recalcTotal();
-    }
-
-    document.getElementById('voucherModal').addEventListener('click', function(e) {
-        if (e.target === this) closeVoucherModal();
-    });
-
-    // ============ KHỞI TẠO ============
-    document.addEventListener('DOMContentLoaded', function () {
-        updateShipping(5);
-
-        // Khôi phục dữ liệu nếu validate lỗi
-        let hoten = '@Html.Raw(TempData["HoTen"] ?? "")';
-        let diachi = '@Html.Raw(TempData["DiaChi"] ?? "")';
-        let sdt = '@Html.Raw(TempData["SoDienThoai"] ?? "")';
-        
-        if (hoten && diachi && sdt) {
-            document.getElementById('addrName').textContent = hoten + ' - ' + sdt;
-            document.getElementById('addrDetail').textContent = diachi;
-            document.getElementById('selectedAddressInfo').classList.remove('hidden');
-            document.getElementById('btnOpenAddress').innerHTML = '<i class="fa-solid fa-pen"></i> Thay đổi';
-            
-            document.getElementById('inputHoTen').value = hoten;
-            document.getElementById('inputAddress').value = diachi;
-            document.getElementById('inputDienThoai').value = sdt;
+        // Hàm format tiền tệ (Thêm dấu phẩy và chữ $)
+        function formatMoney(amount) {
+            return new Intl.NumberFormat('en-US').format(amount) + '$';
         }
-    });
-</script>
+
+        // ==========================================
+        // 3. CÁC HÀM XỬ LÝ LƯU DỮ LIỆU
+        // ==========================================
+        function saveAddress() {
+            const hoTen = document.getElementById('inputHoTen').value.trim();
+            const diaChi = document.getElementById('inputAddress').value.trim();
+            const sdt = document.getElementById('inputDienThoai').value.trim();
+
+            if (!hoTen || !diaChi || !sdt) {
+                document.getElementById('addrError').classList.remove('d-none');
+                return;
+            }
+
+            // Gán hiển thị ra màn hình
+            document.getElementById('addrError').classList.add('d-none');
+            document.getElementById('addrName').textContent = hoTen + ' - ' + sdt;
+            document.getElementById('addrDetail').textContent = diaChi;
+            document.getElementById('selectedAddressInfo').classList.remove('d-none');
+
+            // Gán vào Hidden Input để Submit form về Controller
+            document.getElementById('hiddenHoTen').value = hoTen;
+            document.getElementById('hiddenDiaChi').value = diaChi;
+            document.getElementById('hiddenSoDienThoai').value = sdt;
+
+            addressModalInstance.hide();
+        }
+
+        function applyVoucher(maGg, tenMa, phanTram) {
+            // Lưu ID voucher vào form ẩn để submit
+            document.getElementById('selectedMaGg').value = maGg;
+
+            // Hiện tên Voucher ra ngoài
+            const label = document.getElementById('selectedVoucherLabel');
+            label.textContent = `✔ Áp dụng mã: ${tenMa}`;
+            label.classList.remove('d-none');
+
+            // GÁN PHẦN TRĂM GIẢM GIÁ VÀ YÊU CẦU TÍNH TOÁN LẠI
+            currentDiscountPercent = parseFloat(phanTram);
+            calculateTotal();
+
+            // Đóng Modal
+            voucherModalInstance.hide();
+        }
+
+        function removeVoucher() {
+            // Xóa dữ liệu form
+            document.getElementById('selectedMaGg').value = '';
+            document.getElementById('selectedVoucherLabel').classList.add('d-none');
+
+            // ĐƯA PHẦN TRĂM VỀ 0 VÀ TÍNH TOÁN LẠI
+            currentDiscountPercent = 0;
+            calculateTotal();
+
+            // Đóng Modal
+            voucherModalInstance.hide();
+        }
+    </script>
+</body>
+</html>

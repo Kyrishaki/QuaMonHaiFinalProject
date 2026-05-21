@@ -12,6 +12,7 @@ using System.Net;
 using System.Net.Mail;
 using System.Security.Claims;
 
+
 namespace LTWEB_QuaMonHai_CuoiKy.Controllers {
     public class CustomerController : Controller {
         private readonly Hshop2023Context db;
@@ -163,13 +164,27 @@ namespace LTWEB_QuaMonHai_CuoiKy.Controllers {
 
                             await HttpContext.SignInAsync(claimsPrincipal);
 
-                            // Kiểm tra đường dẫn và điều hướng
-                            if (Url.IsLocalUrl(ReturnUrl)) {
-                                return Redirect(ReturnUrl);
+                            if (TempData["url"] != null)
+                            {
+                                var url = TempData["url"].ToString();
+                                return Redirect(url);
+
                             }
-                            else {
-                                return Redirect("/"); // Chuyển về trang chủ
+                            else
+                            {
+                                // Kiểm tra đường dẫn và điều hướng
+                                if (Url.IsLocalUrl(ReturnUrl))
+                                {
+                                    return Redirect(ReturnUrl);
+                                }
+                                else
+                                {
+                                    return Redirect("/"); // Chuyển về trang chủ
+                                }
                             }
+
+                           
+                           
                         }
                     }
                 }
