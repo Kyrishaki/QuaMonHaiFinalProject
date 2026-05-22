@@ -38,6 +38,35 @@ builder.Services.AddSession(options => {
 
 var app = builder.Build();
 
+// ==========================================
+// TỰ ĐỘNG TẠO BẢNG BINHLUAN NẾU CHƯA CÓ
+// ==========================================
+using (var scope = app.Services.CreateScope()) {
+    var context = scope.ServiceProvider.GetRequiredService<Hshop2023Context>();
+    try {
+        context.Database.ExecuteSqlRaw(@"
+            IF OBJECT_ID('BinhLuan', 'U') IS NULL
+            BEGIN
+                CREATE TABLE [dbo].[BinhLuan] (
+                    [MaBL] INT IDENTITY(1,1) NOT NULL,
+                    [MaHH] INT NOT NULL,
+                    [MaKH] NVARCHAR(20) NOT NULL,
+                    [Sao] INT NOT NULL,
+                    [NoiDung] NVARCHAR(MAX) NULL,
+                    [Ngay] DATETIME NOT NULL DEFAULT (GETDATE()),
+                    CONSTRAINT [PK_BinhLuan] PRIMARY KEY CLUSTERED ([MaBL] ASC),
+                    CONSTRAINT [FK_BinhLuan_HangHoa] FOREIGN KEY ([MaHH]) REFERENCES [dbo].[HangHoa] ([MaHH]) ON DELETE CASCADE,
+                    CONSTRAINT [FK_BinhLuan_KhachHang] FOREIGN KEY ([MaKH]) REFERENCES [dbo].[KhachHang] ([MaKH]) ON DELETE CASCADE
+                );
+            END
+        ");
+    }
+    catch (Exception ex) {
+        Console.WriteLine("Lỗi khởi tạo bảng BinhLuan: " + ex.Message);
+    }
+}
+// ==========================================
+
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment()) {
     app.UseExceptionHandler("/Home/Error");

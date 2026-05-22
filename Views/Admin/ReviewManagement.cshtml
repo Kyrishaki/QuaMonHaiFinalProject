@@ -1,0 +1,210 @@
+@model IEnumerable<LTWEB_QuaMonHai_CuoiKy.Models.BinhLuan>
+@{
+    ViewData["Title"] = "Quản Lý Đánh Giá";
+}
+
+<div class="container py-5 mt-5">
+    <!-- Header -->
+    <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4 border-bottom pb-3">
+        <div class="d-flex align-items-center gap-3">
+            <div class="d-flex align-items-center justify-content-center text-white rounded-circle shadow-sm" style="width: 55px; height: 55px; background-color: #81c408 !important;">
+                <i class="fa-solid fa-comments fs-4"></i>
+            </div>
+            <div>
+                <h2 class="fw-bold text-dark m-0" style="font-family: 'Lora', serif;">Quản Lý Đánh Giá</h2>
+                <p class="text-muted m-0 small">Xem, lọc và xóa các đánh giá sản phẩm của khách hàng trên hệ thống</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notifications -->
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show shadow-sm rounded-3 mb-4" role="alert">
+            <div class="d-flex align-items-center">
+                <i class="fa-solid fa-circle-check me-2 fa-lg text-success"></i>
+                <span>@TempData["Success"]</span>
+            </div>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    <!-- Search and Filter Form -->
+    <div class="card shadow-sm border-0 rounded-3 p-4 bg-light mb-4">
+        <form asp-action="ReviewManagement" method="get" class="row g-3 align-items-end">
+            <!-- Search Input -->
+            <div class="col-md-5">
+                <label class="form-label fw-bold text-secondary small">Tìm kiếm</label>
+                <div class="input-group">
+                    <span class="input-group-text bg-white border-end-0 text-muted">
+                        <i class="fa-solid fa-search"></i>
+                    </span>
+                    <input type="text" name="searchQuery" value="@ViewBag.SearchQuery" 
+                           class="form-control bg-white border-start-0 ps-0 shadow-none"
+                           placeholder="Nội dung đánh giá, khách hàng, sản phẩm..." />
+                </div>
+            </div>
+
+            <!-- Star Rating Filter -->
+            <div class="col-md-4">
+                <label class="form-label fw-bold text-secondary small">Đánh giá sao</label>
+                <select name="stars" class="form-select bg-white shadow-none">
+                    <option value="">-- Tất cả đánh giá --</option>
+                    <!option value="5" @(ViewBag.Stars?.ToString() == "5" ? "selected" : "")>5 Sao</!option>
+                    <!option value="4" @(ViewBag.Stars?.ToString() == "4" ? "selected" : "")>4 Sao</!option>
+                    <!option value="3" @(ViewBag.Stars?.ToString() == "3" ? "selected" : "")>3 Sao</!option>
+                    <!option value="2" @(ViewBag.Stars?.ToString() == "2" ? "selected" : "")>2 Sao</!option>
+                    <!option value="1" @(ViewBag.Stars?.ToString() == "1" ? "selected" : "")>1 Sao</!option>
+                </select>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="col-md-3 d-flex gap-2">
+                <button type="submit" class="btn btn-success w-100 rounded shadow-none fw-bold" style="background-color: #81c408 !important; border-color: #81c408 !important;">
+                    <i class="fa-solid fa-filter me-1"></i> Lọc
+                </button>
+                @if (!string.IsNullOrEmpty(ViewBag.SearchQuery) || ViewBag.Stars != null)
+                {
+                    <a asp-action="ReviewManagement" class="btn btn-outline-secondary rounded shadow-none">
+                        Xóa
+                    </a>
+                }
+            </div>
+        </form>
+    </div>
+
+    <!-- Reviews Table Card -->
+    <div class="card shadow-sm border-0 rounded-4 overflow-hidden">
+        <div class="card-header py-3" style="background-color: #81c408 !important;">
+            <h5 class="card-title text-white fw-bold mb-0 d-flex align-items-center">
+                <i class="fa-solid fa-list me-2"></i> Danh sách đánh giá (@Model.Count())
+            </h5>
+        </div>
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="table-light text-uppercase font-monospace" style="font-size: 0.85rem; letter-spacing: 0.5px;">
+                        <tr>
+                            <th class="ps-4" style="width: 220px;">Khách hàng</th>
+                            <th style="width: 250px;">Sản phẩm</th>
+                            <th style="width: 140px;">Đánh giá</th>
+                            <th>Nội dung bình luận</th>
+                            <th style="width: 160px;">Thời gian</th>
+                            <th class="text-center pe-4" style="width: 120px;">Thao tác</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (!Model.Any())
+                        {
+                            <tr>
+                                <td colspan="6" class="text-center py-5 text-muted">
+                                    <i class="fa-solid fa-magnifying-glass mb-3 fa-3x d-block text-secondary"></i>
+                                    Không tìm thấy đánh giá nào khớp với điều kiện lọc.
+                                </td>
+                            </tr>
+                        }
+                        else
+                        {
+                            @foreach (var review in Model)
+                            {
+                                <tr>
+                                    <!-- Khách hàng -->
+                                    <td class="ps-4">
+                                        <div class="d-flex align-items-center gap-2">
+                                            <img src="@Url.Content("~/img/Hinh/khachHang/" + (string.IsNullOrEmpty(review.MaKhNavigation?.Hinh) ? "Photo.gif" : review.MaKhNavigation.Hinh))" 
+                                                 alt="Avatar" class="rounded-circle img-thumbnail shadow-sm"
+                                                 style="width: 40px; height: 40px; object-fit: cover;" />
+                                            <div>
+                                                <h6 class="fw-bold text-dark mb-0" style="font-size: 0.9rem;">@review.MaKhNavigation?.HoTen</h6>
+                                                <small class="text-muted font-monospace" style="font-size: 0.75rem;">@@@review.MaKh</small>
+                                            </div>
+                                        </div>
+                                    </td>
+
+                                    <!-- Sản phẩm -->
+                                    <td>
+                                        <div class="d-flex align-items-center gap-2">
+                                            <img src="@(review.MaHhNavigation?.Hinh != null && review.MaHhNavigation.Hinh.StartsWith("http") ? review.MaHhNavigation.Hinh : Url.Content("~/img/Hinh/HangHoa/" + (string.IsNullOrEmpty(review.MaHhNavigation?.Hinh) ? "no-image.jpg" : review.MaHhNavigation.Hinh)))" 
+                                                 alt="@review.MaHhNavigation?.TenHh" class="rounded border shadow-sm"
+                                                 style="width: 40px; height: 40px; object-fit: cover;" />
+                                            <div class="text-truncate" style="max-width: 180px;">
+                                                <a href="@Url.Action("Details", "HangHoas", new { id = review.MaHh })" 
+                                                   class="fw-bold text-dark hover-primary text-decoration-none" style="font-size: 0.9rem;" target="_blank">
+                                                    @review.MaHhNavigation?.TenHh
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </td>
+
+                                    <!-- Điểm đánh giá -->
+                                    <td>
+                                        <div class="text-nowrap">
+                                            @for (int i = 1; i <= 5; i++)
+                                            {
+                                                if (i <= review.Sao)
+                                                {
+                                                    <i class="fa-solid fa-star text-warning" style="font-size: 0.8rem;"></i>
+                                                }
+                                                else
+                                                {
+                                                    <i class="fa-regular fa-star text-warning" style="font-size: 0.8rem;"></i>
+                                                }
+                                            }
+                                            <span class="ms-1 fw-bold text-secondary" style="font-size: 0.85rem;">(@review.Sao)</span>
+                                        </div>
+                                    </td>
+
+                                    <!-- Nội dung bình luận -->
+                                    <td>
+                                        <div class="text-wrap" style="font-size: 0.9rem; max-width: 400px; word-break: break-word;">
+                                            @if (string.IsNullOrWhiteSpace(review.NoiDung))
+                                            {
+                                                <span class="text-muted fst-italic">Không có nội dung bình luận</span>
+                                            }
+                                            else
+                                            {
+                                                @review.NoiDung
+                                            }
+                                        </div>
+                                    </td>
+
+                                    <!-- Thời gian -->
+                                    <td>
+                                        <span class="text-secondary small font-monospace">@review.Ngay.ToString("dd/MM/yyyy HH:mm")</span>
+                                    </td>
+
+                                    <!-- Thao tác -->
+                                    <td class="text-center pe-4">
+                                        <form asp-action="DeleteReview" asp-route-id="@review.MaBl" method="post" 
+                                              onsubmit="return confirm('Bạn có chắc chắn muốn XÓA đánh giá của khách hàng @(review.MaKhNavigation?.HoTen ?? review.MaKh) cho sản phẩm này? Hành động này không thể hoàn tác!');">
+                                            @Html.AntiForgeryToken()
+                                            <button type="submit" class="btn btn-outline-danger btn-sm rounded-pill fw-bold px-3">
+                                                <i class="fa-solid fa-trash me-1"></i> Xóa
+                                            </button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .table-hover tbody tr:hover {
+        background-color: rgba(129, 196, 8, 0.03) !important;
+        transition: background-color 0.2s ease;
+    }
+    
+    .hover-primary:hover {
+        color: #81c408 !important;
+        transition: color 0.2s ease;
+    }
+
+    .card {
+        border: none;
+    }
+</style>

@@ -11,6 +11,7 @@ using Newtonsoft.Json;
 using System.Net;
 using System.Net.Mail;
 using System.Security.Claims;
+using Microsoft.EntityFrameworkCore;
 
 
 namespace LTWEB_QuaMonHai_CuoiKy.Controllers {
@@ -430,7 +431,7 @@ namespace LTWEB_QuaMonHai_CuoiKy.Controllers {
                 var message = new MimeKit.MimeMessage();
                 message.From.Add(new MimeKit.MailboxAddress("HShop", "trathanhclassic123@gmail.com"));
                 message.To.Add(new MimeKit.MailboxAddress(khachHang.HoTen, khachHang.Email));
-                message.Subject = "Mã xác thực đặt lại mật khẩu - Foody";
+                message.Subject = "Mã xác thực đặt lại mật khẩu - QuaMonHai";
                 message.Body = new MimeKit.TextPart("html")
                 {
                     Text = $"<h3>Chào {khachHang.HoTen},</h3><p>Yêu cầu đặt lại mật khẩu của bạn đã được tiếp nhận. Mã OTP xác thực là: <b style='color:red; font-size: 1.2rem;'>{otpCode}</b></p><p>Mã này có hiệu lực trong phiên làm việc hiện tại.</p>"
@@ -522,6 +523,62 @@ namespace LTWEB_QuaMonHai_CuoiKy.Controllers {
             }
 
             return View(model);
+        }
+        #endregion
+
+        #region Wishlist
+        [HttpPost]
+        public async Task<IActionResult> ToggleFavorite(int id) {
+            if (User.Identity?.IsAuthenticated != true) {
+                return Json(new { success = false, message = "Vui lòng đăng nhập để lưu sản phẩm yêu thích!", redirectTo = Url.Action("Login", "Customer") });
+            }
+
+            var customerId = User.Claims.SingleOrDefault(c => c.Type == "CustomerID")?.Value;
+            if (string.IsNullOrEmpty(customerId)) {
+                return Json(new { success = false, message = "Không tìm thấy thông tin tài khoản của bạn!" });
+            }
+
+            var yeuThich = await db.YeuThiches
+                .FirstOrDefaultAsync(y => y.MaKh == customerId && y.MaHh == id);
+
+            bool isFavorite = false;
+            if (yeuThich != null) {
+                db.YeuThiches.Remove(yeuThich);
+                isFavorite = false;
+            } else {
+                var newYeuThich = new YeuThich {
+                    MaKh = customerId,
+                    MaHh = id,
+                    NgayChon = DateTime.Now
+                };
+                db.YeuThiches.Add(newYeuThich);
+                isFavorite = true;
+            }
+            await db.SaveChangesAsync();
+
+            return Json(new { 
+                success = true, 
+                isFavorite = isFavorite, 
+                message = isFavorite ? "Đã thêm sản phẩm vào danh sách yêu thích!" : "Đã xóa sản phẩm khỏi danh sách yêu thích!" 
+            });
+        }
+
+        [HttpGet]
+        [Authorize]
+        public async Task<IActionResult> Wishlist() {
+            var customerId = User.Claims.SingleOrDefault(c => c.Type == "CustomerID")?.Value;
+            if (string.IsNullOrEmpty(customerId)) {
+                return RedirectToAction("Login");
+            }
+
+            var favorites = await db.YeuThiches
+                .Include(y => y.MaHhNavigation)
+                    .ThenInclude(h => h!.MaLoaiNavigation)
+                .Where(y => y.MaKh == customerId)
+                .OrderByDescending(y => y.NgayChon)
+                .ToListAsync();
+
+            return View(favorites);
         }
         #endregion
     }

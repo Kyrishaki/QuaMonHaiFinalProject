@@ -86,18 +86,26 @@ namespace LTWEB_QuaMonHai_CuoiKy.Controllers {
         public async Task<IActionResult> AddToCart(int id, int quantity = 1)
         {
             var customerId = GetCustomerId();
+            var hh = await _Context.HangHoas.SingleOrDefaultAsync(p => p.MaHh == id);
+            if (hh == null) return NotFound();
 
-            // TRÆ¯á»œNG Há»¢P 1: CHÆ¯A ÄÄ‚NG NHáº¬P -> THAO TÃC TRÃŠN SESSION
+            // TRƯỜNG HỢP 1: CHƯA ĐĂNG NHẬP -> THAO TÁC TRÊN SESSION
             if (string.IsNullOrEmpty(customerId))
             {
-                var carlist = shopCart; // Láº¥y List tá»« thuá»™c tÃ­nh shopCart (Session)
+                var carlist = shopCart; // Lấy List từ thuộc tính shopCart (Session)
                 var item = carlist.SingleOrDefault(p => p.MaHh == id);
+
+                var currentQty = item != null ? item.SoLuong : 0;
+                if (currentQty + quantity > hh.SoLuong)
+                {
+                    TempData["Error"] = $"Sản phẩm '{hh.TenHh}' chỉ còn {hh.SoLuong} sản phẩm trong kho. Bạn đang có {currentQty} trong giỏ hàng!";
+                    var refUrl = Request.Headers["Referer"].ToString();
+                    if (!string.IsNullOrEmpty(refUrl)) return Redirect(refUrl);
+                    return RedirectToAction("Index");
+                }
 
                 if (item == null)
                 {
-                    var hh = _Context.HangHoas.AsNoTracking().SingleOrDefault(p => p.MaHh == id);
-                    if (hh == null) return NotFound();
-
                     carlist.Add(new CartItem
                     {
                         MaHh = id,
@@ -114,18 +122,23 @@ namespace LTWEB_QuaMonHai_CuoiKy.Controllers {
 
                 HttpContext.Session.Set(mySetting.ShopCart, carlist);
             }
-            // TRÆ¯á»œNG Há»¢P 2: ÄÃƒ ÄÄ‚NG NHáº¬P -> THAO TÃC TRÃŠN DATABASE
+            // TRƯỜNG HỢP 2: ĐÃ ĐĂNG NHẬP -> THAO TÁC TRÊN DATABASE
             else
             {
                 var cartItem = await _Context.GioHangs
                     .SingleOrDefaultAsync(g => g.MaKh == customerId && g.MaHh == id);
 
+                var currentQty = cartItem != null ? cartItem.SoLuong : 0;
+                if (currentQty + quantity > hh.SoLuong)
+                {
+                    TempData["Error"] = $"Sản phẩm '{hh.TenHh}' chỉ còn {hh.SoLuong} sản phẩm trong kho. Bạn đang có {currentQty} trong giỏ hàng!";
+                    var refUrl = Request.Headers["Referer"].ToString();
+                    if (!string.IsNullOrEmpty(refUrl)) return Redirect(refUrl);
+                    return RedirectToAction("Index");
+                }
+
                 if (cartItem == null)
                 {
-                    // Kiá»ƒm tra hÃ ng hÃ³a tá»“n táº¡i trÆ°á»›c khi thÃªm vÃ o báº£ng GioHang
-                    var exists = await _Context.HangHoas.AnyAsync(p => p.MaHh == id);
-                    if (!exists) return NotFound();
-
                     _Context.GioHangs.Add(new GioHang
                     {
                         MaKh = customerId,
@@ -173,6 +186,15 @@ namespace LTWEB_QuaMonHai_CuoiKy.Controllers {
         {
             var customerId = GetCustomerId();
             bool success = true;
+            string message = "";
+
+            var hh = await _Context.HangHoas.SingleOrDefaultAsync(p => p.MaHh == id);
+            if (hh == null) return Json(new { success = false, message = "Sản phẩm không tồn tại" });
+
+            if (hh.SoLuong <= 0)
+            {
+                return Json(new { success = false, message = $"Sản phẩm '{hh.TenHh}' đã hết hàng!" });
+            }
 
             try {
                 if (string.IsNullOrEmpty(customerId))
@@ -180,11 +202,14 @@ namespace LTWEB_QuaMonHai_CuoiKy.Controllers {
                     var carlist = shopCart;
                     var item = carlist.SingleOrDefault(p => p.MaHh == id);
 
+                    var currentQty = item != null ? item.SoLuong : 0;
+                    if (currentQty + quantity > hh.SoLuong)
+                    {
+                        return Json(new { success = false, message = $"Sản phẩm '{hh.TenHh}' chỉ còn {hh.SoLuong} sản phẩm trong kho. Bạn đang có {currentQty} trong giỏ hàng!" });
+                    }
+
                     if (item == null)
                     {
-                        var hh = _Context.HangHoas.AsNoTracking().SingleOrDefault(p => p.MaHh == id);
-                        if (hh == null) return Json(new { success = false, message = "Sáº£n pháº©m khÃ´ng tá»“n táº¡i" });
-
                         carlist.Add(new CartItem
                         {
                             MaHh = id,
@@ -205,11 +230,14 @@ namespace LTWEB_QuaMonHai_CuoiKy.Controllers {
                     var cartItem = await _Context.GioHangs
                         .SingleOrDefaultAsync(g => g.MaKh == customerId && g.MaHh == id);
 
+                    var currentQty = cartItem != null ? cartItem.SoLuong : 0;
+                    if (currentQty + quantity > hh.SoLuong)
+                    {
+                        return Json(new { success = false, message = $"Sản phẩm '{hh.TenHh}' chỉ còn {hh.SoLuong} sản phẩm trong kho. Bạn đang có {currentQty} trong giỏ hàng!" });
+                    }
+
                     if (cartItem == null)
                     {
-                        var exists = await _Context.HangHoas.AnyAsync(p => p.MaHh == id);
-                        if (!exists) return Json(new { success = false, message = "Sáº£n pháº©m khÃ´ng tá»“n táº¡i" });
-
                         _Context.GioHangs.Add(new GioHang
                         {
                             MaKh = customerId,
@@ -223,8 +251,9 @@ namespace LTWEB_QuaMonHai_CuoiKy.Controllers {
                     }
                     await _Context.SaveChangesAsync();
                 }
-            } catch (Exception) {
+            } catch (Exception ex) {
                 success = false;
+                message = ex.Message;
             }
 
             int count = 0;
@@ -237,7 +266,7 @@ namespace LTWEB_QuaMonHai_CuoiKy.Controllers {
                     .SumAsync(g => (int?)g.SoLuong) ?? 0;
             }
 
-            return Json(new { success = success, count = count });
+            return Json(new { success = success, count = count, message = message });
         }
 
         [HttpPost]
@@ -294,19 +323,28 @@ namespace LTWEB_QuaMonHai_CuoiKy.Controllers {
         }
 
         // ----------------------------------------------------------------
-        // Existing fullâ€‘page reload version (kept for nonâ€‘AJAX fallback)
+        // Existing full‑page reload version (kept for non‑AJAX fallback)
         // ----------------------------------------------------------------
         public async Task<IActionResult> UpdateQuantity(int id, int delta) {
             var customerId = GetCustomerId();
+            var hh = await _Context.HangHoas.SingleOrDefaultAsync(h => h.MaHh == id);
+            if (hh == null) return NotFound();
+
             if (string.IsNullOrEmpty(customerId))
             {
                 var carlist = shopCart;
                 var updateItem = carlist.SingleOrDefault(p => p.MaHh == id);
                 if (updateItem != null) {
-                    updateItem.SoLuong += delta;
-                    if (updateItem.SoLuong < 1) {
-                        updateItem.SoLuong = 1;
+                    var targetQty = updateItem.SoLuong + delta;
+                    if (targetQty < 1) targetQty = 1;
+                    
+                    if (targetQty > hh.SoLuong)
+                    {
+                        TempData["Error"] = $"Không thể tăng thêm. Sản phẩm '{hh.TenHh}' chỉ còn {hh.SoLuong} sản phẩm trong kho.";
+                        return RedirectToAction("Index");
                     }
+                    
+                    updateItem.SoLuong = targetQty;
                     HttpContext.Session.Set(mySetting.ShopCart, carlist);
                 }
             }
@@ -314,10 +352,16 @@ namespace LTWEB_QuaMonHai_CuoiKy.Controllers {
                 var item = await _Context.GioHangs
                     .SingleOrDefaultAsync(g => g.MaKh == customerId && g.MaHh == id);
                 if (item != null) {
-                    item.SoLuong += delta;
-                    if (item.SoLuong < 1) {
-                        item.SoLuong = 1;
+                    var targetQty = item.SoLuong + delta;
+                    if (targetQty < 1) targetQty = 1;
+                    
+                    if (targetQty > hh.SoLuong)
+                    {
+                        TempData["Error"] = $"Không thể tăng thêm. Sản phẩm '{hh.TenHh}' chỉ còn {hh.SoLuong} sản phẩm trong kho.";
+                        return RedirectToAction("Index");
                     }
+
+                    item.SoLuong = targetQty;
                     _Context.GioHangs.Update(item);
                     await _Context.SaveChangesAsync();
                 }
@@ -326,7 +370,7 @@ namespace LTWEB_QuaMonHai_CuoiKy.Controllers {
         }
 
         // ----------------------------------------------------------------
-        // AJAX version â€“ returns JSON with the new quantity and line total
+        // AJAX version – returns JSON with the new quantity and line total
         // ----------------------------------------------------------------
         [HttpGet]
         public async Task<IActionResult> UpdateQuantityAjax(int id, int delta) {
@@ -334,37 +378,63 @@ namespace LTWEB_QuaMonHai_CuoiKy.Controllers {
             int newQty = 0;
             double lineTotal = 0;
             double unitPrice = 0;
+            bool success = true;
+            string message = "";
+
+            var hh = await _Context.HangHoas.SingleOrDefaultAsync(h => h.MaHh == id);
+            if (hh == null) return Json(new { success = false, message = "Sản phẩm không tồn tại!" });
 
             if (string.IsNullOrEmpty(customerId)) {
                 var carlist = shopCart;
                 var updateItem = carlist.SingleOrDefault(p => p.MaHh == id);
                 if (updateItem != null) {
-                    updateItem.SoLuong += delta;
-                    if (updateItem.SoLuong < 1) updateItem.SoLuong = 1;
-                    newQty = updateItem.SoLuong;
-                    unitPrice = updateItem.DonGia;
-                    lineTotal = unitPrice * newQty;
-                    HttpContext.Session.Set(mySetting.ShopCart, carlist);
+                    var targetQty = updateItem.SoLuong + delta;
+                    if (targetQty < 1) targetQty = 1;
+                    
+                    if (targetQty > hh.SoLuong)
+                    {
+                        success = false;
+                        message = $"Không thể tăng thêm. Sản phẩm '{hh.TenHh}' chỉ còn {hh.SoLuong} sản phẩm trong kho.";
+                        newQty = updateItem.SoLuong;
+                        unitPrice = updateItem.DonGia;
+                        lineTotal = unitPrice * newQty;
+                    }
+                    else
+                    {
+                        updateItem.SoLuong = targetQty;
+                        newQty = updateItem.SoLuong;
+                        unitPrice = updateItem.DonGia;
+                        lineTotal = unitPrice * newQty;
+                        HttpContext.Session.Set(mySetting.ShopCart, carlist);
+                    }
                 }
             } else {
                 var item = await _Context.GioHangs
                     .SingleOrDefaultAsync(g => g.MaKh == customerId && g.MaHh == id);
                 if (item != null) {
-                    item.SoLuong += delta;
-                    if (item.SoLuong < 1) item.SoLuong = 1;
-                    await _Context.SaveChangesAsync();
-                    newQty = item.SoLuong;
-                    // Need price from related HangHoa â€“ fetch it
-                    var hh = await _Context.HangHoas
-                        .Where(h => h.MaHh == id)
-                        .Select(h => h.DonGia ?? 0)
-                        .FirstOrDefaultAsync();
-                    unitPrice = hh;
-                    lineTotal = unitPrice * newQty;
+                    var targetQty = item.SoLuong + delta;
+                    if (targetQty < 1) targetQty = 1;
+                    
+                    if (targetQty > hh.SoLuong)
+                    {
+                        success = false;
+                        message = $"Không thể tăng thêm. Sản phẩm '{hh.TenHh}' chỉ còn {hh.SoLuong} sản phẩm trong kho.";
+                        newQty = item.SoLuong;
+                        unitPrice = hh.DonGia ?? 0;
+                        lineTotal = unitPrice * newQty;
+                    }
+                    else
+                    {
+                        item.SoLuong = targetQty;
+                        await _Context.SaveChangesAsync();
+                        newQty = item.SoLuong;
+                        unitPrice = hh.DonGia ?? 0;
+                        lineTotal = unitPrice * newQty;
+                    }
                 }
             }
 
-            return Json(new { quantity = newQty, lineTotal = lineTotal, unitPrice = unitPrice });
+            return Json(new { success = success, message = message, quantity = newQty, lineTotal = lineTotal, unitPrice = unitPrice });
         }
 
         // ----------------------------------------------------------------
@@ -471,6 +541,10 @@ namespace LTWEB_QuaMonHai_CuoiKy.Controllers {
             // Load danh sÃ¡ch voucher tá»« DB â†’ Ä‘áº©y vÃ o ViewBag Ä‘á»ƒ View render
             ViewBag.Vouchers = await _Context.GiamGias.ToListAsync();
 
+            // Lấy thông tin khách hàng đang đăng nhập để tự động điền địa chỉ
+            var customer = await _Context.KhachHangs.SingleOrDefaultAsync(kh => kh.MaKh == customerId);
+            ViewBag.Customer = customer;
+
             return View(cartItems);
         }
         // POST: /Cart/PlaceOrder
@@ -530,6 +604,16 @@ namespace LTWEB_QuaMonHai_CuoiKy.Controllers {
             {
                 TempData["Error"] = "Giỏ hàng có sản phẩm không hợp lệ";
                 return RedirectToAction("Check_Out");
+            }
+
+            // Kiểm tra tồn kho của từng sản phẩm trước khi thanh toán
+            foreach (var item in gioHangDb)
+            {
+                if (item.SoLuong > item.MaHhNavigation.SoLuong)
+                {
+                    TempData["Error"] = $"Sản phẩm '{item.MaHhNavigation.TenHh}' chỉ còn {item.MaHhNavigation.SoLuong} sản phẩm trong kho. Vui lòng cập nhật lại giỏ hàng!";
+                    return RedirectToAction("Check_Out");
+                }
             }
 
             var subtotal = gioHangDb.Sum(g => (g.MaHhNavigation.DonGia ?? 0) * g.SoLuong);
@@ -610,6 +694,13 @@ namespace LTWEB_QuaMonHai_CuoiKy.Controllers {
                     };
                 }).ToList()
             };
+
+            // Trừ tồn kho trong CSDL
+            foreach (var item in gioHangDb)
+            {
+                item.MaHhNavigation.SoLuong -= item.SoLuong;
+                _Context.HangHoas.Update(item.MaHhNavigation);
+            }
 
             _Context.HoaDons.Add(hoaDon);
             _Context.GioHangs.RemoveRange(gioHangDb);

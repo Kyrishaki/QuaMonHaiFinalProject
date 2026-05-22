@@ -1,4 +1,4 @@
-﻿@{
+@{
     // Tự động lấy tên Controller và Action hiện tại (Home hoặc HangHoas)
     var currentController = ViewContext.RouteData.Values["controller"]?.ToString();
     var currentAction = ViewContext.RouteData.Values["action"]?.ToString() ?? "Index";
@@ -27,13 +27,16 @@
             <a asp-action="@currentAction" asp-controller="@currentController" asp-route-loaiId="" asp-route-searchQuery="@Context.Request.Query["searchQuery"]" asp-route-priceRange="@Context.Request.Query["priceRange"]"
                class="text-decoration-none d-flex justify-content-between align-items-center @(ViewBag.CurrentLoai == null ? "text-success fw-bold" : "text-dark")">
                 <span>Tất cả sản phẩm</span>
+                <span class="badge rounded-pill @(ViewBag.CurrentLoai == null ? "bg-success text-white" : "bg-light text-secondary border")">@ViewBag.TotalProductCount</span>
             </a>
 
             @if (ViewBag.DanhMucs != null) {
                 foreach (var loai in ViewBag.DanhMucs) {
+                    bool isActive = ViewBag.CurrentLoai == loai.MaLoai;
                     <a asp-action="@currentAction" asp-controller="@currentController" asp-route-loaiId="@loai.MaLoai" asp-route-searchQuery="@Context.Request.Query["searchQuery"]" asp-route-priceRange="@Context.Request.Query["priceRange"]"
-                       class="text-decoration-none d-flex justify-content-between align-items-center @(ViewBag.CurrentLoai == loai.MaLoai ? "text-success fw-bold" : "text-dark")">
+                       class="text-decoration-none d-flex justify-content-between align-items-center @(isActive ? "text-success fw-bold" : "text-dark")">
                         <span>@loai.TenLoai</span>
+                        <span class="badge rounded-pill @(isActive ? "bg-success text-white" : "bg-light text-secondary border")">@loai.HangHoas.Count</span>
                     </a>
                 }
             }
@@ -44,26 +47,36 @@
 <!-- 3. Lọc Theo Giá -->
 <div class="card border-0 shadow-sm mb-4 rounded-3">
     <div class="card-body">
-        <h5 class="card-title fw-bold border-bottom pb-2 mb-3">Mức Giá</h5>
+        <h5 class="card-title fw-bold border-bottom pb-2 mb-3"><i class="fa-solid fa-sliders text-success me-2"></i>Mức Giá</h5>
         <form asp-action="@currentAction" asp-controller="@currentController" method="get">
             <input type="hidden" name="searchQuery" value="@Context.Request.Query["searchQuery"]" />
             <input type="hidden" name="loaiId" value="@ViewBag.CurrentLoai" />
 
             @{
                 var currentPriceRange = Context.Request.Query["priceRange"].ToString();
+                var maxPriceVal = 500; // mặc định tối đa
+                if (double.TryParse(currentPriceRange, out double parsedPrice)) {
+                    maxPriceVal = (int)parsedPrice;
+                } else if (currentPriceRange == "under50") {
+                    maxPriceVal = 50;
+                } else if (currentPriceRange == "50to100") {
+                    maxPriceVal = 100;
+                } else if (currentPriceRange == "over100") {
+                    maxPriceVal = 500;
+                }
             }
 
-            <div class="form-check mb-2">
-                <input class="form-check-input" type="radio" name="priceRange" id="price1" value="under50" @(currentPriceRange == "under50" ? "checked" : "")>
-                <label class="form-check-label" for="price1">Dưới $50</label>
-            </div>
-            <div class="form-check mb-2">
-                <input class="form-check-input" type="radio" name="priceRange" id="price2" value="50to100" @(currentPriceRange == "50to100" ? "checked" : "")>
-                <label class="form-check-label" for="price2">Từ $50 - $100</label>
-            </div>
-            <div class="form-check mb-2">
-                <input class="form-check-input" type="radio" name="priceRange" id="price3" value="over100" @(currentPriceRange == "over100" ? "checked" : "")>
-                <label class="form-check-label" for="price3">Trên $100</label>
+            <div class="mb-3">
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                    <span class="text-muted small">Ngưỡng tối đa:</span>
+                    <span class="fw-bold text-success fs-5" id="priceRangeValue">$@maxPriceVal</span>
+                </div>
+                <input type="range" class="form-range" min="0" max="500" step="10" name="priceRange" id="priceRangeSlider" value="@maxPriceVal" style="accent-color: #3CB815;">
+                <div class="d-flex justify-content-between text-muted small mt-1" style="font-size: 0.75rem;">
+                    <span>$0</span>
+                    <span>$250</span>
+                    <span>$500</span>
+                </div>
             </div>
 
             <div class="d-flex gap-2 mt-3">
@@ -76,12 +89,24 @@
     </div>
 </div>
 
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        var slider = document.getElementById("priceRangeSlider");
+        var output = document.getElementById("priceRangeValue");
+        if (slider && output) {
+            slider.addEventListener("input", function () {
+                output.textContent = "$" + this.value;
+            });
+        }
+    });
+</script>
+
 <!-- 4. Banner Quảng Cáo (Đã back lại cho bạn!) -->
 <div class="card border-0 shadow-sm rounded-3 overflow-hidden position-relative">
     <img src="~/img/carousel-1.jpg" class="img-fluid" alt="Quảng cáo" style="height: 300px; object-fit: cover;">
     <div class="position-absolute top-0 start-0 w-100 h-100 d-flex flex-column justify-content-center align-items-center p-3" style="background: rgba(0,0,0,0.4);">
         <h4 class="text-white fw-bold text-center">Siêu Sale Cuối Tuần</h4>
-        <p class="text-white text-center small mb-3">Giảm giá lên đến 50% cho rau xanh hữu cơ.</p>
+        <p class="text-white text-center small mb-3">Giảm giá lên đến 50% cho thiết bị công nghệ & phụ kiện.</p>
         <a href="#" class="btn btn-primary rounded-pill px-4" style="background-color: #81c408; border-color: #81c408;">Mua Ngay</a>
     </div>
 </div>

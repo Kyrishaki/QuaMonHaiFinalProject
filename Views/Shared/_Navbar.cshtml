@@ -82,6 +82,9 @@
                             <a asp-controller="Cart" asp-action="OrderHistory" class="dropdown-item py-2">
                                 <i class="fa fa-clock-rotate-left me-2 text-success"></i>Lịch sử mua hàng
                             </a>
+                            <a asp-controller="Customer" asp-action="Wishlist" class="dropdown-item py-2">
+                                <i class="fa fa-heart me-2 text-danger"></i>Sản phẩm yêu thích
+                            </a>
                             @if (User.IsInRole("Admin")) {
                                 <a asp-controller="HangHoas" asp-action="Index" class="dropdown-item py-2">
                                     <i class="fa fa-cogs me-2 text-warning"></i>Quản lý sản phẩm
@@ -91,6 +94,9 @@
                                 </a>
                                 <a asp-controller="Admin" asp-action="OrderHistory" class="dropdown-item py-2">
                                     <i class="fa fa-history me-2 text-info"></i>Quản lý đơn hàng
+                                </a>
+                                <a asp-controller="Admin" asp-action="ReviewManagement" class="dropdown-item py-2">
+                                    <i class="fa fa-comments me-2 text-secondary"></i>Quản lý đánh giá
                                 </a>
                             }
                             <div class="dropdown-divider"></div>
@@ -154,15 +160,20 @@
         padding-top: 20px !important;
     }
 
-    /* Fix layout overlap: Push main content down on pages without a header carousel */
-    #searchModal ~ main {
+    /* Fix layout overlap: Push main content down ONLY on pages without a header carousel/banner */
+    #searchModal ~ main.no-header {
         padding-top: 140px;
     }
 
     @@media (max-width: 991.98px) {
-        #searchModal ~ main {
-            padding-top: 80px;
+        #searchModal ~ main.no-header {
+            padding-top: 85px;
         }
+    }
+
+    /* Pages WITH header carousel already have their own top margins, so main shouldn't have extra padding-top */
+    #searchModal ~ main.has-header {
+        padding-top: 0;
     }
 
     .custom-sticky.scrolled .top-bar {

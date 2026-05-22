@@ -211,18 +211,23 @@
                     
                     calculateCheckedTotal();
                     
-                    // Cập nhật lại số lượng trên badge giỏ hàng
-                    $.get('@Url.Action("CartCount", "Cart")', function(count) {
-                        var badge = $('.fa-shopping-bag').siblings('.badge');
-                        if (badge.length > 0) {
-                            badge.text(count);
-                        } else if (count > 0) {
-                            $('.fa-shopping-bag').parent().append('<span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="font-size: 0.65rem;">' + count + '</span>');
-                        }
-                    });
+                    if (!res.success) {
+                        showToast(res.message, 'error');
+                    } else {
+                        // Cập nhật lại số lượng trên badge giỏ hàng
+                        $.get('@Url.Action("CartCount", "Cart")', function(count) {
+                            var badge = $('.fa-shopping-bag').siblings('.badge');
+                            if (badge.length > 0) {
+                                badge.text(count);
+                            } else if (count > 0) {
+                                $('.fa-shopping-bag').parent().append('<span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="font-size: 0.65rem;">' + count + '</span>');
+                            }
+                        });
+                    }
                 },
                 error: function(err) {
                     console.log('Error updating quantity:', err);
+                    showToast('Lỗi kết nối máy chủ!', 'error');
                 }
             });
         });
@@ -305,6 +310,21 @@
             } else if (count > 0) {
                 $('.fa-shopping-bag').parent().append('<span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="font-size: 0.65rem;">' + count + '</span>');
             }
+        }
+
+        function showToast(message, type = 'success') {
+            $('#customToast').remove();
+            var bgClass = type === 'error' ? 'bg-danger' : 'bg-success';
+            var iconClass = type === 'error' ? 'fa-exclamation-circle' : 'fa-check-circle';
+            var toastHtml = '<div id="customToast" class="position-fixed bottom-0 end-0 p-3" style="z-index: 9999;">' +
+                            '<div class="toast align-items-center text-white ' + bgClass + ' border-0 show" role="alert" aria-live="assertive" aria-atomic="true">' +
+                            '<div class="d-flex"><div class="toast-body"><i class="fa ' + iconClass + ' me-2"></i>' + message + '</div>' +
+                            '<button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close" onclick="$(this).closest(\'#customToast\').remove();"></button>' +
+                            '</div></div></div>';
+            $('body').append(toastHtml);
+            setTimeout(function() {
+                $('#customToast').fadeOut(500, function() { $(this).remove(); });
+            }, 3000);
         }
     });
 </script>

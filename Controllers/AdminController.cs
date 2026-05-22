@@ -142,5 +142,53 @@ namespace LTWEB_QuaMonHai_CuoiKy.Controllers
             TempData["Success"] = $"Đã cập nhật trạng thái đơn hàng #{id} thành công!";
             return RedirectToAction(nameof(OrderHistory));
         }
+
+        // GET: Admin/ReviewManagement
+        [HttpGet]
+        public async Task<IActionResult> ReviewManagement(string searchQuery, int? stars)
+        {
+            ViewBag.SearchQuery = searchQuery;
+            ViewBag.Stars = stars;
+
+            var query = _context.BinhLuans
+                .Include(bl => bl.MaHhNavigation)
+                .Include(bl => bl.MaKhNavigation)
+                .AsNoTracking()
+                .AsQueryable();
+
+            if (!string.IsNullOrEmpty(searchQuery))
+            {
+                query = query.Where(bl => (bl.NoiDung != null && bl.NoiDung.Contains(searchQuery)) ||
+                                          bl.MaKhNavigation.HoTen.Contains(searchQuery) ||
+                                          bl.MaKhNavigation.MaKh.Contains(searchQuery) ||
+                                          bl.MaHhNavigation.TenHh.Contains(searchQuery));
+            }
+
+            if (stars.HasValue)
+            {
+                query = query.Where(bl => bl.Sao == stars.Value);
+            }
+
+            var reviews = await query.OrderByDescending(bl => bl.Ngay).ToListAsync();
+            return View(reviews);
+        }
+
+        // POST: Admin/DeleteReview
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteReview(int id)
+        {
+            var review = await _context.BinhLuans.FirstOrDefaultAsync(bl => bl.MaBl == id);
+            if (review == null)
+            {
+                return NotFound();
+            }
+
+            _context.BinhLuans.Remove(review);
+            await _context.SaveChangesAsync();
+
+            TempData["Success"] = "Đã xóa đánh giá thành công!";
+            return RedirectToAction(nameof(ReviewManagement));
+        }
     }
 }

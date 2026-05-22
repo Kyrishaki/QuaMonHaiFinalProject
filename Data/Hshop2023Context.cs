@@ -51,6 +51,8 @@ public partial class Hshop2023Context : DbContext {
 
     public virtual DbSet<GiamGia> GiamGias { get; set; }
 
+    public virtual DbSet<BinhLuan> BinhLuans { get; set; }
+
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) {
         if (!optionsBuilder.IsConfigured) {
             optionsBuilder.UseSqlServer("Server=0.tcp.ap.ngrok.io,26018;Database=Hshop2023;User Id=sa;Password=QuaMonHai;TrustServerCertificate=True;");
@@ -468,6 +470,34 @@ public partial class Hshop2023Context : DbContext {
 
             entity.Property(e => e.PhanTramGiam)
                 .HasDefaultValue(0.0);
+        });
+
+        modelBuilder.Entity<BinhLuan>(entity => {
+            entity.HasKey(e => e.MaBl).HasName("PK_BinhLuan");
+
+            entity.ToTable("BinhLuan");
+
+            entity.Property(e => e.MaBl).HasColumnName("MaBL");
+            entity.Property(e => e.MaHh).HasColumnName("MaHH");
+            entity.Property(e => e.MaKh)
+                .HasMaxLength(20)
+                .HasColumnName("MaKH");
+            entity.Property(e => e.Sao).HasColumnName("Sao");
+            entity.Property(e => e.NoiDung).HasColumnName("NoiDung");
+            entity.Property(e => e.Ngay)
+                .HasColumnType("datetime")
+                .HasDefaultValueSql("(getdate())")
+                .HasColumnName("Ngay");
+
+            entity.HasOne(d => d.MaHhNavigation).WithMany(p => p.BinhLuans)
+                .HasForeignKey(d => d.MaHh)
+                .OnDelete(DeleteBehavior.Cascade)
+                .HasConstraintName("FK_BinhLuan_HangHoa");
+
+            entity.HasOne(d => d.MaKhNavigation).WithMany(p => p.BinhLuans)
+                .HasForeignKey(d => d.MaKh)
+                .OnDelete(DeleteBehavior.Cascade)
+                .HasConstraintName("FK_BinhLuan_KhachHang");
         });
 
         OnModelCreatingPartial(modelBuilder);

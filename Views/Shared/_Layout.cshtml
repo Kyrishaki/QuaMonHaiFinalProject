@@ -26,16 +26,18 @@
     <div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
         <div class="spinner-border text-primary" role="status"></div>
     </div>
+    @{
+        var title = ViewData["Title"]?.ToString();
+        bool hasHeader = title == "Cửa hàng của chúng tôi" || title == "Về Chúng Tôi";
+    }
+
     <partial view name="_Navbar" />
 
-    @if (ViewData["Title"]?.ToString() == "Cửa hàng của chúng tôi") {
-        <partial view name="_Header" />
-    }
-    @if (ViewData["Title"]?.ToString() == "Về Chúng Tôi") {
+    @if (hasHeader) {
         <partial view name="_Header" />
     }
 
-    <main>
+    <main class="@(hasHeader ? "has-header" : "no-header")">
         @RenderBody()
     </main>
 

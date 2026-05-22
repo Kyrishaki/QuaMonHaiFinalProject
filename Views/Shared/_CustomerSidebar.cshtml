@@ -1,0 +1,152 @@
+@inject LTWEB_QuaMonHai_CuoiKy.Data.Hshop2023Context db
+@{
+    var customerId = User.Claims.FirstOrDefault(c => c.Type == "CustomerID")?.Value;
+    LTWEB_QuaMonHai_CuoiKy.Models.KhachHang khachHang = null;
+    if (!string.IsNullOrEmpty(customerId))
+    {
+        khachHang = db.KhachHangs.FirstOrDefault(kh => kh.MaKh == customerId);
+    }
+
+    var currentAction = ViewContext.RouteData.Values["action"]?.ToString();
+    var currentController = ViewContext.RouteData.Values["controller"]?.ToString();
+
+    var avatarUrl = "/img/avatar.jpg";
+    if (khachHang != null && !string.IsNullOrEmpty(khachHang.Hinh))
+    {
+        avatarUrl = Url.Content("~/img/Hinh/KhachHang/" + khachHang.Hinh);
+    }
+}
+
+<div class="customer-sidebar bg-white rounded-3 shadow-sm p-4 border border-light mb-4">
+    <!-- User Profile Header -->
+    <div class="d-flex align-items-center gap-3 border-bottom pb-4 mb-4">
+        <div class="position-relative overflow-hidden rounded-circle border border-2 border-success shadow-sm sidebar-avatar-container" style="width: 60px; height: 60px; transition: all 0.3s ease;">
+            <img src="@avatarUrl" 
+                 alt="Avatar" 
+                 class="w-100 h-100 object-fit-cover" 
+                 onerror="this.src='/img/avatar.jpg';" 
+                 style="object-fit: cover;" />
+        </div>
+        <div class="text-truncate">
+            <h6 class="fw-bold text-dark mb-1 text-truncate" title="@(khachHang?.HoTen ?? User.Identity?.Name)">@(khachHang?.HoTen ?? User.Identity?.Name)</h6>
+            <div class="d-flex align-items-center gap-1 text-muted fs-7">
+                <i class="fa-solid fa-pen text-success" style="font-size: 0.75rem;"></i>
+                <a asp-controller="Customer" asp-action="Profile" class="text-decoration-none text-muted transition-all hover-primary">Sửa hồ sơ</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navigation Menu -->
+    <div class="d-flex flex-column gap-2 customer-menu-list">
+        <!-- Profile Group Header -->
+        <div class="menu-group">
+            <a href="#" class="menu-header-link d-flex align-items-center gap-2 text-dark fw-bold py-2 text-decoration-none" data-bs-toggle="collapse" data-bs-target="#accountSubmenu" aria-expanded="true">
+                <i class="fa-regular fa-user text-primary" style="color: var(--primary) !important; width: 20px;"></i>
+                <span>Tài khoản của tôi</span>
+                <i class="fa-solid fa-chevron-down ms-auto submenu-arrow" style="font-size: 0.8rem; transition: transform 0.3s ease;"></i>
+            </a>
+            
+            <div class="collapse show ps-4 d-flex flex-column gap-1" id="accountSubmenu">
+                <a asp-controller="Customer" asp-action="Profile" 
+                   class="nav-link py-2 px-3 rounded-pill text-secondary transition-all d-flex align-items-center gap-2 @(currentController == "Customer" && currentAction == "Profile" ? "active" : "")">
+                    <span class="dot-indicator"></span>
+                    Hồ sơ
+                </a>
+                <a asp-controller="Customer" asp-action="ChangePassword" 
+                   class="nav-link py-2 px-3 rounded-pill text-secondary transition-all d-flex align-items-center gap-2 @(currentController == "Customer" && currentAction == "ChangePassword" ? "active" : "")">
+                    <span class="dot-indicator"></span>
+                    Đổi mật khẩu
+                </a>
+            </div>
+        </div>
+
+        <!-- Order History -->
+        <a asp-controller="Cart" asp-action="OrderHistory" 
+           class="menu-item-link py-2.5 px-3 rounded-3 text-secondary transition-all text-decoration-none d-flex align-items-center gap-2 @(currentController == "Cart" && currentAction == "OrderHistory" ? "active" : "")">
+            <i class="fa-regular fa-clipboard text-success" style="width: 20px;"></i>
+            <span class="fw-semibold">Đơn mua</span>
+        </a>
+
+        <!-- Wishlist -->
+        <a asp-controller="Customer" asp-action="Wishlist" 
+           class="menu-item-link py-2.5 px-3 rounded-3 text-secondary transition-all text-decoration-none d-flex align-items-center gap-2 @(currentController == "Customer" && currentAction == "Wishlist" ? "active" : "")">
+            <i class="fa-regular fa-heart text-danger" style="width: 20px;"></i>
+            <span class="fw-semibold">Sản phẩm yêu thích</span>
+        </a>
+
+        <!-- Divider -->
+        <hr class="my-3 text-light-muted opacity-50" />
+
+        <!-- Logout -->
+        <a asp-controller="Customer" asp-action="Logout" 
+           class="menu-item-link py-2.5 px-3 rounded-3 text-danger transition-all text-decoration-none d-flex align-items-center gap-2 hover-bg-danger-subtle">
+            <i class="fa-solid fa-arrow-right-from-bracket" style="width: 20px;"></i>
+            <span class="fw-semibold">Đăng xuất</span>
+        </a>
+    </div>
+</div>
+
+<style>
+    .customer-sidebar {
+        border-color: rgba(0, 0, 0, 0.05) !important;
+        font-size: 0.95rem;
+    }
+    
+    .sidebar-avatar-container:hover {
+        transform: scale(1.05);
+        box-shadow: 0 4px 10px rgba(60, 184, 21, 0.15) !important;
+    }
+    
+    .fs-7 {
+        font-size: 0.8rem;
+    }
+    
+    .hover-primary:hover {
+        color: var(--primary) !important;
+    }
+    
+    /* Menu Active & Hover States */
+    .customer-menu-list .nav-link {
+        font-size: 0.9rem;
+        position: relative;
+        border: 1px solid transparent;
+    }
+    
+    .customer-menu-list .nav-link:hover, 
+    .customer-menu-list .menu-item-link:hover {
+        color: var(--primary) !important;
+        background-color: rgba(60, 184, 21, 0.05) !important;
+    }
+    
+    .customer-menu-list .nav-link.active,
+    .customer-menu-list .menu-item-link.active {
+        color: var(--primary) !important;
+        background-color: rgba(60, 184, 21, 0.1) !important;
+        font-weight: 700 !important;
+    }
+    
+    .customer-menu-list .nav-link .dot-indicator {
+        width: 6px;
+        height: 6px;
+        background-color: transparent;
+        border-radius: 50%;
+        display: inline-block;
+        transition: background-color 0.2s ease;
+    }
+    
+    .customer-menu-list .nav-link.active .dot-indicator {
+        background-color: var(--primary);
+    }
+    
+    .customer-menu-list .menu-item-link {
+        padding: 10px 15px;
+    }
+    
+    .hover-bg-danger-subtle:hover {
+        background-color: rgba(220, 53, 69, 0.08) !important;
+    }
+    
+    .menu-header-link[aria-expanded="false"] .submenu-arrow {
+        transform: rotate(-90deg);
+    }
+</style>

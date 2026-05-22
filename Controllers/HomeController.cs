@@ -1,4 +1,4 @@
-﻿using LTWEB_QuaMonHai_CuoiKy.Data;
+using LTWEB_QuaMonHai_CuoiKy.Data;
 using LTWEB_QuaMonHai_CuoiKy.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -17,8 +17,22 @@ namespace LTWEB_QuaMonHai_CuoiKy.Controllers {
         public async Task<IActionResult> Index(int? loaiId, string searchQuery, string priceRange, int page = 1) {
             int pageSize = 9; // Số sản phẩm trên mỗi trang
 
+            // Lấy danh sách ID sản phẩm yêu thích của người dùng hiện tại
+            var favoriteProductIds = new List<int>();
+            if (User.Identity?.IsAuthenticated == true) {
+                var customerId = User.Claims.SingleOrDefault(c => c.Type == "CustomerID")?.Value;
+                if (!string.IsNullOrEmpty(customerId)) {
+                    favoriteProductIds = await _context.YeuThiches
+                        .Where(y => y.MaKh == customerId && y.MaHh.HasValue)
+                        .Select(y => y.MaHh ?? 0)
+                        .ToListAsync();
+                }
+            }
+            ViewBag.FavoriteProductIds = favoriteProductIds;
+
             // Truyền danh sách Danh Mục cho Sidebar
-            ViewBag.DanhMucs = await _context.Loais.AsNoTracking().ToListAsync();
+            ViewBag.DanhMucs = await _context.Loais.Include(l => l.HangHoas).AsNoTracking().ToListAsync();
+            ViewBag.TotalProductCount = await _context.HangHoas.CountAsync();
             ViewBag.CurrentLoai = loaiId;
 
             // Lấy dữ liệu cơ bản
@@ -39,16 +53,20 @@ namespace LTWEB_QuaMonHai_CuoiKy.Controllers {
 
             // 3. Xử lý Lọc theo Giá
             if (!string.IsNullOrEmpty(priceRange)) {
-                switch (priceRange) {
-                    case "under50":
-                        query = query.Where(h => h.DonGia < 50);
-                        break;
-                    case "50to100":
-                        query = query.Where(h => h.DonGia >= 50 && h.DonGia <= 100);
-                        break;
-                    case "over100":
-                        query = query.Where(h => h.DonGia > 100);
-                        break;
+                if (double.TryParse(priceRange, out double maxVal)) {
+                    query = query.Where(h => h.DonGia <= maxVal);
+                } else {
+                    switch (priceRange) {
+                        case "under50":
+                            query = query.Where(h => h.DonGia < 50);
+                            break;
+                        case "50to100":
+                            query = query.Where(h => h.DonGia >= 50 && h.DonGia <= 100);
+                            break;
+                        case "over100":
+                            query = query.Where(h => h.DonGia > 100);
+                            break;
+                    }
                 }
             }
 

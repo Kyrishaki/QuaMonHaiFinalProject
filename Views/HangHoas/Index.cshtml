@@ -1,7 +1,7 @@
 @model IEnumerable<LTWEB_QuaMonHai_CuoiKy.Models.HangHoa>
 
 @{
-    ViewData["Title"] = "Cửa Hàng Thực Phẩm";
+    ViewData["Title"] = "Cửa Hàng Công Nghệ & Phụ Kiện";
     int currentPage = ViewBag.CurrentPage ?? 1;
     int totalPages = ViewBag.TotalPages ?? 1;
 }
@@ -42,6 +42,14 @@
                             <div class="bg-secondary rounded text-white position-absolute start-0 top-0 m-3 py-1 px-2" style="z-index: 10; font-size: 0.8rem; background-color: rgba(129, 196, 8, 0.9) !important;">
                                 @(item.MaLoaiNavigation != null ? item.MaLoaiNavigation.TenLoai : "Sản phẩm")
                             </div>
+
+                            <button type="button" class="btn btn-light rounded-circle shadow-sm position-absolute end-0 top-0 m-3 toggle-favorite-ajax" data-id="@item.MaHh" style="z-index: 10; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; border: none; transition: transform 0.2s ease;">
+                                @if (ViewBag.FavoriteProductIds != null && ((List<int>)ViewBag.FavoriteProductIds).Contains(item.MaHh)) {
+                                    <i class="fa-solid fa-heart text-danger fs-5"></i>
+                                } else {
+                                    <i class="fa-regular fa-heart text-danger fs-5"></i>
+                                }
+                            </button>
 
                             <img src="@Url.Content("~/img/Hinh/HangHoa/" + (string.IsNullOrEmpty(item.Hinh) ? "no-image.jpg" : item.Hinh))"
                                  class="card-img-top"
@@ -95,6 +103,11 @@
             box-shadow: 0 .5rem 1rem rgba(0,0,0,.15) !important;
         }
 
+    .toggle-favorite-ajax:hover {
+        transform: scale(1.15) !important;
+        background-color: #fff0f0 !important;
+    }
+
     .pagination .page-link {
         color: #81c408;
         border: none;
@@ -141,6 +154,40 @@
                         
                         // Show toast
                         showToast("Đã thêm sản phẩm vào giỏ hàng!");
+                    } else {
+                        alert(res.message || 'Có lỗi xảy ra');
+                    }
+                }
+            });
+        });
+
+        // Xử lý nút Yêu thích bằng AJAX
+        $('.toggle-favorite-ajax').click(function(e) {
+            e.preventDefault();
+            var btn = $(this);
+            var id = btn.data('id');
+            
+            $.ajax({
+                url: '@Url.Action("ToggleFavorite", "Customer")',
+                type: 'POST',
+                data: { id: id },
+                success: function(res) {
+                    if (res.redirectTo) {
+                        showToast(res.message);
+                        setTimeout(function() {
+                            window.location.href = res.redirectTo;
+                        }, 1500);
+                        return;
+                    }
+                    
+                    if(res.success) {
+                        var icon = btn.find('i');
+                        if (res.isFavorite) {
+                            icon.removeClass('fa-regular').addClass('fa-solid');
+                        } else {
+                            icon.removeClass('fa-solid').addClass('fa-regular');
+                        }
+                        showToast(res.message);
                     } else {
                         alert(res.message || 'Có lỗi xảy ra');
                     }

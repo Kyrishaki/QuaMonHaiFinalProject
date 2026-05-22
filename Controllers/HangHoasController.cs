@@ -17,7 +17,21 @@ namespace LTWEB_QuaMonHai_CuoiKy.Controllers {
         public async Task<IActionResult> Index(int? loaiId, string searchQuery, string priceRange, int page = 1) {
             int pageSize = 9;
 
-            ViewBag.DanhMucs = await _context.Loais.AsNoTracking().ToListAsync();
+            // Lấy danh sách ID sản phẩm yêu thích của người dùng hiện tại
+            var favoriteProductIds = new List<int>();
+            if (User.Identity?.IsAuthenticated == true) {
+                var customerId = User.Claims.SingleOrDefault(c => c.Type == "CustomerID")?.Value;
+                if (!string.IsNullOrEmpty(customerId)) {
+                    favoriteProductIds = await _context.YeuThiches
+                        .Where(y => y.MaKh == customerId && y.MaHh.HasValue)
+                        .Select(y => y.MaHh ?? 0)
+                        .ToListAsync();
+                }
+            }
+            ViewBag.FavoriteProductIds = favoriteProductIds;
+
+            ViewBag.DanhMucs = await _context.Loais.Include(l => l.HangHoas).AsNoTracking().ToListAsync();
+            ViewBag.TotalProductCount = await _context.HangHoas.CountAsync();
             ViewBag.CurrentLoai = loaiId;
 
             var query = _context.HangHoas
@@ -34,16 +48,20 @@ namespace LTWEB_QuaMonHai_CuoiKy.Controllers {
             }
 
             if (!string.IsNullOrEmpty(priceRange)) {
-                switch (priceRange) {
-                    case "under50":
-                        query = query.Where(h => h.DonGia < 50);
-                        break;
-                    case "50to100":
-                        query = query.Where(h => h.DonGia >= 50 && h.DonGia <= 100);
-                        break;
-                    case "over100":
-                        query = query.Where(h => h.DonGia > 100);
-                        break;
+                if (double.TryParse(priceRange, out double maxVal)) {
+                    query = query.Where(h => h.DonGia <= maxVal);
+                } else {
+                    switch (priceRange) {
+                        case "under50":
+                            query = query.Where(h => h.DonGia < 50);
+                            break;
+                        case "50to100":
+                            query = query.Where(h => h.DonGia >= 50 && h.DonGia <= 100);
+                            break;
+                        case "over100":
+                            query = query.Where(h => h.DonGia > 100);
+                            break;
+                    }
                 }
             }
 
@@ -78,8 +96,137 @@ namespace LTWEB_QuaMonHai_CuoiKy.Controllers {
                 return NotFound();
             }
 
+            // Lấy danh sách ID sản phẩm yêu thích của người dùng hiện tại
+            var favoriteProductIds = new List<int>();
+            int maxReviews = 0;
+            int writtenReviews = 0;
+
+            if (User.Identity?.IsAuthenticated == true) {
+                var customerId = User.Claims.SingleOrDefault(c => c.Type == "CustomerID")?.Value;
+                if (!string.IsNullOrEmpty(customerId)) {
+                    favoriteProductIds = await _context.YeuThiches
+                        .Where(y => y.MaKh == customerId && y.MaHh.HasValue)
+                        .Select(y => y.MaHh ?? 0)
+                        .ToListAsync();
+
+                    // Tính tổng số lượng hàng hóa này đã mua thành công (các hóa đơn có MaTrangThai != -1)
+                    maxReviews = await _context.ChiTietHds
+                        .Where(ct => ct.MaHdNavigation.MaKh == customerId && ct.MaHh == id && ct.MaHdNavigation.MaTrangThai != -1)
+                        .SumAsync(ct => ct.SoLuong);
+
+                    // Tính số lượng bình luận đã viết cho sản phẩm này
+                    writtenReviews = await _context.BinhLuans
+                        .CountAsync(bl => bl.MaKh == customerId && bl.MaHh == id);
+                }
+            }
+            ViewBag.FavoriteProductIds = favoriteProductIds;
+            ViewBag.MaxReviews = maxReviews;
+            ViewBag.WrittenReviews = writtenReviews;
+
+            // Lấy danh sách đánh giá của sản phẩm này
+            var reviews = await _context.BinhLuans
+                .Include(b => b.MaKhNavigation)
+                .Where(b => b.MaHh == id)
+                .OrderByDescending(b => b.Ngay)
+                .ToListAsync();
+            ViewBag.Reviews = reviews;
+
+            // Tính điểm đánh giá trung bình
+            double avgStars = reviews.Any() ? Math.Round(reviews.Average(r => r.Sao), 1) : 5.0;
+            ViewBag.AvgStars = avgStars;
+            ViewBag.TotalReviews = reviews.Count;
+
+            // Tính tổng số lượng đã bán (các hóa đơn có MaTrangThai != -1)
+            int totalSold = await _context.ChiTietHds
+                .Where(ct => ct.MaHh == id && ct.MaHdNavigation.MaTrangThai != -1)
+                .SumAsync(ct => ct.SoLuong);
+            ViewBag.TotalSold = totalSold;
+
+            // Lấy danh sách sản phẩm liên quan (cùng danh mục MaLoai, loại trừ sản phẩm hiện tại, lấy tối đa 4)
+            var relatedProducts = await _context.HangHoas
+                .Where(h => h.MaLoai == hangHoa.MaLoai && h.MaHh != id)
+                .Take(4)
+                .ToListAsync();
+            ViewBag.RelatedProducts = relatedProducts;
+
+            // Lấy danh sách mã giảm giá đang hoạt động
+            var activeVouchers = await _context.GiamGias
+                .Where(v => v.TrangThai == true && (v.NgayBatDau == null || v.NgayBatDau <= DateTime.Now) && (v.NgayKetThuc == null || v.NgayKetThuc >= DateTime.Now))
+                .Take(3)
+                .ToListAsync();
+            ViewBag.ActiveVouchers = activeVouchers;
+
             return View(hangHoa);
         }
+
+        // POST: HangHoas/SendReview (Đăng đánh giá sản phẩm qua AJAX)
+        [HttpPost]
+        public async Task<IActionResult> SendReview(int maHh, int sao, string noiDung) {
+            if (User.Identity?.IsAuthenticated != true) {
+                return Json(new { success = false, redirectTo = Url.Action("Login", "Customer"), message = "Vui lòng đăng nhập để đánh giá sản phẩm!" });
+            }
+
+            var customerId = User.Claims.SingleOrDefault(c => c.Type == "CustomerID")?.Value;
+            if (string.IsNullOrEmpty(customerId)) {
+                return Json(new { success = false, message = "Không tìm thấy thông tin khách hàng!" });
+            }
+
+            if (sao < 1 || sao > 5) {
+                return Json(new { success = false, message = "Số sao đánh giá không hợp lệ (1-5)!" });
+            }
+
+            var productExists = await _context.HangHoas.AnyAsync(h => h.MaHh == maHh);
+            if (!productExists) {
+                return Json(new { success = false, message = "Sản phẩm không tồn tại!" });
+            }
+
+            // Kiểm tra số lượt đã mua thành công và số lượt đã đánh giá
+            var maxReviews = await _context.ChiTietHds
+                .Where(ct => ct.MaHdNavigation.MaKh == customerId && ct.MaHh == maHh && ct.MaHdNavigation.MaTrangThai != -1)
+                .SumAsync(ct => ct.SoLuong);
+
+            var writtenReviews = await _context.BinhLuans
+                .CountAsync(bl => bl.MaKh == customerId && bl.MaHh == maHh);
+
+            if (maxReviews == 0) {
+                return Json(new { success = false, message = "Bạn phải mua sản phẩm này trước khi có thể đánh giá!" });
+            }
+
+            if (writtenReviews >= maxReviews) {
+                return Json(new { success = false, message = $"Bạn đã đánh giá hết số lượng đã mua ({maxReviews} lượt)!" });
+            }
+
+            var review = new BinhLuan {
+                MaHh = maHh,
+                MaKh = customerId,
+                Sao = sao,
+                NoiDung = noiDung,
+                Ngay = DateTime.Now
+            };
+
+            _context.BinhLuans.Add(review);
+            await _context.SaveChangesAsync();
+
+            var newWrittenReviews = writtenReviews + 1;
+            var remainingReviews = maxReviews - newWrittenReviews;
+
+            var khachHang = await _context.KhachHangs.FirstOrDefaultAsync(k => k.MaKh == customerId);
+
+            return Json(new {
+                success = true,
+                message = "Đăng đánh giá thành công!",
+                remainingReviews = remainingReviews,
+                newWrittenReviews = newWrittenReviews,
+                maxReviews = maxReviews,
+                review = new {
+                    tenKh = khachHang?.HoTen ?? "Người dùng",
+                    sao = sao,
+                    noiDung = noiDung,
+                    ngay = review.Ngay.ToString("dd/MM/yyyy HH:mm")
+                }
+            });
+        }
+
 
         // ================= KHU VỰC BẢO MẬT: CHỈ ADMIN MỚI ĐƯỢC VÀO =================
 
@@ -148,7 +295,7 @@ namespace LTWEB_QuaMonHai_CuoiKy.Controllers {
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> Edit(int id, [Bind("MaHh,TenHh,TenAlias,MaLoai,MoTaDonVi,DonGia,Hinh,NgaySx,GiamGia,SoLanXem,MoTa,MaNcc")] HangHoa hangHoa, IFormFile? fHinh) {
+        public async Task<IActionResult> Edit(int id, [Bind("MaHh,TenHh,TenAlias,MaLoai,MoTaDonVi,DonGia,Hinh,NgaySx,GiamGia,SoLanXem,MoTa,MaNcc,SoLuong")] HangHoa hangHoa, IFormFile? fHinh) {
             if (id != hangHoa.MaHh) {
                 return NotFound();
             }
