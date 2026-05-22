@@ -261,54 +261,149 @@ namespace LTWEB_QuaMonHai_CuoiKy.Controllers {
 
         [Authorize]
         [HttpGet]
-        public IActionResult ChangePassword() {
+        public IActionResult ChangePassword()
+        {
             return View();
         }
 
         [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult ChangePassword(ChangePasswordVM model) {
-            if (!ModelState.IsValid) {
+        public IActionResult ChangePassword(ChangePasswordVM model)
+        {
+            // ---- ĐOẠN KHẮC PHỤC LỖI RÀNG BUỘC PHƯƠNG THỨC ----
+            if (model.ChangeMethod == "EmailOTP")
+            {
+                // Nếu chọn OTP, gỡ bỏ các lỗi kiểm tra tự động liên quan đến Mật khẩu cũ
+                ModelState.Remove("OldPassword");
+            }
+            else if (model.ChangeMethod == "OldPassword")
+            {
+                // Nếu chọn Mật khẩu cũ, gỡ bỏ các lỗi kiểm tra tự động liên quan đến OTP
+                ModelState.Remove("VerificationCode");
+            }
+            // --------------------------------------------------
+
+            // Bây giờ hệ thống sẽ không còn bắt lỗi trống Mật khẩu cũ khi chọn xác thực qua Email nữa
+            if (!ModelState.IsValid)
+            {
                 return View(model);
             }
 
             var customerId = User.Claims.SingleOrDefault(c => c.Type == "CustomerID")?.Value;
-            if (string.IsNullOrEmpty(customerId)) {
+            if (string.IsNullOrEmpty(customerId))
+            {
                 return RedirectToAction("Login");
             }
 
             var khachHang = db.KhachHangs.SingleOrDefault(kh => kh.MaKh == customerId);
-            if (khachHang == null) {
+            if (khachHang == null)
+            {
                 return NotFound();
             }
 
-            // Kiểm tra mật khẩu hiện tại
-            var hashedOldPassword = model.OldPassword.ToMd5Hash(khachHang.RandomKey);
-            if (khachHang.MatKhau != hashedOldPassword) {
-                ModelState.AddModelError("OldPassword", "Mật khẩu hiện tại không chính xác.");
-                return View(model);
+            // LỰA CHỌN 1: XÁC THỰC BẰNG MẬT KHẨU CŨ
+            if (model.ChangeMethod == "OldPassword")
+            {
+                if (string.IsNullOrEmpty(model.OldPassword))
+                {
+                    ModelState.AddModelError("OldPassword", "Vui lòng nhập mật khẩu hiện tại.");
+                    return View(model);
+                }
+
+                var hashedOldPassword = model.OldPassword.ToMd5Hash(khachHang.RandomKey);
+                if (khachHang.MatKhau != hashedOldPassword)
+                {
+                    ModelState.AddModelError("OldPassword", "Mật khẩu hiện tại không chính xác.");
+                    return View(model);
+                }
+            }
+            // LỰA CHỌN 2: XÁC THỰC BẰNG MẠ OTP SANG GMAIL
+            else if (model.ChangeMethod == "EmailOTP")
+            {
+                var sessionCode = HttpContext.Session.GetString("ChangePassword_OTP");
+                var sessionUser = HttpContext.Session.GetString("ChangePassword_User");
+
+                if (string.IsNullOrEmpty(sessionCode) || sessionUser != customerId)
+                {
+                    ModelState.AddModelError(string.Empty, "Phiên làm việc gửi mã đã hết hạn hoặc không hợp lệ.");
+                    return View(model);
+                }
+
+                if (string.IsNullOrEmpty(model.VerificationCode) || model.VerificationCode != sessionCode)
+                {
+                    ModelState.AddModelError("VerificationCode", "Mã OTP xác thực không chính xác.");
+                    return View(model);
+                }
             }
 
-            // Kiểm tra xem mật khẩu mới có trùng với mật khẩu cũ không
-            if (model.OldPassword == model.NewPassword) {
-                ModelState.AddModelError("NewPassword", "Mật khẩu mới không được trùng với mật khẩu hiện tại.");
-                return View(model);
-            }
-
-            try {
-                // Mã hóa mật khẩu mới và lưu lại
+            try
+            {
+                khachHang.RandomKey = MyUtil.GenerateRandomKey();
                 khachHang.MatKhau = model.NewPassword.ToMd5Hash(khachHang.RandomKey);
 
                 db.Update(khachHang);
                 db.SaveChanges();
 
+                HttpContext.Session.Remove("ChangePassword_OTP");
+                HttpContext.Session.Remove("ChangePassword_User");
+
                 TempData["Success"] = "Đổi mật khẩu thành công!";
                 return RedirectToAction("Profile");
             }
-            catch (Exception ex) {
-                ModelState.AddModelError(string.Empty, "Có lỗi xảy ra trong quá trình đổi mật khẩu: " + ex.Message);
+            catch (Exception ex)
+            {
+                ModelState.AddModelError(string.Empty, "Có lỗi xảy ra: " + ex.Message);
                 return View(model);
+            }
+        }
+
+        // API Ajax: Gửi mã OTP dành riêng cho việc đổi mật khẩu công khai
+        [Authorize]
+        [HttpPost]
+        public async Task<IActionResult> SendChangePasswordOtp()
+        {
+            try
+            {
+                var customerId = User.Claims.SingleOrDefault(c => c.Type == "CustomerID")?.Value;
+                if (string.IsNullOrEmpty(customerId)) return Json(new { success = false, message = "Chưa đăng nhập!" });
+
+                var khachHang = db.KhachHangs.SingleOrDefault(kh => kh.MaKh == customerId);
+                if (khachHang == null || string.IsNullOrEmpty(khachHang.Email))
+                {
+                    return Json(new { success = false, message = "Không tìm thấy thông tin Email của tài khoản này!" });
+                }
+
+                // 1. Tạo OTP 6 số và lưu Session
+                string otpCode = new Random().Next(100000, 999999).ToString();
+                HttpContext.Session.SetString("ChangePassword_OTP", otpCode);
+                HttpContext.Session.SetString("ChangePassword_User", customerId);
+
+                // 2. Cấu hình gửi Mail qua MailKit (Sử dụng lại cấu hình chuẩn của bạn)
+                var message = new MimeKit.MimeMessage();
+                message.From.Add(new MimeKit.MailboxAddress("HShop", "trathanhclassic123@gmail.com"));
+                message.To.Add(new MimeKit.MailboxAddress(khachHang.HoTen, khachHang.Email));
+                message.Subject = "Mã xác thực đổi mật khẩu tài khoản";
+                message.Body = new MimeKit.TextPart("html")
+                {
+                    Text = $"<h3>Yêu cầu đổi mật khẩu cho tài khoản <b>{khachHang.MaKh}</b></h3>" +
+                           $"<p>Mã xác thực OTP của bạn là: <b style='color:red; font-size:1.3rem;'>{otpCode}</b></p>" +
+                           $"<p>Vui lòng không chia sẻ mã này cho bất kỳ ai.</p>"
+                };
+
+                using (var client = new MailKit.Net.Smtp.SmtpClient())
+                {
+                    await client.ConnectAsync("smtp.gmail.com", 587, MailKit.Security.SecureSocketOptions.StartTls);
+                    await client.AuthenticateAsync("trathanhclassic123@gmail.com", "sgpyhcoqqcpeziyj");
+                    await client.SendAsync(message);
+                    await client.DisconnectAsync(true);
+                }
+
+                return Json(new { success = true, message = "Mã xác thực đã được gửi đến email của bạn!" });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = "Lỗi hệ thống gửi mail: " + ex.Message });
             }
         }
 

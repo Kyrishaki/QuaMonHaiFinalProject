@@ -1,11 +1,18 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace LTWEB_QuaMonHai_CuoiKy.ViewModels {
-    public class ChangePasswordVM {
+namespace LTWEB_QuaMonHai_CuoiKy.ViewModels
+{
+    public class ChangePasswordVM
+    {
+        [Required]
+        public string ChangeMethod { get; set; } // "OldPassword" hoặc "EmailOTP"
+
         [Display(Name = "Mật khẩu hiện tại")]
-        [Required(ErrorMessage = "Vui lòng nhập mật khẩu hiện tại")]
         [DataType(DataType.Password)]
-        public string OldPassword { get; set; }
+        public string? OldPassword { get; set; } // Thêm dấu ? ở đây
+
+        [Display(Name = "Mã xác thực OTP")]
+        public string? VerificationCode { get; set; } // Thêm dấu ? ở đây
 
         [Display(Name = "Mật khẩu mới")]
         [Required(ErrorMessage = "Vui lòng nhập mật khẩu mới")]
