@@ -67,12 +67,16 @@ namespace LTWEB_QuaMonHai_CuoiKy.Controllers {
                     khachHang.VaiTro = 0;     // Phân quyền mặc định là Khách hàng (0: Khách, 1: Admin)
 
                     // 4. Xử lý upload ảnh đại diện (nếu có)
-                    if (Hinh != null && Hinh.Length > 0) {
+                    if (Hinh != null && Hinh.Length > 0)
+                    {
                         khachHang.Hinh = MyUtil.UploadHinh(Hinh, "KhachHang");
                     }
-                    else {
-                        // Gán một ảnh avatar mặc định nếu người dùng không tải ảnh lên
-                        khachHang.Hinh = "default-avatar.jpg";
+                    else
+                    {
+                        // Người dùng không cần chọn gì ở trang đăng ký, hệ thống tự động bốc ngẫu nhiên từ default1 đến default5
+                        Random rand = new Random();
+                        int randomNumber = rand.Next(1, 6);
+                        khachHang.Hinh = $"default{randomNumber}.svg";
                     }
 
                     // ==========================================
@@ -213,45 +217,51 @@ namespace LTWEB_QuaMonHai_CuoiKy.Controllers {
         }
 
         // POST: Xử lý khi người dùng bấm nút "Lưu thay đổi"
-        [Authorize]
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult Profile(KhachHang model, IFormFile? fHinh) {
-            // Đảm bảo chỉ được sửa tài khoản của chính mình
-            var customerId = User.Claims.SingleOrDefault(c => c.Type == "CustomerID")?.Value;
-            if (customerId != model.MaKh) {
-                return BadRequest("Lỗi quyền truy cập.");
-            }
+        [Authorize]
+        public IActionResult Profile(KhachHang model, IFormFile? fHinh, string? DefaultAvatar)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    // Tìm tài khoản gốc trong cơ sở dữ liệu để cập nhật
+                    var khachHang = db.KhachHangs.SingleOrDefault(kh => kh.MaKh == model.MaKh);
+                    if (khachHang != null)
+                    {
+                        // Cập nhật các thông tin cơ bản
+                        khachHang.HoTen = model.HoTen;
+                        khachHang.GioiTinh = model.GioiTinh;
+                        khachHang.NgaySinh = model.NgaySinh;
+                        khachHang.DienThoai = model.DienThoai;
+                        khachHang.Email = model.Email;
+                        khachHang.DiaChi = model.DiaChi;
 
-            var khachHang = db.KhachHangs.SingleOrDefault(kh => kh.MaKh == customerId);
-            if (khachHang == null) {
-                return NotFound();
-            }
+                        // XỬ LÝ ĐỔI AVATAR TẠI TRANG PROFILE:
+                        if (fHinh != null && fHinh.Length > 0)
+                        {
+                            // Cách 1: Nếu người dùng tải file ảnh mới từ máy tính lên
+                            khachHang.Hinh = MyUtil.UploadHinh(fHinh, "KhachHang");
+                        }
+                        else if (!string.IsNullOrEmpty(DefaultAvatar))
+                        {
+                            // Cách 2: Nếu người dùng click chọn 1 trong 5 ảnh default github trên giao diện profile
+                            khachHang.Hinh = DefaultAvatar;
+                        }
+                        // Nếu không chọn gì cả, giữ nguyên khachHang.Hinh cũ trong database
 
-            try {
-                // Cập nhật các thông tin được phép sửa
-                khachHang.HoTen = model.HoTen;
-                khachHang.Email = model.Email;
-                khachHang.DienThoai = model.DienThoai;
-                khachHang.DiaChi = model.DiaChi;
-                khachHang.NgaySinh = model.NgaySinh;
-                khachHang.GioiTinh = model.GioiTinh;
+                        db.Update(khachHang);
+                        db.SaveChanges();
 
-                // Xử lý upload ảnh đại diện (avatar) mới nếu có
-                if (fHinh != null && fHinh.Length > 0) {
-                    khachHang.Hinh = MyUtil.UploadHinh(fHinh, "KhachHang");
+                        TempData["Success"] = "Cập nhật thông tin hồ sơ thành công!";
+                        return RedirectToAction("Profile");
+                    }
                 }
-
-                db.Update(khachHang);
-                db.SaveChanges();
-
-                TempData["Success"] = "Cập nhật hồ sơ cá nhân thành công!";
-                return RedirectToAction("Profile");
+                catch (Exception ex)
+                {
+                    ModelState.AddModelError(string.Empty, "Lỗi khi lưu thông tin: " + ex.Message);
+                }
             }
-            catch (Exception ex) {
-                ModelState.AddModelError(string.Empty, "Có lỗi xảy ra: " + ex.Message);
-            }
-
             return View(model);
         }
 
