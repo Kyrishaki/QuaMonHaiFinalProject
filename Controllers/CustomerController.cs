@@ -73,7 +73,7 @@ namespace LTWEB_QuaMonHai_CuoiKy.Controllers {
                     }
                     else {
                         // Gán một ảnh avatar mặc định nếu người dùng không tải ảnh lên
-                        khachHang.Hinh = "default-avatar.jpg";
+                        khachHang.Hinh = $"[API]:{model.HoTen}";
                     }
 
                     // ==========================================

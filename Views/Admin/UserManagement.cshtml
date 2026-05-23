@@ -97,9 +97,27 @@
                                     <!-- Cột 1: Avatar + Tên đăng nhập -->
                                     <td class="ps-4">
                                         <div class="d-flex align-items-center gap-3">
-                                            <img src="@Url.Content("~/img/Hinh/khachHang/" + (string.IsNullOrEmpty(user.Hinh) ? "Photo.gif" : user.Hinh))" 
+                                            @{
+                                                var itemAvatarUrl = "";
+                                                if (user.Hinh != null && user.Hinh.StartsWith("[API]:"))
+                                                {
+                                                    string uName = user.Hinh.Replace("[API]:", "");
+                                                    itemAvatarUrl = $"/api/Avatar/generate?name={Uri.EscapeDataString(uName)}";
+                                                }
+                                                else if (!string.IsNullOrEmpty(user.Hinh) && user.Hinh != "default-avatar.jpg" && user.Hinh != "avatar.jpg" && user.Hinh != "Photo.gif" && user.Hinh != "man.gif")
+                                                {
+                                                    itemAvatarUrl = $"/img/Hinh/KhachHang/{user.Hinh}";
+                                                }
+                                                else
+                                                {
+                                                    itemAvatarUrl = $"/api/Avatar/generate?name={Uri.EscapeDataString(user.HoTen ?? "User")}";
+                                                }
+                                            }
+
+                                            <img src="@itemAvatarUrl"
                                                  alt="Avatar" class="rounded-circle img-thumbnail shadow-sm"
-                                                 style="width: 50px; height: 50px; object-fit: cover; border-color: @(user.VaiTro == 1 ? "#ffc107" : "#81c408");" />
+                                                 style="width: 50px; height: 50px; object-fit: cover; border-color: @(user.VaiTro == 1 ? "#ffc107" : "#81c408");"
+                                                 onerror="this.src='/api/Avatar/generate?name=@(Uri.EscapeDataString(user.HoTen ?? "User"))';" />
                                             <div>
                                                 <h6 class="fw-bold text-dark mb-0">@user.HoTen</h6>
                                                 <small class="text-muted font-monospace">@@@user.MaKh</small>

@@ -1,6 +1,22 @@
 @model LTWEB_QuaMonHai_CuoiKy.Models.KhachHang
 @{
-    ViewData["Title"] = "Hồ Sơ Cá Nhân";
+    string avatarUrl = "";
+    // 1. Nếu có tag nhận diện API từ Đăng ký
+    if (Model.Hinh != null && Model.Hinh.StartsWith("[API]:"))
+    {
+        string userName = Model.Hinh.Replace("[API]:", "");
+        avatarUrl = Url.Content($"~/api/Avatar/generate?name={Uri.EscapeDataString(userName)}");
+    }
+    // 2. Nếu có ảnh thật do họ tự upload lên (loại trừ các chuỗi default cũ)
+    else if (!string.IsNullOrEmpty(Model.Hinh) && Model.Hinh != "default-avatar.jpg" && Model.Hinh != "avatar.jpg")
+    {
+        avatarUrl = Url.Content("~/img/Hinh/KhachHang/" + Model.Hinh);
+    }
+    // 3. ÉP BUỘC: Nếu là ảnh mặc định hoặc trống, gọi API lấy họ tên sinh ảnh chữ luôn
+    else
+    {
+        avatarUrl = Url.Content($"~/api/Avatar/generate?name={Uri.EscapeDataString(Model.HoTen ?? "User")}");
+    }
 }
 
 <div class="container py-5 mt-5" style="max-width: 1200px;">

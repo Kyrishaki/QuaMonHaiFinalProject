@@ -10,10 +10,22 @@
     var currentAction = ViewContext.RouteData.Values["action"]?.ToString();
     var currentController = ViewContext.RouteData.Values["controller"]?.ToString();
 
-    var avatarUrl = "/img/avatar.jpg";
-    if (khachHang != null && !string.IsNullOrEmpty(khachHang.Hinh))
+    var avatarUrl = "";
+    // 1. Nếu có tag nhận diện API
+    if (khachHang != null && khachHang.Hinh != null && khachHang.Hinh.StartsWith("[API]:"))
+    {
+        string userName = khachHang.Hinh.Replace("[API]:", "");
+        avatarUrl = Url.Content($"~/api/Avatar/generate?name={Uri.EscapeDataString(userName)}");
+    }
+    // 2. Nếu có ảnh thật tự upload (loại trừ các chuỗi mặc định)
+    else if (khachHang != null && !string.IsNullOrEmpty(khachHang.Hinh) && khachHang.Hinh != "default-avatar.jpg" && khachHang.Hinh != "avatar.jpg")
     {
         avatarUrl = Url.Content("~/img/Hinh/KhachHang/" + khachHang.Hinh);
+    }
+    // 3. ÉP BUỘC: Quay về gọi API vẽ chữ
+    else
+    {
+        avatarUrl = Url.Content($"~/api/Avatar/generate?name={Uri.EscapeDataString(khachHang?.HoTen ?? "User")}");
     }
 }
 
@@ -23,8 +35,8 @@
         <div class="position-relative overflow-hidden rounded-circle border border-2 border-success shadow-sm sidebar-avatar-container" style="width: 60px; height: 60px; transition: all 0.3s ease;">
             <img src="@avatarUrl" 
                  alt="Avatar" 
-                 class="w-100 h-100 object-fit-cover" 
-                 onerror="this.src='/img/avatar.jpg';" 
+                 class="w-100 h-100 object-fit-cover"
+                 onerror="this.src='/api/Avatar/generate?name=@(Uri.EscapeDataString(khachHang?.HoTen ?? "User"))';"
                  style="object-fit: cover;" />
         </div>
         <div class="text-truncate">
