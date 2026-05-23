@@ -12,6 +12,8 @@
 
 # File môi trường và secrets (Rất quan trọng cho web app)
 appsettings.Development.json
+appsettings.Production.json
+appsettings.production.json
 *.env
 secrets.json
 

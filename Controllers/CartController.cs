@@ -583,7 +583,18 @@ namespace LTWEB_QuaMonHai_CuoiKy.Controllers {
                 return RedirectToAction("Check_Out");
             }
 
-            if (!int.TryParse(SoDienThoai, out var soDienThoai))
+            // Chuẩn hóa và làm sạch số điện thoại (bỏ khoảng trắng, dấu gạch ngang, dấu ngoặc, và quy đổi +84/84 về 0)
+            var cleanedPhone = SoDienThoai.Replace(" ", "").Replace("-", "").Replace("(", "").Replace(")", "");
+            if (cleanedPhone.StartsWith("+84"))
+            {
+                cleanedPhone = "0" + cleanedPhone.Substring(3);
+            }
+            else if (cleanedPhone.StartsWith("84"))
+            {
+                cleanedPhone = "0" + cleanedPhone.Substring(2);
+            }
+
+            if (!int.TryParse(cleanedPhone, out var soDienThoai))
             {
                 TempData["Error"] = "Số điện thoại không hợp lệ";
                 return RedirectToAction("Check_Out");
