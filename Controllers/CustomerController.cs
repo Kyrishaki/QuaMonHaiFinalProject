@@ -13,6 +13,10 @@ using System.Net.Mail;
 using System.Security.Claims;
 using Microsoft.EntityFrameworkCore;
 
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+
 
 namespace LTWEB_QuaMonHai_CuoiKy.Controllers {
     public class CustomerController : Controller {
@@ -217,20 +221,25 @@ namespace LTWEB_QuaMonHai_CuoiKy.Controllers {
         [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Profile(KhachHang model, IFormFile? fHinh) {
-            // Đảm bảo chỉ được sửa tài khoản của chính mình
+        public async Task<IActionResult> Profile(KhachHang model, IFormFile? fHinh)
+        {
+            // 1. Lấy MaKh từ Claims của người dùng đang đăng nhập
             var customerId = User.Claims.SingleOrDefault(c => c.Type == "CustomerID")?.Value;
-            if (customerId != model.MaKh) {
+            if (customerId != model.MaKh)
+            {
                 return BadRequest("Lỗi quyền truy cập.");
             }
 
+            // 2. Tìm đối tượng khách hàng trong cơ sở dữ liệu
             var khachHang = db.KhachHangs.SingleOrDefault(kh => kh.MaKh == customerId);
-            if (khachHang == null) {
+            if (khachHang == null)
+            {
                 return NotFound();
             }
 
-            try {
-                // Cập nhật các thông tin được phép sửa
+            try
+            {
+                // 3. Cập nhật các thông tin cơ bản
                 khachHang.HoTen = model.HoTen;
                 khachHang.Email = model.Email;
                 khachHang.DienThoai = model.DienThoai;
@@ -238,18 +247,50 @@ namespace LTWEB_QuaMonHai_CuoiKy.Controllers {
                 khachHang.NgaySinh = model.NgaySinh;
                 khachHang.GioiTinh = model.GioiTinh;
 
-                // Xử lý upload ảnh đại diện (avatar) mới nếu có
-                if (fHinh != null && fHinh.Length > 0) {
-                    khachHang.Hinh = MyUtil.UploadHinh(fHinh, "KhachHang");
+                // 4. XỬ LÝ LƯU ẢNH VÀO wwwroot/img/Hinh/KhachHang
+                if (fHinh != null && fHinh.Length > 0)
+                {
+                    // Sinh tên file ngẫu nhiên để tránh trùng (Ví dụ: a1b2c3d4...png)
+                    var extension = Path.GetExtension(fHinh.FileName);
+                    var uniqueFileName = Guid.NewGuid().ToString() + extension;
+
+                    // Đường dẫn tuyệt đối đến thư mục mong muốn của bạn
+                    var absolutePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "img", "Hinh", "KhachHang", uniqueFileName);
+
+                    // Tiến hành lưu file vật lý vào thư mục
+                    using (var stream = new FileStream(absolutePath, FileMode.Create))
+                    {
+                        await fHinh.CopyToAsync(stream);
+                    }
+
+                    // Gán tên file mới lưu vào thuộc tính Hinh để lưu xuống Database
+                    khachHang.Hinh = uniqueFileName;
                 }
 
                 db.Update(khachHang);
                 db.SaveChanges();
 
+                // 5. CẬP NHẬT LẠI COOKIE ĐĂNG NHẬP ĐỂ SIDEBAR NHẬN ẢNH MỚI NGAY
+                string userRole = khachHang.VaiTro == 1 ? "Admin" : "Customer";
+                var claims = new List<Claim>
+        {
+            new Claim(ClaimTypes.Email, khachHang.Email ?? ""),
+            new Claim(ClaimTypes.Name, khachHang.HoTen ?? ""),
+            new Claim("CustomerID", khachHang.MaKh),
+            new Claim(ClaimTypes.Role, userRole)
+        };
+                var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+                var claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
+
+                await HttpContext.SignInAsync(claimsPrincipal);
+
                 TempData["Success"] = "Cập nhật hồ sơ cá nhân thành công!";
+
+                // 6. Tải lại trang Profile để đồng bộ toàn bộ giao diện
                 return RedirectToAction("Profile");
             }
-            catch (Exception ex) {
+            catch (Exception ex)
+            {
                 ModelState.AddModelError(string.Empty, "Có lỗi xảy ra: " + ex.Message);
             }
 
