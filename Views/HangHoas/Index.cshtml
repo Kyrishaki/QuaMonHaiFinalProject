@@ -10,11 +10,11 @@
     <div class="d-flex justify-content-between align-items-center mb-4 border-bottom pb-3">
         <h2 class="m-0 text-dark"><i class="fa fa-shopping-bag me-2 text-primary"></i>Sản Phẩm Của Chúng Tôi</h2>
 
-        <!-- BẢO MẬT: CHỈ ADMIN MỚI THẤY NÚT THÊM MỚI -->
-        @if (User.IsInRole("Admin")) {
+        <!-- BẢO MẬT: CHỈ ADMIN & STAFF MỚI THẤY NÚT THÊM MỚI -->
+        @if (User.IsInRole("Admin") || User.IsInRole("Staff")) {
             <div>
                 <a asp-action="Create" class="btn btn-success rounded-pill px-4 shadow-sm">
-                    <i class="fa fa-plus me-1"></i> Thêm mới (Admin)
+                    <i class="fa fa-plus me-1"></i> Thêm mới
                 </a>
             </div>
         }
@@ -34,6 +34,14 @@
 
         <!-- DANH SÁCH SẢN PHẨM -->
         <div class="col-lg-9 col-md-8">
+            @if (User.IsInRole("Admin") || User.IsInRole("Staff")) {
+                <div class="mb-4 d-flex justify-content-end">
+                    <div class="form-check form-switch bg-white border rounded-pill px-4 py-2 shadow-sm d-flex align-items-center">
+                        <input class="form-check-input" type="checkbox" id="manageModeToggle" @(ViewBag.ManageMode == true ? "checked" : "") onchange="window.location.href = '@Url.Action("Index", "HangHoas")' + '?manage=' + this.checked" style="cursor: pointer;">
+                        <label class="form-check-label fw-bold text-primary ms-2 mb-0" for="manageModeToggle" style="cursor: pointer; font-size: 0.9rem;">Chế độ quản lý (Hiện SP ẩn / Hết hàng)</label>
+                    </div>
+                </div>
+            }
             <div class="row g-3">
                 @foreach (var item in Model) {
                     <div class="col-sm-6 col-lg-4">
@@ -51,13 +59,25 @@
                                 }
                             </button>
 
-                            <img src="@Url.Content("~/img/Hinh/HangHoa/" + (string.IsNullOrEmpty(item.Hinh) ? "no-image.jpg" : item.Hinh))"
-                                 class="card-img-top"
-                                 style="height: 220px; width: 100%; object-fit: cover; object-position: center;"
-                                 alt="@item.TenHh">
+                             <a asp-action="Details" asp-route-id="@item.MaHh" class="text-decoration-none">
+                                 <div class="position-relative overflow-hidden" style="height: 220px; @(!item.HieuLuc || item.SoLuong <= 0 ? "opacity: 0.68;" : "")">
+                                     <img src="@Url.Content("~/img/Hinh/HangHoa/" + (string.IsNullOrEmpty(item.Hinh) ? "no-image.jpg" : item.Hinh))"
+                                          class="card-img-top w-100 h-100"
+                                          style="object-fit: cover; object-position: center;"
+                                          alt="@item.TenHh">
+                                     @if (!item.HieuLuc) {
+                                         <span class="badge bg-danger text-white rounded-pill position-absolute top-50 start-50 translate-middle fw-bold py-2 px-3 shadow" style="font-size: 0.85rem; transform: translate(-50%, -50%) rotate(-12deg) !important; pointer-events: none; z-index: 100; border: 2px solid white;">Ngưng bán</span>
+                                     }
+                                     else if (item.SoLuong <= 0) {
+                                         <span class="badge bg-secondary text-white rounded-pill position-absolute top-50 start-50 translate-middle fw-bold py-2 px-3 shadow" style="font-size: 0.85rem; transform: translate(-50%, -50%) rotate(-12deg) !important; pointer-events: none; z-index: 100; border: 2px solid white; background-color: #6c757d !important;">Hết hàng</span>
+                                     }
+                                 </div>
+                             </a>
 
-                            <div class="card-body d-flex flex-column text-center p-3">
-                                <h6 class="card-title text-truncate mb-1" title="@item.TenHh">@item.TenHh</h6>
+                             <div class="card-body d-flex flex-column text-center p-3">
+                                 <a asp-action="Details" asp-route-id="@item.MaHh" class="text-decoration-none text-dark">
+                                     <h6 class="card-title text-truncate mb-1" title="@item.TenHh">@item.TenHh</h6>
+                                 </a>
                                 <p class="text-primary fw-bold fs-5 mb-3" style="color: #81c408 !important;">$@item.DonGia</p>
 
                                 <!-- BẢO MẬT: PHÂN QUYỀN HIỂN THỊ NÚT Ở TỪNG SẢN PHẨM -->
@@ -68,10 +88,19 @@
                                         <i class="fa fa-eye me-1"></i> Xem
                                     </a>
 
-                                    @if (User.IsInRole("Admin")) {
-                                        <!-- Nếu là Admin: Hiện nút Sửa và Xóa -->
+                                    @if (User.IsInRole("Admin") || User.IsInRole("Staff")) {
+                                        <!-- Nếu là Admin hoặc Staff: Hiện nút Sửa -->
                                         <a asp-action="Edit" asp-route-id="@item.MaHh" class="btn btn-sm btn-light border-end text-warning fw-bold">Sửa</a>
-                                        <a asp-action="Delete" asp-route-id="@item.MaHh" class="btn btn-sm btn-light text-danger fw-bold">Xóa</a>
+                                        @if (User.IsInRole("Admin")) {
+                                            @if (item.HieuLuc) {
+                                                <a asp-action="Delete" asp-route-id="@item.MaHh" class="btn btn-sm btn-light text-danger fw-bold">Xóa</a>
+                                            } else {
+                                                <form asp-action="Reactivate" asp-route-id="@item.MaHh" method="post" class="d-inline m-0 p-0 border-0" style="flex: 1 1 auto;">
+                                                    @Html.AntiForgeryToken()
+                                                    <button type="submit" class="btn btn-sm btn-light text-success fw-bold w-100 h-100 rounded-0" style="border: none;">Kích hoạt</button>
+                                                </form>
+                                            }
+                                        }
                                     }
                                     else {
                                         <!-- Nếu là Khách thường: Hiện nút Thêm vào giỏ hàng -->

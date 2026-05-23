@@ -114,10 +114,10 @@
                                                 }
                                             }
 
-                                            <img src="@itemAvatarUrl"
-                                                 alt="Avatar" class="rounded-circle img-thumbnail shadow-sm"
-                                                 style="width: 50px; height: 50px; object-fit: cover; border-color: @(user.VaiTro == 1 ? "#ffc107" : "#81c408");"
-                                                 onerror="this.src='/api/Avatar/generate?name=@(Uri.EscapeDataString(user.HoTen ?? "User"))';" />
+                                             <img src="@itemAvatarUrl"
+                                                  alt="Avatar" class="rounded-circle img-thumbnail shadow-sm"
+                                                  style="width: 50px; height: 50px; object-fit: cover; border-color: @(user.VaiTro == 1 ? "#dc3545" : (user.VaiTro == 2 ? "#ffc107" : "#198754"));"
+                                                  onerror="this.src='/api/Avatar/generate?name=@(Uri.EscapeDataString(user.HoTen ?? "User"))';" />
                                             <div>
                                                 <h6 class="fw-bold text-dark mb-0">@user.HoTen</h6>
                                                 <small class="text-muted font-monospace">@@@user.MaKh</small>
@@ -153,13 +153,19 @@
                                     <td>
                                         @if (user.VaiTro == 1)
                                         {
-                                            <span class="badge bg-warning-subtle text-warning border border-warning-subtle rounded-pill px-3 py-2 fw-bold" style="color: #856404 !important;">
-                                                <i class="fa fa-star me-1 text-warning"></i> Admin
+                                            <span class="badge bg-danger-subtle text-danger border border-danger rounded-pill px-3 py-2 fw-bold" style="color: #dc3545 !important;">
+                                                <i class="fa fa-star me-1 text-danger"></i> Admin
+                                            </span>
+                                        }
+                                        else if (user.VaiTro == 2)
+                                        {
+                                            <span class="badge bg-warning-subtle text-warning border border-warning rounded-pill px-3 py-2 fw-bold" style="color: #b27b00 !important;">
+                                                <i class="fa fa-user-shield me-1"></i> Nhân viên (Staff)
                                             </span>
                                         }
                                         else
                                         {
-                                            <span class="badge bg-info-subtle text-info border border-info-subtle rounded-pill px-3 py-2 fw-bold">
+                                            <span class="badge bg-success-subtle text-success border border-success-subtle rounded-pill px-3 py-2 fw-bold">
                                                 <i class="fa fa-user me-1"></i> Khách hàng
                                             </span>
                                         }
@@ -173,47 +179,41 @@
                                                 <i class="fa fa-user-shield me-1"></i> Tài khoản của bạn
                                             </span>
                                         }
-                                        else
+                                        else if (User.IsInRole("Admin"))
                                         {
-                                            <div class="d-flex justify-content-center gap-2">
+                                            <div class="d-flex justify-content-center align-items-center gap-2">
                                                 <!-- Form Khóa/Mở khóa -->
                                                 <form asp-action="ToggleHieuLuc" asp-route-id="@user.MaKh" method="post" 
-                                                      onsubmit="return confirm('Bạn có chắc chắn muốn @(user.HieuLuc ? "KHÓA" : "MỞ KHÓA") tài khoản @user.MaKh?');">
+                                                      onsubmit="return confirm('Bạn có chắc chắn muốn @(user.HieuLuc ? "KHÓA" : "MỞ KHÓA") tài khoản @user.MaKh?');" class="m-0">
                                                     @Html.AntiForgeryToken()
                                                     @if (user.HieuLuc)
                                                     {
-                                                        <button type="submit" class="btn btn-outline-danger btn-sm rounded-pill fw-bold px-3">
+                                                        <button type="submit" class="btn @(user.VaiTro == 1 ? "btn-outline-danger" : (user.VaiTro == 2 ? "btn-outline-warning" : "btn-outline-success")) btn-sm rounded-pill fw-bold px-3">
                                                             <i class="fa fa-lock me-1"></i> Khóa
                                                         </button>
                                                     }
                                                     else
                                                     {
-                                                        <button type="submit" class="btn btn-outline-success btn-sm rounded-pill fw-bold px-3">
+                                                        <button type="submit" class="btn @(user.VaiTro == 1 ? "btn-outline-danger" : (user.VaiTro == 2 ? "btn-outline-warning" : "btn-outline-success")) btn-sm rounded-pill fw-bold px-3">
                                                             <i class="fa fa-unlock me-1"></i> Mở khóa
                                                         </button>
                                                     }
                                                 </form>
 
                                                 <!-- Form Cấp/Thu hồi Quyền -->
-                                                <form asp-action="ChangeRole" asp-route-id="@user.MaKh" method="post" 
-                                                      onsubmit="return confirm('Bạn có chắc chắn muốn thay đổi vai trò của @user.MaKh?');">
+                                                <form asp-action="ChangeRole" asp-route-id="@user.MaKh" method="post" class="m-0">
                                                     @Html.AntiForgeryToken()
-                                                    @if (user.VaiTro == 1)
-                                                    {
-                                                        <input type="hidden" name="vaiTro" value="0" />
-                                                        <button type="submit" class="btn btn-outline-warning btn-sm rounded-pill fw-bold px-3 text-dark">
-                                                            <i class="fa fa-arrow-down me-1"></i> Hạ quyền
-                                                        </button>
-                                                    }
-                                                    else
-                                                    {
-                                                        <input type="hidden" name="vaiTro" value="1" />
-                                                        <button type="submit" class="btn btn-outline-primary btn-sm rounded-pill fw-bold px-3">
-                                                            <i class="fa fa-arrow-up me-1"></i> Lên Admin
-                                                        </button>
-                                                    }
+                                                    <select name="vaiTro" class="form-select form-select-sm rounded-pill @(user.VaiTro == 1 ? "border-danger text-danger fw-bold" : (user.VaiTro == 2 ? "border-warning text-warning fw-bold" : "border-success text-success fw-bold"))" style="width: auto;" onchange="if(confirm('Xác nhận thay đổi vai trò của @user.MaKh?')) { this.form.submit(); } else { location.reload(); }">
+                                                        <option value="0" class="text-success fw-bold" selected="@(user.VaiTro == 0 ? "selected" : null)">Khách hàng</option>
+                                                        <option value="2" class="text-warning fw-bold" selected="@(user.VaiTro == 2 ? "selected" : null)">Nhân viên (Staff)</option>
+                                                        <option value="1" class="text-danger fw-bold" selected="@(user.VaiTro == 1 ? "selected" : null)">Admin</option>
+                                                    </select>
                                                 </form>
                                             </div>
+                                        }
+                                        else
+                                        {
+                                            <span class="text-muted"><i class="fa fa-eye me-1"></i> Chỉ xem</span>
                                         }
                                     </td>
                                 </tr>

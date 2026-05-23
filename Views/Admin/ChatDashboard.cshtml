@@ -1,0 +1,425 @@
+@{
+    ViewData["Title"] = "Trung Tâm Hỗ Trợ Khách Hàng";
+}
+
+<div class="container-fluid py-5 mt-5 px-xl-5">
+    <div class="row g-4">
+        <!-- Main Chat Dashboard Card -->
+        <div class="col-12">
+            <div class="card shadow-lg border-0 rounded-4 overflow-hidden" 
+                 style="background: #ffffff; border: 1.5px solid rgba(129, 196, 8, 0.25) !important;">
+                
+                <!-- Dashboard Header -->
+                <div class="card-header d-flex justify-content-between align-items-center py-3 border-bottom" 
+                     style="background: #ffffff; border-color: rgba(129, 196, 8, 0.2) !important;">
+                    <h4 class="m-0 fw-bold d-flex align-items-center gap-2" style="font-family: 'Lora', serif; color: #81c408 !important;">
+                        <i class="fa fa-comments"></i> Hỗ Trợ Trực Tuyến QuaMonHai
+                    </h4>
+                    <span class="badge bg-success-subtle text-success px-3 py-2 rounded-pill fw-bold border border-success border-opacity-25" style="font-size: 0.85rem; background-color: #eef9e4 !important; color: #81c408 !important;">
+                        <span class="bg-success rounded-circle d-inline-block me-2 animate__animated animate__pulse animate__infinite" style="width: 8px; height: 8px; vertical-align: middle; background-color: #81c408 !important;"></span>Đang hoạt động
+                    </span>
+                </div>
+
+                <div class="card-body p-0">
+                    <div class="row g-0" style="height: 650px;">
+                        
+                        <!-- Left Panel: Active Chats List -->
+                        <div class="col-md-4 border-end d-flex flex-column" 
+                             style="border-color: rgba(129, 196, 8, 0.15) !important; background: #fdfefe;">
+                            
+                            <!-- Search/Filter Room -->
+                            <div class="p-3 border-bottom" style="border-color: rgba(129, 196, 8, 0.15) !important;">
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light border-0 text-muted" style="border-radius: 20px 0 0 20px; border: 1px solid rgba(129, 196, 8, 0.2) !important; border-end-color: transparent !important; border-right: none !important;">
+                                        <i class="fa fa-search text-success" style="font-size: 0.85rem; color: #81c408 !important;"></i>
+                                    </span>
+                                    <input type="text" id="room-search" class="form-control bg-light border-0 text-dark px-2 py-2" 
+                                           placeholder="Tìm kiếm khách hàng..." 
+                                           style="border-radius: 0 20px 20px 0; font-size: 0.85rem; border: 1px solid rgba(129, 196, 8, 0.2) !important; border-start-color: transparent !important; border-left: none !important; color: #333 !important;">
+                                </div>
+                            </div>
+
+                            <!-- Rooms Container -->
+                            <div id="rooms-list-container" class="flex-grow-1" style="overflow-y: auto;">
+                                <div class="text-center py-5 text-muted">
+                                    <div class="spinner-border spinner-border-sm text-success mb-2" role="status" style="color: #81c408 !important;"></div>
+                                    <p class="small mb-0">Đang tải danh sách phòng chat...</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Right Panel: Message Thread -->
+                        <div class="col-md-8 d-flex flex-column bg-light bg-opacity-30" id="chat-thread-container" style="background-color: #f8f9fa;">
+                            <!-- Placeholder when no room is selected -->
+                            <div id="chat-placeholder" class="m-auto text-center py-5 px-4" style="max-width: 450px;">
+                                <div class="mb-4 opacity-75">
+                                    <i class="fa-regular fa-comments" style="font-size: 5rem; color: #81c408;"></i>
+                                </div>
+                                <h5 class="text-dark fw-bold mb-2">Trung Tâm Tiếp Nhận Hỗ Trợ</h5>
+                                <p class="text-muted small">Hãy chọn một khách hàng hoặc khách vãng lai từ danh sách bên trái để bắt đầu nhắn tin hỗ trợ và giải đáp thắc mắc.</p>
+                            </div>
+
+                            <!-- Chat Section (Hidden by default) -->
+                            <div id="active-chat-section" class="d-none flex-column h-100">
+                                <!-- Chat Header -->
+                                <div class="px-4 py-3 border-bottom d-flex align-items-center justify-content-between" 
+                                     style="border-color: rgba(129, 196, 8, 0.15) !important; background: #ffffff;">
+                                    <div>
+                                        <h5 class="text-dark fw-bold m-0" id="active-user-name" style="color: #2c3e50 !important;">Khách Hàng</h5>
+                                        <small class="text-muted" style="font-size: 0.75rem;">Phòng chat: <span class="font-monospace text-success fw-bold" id="active-room-id" style="color: #81c408 !important;">Guest_ID</span></small>
+                                    </div>
+                                    <span class="badge fw-bold rounded-pill px-3 py-2" id="active-user-badge" style="font-size: 0.8rem;">Khách vãng lai</span>
+                                </div>
+
+                                <!-- Messages Window -->
+                                <div id="admin-chat-messages" class="p-4 d-flex flex-column gap-3 flex-grow-1" style="overflow-y: auto; height: 100px; background-color: #f8f9fa;">
+                                    <!-- Messages load here -->
+                                </div>
+
+                                <!-- Input Box -->
+                                <div class="p-3 border-top" style="border-color: rgba(129, 196, 8, 0.15) !important; background: #ffffff;">
+                                    <form id="admin-send-form" class="d-flex gap-3">
+                                        <textarea id="admin-chat-input" class="form-control border-0 text-dark bg-light px-4 py-3" 
+                                                  rows="2" placeholder="Nhập câu trả lời hỗ trợ... (Nhấn Enter để gửi)" 
+                                                  style="border-radius: 12px; font-size: 0.9rem; resize: none; border: 1px solid rgba(129, 196, 8, 0.25) !important; color: #333;"></textarea>
+                                        <button type="submit" class="btn px-4 d-flex align-items-center justify-content-center fw-bold text-white shadow-sm" 
+                                                style="border-radius: 12px; background: linear-gradient(135deg, #81c408 0%, #68a006 100%); border: none; min-width: 100px;">
+                                            Gửi <i class="fa fa-paper-plane ms-2" style="font-size: 0.85rem;"></i>
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    /* Styling scrollbars for modern look */
+    #rooms-list-container::-webkit-scrollbar,
+    #admin-chat-messages::-webkit-scrollbar {
+        width: 6px;
+    }
+    #rooms-list-container::-webkit-scrollbar-track,
+    #admin-chat-messages::-webkit-scrollbar-track {
+        background: rgba(0, 0, 0, 0.03);
+    }
+    #rooms-list-container::-webkit-scrollbar-thumb,
+    #admin-chat-messages::-webkit-scrollbar-thumb {
+        background: rgba(129, 196, 8, 0.25);
+        border-radius: 10px;
+    }
+    #rooms-list-container::-webkit-scrollbar-thumb:hover,
+    #admin-chat-messages::-webkit-scrollbar-thumb:hover {
+        background: rgba(129, 196, 8, 0.45);
+    }
+
+    .room-item {
+        cursor: pointer;
+        border-bottom: 1px solid rgba(0,0,0,0.03);
+        transition: background-color 0.25s ease, border-left-color 0.25s ease;
+        border-left: 4px solid transparent;
+        background-color: #ffffff;
+    }
+    .room-item:hover {
+        background-color: rgba(129, 196, 8, 0.05);
+    }
+    .room-item.active {
+        background-color: rgba(129, 196, 8, 0.1);
+        border-left-color: #81c408;
+    }
+
+    /* Staff messages (Right side) - Styled in project Orange theme */
+    .admin-bubble {
+        background: linear-gradient(135deg, #ffb229 0%, #ff9800 100%);
+        color: #ffffff;
+        border: none;
+        border-radius: 16px 16px 0 16px;
+        font-size: 0.92rem;
+        word-break: break-word;
+        box-shadow: 0 3px 8px rgba(255, 152, 0, 0.15);
+    }
+
+    /* Customer messages (Left side) - Styled in project Green theme */
+    .customer-bubble {
+        background-color: #eef9e4;
+        color: #3b5e02;
+        border: 1.5px solid rgba(129, 196, 8, 0.25);
+        border-radius: 16px 16px 16px 0;
+        font-size: 0.92rem;
+        word-break: break-word;
+        box-shadow: 0 3px 8px rgba(129, 196, 8, 0.08);
+    }
+</style>
+
+@section Scripts {
+<script>
+    $(document).ready(function () {
+        let currentRoomId = null;
+        let currentCustomerName = "";
+        let roomsPolling = null;
+        let messagesPolling = null;
+        let roomsData = [];
+
+        // Load rooms initially
+        loadRooms();
+        roomsPolling = setInterval(loadRooms, 3000);
+
+        // Search filter
+        $('#room-search').on('input', function () {
+            renderRooms();
+        });
+
+        // Click room item
+        $(document).on('click', '.room-item', function () {
+            const roomId = $(this).data('room-id');
+            const customerName = $(this).data('customer-name');
+            selectRoom(roomId, customerName);
+        });
+
+        // Submit form reply
+        $('#admin-send-form').submit(function (e) {
+            e.preventDefault();
+            sendReply();
+        });
+
+        // Submit on Enter key in textarea
+        $('#admin-chat-input').keypress(function (e) {
+            if (e.which === 13 && !e.shiftKey) {
+                e.preventDefault();
+                sendReply();
+            }
+        });
+
+        function loadRooms() {
+            $.ajax({
+                url: '/Admin/GetActiveRooms',
+                type: 'GET',
+                success: function (data) {
+                    roomsData = data;
+                    renderRooms();
+                },
+                error: function (err) {
+                    console.error("Lỗi tải danh sách phòng chat", err);
+                }
+            });
+        }
+
+        function renderRooms() {
+            const filter = $('#room-search').val().toLowerCase().trim();
+            const container = $('#rooms-list-container');
+            container.empty();
+
+            const filteredData = roomsData.filter(room => 
+                room.customerName.toLowerCase().includes(filter) || 
+                room.roomId.toLowerCase().includes(filter)
+            );
+
+            if (filteredData.length === 0) {
+                container.html(`
+                    <div class="text-center py-5 text-muted small">
+                        <i class="fa fa-folder-open fs-2 mb-2 d-block opacity-50"></i>
+                        Không có cuộc hội thoại nào
+                    </div>
+                `);
+                return;
+            }
+
+            filteredData.forEach(room => {
+                const isActive = room.roomId === currentRoomId ? 'active' : '';
+                const unreadBadge = room.unreadCount > 0 
+                    ? `<span class="badge bg-danger rounded-pill px-2 py-1 animate__animated animate__pulse animate__infinite" style="font-size: 0.7rem; background-color: #ff5722 !important;">${room.unreadCount} tin mới</span>` 
+                    : '';
+                const isGuest = room.roomId.startsWith("Guest_");
+                const roleBadge = isGuest 
+                    ? `<span class="badge bg-warning-subtle text-warning px-1.5 py-0.5 rounded" style="font-size: 0.65rem; background-color: #fff3cd !important; color: #ffb229 !important;">Khách</span>` 
+                    : `<span class="badge bg-success-subtle text-success px-1.5 py-0.5 rounded" style="font-size: 0.65rem; background-color: #eef9e4 !important; color: #81c408 !important;">Thành viên</span>`;
+
+                container.append(`
+                    <div class="room-item p-3 d-flex align-items-center justify-content-between ${isActive}" 
+                         data-room-id="${room.roomId}" data-customer-name="${escapeHtml(room.customerName)}">
+                        <div class="d-flex align-items-center gap-3 overflow-hidden me-2">
+                            <!-- Avatar Circle (Green to Orange Gradient) -->
+                            <div class="rounded-circle d-flex align-items-center justify-content-center text-white fw-bold shadow-sm" 
+                                 style="width: 44px; height: 44px; background: linear-gradient(135deg, #81c408 0%, #ffb229 100%); font-size: 1.1rem; flex-shrink: 0;">
+                                ${escapeHtml(room.customerName.charAt(0).toUpperCase())}
+                            </div>
+                            <div class="overflow-hidden">
+                                <h6 class="text-dark fw-bold mb-1 text-truncate" style="font-size: 0.9rem; color: #2c3e50 !important;">
+                                    ${escapeHtml(room.customerName)} ${roleBadge}
+                                </h6>
+                                <p class="text-muted small mb-0 text-truncate" style="font-size: 0.8rem;">
+                                    ${escapeHtml(room.lastMessage)}
+                                </p>
+                            </div>
+                        </div>
+                        <div class="text-end flex-shrink-0" style="min-width: 70px;">
+                            <span class="text-muted d-block small mb-1" style="font-size: 0.65rem;">${room.timestamp}</span>
+                            ${unreadBadge}
+                        </div>
+                    </div>
+                `);
+            });
+        }
+
+        function selectRoom(roomId, customerName) {
+            currentRoomId = roomId;
+            currentCustomerName = customerName;
+
+            // Highlight room in list
+            $('.room-item').removeClass('active');
+            $(`.room-item[data-room-id="${roomId}"]`).addClass('active');
+
+            // Render chat view details
+            $('#chat-placeholder').addClass('d-none');
+            $('#active-chat-section').removeClass('d-none').addClass('d-flex');
+
+            $('#active-user-name').text(customerName);
+            $('#active-room-id').text(roomId);
+
+            const isGuest = roomId.startsWith("Guest_");
+            const badge = $('#active-user-badge');
+            if (isGuest) {
+                badge.text("Khách vãng lai").removeClass("bg-success").addClass("bg-warning text-dark").css({ "background-color": "#ffb229", "color": "#111" });
+            } else {
+                badge.text("Thành viên đã đăng ký").removeClass("bg-warning text-dark").addClass("bg-success text-white").css({ "background-color": "#81c408", "color": "#fff" });
+            }
+
+            // Clean messages body and load
+            const messagesBody = $('#admin-chat-messages');
+            messagesBody.html(`
+                <div class="text-center py-5 text-muted">
+                    <div class="spinner-border spinner-border-sm text-success" role="status" style="color: #81c408 !important;"></div>
+                </div>
+            `);
+
+            loadMessages();
+
+            // Set polling interval for messages
+            if (messagesPolling) clearInterval(messagesPolling);
+            messagesPolling = setInterval(loadMessages, 3000);
+
+            // Focus input
+            setTimeout(() => {
+                $('#admin-chat-input').focus();
+            }, 100);
+        }
+
+        function loadMessages() {
+            if (!currentRoomId) return;
+
+            $.ajax({
+                url: '/Admin/GetRoomMessages',
+                type: 'GET',
+                data: { roomId: currentRoomId },
+                success: function (messages) {
+                    const messagesBody = $('#admin-chat-messages');
+                    const isAtBottom = messagesBody[0].scrollHeight - messagesBody[0].clientHeight <= messagesBody.scrollTop() + 50;
+
+                    messagesBody.empty();
+
+                    if (messages.length === 0) {
+                        messagesBody.html(`
+                            <div class="text-center py-5 text-muted small">
+                                Chưa có tin nhắn nào trong phòng này
+                            </div>
+                        `);
+                        return;
+                    }
+
+                    messages.forEach(msg => {
+                        appendMessageHtml(msg.senderName, msg.message, msg.timestamp, msg.isFromCustomer);
+                    });
+
+                    if (isAtBottom) {
+                        scrollToBottom();
+                    }
+                },
+                error: function (err) {
+                    console.error("Lỗi tải tin nhắn chi tiết", err);
+                }
+            });
+        }
+
+        function sendReply() {
+            const text = $('#admin-chat-input').val().trim();
+            if (!text || !currentRoomId) return;
+
+            $('#admin-chat-input').val("");
+
+            // Append locally immediately for smooth UI
+            appendMessageHtml("Bạn", text, new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }), false);
+            scrollToBottom();
+
+            $.ajax({
+                url: '/Admin/ReplyMessage',
+                type: 'POST',
+                data: { roomId: currentRoomId, message: text },
+                success: function (res) {
+                    if (res.success) {
+                        loadMessages();
+                        loadRooms();
+                    } else {
+                        console.error(res.error);
+                    }
+                },
+                error: function (err) {
+                    console.error("Lỗi gửi phản hồi", err);
+                }
+            });
+        }
+
+        function appendMessageHtml(senderName, message, timestamp, isFromCustomer) {
+            const messagesBody = $('#admin-chat-messages');
+            const container = document.createElement("div");
+            container.style.maxWidth = "75%";
+
+            if (isFromCustomer) {
+                container.style.marginRight = "auto";
+                container.className = "d-flex flex-column gap-1";
+                container.innerHTML = `
+                    <div class="customer-bubble p-2 px-3 rounded-4 shadow-sm">
+                        ${escapeHtml(message)}
+                    </div>
+                    <small class="text-muted d-block ms-1" style="font-size: 0.65rem; color: #777 !important;">
+                        ${escapeHtml(senderName)} • ${timestamp}
+                    </small>
+                `;
+            } else {
+                container.style.marginLeft = "auto";
+                container.className = "d-flex flex-column gap-1 text-end";
+                container.innerHTML = `
+                    <div class="admin-bubble p-2 px-3 rounded-4 shadow-sm text-start">
+                        ${escapeHtml(message)}
+                    </div>
+                    <small class="text-muted d-block me-1" style="font-size: 0.65rem; color: #777 !important;">
+                        ${timestamp}
+                    </small>
+                `;
+            }
+
+            messagesBody.append(container);
+        }
+
+        function scrollToBottom() {
+            const body = $('#admin-chat-messages');
+            body.scrollTop(body[0].scrollHeight);
+        }
+
+        function escapeHtml(text) {
+            if (!text) return "";
+            return text
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+        }
+    });
+</script>
+}

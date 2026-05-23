@@ -7,7 +7,7 @@ using System.Security.Claims;
 
 namespace LTWEB_QuaMonHai_CuoiKy.Controllers
 {
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin,Staff")]
     public class AdminController : Controller
     {
         private readonly Hshop2023Context _context;
@@ -43,6 +43,7 @@ namespace LTWEB_QuaMonHai_CuoiKy.Controllers
         // POST: Admin/ToggleHieuLuc
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> ToggleHieuLuc(string id)
         {
             var khachHang = await _context.KhachHangs.FirstOrDefaultAsync(kh => kh.MaKh == id);
@@ -70,6 +71,7 @@ namespace LTWEB_QuaMonHai_CuoiKy.Controllers
         // POST: Admin/ChangeRole
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> ChangeRole(string id, int vaiTro)
         {
             var khachHang = await _context.KhachHangs.FirstOrDefaultAsync(kh => kh.MaKh == id);
@@ -90,7 +92,36 @@ namespace LTWEB_QuaMonHai_CuoiKy.Controllers
             _context.Update(khachHang);
             await _context.SaveChangesAsync();
 
-            TempData["Success"] = $"Đã cập nhật phân quyền tài khoản {id} thành {(vaiTro == 1 ? "Admin" : "Khách hàng")}!";
+            string roleName = vaiTro == 1 ? "Admin" : (vaiTro == 2 ? "Nhân viên (Staff)" : "Khách hàng");
+            TempData["Success"] = $"Đã cập nhật phân quyền tài khoản {id} thành {roleName}!";
+            return RedirectToAction(nameof(UserManagement));
+        }
+
+        // POST: Admin/DeleteUser
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> DeleteUser(string id)
+        {
+            var khachHang = await _context.KhachHangs.FirstOrDefaultAsync(kh => kh.MaKh == id);
+            if (khachHang == null)
+            {
+                return NotFound();
+            }
+
+            // Lấy ID Admin đang đăng nhập hiện tại
+            var currentUserId = User.Claims.FirstOrDefault(c => c.Type == "CustomerID")?.Value;
+            if (id == currentUserId)
+            {
+                TempData["Error"] = "Bạn không thể tự xóa tài khoản của chính mình!";
+                return RedirectToAction(nameof(UserManagement));
+            }
+
+            khachHang.HieuLuc = false;
+            _context.Update(khachHang);
+            await _context.SaveChangesAsync();
+
+            TempData["Success"] = $"Đã tắt (xóa mềm) tài khoản {id} thành công!";
             return RedirectToAction(nameof(UserManagement));
         }
 
@@ -189,6 +220,151 @@ namespace LTWEB_QuaMonHai_CuoiKy.Controllers
 
             TempData["Success"] = "Đã xóa đánh giá thành công!";
             return RedirectToAction(nameof(ReviewManagement));
+        }
+
+        // GET: Admin/ChatDashboard
+        [HttpGet]
+        public IActionResult ChatDashboard()
+        {
+            return View();
+        }
+
+        // GET: Admin/GetActiveRooms
+        [HttpGet]
+        public async Task<IActionResult> GetActiveRooms()
+        {
+            var rooms = await _context.ChatMessages
+                .GroupBy(m => m.ChatRoomId)
+                .Select(g => new {
+                    RoomId = g.Key,
+                    LastMessageTime = g.Max(m => m.Timestamp)
+                })
+                .OrderByDescending(r => r.LastMessageTime)
+                .ToListAsync();
+
+            var resultList = new List<object>();
+            foreach (var r in rooms)
+            {
+                var messages = _context.ChatMessages.Where(m => m.ChatRoomId == r.RoomId);
+                var lastMsg = await messages.OrderByDescending(m => m.Timestamp).FirstOrDefaultAsync();
+                var customerName = await messages.Where(m => m.IsFromCustomer).Select(m => m.SenderName).FirstOrDefaultAsync() 
+                                   ?? lastMsg?.SenderName 
+                                   ?? "Khách hàng";
+                int unreadCount = await messages.CountAsync(m => m.IsFromCustomer && !m.IsRead);
+                
+                resultList.Add(new {
+                    roomId = r.RoomId,
+                    customerName = customerName,
+                    lastMessage = lastMsg?.Message ?? "",
+                    timestamp = lastMsg?.Timestamp.ToString("dd/MM HH:mm") ?? "",
+                    unreadCount = unreadCount
+                });
+            }
+            return Json(resultList);
+        }
+
+        // GET: Admin/GetRoomMessages
+        [HttpGet]
+        public async Task<IActionResult> GetRoomMessages(string roomId)
+        {
+            if (string.IsNullOrEmpty(roomId))
+            {
+                return Json(new List<object>());
+            }
+
+            // Đánh dấu tất cả tin nhắn khách gửi trong phòng này là đã đọc vì admin đã mở xem
+            var unreadCustomerMsgs = await _context.ChatMessages
+                .Where(m => m.ChatRoomId == roomId && m.IsFromCustomer && !m.IsRead)
+                .ToListAsync();
+
+            if (unreadCustomerMsgs.Any())
+            {
+                foreach (var msg in unreadCustomerMsgs)
+                {
+                    msg.IsRead = true;
+                }
+                await _context.SaveChangesAsync();
+            }
+
+            var messages = await _context.ChatMessages
+                .Where(m => m.ChatRoomId == roomId)
+                .OrderBy(m => m.Timestamp)
+                .Select(m => new
+                {
+                    id = m.Id,
+                    senderName = m.SenderName,
+                    message = m.Message,
+                    timestamp = m.Timestamp.ToString("HH:mm"),
+                    isFromCustomer = m.IsFromCustomer,
+                    isRead = m.IsRead
+                })
+                .ToListAsync();
+
+            return Json(messages);
+        }
+
+        // POST: Admin/ReplyMessage
+        [HttpPost]
+        public async Task<IActionResult> ReplyMessage(string roomId, string message)
+        {
+            if (string.IsNullOrEmpty(roomId) || string.IsNullOrWhiteSpace(message))
+            {
+                return Json(new { success = false, error = "Dữ liệu không hợp lệ" });
+            }
+
+            var currentUserId = User.Claims.FirstOrDefault(c => c.Type == "CustomerID")?.Value ?? "Admin";
+            var staff = await _context.KhachHangs.FirstOrDefaultAsync(kh => kh.MaKh == currentUserId);
+            string senderName = staff != null ? staff.HoTen : (User.Identity?.Name ?? "Quản trị viên");
+
+            var chatMsg = new ChatMessage
+            {
+                ChatRoomId = roomId,
+                SenderId = currentUserId,
+                SenderName = senderName,
+                Message = message.Trim(),
+                Timestamp = DateTime.Now,
+                IsFromCustomer = false,
+                IsRead = false
+            };
+
+            _context.ChatMessages.Add(chatMsg);
+            await _context.SaveChangesAsync();
+
+            return Json(new { success = true });
+        }
+
+        // POST: Admin/MarkAsRead
+        [HttpPost]
+        public async Task<IActionResult> MarkAsRead(string roomId)
+        {
+            if (string.IsNullOrEmpty(roomId))
+            {
+                return Json(new { success = false });
+            }
+
+            var unread = await _context.ChatMessages
+                .Where(m => m.ChatRoomId == roomId && m.IsFromCustomer && !m.IsRead)
+                .ToListAsync();
+
+            if (unread.Any())
+            {
+                foreach (var msg in unread)
+                {
+                    msg.IsRead = true;
+                }
+                await _context.SaveChangesAsync();
+            }
+
+            return Json(new { success = true });
+        }
+
+        // GET: Admin/GetTotalUnreadCount
+        [HttpGet]
+        public async Task<IActionResult> GetTotalUnreadCount()
+        {
+            int count = await _context.ChatMessages
+                .CountAsync(m => m.IsFromCustomer && !m.IsRead);
+            return Json(new { count = count });
         }
     }
 }

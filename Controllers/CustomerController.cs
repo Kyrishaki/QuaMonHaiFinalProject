@@ -73,7 +73,8 @@ namespace LTWEB_QuaMonHai_CuoiKy.Controllers {
 
                     // 4. Xử lý upload ảnh đại diện (nếu có)
                     if (Hinh != null && Hinh.Length > 0) {
-                        khachHang.Hinh = MyUtil.UploadHinh(Hinh, "KhachHang");
+                        var uploadedFile = MyUtil.UploadAvatar(Hinh, "KhachHang");
+                        khachHang.Hinh = !string.IsNullOrEmpty(uploadedFile) ? uploadedFile : $"[API]:{model.HoTen}";
                     }
                     else {
                         // Gán một ảnh avatar mặc định nếu người dùng không tải ảnh lên
@@ -151,7 +152,7 @@ namespace LTWEB_QuaMonHai_CuoiKy.Controllers {
                         }
                         else {
                             // TẠO SESSION ADMIN VÀ USER DỰA TRÊN DATABASE
-                            string userRole = khachHang.VaiTro == 1 ? "Admin" : "Customer";
+                            string userRole = khachHang.VaiTro == 1 ? "Admin" : (khachHang.VaiTro == 2 ? "Staff" : "Customer");
 
                             // Ghi nhận
                             var claims = new List<Claim>
@@ -247,31 +248,21 @@ namespace LTWEB_QuaMonHai_CuoiKy.Controllers {
                 khachHang.NgaySinh = model.NgaySinh;
                 khachHang.GioiTinh = model.GioiTinh;
 
-                // 4. XỬ LÝ LƯU ẢNH VÀO wwwroot/img/Hinh/KhachHang
+                // 4. XỬ LÝ LƯU VÀ TỐI ƯU ẢNH VÀO wwwroot/img/Hinh/KhachHang
                 if (fHinh != null && fHinh.Length > 0)
                 {
-                    // Sinh tên file ngẫu nhiên để tránh trùng (Ví dụ: a1b2c3d4...png)
-                    var extension = Path.GetExtension(fHinh.FileName);
-                    var uniqueFileName = Guid.NewGuid().ToString() + extension;
-
-                    // Đường dẫn tuyệt đối đến thư mục mong muốn của bạn
-                    var absolutePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "img", "Hinh", "KhachHang", uniqueFileName);
-
-                    // Tiến hành lưu file vật lý vào thư mục
-                    using (var stream = new FileStream(absolutePath, FileMode.Create))
+                    var uniqueFileName = MyUtil.UploadAvatar(fHinh, "KhachHang");
+                    if (!string.IsNullOrEmpty(uniqueFileName))
                     {
-                        await fHinh.CopyToAsync(stream);
+                        khachHang.Hinh = uniqueFileName;
                     }
-
-                    // Gán tên file mới lưu vào thuộc tính Hinh để lưu xuống Database
-                    khachHang.Hinh = uniqueFileName;
                 }
 
                 db.Update(khachHang);
                 db.SaveChanges();
 
                 // 5. CẬP NHẬT LẠI COOKIE ĐĂNG NHẬP ĐỂ SIDEBAR NHẬN ẢNH MỚI NGAY
-                string userRole = khachHang.VaiTro == 1 ? "Admin" : "Customer";
+                string userRole = khachHang.VaiTro == 1 ? "Admin" : (khachHang.VaiTro == 2 ? "Staff" : "Customer");
                 var claims = new List<Claim>
         {
             new Claim(ClaimTypes.Email, khachHang.Email ?? ""),

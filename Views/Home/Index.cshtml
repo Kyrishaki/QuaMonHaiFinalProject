@@ -34,13 +34,17 @@
                                 }
                             </button>
 
-                            <img src="@Url.Content("~/img/Hinh/HangHoa/" + (string.IsNullOrEmpty(item.Hinh) ? "no-image.jpg" : item.Hinh))"
-                                 class="card-img-top"
-                                 style="height: 220px; width: 100%; object-fit: cover; object-position: center;"
-                                 alt="@item.TenHh">
+                            <a asp-action="Details" asp-controller="HangHoas" asp-route-id="@item.MaHh" class="text-decoration-none">
+                                <img src="@Url.Content("~/img/Hinh/HangHoa/" + (string.IsNullOrEmpty(item.Hinh) ? "no-image.jpg" : item.Hinh))"
+                                     class="card-img-top"
+                                     style="height: 220px; width: 100%; object-fit: cover; object-position: center;"
+                                     alt="@item.TenHh">
+                            </a>
 
                             <div class="card-body d-flex flex-column text-center p-3">
-                                <h6 class="card-title text-truncate mb-1" title="@item.TenHh">@item.TenHh</h6>
+                                <a asp-action="Details" asp-controller="HangHoas" asp-route-id="@item.MaHh" class="text-decoration-none text-dark">
+                                    <h6 class="card-title text-truncate mb-1" title="@item.TenHh">@item.TenHh</h6>
+                                </a>
                                 <p class="text-primary fw-bold fs-5 mb-3" style="color: #81c408 !important;">$@item.DonGia</p>
 
                                 <div class="btn-group mt-auto w-100 shadow-sm rounded-pill overflow-hidden">

@@ -41,6 +41,9 @@ namespace LTWEB_QuaMonHai_CuoiKy.Controllers {
                                 .AsNoTracking()
                                 .AsQueryable();
 
+            // Ẩn hoàn toàn sản phẩm ngưng bán hoặc hết hàng đối với mọi người dùng ở Trang chủ
+            query = query.Where(h => h.HieuLuc && h.SoLuong > 0);
+
             // 1. Xử lý Lọc theo Danh mục (Sidebar)
             if (loaiId.HasValue) {
                 query = query.Where(h => h.MaLoai == loaiId.Value);
@@ -96,11 +99,24 @@ namespace LTWEB_QuaMonHai_CuoiKy.Controllers {
         public IActionResult Error() {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
-        public IActionResult VeChungToi() {
+        public IActionResult AboutUs() {
             // Đặt tiêu đề cho Breadcrumb động nhận diện
-            ViewData["Title"] = "Về chúng tôi";
+            ViewData["Title"] = "About Us";
             ViewData["Breadcrumb_Parent"] = "Trang thông tin";
             ViewData["Breadcrumb_ParentLink"] = "#";
+            return View();
+        }
+
+        public IActionResult Blog() {
+            ViewData["Title"] = "Bài viết & Hướng dẫn";
+            ViewData["Breadcrumb_Parent"] = "Trang thông tin";
+            ViewData["Breadcrumb_ParentLink"] = "#";
+            return View();
+        }
+
+        [Route("/AccessDenied")]
+        public IActionResult AccessDenied() {
+            ViewData["Title"] = "Truy cập bị từ chối";
             return View();
         }
     }

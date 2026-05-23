@@ -60,9 +60,38 @@ using (var scope = app.Services.CreateScope()) {
                 );
             END
         ");
+
+        // Tự động thêm cột HieuLuc vào bảng HangHoa nếu chưa có
+        context.Database.ExecuteSqlRaw(@"
+            IF NOT EXISTS (
+                SELECT * FROM sys.columns 
+                WHERE object_id = OBJECT_ID('HangHoa') AND name = 'HieuLuc'
+            )
+            BEGIN
+                ALTER TABLE HangHoa ADD HieuLuc BIT NOT NULL DEFAULT 1;
+            END
+        ");
+
+        // Tự động tạo bảng ChatMessage nếu chưa có
+        context.Database.ExecuteSqlRaw(@"
+            IF OBJECT_ID('ChatMessage', 'U') IS NULL
+            BEGIN
+                CREATE TABLE [dbo].[ChatMessage] (
+                    [Id] INT IDENTITY(1,1) NOT NULL,
+                    [ChatRoomId] NVARCHAR(50) NOT NULL,
+                    [SenderId] NVARCHAR(50) NOT NULL,
+                    [SenderName] NVARCHAR(100) NOT NULL,
+                    [Message] NVARCHAR(MAX) NOT NULL,
+                    [Timestamp] DATETIME NOT NULL DEFAULT (GETDATE()),
+                    [IsFromCustomer] BIT NOT NULL DEFAULT 1,
+                    [IsRead] BIT NOT NULL DEFAULT 0,
+                    CONSTRAINT [PK_ChatMessage] PRIMARY KEY CLUSTERED ([Id] ASC)
+                );
+            END
+        ");
     }
     catch (Exception ex) {
-        Console.WriteLine("Lỗi khởi tạo bảng BinhLuan: " + ex.Message);
+        Console.WriteLine("Lỗi khởi tạo bảng BinhLuan/ChatMessage: " + ex.Message);
     }
 }
 // ==========================================

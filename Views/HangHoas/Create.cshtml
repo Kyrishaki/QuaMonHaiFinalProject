@@ -1,4 +1,4 @@
-﻿@model LTWEB_QuaMonHai_CuoiKy.Models.HangHoa
+@model LTWEB_QuaMonHai_CuoiKy.Models.HangHoa
 
 @{
     ViewData["Title"] = "Thêm mới sản phẩm";
@@ -59,6 +59,12 @@
                     <div class="col-md-6">
                         <label asp-for="NgaySx" class="form-label fw-bold text-muted"></label>
                         <input asp-for="NgaySx" class="form-control rounded-pill" type="date" />
+                    </div>
+                    <div class="col-md-6 d-flex align-items-center">
+                        <div class="form-check form-switch mt-4">
+                            <input class="form-check-input" type="checkbox" asp-for="HieuLuc" id="HieuLucSwitch" checked>
+                            <label class="form-check-label fw-bold text-muted ms-2" for="HieuLucSwitch">Kích hoạt kinh doanh (Hiệu lực)</label>
+                        </div>
                     </div>
 
                     <div class="col-12">

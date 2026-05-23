@@ -14,7 +14,7 @@ namespace LTWEB_QuaMonHai_CuoiKy.Controllers {
         }
 
         // GET: HangHoas (Mở cho tất cả mọi người xem danh sách)
-        public async Task<IActionResult> Index(int? loaiId, string searchQuery, string priceRange, int page = 1) {
+        public async Task<IActionResult> Index(int? loaiId, string searchQuery, string priceRange, int page = 1, bool manage = false) {
             int pageSize = 9;
 
             // Lấy danh sách ID sản phẩm yêu thích của người dùng hiện tại
@@ -38,6 +38,15 @@ namespace LTWEB_QuaMonHai_CuoiKy.Controllers {
                                 .Include(h => h.MaLoaiNavigation)
                                 .AsNoTracking()
                                 .AsQueryable();
+
+            // Quản lý hiển thị sản phẩm dựa trên chế độ quản lý (manage) và vai trò
+            bool isManager = User.IsInRole("Admin") || User.IsInRole("Staff");
+            if (manage && isManager) {
+                ViewBag.ManageMode = true;
+            } else {
+                query = query.Where(h => h.HieuLuc && h.SoLuong > 0);
+                ViewBag.ManageMode = false;
+            }
 
             if (loaiId.HasValue) {
                 query = query.Where(h => h.MaLoai == loaiId.Value);
@@ -231,7 +240,7 @@ namespace LTWEB_QuaMonHai_CuoiKy.Controllers {
         // ================= KHU VỰC BẢO MẬT: CHỈ ADMIN MỚI ĐƯỢC VÀO =================
 
         // GET: HangHoas/Create
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin,Staff")]
         public IActionResult Create() {
             ViewData["MaLoai"] = new SelectList(_context.Loais, "MaLoai", "TenLoai");
             ViewData["MaNcc"] = new SelectList(_context.NhaCungCaps, "MaNcc", "TenCongTy");
@@ -241,8 +250,8 @@ namespace LTWEB_QuaMonHai_CuoiKy.Controllers {
         // POST: HangHoas/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> Create([Bind("MaHh,TenHh,TenAlias,MaLoai,MoTaDonVi,DonGia,Hinh,NgaySx,GiamGia,SoLanXem,MoTa,MaNcc")] HangHoa hangHoa, IFormFile? fHinh) {
+        [Authorize(Roles = "Admin,Staff")]
+        public async Task<IActionResult> Create([Bind("MaHh,TenHh,TenAlias,MaLoai,MoTaDonVi,DonGia,Hinh,NgaySx,GiamGia,SoLanXem,MoTa,MaNcc,HieuLuc")] HangHoa hangHoa, IFormFile? fHinh) {
             ModelState.Remove("MaLoaiNavigation");
             ModelState.Remove("MaNccNavigation");
             ModelState.Remove("fHinh");
@@ -276,7 +285,7 @@ namespace LTWEB_QuaMonHai_CuoiKy.Controllers {
         }
 
         // GET: HangHoas/Edit/5
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin,Staff")]
         public async Task<IActionResult> Edit(int? id) {
             if (id == null) {
                 return NotFound();
@@ -294,8 +303,8 @@ namespace LTWEB_QuaMonHai_CuoiKy.Controllers {
         // POST: HangHoas/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> Edit(int id, [Bind("MaHh,TenHh,TenAlias,MaLoai,MoTaDonVi,DonGia,Hinh,NgaySx,GiamGia,SoLanXem,MoTa,MaNcc,SoLuong")] HangHoa hangHoa, IFormFile? fHinh) {
+        [Authorize(Roles = "Admin,Staff")]
+        public async Task<IActionResult> Edit(int id, [Bind("MaHh,TenHh,TenAlias,MaLoai,MoTaDonVi,DonGia,Hinh,NgaySx,GiamGia,SoLanXem,MoTa,MaNcc,SoLuong,HieuLuc")] HangHoa hangHoa, IFormFile? fHinh) {
             if (id != hangHoa.MaHh) {
                 return NotFound();
             }
@@ -354,12 +363,32 @@ namespace LTWEB_QuaMonHai_CuoiKy.Controllers {
         public async Task<IActionResult> DeleteConfirmed(int id) {
             var hangHoa = await _context.HangHoas.FindAsync(id);
             if (hangHoa != null) {
-                _context.HangHoas.Remove(hangHoa);
-                TempData["Success"] = "Đã xóa sản phẩm!";
+                hangHoa.HieuLuc = false;
+                hangHoa.SoLuong = 0; // Đặt số lượng về 0 (Hết hàng)
+                _context.Update(hangHoa);
+                TempData["Success"] = "Đã ngưng hoạt động sản phẩm và chuyển thành Hết hàng!";
             }
 
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(Index), new { manage = true });
+        }
+
+        // POST: HangHoas/Reactivate/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin,Staff")]
+        public async Task<IActionResult> Reactivate(int id) {
+            var hangHoa = await _context.HangHoas.FindAsync(id);
+            if (hangHoa != null) {
+                hangHoa.HieuLuc = true;
+                if (hangHoa.SoLuong <= 0) {
+                    hangHoa.SoLuong = 10; // Đặt lại số lượng mặc định là 10
+                }
+                _context.Update(hangHoa);
+                TempData["Success"] = "Đã kích hoạt lại sản phẩm!";
+                await _context.SaveChangesAsync();
+            }
+            return RedirectToAction(nameof(Index), new { manage = true });
         }
 
         private bool HangHoaExists(int id) {

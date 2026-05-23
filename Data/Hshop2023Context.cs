@@ -53,6 +53,9 @@ public partial class Hshop2023Context : DbContext {
 
     public virtual DbSet<BinhLuan> BinhLuans { get; set; }
 
+    public virtual DbSet<ChatMessage> ChatMessages { get; set; }
+
+
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) {
         if (!optionsBuilder.IsConfigured) {
             optionsBuilder.UseSqlServer("Server=0.tcp.ap.ngrok.io,26018;Database=Hshop2023;User Id=sa;Password=QuaMonHai;TrustServerCertificate=True;");
@@ -196,6 +199,10 @@ public partial class Hshop2023Context : DbContext {
             entity.Property(e => e.SoLuong)
                 .HasDefaultValue(100)
                 .HasColumnName("SoLuong");
+
+            entity.Property(e => e.HieuLuc)
+                .HasDefaultValue(true)
+                .HasColumnName("HieuLuc");
 
             entity.HasOne(d => d.MaLoaiNavigation).WithMany(p => p.HangHoas)
                 .HasForeignKey(d => d.MaLoai)
@@ -499,6 +506,19 @@ public partial class Hshop2023Context : DbContext {
                 .OnDelete(DeleteBehavior.Cascade)
                 .HasConstraintName("FK_BinhLuan_KhachHang");
         });
+
+        modelBuilder.Entity<ChatMessage>(entity => {
+            entity.HasKey(e => e.Id);
+            entity.ToTable("ChatMessage");
+            entity.Property(e => e.ChatRoomId).HasMaxLength(50).IsRequired();
+            entity.Property(e => e.SenderId).HasMaxLength(50).IsRequired();
+            entity.Property(e => e.SenderName).HasMaxLength(100).IsRequired();
+            entity.Property(e => e.Message).IsRequired();
+            entity.Property(e => e.Timestamp).HasColumnType("datetime").HasDefaultValueSql("(getdate())");
+            entity.Property(e => e.IsFromCustomer).HasDefaultValue(true);
+            entity.Property(e => e.IsRead).HasDefaultValue(false);
+        });
+
 
         OnModelCreatingPartial(modelBuilder);
     }

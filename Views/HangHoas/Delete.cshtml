@@ -1,4 +1,4 @@
-﻿@model LTWEB_QuaMonHai_CuoiKy.Models.HangHoa
+@model LTWEB_QuaMonHai_CuoiKy.Models.HangHoa
 
 @{
     ViewData["Title"] = "Xóa sản phẩm";
@@ -7,10 +7,10 @@
 <div class="container py-5" style="max-width: 700px;">
     <div class="card shadow-sm border-danger rounded-3 overflow-hidden">
         <div class="card-header bg-danger text-white py-3 text-center">
-            <h4 class="mb-0"><i class="fa fa-exclamation-triangle me-2"></i>Cảnh báo Xóa Sản Phẩm</h4>
+            <h4 class="mb-0"><i class="fa fa-exclamation-triangle me-2"></i>Ngưng Hoạt Động Sản Phẩm</h4>
         </div>
         <div class="card-body p-4 text-center">
-            <h5 class="text-dark mb-4">Bạn có chắc chắn muốn xóa sản phẩm này vĩnh viễn không?</h5>
+            <h5 class="text-dark mb-4">Bạn có chắc chắn muốn ngưng kích hoạt bán sản phẩm này không?</h5>
 
             <img src="@(Model.Hinh != null && Model.Hinh.StartsWith("http") ? Model.Hinh : Url.Content("~/img/Hinh/HangHoa/" + (string.IsNullOrEmpty(Model.Hinh) ? "no-image.jpg" : Model.Hinh)))"
                  alt="@Model.TenHh" class="img-thumbnail shadow-sm mb-3" style="max-height: 150px;">
@@ -21,7 +21,7 @@
             <form asp-action="Delete" class="d-flex justify-content-center gap-3">
                 <input type="hidden" asp-for="MaHh" />
                 <a asp-action="Index" class="btn btn-light rounded-pill px-5 border fw-bold">Hủy, Quay lại</a>
-                <button type="submit" class="btn btn-danger rounded-pill px-5 fw-bold"><i class="fa fa-trash me-1"></i> Có, Xóa Ngay</button>
+                <button type="submit" class="btn btn-danger rounded-pill px-5 fw-bold"><i class="fa fa-power-off me-1"></i> Có, Tắt Ngay</button>
             </form>
         </div>
     </div>

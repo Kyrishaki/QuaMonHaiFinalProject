@@ -31,6 +31,8 @@ public partial class HangHoa
 
     public int SoLuong { get; set; }
 
+    public bool HieuLuc { get; set; } = true;
+
     public virtual ICollection<BanBe> BanBes { get; set; } = new List<BanBe>();
 
     public virtual ICollection<ChiTietHd> ChiTietHds { get; set; } = new List<ChiTietHd>();
