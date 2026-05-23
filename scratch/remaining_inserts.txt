@@ -1,6 +1,0 @@
-Line 336: SET IDENTITY_INSERT [dbo].[ChiTietHD] ON 
-Line 359: SET IDENTITY_INSERT [dbo].[ChiTietHD] OFF
-Line 445: SET IDENTITY_INSERT [dbo].[HoaDon] ON 
-Line 455: SET IDENTITY_INSERT [dbo].[HoaDon] OFF
-Line 457: INSERT [dbo].[KhachHang] ([MaKH], [MatKhau], [HoTen], [GioiTinh], [NgaySinh], [DiaChi], [DienThoai], [Email], [Hinh], [HieuLuc], [VaiTro], [RandomKey]) VALUES (N'hello', N'1', N'nnghiem@yahoo.com', 0, CAST(N'2011-01-12T07:00:00.000' AS DateTime), N'aaa', N'aaa', N'hello@abc.com', N'man.gif', 0, 2, NULL)
-Line 458: INSERT [dbo].[KhachHang] ([MaKH], [MatKhau], [HoTen], [GioiTinh], [NgaySinh], [DiaChi], [DienThoai], [Email], [Hinh], [HieuLuc], [VaiTro], [RandomKey]) VALUES (N'KH0002', N'a0cd8c2ab5e0bd6f61ba4ffa626f5c3e', N'Lê Văn Thê', 1, CAST(N'2000-11-11T00:00:00.000' AS DateTime), N'105 Bà Huyện Thanh Quan', N'0123456789', N'aspnhatnghe@gmail.com', NULL, 0, 0, N'kt2[v')
