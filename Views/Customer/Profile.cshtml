@@ -10,13 +10,15 @@
         </div>
     </div>
 
-    @if (TempData["Success"] != null)
-    {
-        <div class="alert alert-success alert-dismissible fade show shadow-sm rounded-3" role="alert">
-            <i class="fa fa-check-circle me-2"></i>@TempData["Success"]
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-    }
+    <div id="alertMessageContainer">
+        @if (TempData["Success"] != null)
+        {
+            <div class="alert alert-success alert-dismissible fade show shadow-sm rounded-3" role="alert">
+                <i class="fa fa-check-circle me-2"></i>@TempData["Success"]
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        }
+    </div>
 
     <div class="row g-4">
         <div class="col-md-4">
@@ -39,12 +41,11 @@
                     }
                     <img id="mainAvatarDisplay" src="@Url.Content("~/img/Hinh/khachHang/" + avatarFile)"
                          alt="Avatar" class="rounded-circle img-thumbnail shadow-sm"
-                         style="width: 150px; height: 150px; object-fit: cover; border-width: 3px !important; border-color: #81c408 !important; transition: transform 0.2s ease;">
+                         style="width: 150px; height: 150px; object-fit: cover; border-width: 3px !important; border-color: #81c408 !important; transition: all 0.2s ease;">
 
-                    <div class="position-absolute top-0 start-0 w-100 h-100 rounded-circle d-flex align-items-center justify-content-center text-white small fw-bold"
-                         style="background: rgba(0,0,0,0.4); opacity: 0; transition: opacity 0.2s ease;"
-                         onmouseover="this.style.opacity=1" onmouseout="this.style.opacity=0">
-                        <i class="fa fa-sync me-1"></i> Click để đổi ảnh
+                    <div id="avatarHoverOverlay" class="position-absolute top-0 start-0 w-100 h-100 rounded-circle d-flex align-items-center justify-content-center text-white small fw-bold"
+                         style="background: rgba(0,0,0,0.5); opacity: 0; transition: opacity 0.2s ease;">
+                        <span id="overlayText"><i class="fa fa-sync fa-spin me-1"></i> Đang lưu...</span>
                     </div>
                 </div>
 
@@ -78,11 +79,10 @@
 
                         <input type="hidden" asp-for="MaKh" />
                         <input type="hidden" asp-for="MatKhau" />
-                        <input type="hidden" asp-for="Hinh" id="currentHinhInput" /> <input type="hidden" asp-for="VaiTro" />
+                        <input type="hidden" asp-for="Hinh" id="currentHinhInput" />
+                        <input type="hidden" asp-for="VaiTro" />
                         <input type="hidden" asp-for="HieuLuc" />
                         <input type="hidden" asp-for="RandomKey" />
-
-                        <input type="hidden" name="DefaultAvatar" id="selectedDefaultAvatar" />
 
                         <div class="row g-3">
                             <div class="col-md-12">
@@ -153,54 +153,95 @@
         document.addEventListener("DOMContentLoaded", function () {
             const btnAvatar = document.getElementById("btnClickAvatar");
             const imgDisplay = document.getElementById("mainAvatarDisplay");
-            const hiddenDefaultAvatar = document.getElementById("selectedDefaultAvatar");
             const currentHinhInput = document.getElementById("currentHinhInput");
+            const overlay = document.getElementById("avatarHoverOverlay");
+            const overlayText = document.getElementById("overlayText");
             const fileInput = document.getElementById("fileAvatar");
 
-            // Danh sách 5 đường dẫn tương ứng với 5 ảnh của hệ thống
             const totalAvatars = 5;
             const baseUrl = "@Url.Content("~/img/Hinh/khachHang/")";
 
-            // Lấy số thứ tự ảnh hiện tại đang dùng (ví dụ: default3.svg -> số 3)
+            // Xác định thứ tự ảnh hiện tại của user trong DB
             let currentFileName = currentHinhInput.value || "default1.svg";
             let currentIndex = 1;
 
-            // Nếu ảnh cũ có dạng defaultX.svg thì bóc tách lấy X, ngược lại mặc định là 1
             if (currentFileName.startsWith("default") && currentFileName.endsWith(".svg")) {
                 currentIndex = parseInt(currentFileName.replace("default", "").replace(".svg", "")) || 1;
             }
 
-            // Sự kiện click trực tiếp vào Avatar lớn
+            // Hiệu ứng hover thủ công thay cho hover CSS để quản lý trạng thái loading
+            let isUploading = false;
+            btnAvatar.addEventListener("mouseover", function() { if(!isUploading) { overlay.style.opacity = 1; overlayText.innerHTML = '<i class="fa fa-sync me-1"></i> Đổi nhanh'; } });
+            btnAvatar.addEventListener("mouseout", function() { if(!isUploading) { overlay.style.opacity = 0; } });
+
+            // SỰ KIỆN CLICK VÀO AVATAR LỚN
             btnAvatar.addEventListener("click", function () {
-                // Tạo hiệu ứng nảy nhẹ khi bấm (nhìn chuyên nghiệp hơn)
+                if (isUploading) return; // Nếu đang lưu ngầm thì chặn không cho click liên tục
+
+                isUploading = true;
+                overlay.style.opacity = 1;
+                overlayText.innerHTML = '<i class="fa fa-spinner fa-spin me-1"></i> Đang lưu...';
+
+                // Tạo hiệu ứng thu nhỏ ảnh nhẹ khi bấm
                 imgDisplay.style.transform = "scale(0.9)";
-                setTimeout(() => { imgDisplay.style.transform = "scale(1)"; }, 150);
 
-                // Tăng thứ tự ảnh lên 1, nếu vượt quá 5 thì quay lại 1
+                // Tăng vòng lặp từ 1 đến 5
                 currentIndex = (currentIndex % totalAvatars) + 1;
-
-                // Cập nhật tên file mới
                 const newAvatarName = `default${currentIndex}.svg`;
 
-                // 1. Đổi ngay hình ảnh hiển thị trên giao diện trực quan cho người dùng thấy
-                imgDisplay.src = baseUrl + newAvatarName;
+                // Gọi AJAX POST ngầm gửi tên file ảnh mới lên Controller để lưu lập tức
+                $.post('/Customer/UpdateInstantAvatar', { avatarName: newAvatarName }, function (response) {
+                    if (response.success) {
+                        // Đổi hình ảnh hiển thị chính xác
+                        imgDisplay.src = baseUrl + newAvatarName;
+                        currentHinhInput.value = newAvatarName; // Đồng bộ lại input ẩn của form
 
-                // 2. Gán giá trị vào input để Controller lưu lại
-                hiddenDefaultAvatar.value = newAvatarName;
+                        // Tạo alert thông báo thành công xanh lá đẹp mắt biến mất sau 3 giây
 
-                // 3. Xóa file upload từ máy tính (nếu có) để không bị đè dữ liệu
+                        //showInstantAlert("Cập nhật và lưu ảnh đại diện thành công!", "success");
+                    } else {
+                        showInstantAlert(response.message, "danger");
+                    }
+                }).fail(function() {
+                    showInstantAlert("Không thể kết nối đến server để lưu ảnh!", "danger");
+                }).always(function() {
+                    // Trả lại trạng thái ban đầu cho ảnh đại diện
+                    setTimeout(() => {
+                        imgDisplay.style.transform = "scale(1)";
+                        isUploading = false;
+                        overlay.style.opacity = 0;
+                    }, 200);
+                });
+
+                // Nếu đang dùng ảnh xoay tua thì xóa file chọn từ máy (nếu có)
                 fileInput.value = "";
             });
 
-            // Nếu người dùng chọn file từ máy, hủy bỏ gán ảnh xoay tua
+            // Hàm sinh thông báo nhanh động trên màn hình mà không cần load lại trang
+            function showInstantAlert(msg, type) {
+                const container = document.getElementById("alertMessageContainer");
+                const icon = type === "success" ? "fa-check-circle" : "fa-exclamation-circle";
+                container.innerHTML = `
+                    <div class="alert alert-${type} alert-dismissible fade show shadow-sm rounded-3" role="alert">
+                        <i class="fa ${icon} me-2"></i>${msg}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                `;
+                // Tự động ẩn thông báo sau 3 giây cho gọn gàng
+                setTimeout(() => {
+                    const alertNode = container.querySelector('.alert');
+                    if(alertNode) {
+                        let bsAlert = bootstrap.Alert.getInstance(alertNode) || new bootstrap.Alert(alertNode);
+                        bsAlert.close();
+                    }
+                }, 3000);
+            }
+
+            // Nếu người dùng tải ảnh từ máy, nạp preview xem trước
             fileInput.addEventListener('change', function() {
                 if (this.files.length > 0) {
-                    hiddenDefaultAvatar.value = "";
-                    // Hiển thị ảnh tạm thời xem trước (Preview) từ máy tính nếu muốn
                     const reader = new FileReader();
-                    reader.onload = function(e) {
-                        imgDisplay.src = e.target.result;
-                    }
+                    reader.onload = function(e) { imgDisplay.src = e.target.result; }
                     reader.readAsDataURL(this.files[0]);
                 }
             });

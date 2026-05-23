@@ -265,6 +265,43 @@ namespace LTWEB_QuaMonHai_CuoiKy.Controllers {
             return View(model);
         }
 
+        [Authorize]
+        [HttpPost]
+        public IActionResult UpdateInstantAvatar(string avatarName)
+        {
+            try
+            {
+                // Lấy Mã khách hàng từ mã Cookie/Claim đăng nhập hiện tại
+                var customerId = User.Claims.SingleOrDefault(c => c.Type == "CustomerID")?.Value;
+                if (string.IsNullOrEmpty(customerId))
+                {
+                    return Json(new { success = false, message = "Phiên làm việc hết hạn!" });
+                }
+
+                if (string.IsNullOrEmpty(avatarName))
+                {
+                    return Json(new { success = false, message = "Dữ liệu ảnh không hợp lệ!" });
+                }
+
+                // Tìm tài khoản trong Database để cập nhật trường hình
+                var khachHang = db.KhachHangs.SingleOrDefault(kh => kh.MaKh == customerId);
+                if (khachHang == null)
+                {
+                    return Json(new { success = false, message = "Không tìm thấy tài khoản!" });
+                }
+
+                // Cập nhật tên file ảnh mới (ví dụ: default2.svg) và lưu vào SQL Server
+                khachHang.Hinh = avatarName;
+                db.Update(khachHang);
+                db.SaveChanges();
+
+                return Json(new { success = true, message = "Đã lưu ảnh đại diện mới thành công!" });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = "Lỗi hệ thống: " + ex.Message });
+            }
+        }
         // ===============================================
         // BẮT ĐẦU: KHU VỰC XỬ LÝ ĐỔI MẬT KHẨU
         // ===============================================
