@@ -65,7 +65,7 @@
                     @{
                         double originalPrice = Model.DonGia ?? 0;
                         double discountPercent = Model.GiamGia;
-                        double salePrice = originalPrice * (1 - discountPercent / 100);
+                        decimal salePrice = Model.GiaSauGiam;
                     }
                     <!-- GIÁ VÀ GIẢM GIÁ -->
                     <div class="d-flex align-items-center gap-3 mb-4 bg-light p-4 rounded-3 border-start border-success border-4">
@@ -87,7 +87,7 @@
                             <div class="d-flex flex-wrap gap-2">
                                 @foreach (var voucher in (List<GiamGia>)ViewBag.ActiveVouchers) {
                                     <span class="badge bg-danger-subtle text-danger border border-danger border-opacity-50 rounded-1 px-3 py-2 fw-bold cursor-pointer position-relative voucher-tag" 
-                                          title="Giảm @voucher.PhanTramGiam% cho đơn tối thiểu $@(voucher.GiaTriDonToiThieu ?? 0)" 
+                                          title="Giảm @voucher.PhanTramGiam% cho đơn tối thiểu $@voucher.GiaTriDonToiThieu" 
                                           style="border-style: dashed !important; font-size: 0.85rem;" 
                                           onclick="copyVoucher('@voucher.TenMa')">
                                         @voucher.TenMa
@@ -297,7 +297,7 @@
             </div>
             <div class="row g-4">
                 @foreach (var item in (List<HangHoa>)ViewBag.RelatedProducts) {
-                    var itemSalePrice = (item.DonGia ?? 0) * (1 - item.GiamGia / 100);
+                    var itemSalePrice = item.GiaSauGiam;
                     <div class="col-sm-6 col-md-4 col-lg-3">
                         <div class="card h-100 shadow-sm border-0 rounded-4 overflow-hidden position-relative product-card transition-all" style="transition: transform 0.3s ease, box-shadow 0.3s ease;">
                             <!-- Tag giảm giá -->
@@ -323,10 +323,10 @@
                                     <!-- Giá -->
                                     <div class="d-flex align-items-center gap-2 mb-2">
                                         @if (item.GiamGia > 0) {
-                                            <span class="text-muted text-decoration-line-through small">$@item.DonGia</span>
+                                            <span class="text-muted text-decoration-line-through small">$@((item.DonGia ?? 0).ToString("N2"))</span>
                                             <span class="text-danger fw-bold">$@itemSalePrice.ToString("N2")</span>
                                         } else {
-                                            <span class="text-success fw-bold" style="color: var(--primary) !important;">$@item.DonGia</span>
+                                            <span class="text-success fw-bold" style="color: var(--primary) !important;">$@(item.GiaSauGiam.ToString("N2"))</span>
                                         }
                                     </div>
                                 </div>

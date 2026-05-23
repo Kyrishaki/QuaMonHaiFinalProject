@@ -144,11 +144,11 @@
                                                 @item.MaHhNavigation.TenHh
                                                 
                                             </h6>
-                                            <small class="text-muted">Đơn giá: @item.DonGia.ToString("N0")₫ | Số lượng: <strong>@item.SoLuong</strong></small>
+                                            <small class="text-muted">Đơn giá: @item.DonGia.ToString("N0")$ | Số lượng: <strong>@item.SoLuong</strong></small>
                                         </div>
                                     </div>
                                     <div class="text-end">
-                                        <strong class="text-dark">@((item.DonGia * item.SoLuong).ToString("N0"))₫</strong>
+                                        <strong class="text-dark">@((item.DonGia * item.SoLuong).ToString("N0"))$</strong>
                                     </div>
                                 </div>
                             }
@@ -199,20 +199,20 @@
                         
                         <div class="d-flex justify-content-between mb-2 text-secondary small">
                             <span>Tạm tính:</span>
-                            <span class="fw-semibold">@Model.ChiTietHds.Sum(c => c.DonGia * c.SoLuong).ToString("N0")₫</span>
+                            <span class="fw-semibold">@Model.ChiTietHds.Sum(c => c.DonGia * c.SoLuong).ToString("N0")$</span>
                         </div>
                         
                         @if (Model.ChiTietHds.Sum(c => c.GiamGia) > 0)
                         {
                             <div class="d-flex justify-content-between mb-2 text-danger small">
                                 <span>Giảm giá:</span>
-                                <span>-@Model.ChiTietHds.Sum(c => c.GiamGia).ToString("N0")₫</span>
+                                <span>-@Model.ChiTietHds.Sum(c => c.GiamGia).ToString("N0")$</span>
                             </div>
                         }
 
                         <div class="d-flex justify-content-between mb-2 text-secondary small">
                             <span>Phí vận chuyển:</span>
-                            <span class="fw-semibold">@Model.PhiVanChuyen.ToString("N0")₫</span>
+                            <span class="fw-semibold">@Model.PhiVanChuyen.ToString("N0")$</span>
                         </div>
 
                         <div class="d-flex justify-content-between mb-3 text-secondary small">
@@ -223,7 +223,7 @@
                         <div class="d-flex justify-content-between align-items-center border-top pt-3 mt-3">
                             <span class="fw-bold text-dark">Tổng thanh toán:</span>
                             <span class="fs-4 fw-extrabold text-success" style="color: #81c408 !important;">
-                                @((Model.ChiTietHds.Sum(c => c.DonGia * c.SoLuong) + Model.PhiVanChuyen - Model.ChiTietHds.Sum(c => c.GiamGia)).ToString("N0"))₫
+                                @((Model.ChiTietHds.Sum(c => c.DonGia * c.SoLuong) + Model.PhiVanChuyen - Model.ChiTietHds.Sum(c => c.GiamGia)).ToString("N0"))$
                             </span>
                         </div>
                     </div>
