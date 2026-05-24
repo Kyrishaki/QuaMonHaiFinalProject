@@ -68,7 +68,19 @@
                                                         @hh.TenHh
                                                     </h6>
                                                 </a>
-                                                <p class="fw-bold text-danger fs-5 mb-0">$@hh.DonGia</p>
+                                                <div class="d-flex justify-content-between align-items-center mb-0">
+                                                    <span class="fw-bold text-danger fs-5">$@hh.DonGia</span>
+                                                    @{
+                                                        int wlSoldCount = 0;
+                                                        if (ViewBag.SoldCounts != null) {
+                                                            var dict = (Dictionary<int, int>)ViewBag.SoldCounts;
+                                                            if (dict.ContainsKey(hh.MaHh)) {
+                                                                wlSoldCount = dict[hh.MaHh];
+                                                            }
+                                                        }
+                                                    }
+                                                    <span class="text-muted small"><i class="fa-solid fa-fire text-danger me-1"></i>Đã bán @wlSoldCount</span>
+                                                </div>
                                             </div>
 
                                             <div class="btn-group mt-auto w-100 shadow-sm rounded-pill overflow-hidden">

@@ -34,14 +34,28 @@
 
         <!-- DANH SÁCH SẢN PHẨM -->
         <div class="col-lg-9 col-md-8">
-            @if (User.IsInRole("Admin") || User.IsInRole("Staff")) {
-                <div class="mb-4 d-flex justify-content-end">
-                    <div class="form-check form-switch bg-white border rounded-pill px-4 py-2 shadow-sm d-flex align-items-center">
-                        <input class="form-check-input" type="checkbox" id="manageModeToggle" @(ViewBag.ManageMode == true ? "checked" : "") onchange="window.location.href = '@Url.Action("Index", "HangHoas")' + '?manage=' + this.checked" style="cursor: pointer;">
-                        <label class="form-check-label fw-bold text-primary ms-2 mb-0" for="manageModeToggle" style="cursor: pointer; font-size: 0.9rem;">Chế độ quản lý (Hiện SP ẩn / Hết hàng)</label>
+            <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-4 bg-white border rounded-3 p-3 shadow-sm">
+                <span class="text-muted small">Hiển thị <strong class="text-success">@Model.Count()</strong> sản phẩm</span>
+                
+                <div class="d-flex align-items-center gap-3">
+                    @if (User.IsInRole("Admin") || User.IsInRole("Staff")) {
+                        <div class="form-check form-switch bg-light border rounded-pill px-4 py-1.5 d-flex align-items-center mb-0">
+                            <input class="form-check-input" type="checkbox" id="manageModeToggle" @(ViewBag.ManageMode == true ? "checked" : "") onchange="toggleManageMode(this.checked)" style="cursor: pointer;">
+                            <label class="form-check-label fw-bold text-primary ms-2 mb-0" for="manageModeToggle" style="cursor: pointer; font-size: 0.85rem;">Quản lý</label>
+                        </div>
+                    }
+
+                    <div class="d-flex align-items-center gap-2">
+                        <span class="text-muted small text-nowrap"><i class="fa-solid fa-sort text-success me-1"></i>Sắp xếp:</span>
+                        <select class="form-select form-select-sm border border-secondary-subtle rounded-pill px-3 py-1 text-dark" style="cursor: pointer; min-width: 170px;" onchange="changeSort(this.value)">
+                            <option value="" selected="@(string.IsNullOrEmpty(ViewBag.CurrentSort))">Mặc định</option>
+                            <option value="price_asc" selected="@(ViewBag.CurrentSort == "price_asc")">Giá: Thấp đến Cao</option>
+                            <option value="price_desc" selected="@(ViewBag.CurrentSort == "price_desc")">Giá: Cao đến Thấp</option>
+                        </select>
                     </div>
                 </div>
-            }
+            </div>
+
             <div class="row g-3">
                 @foreach (var item in Model) {
                     <div class="col-sm-6 col-lg-4">
@@ -60,11 +74,12 @@
                             </button>
 
                              <a asp-action="Details" asp-route-id="@item.MaHh" class="text-decoration-none">
-                                 <div class="position-relative overflow-hidden" style="height: 220px; @(!item.HieuLuc || item.SoLuong <= 0 ? "opacity: 0.68;" : "")">
+                                 <div class="position-relative overflow-hidden bg-white d-flex align-items-center justify-content-center p-3" style="height: 220px; @(!item.HieuLuc || item.SoLuong <= 0 ? "opacity: 0.68;" : "")">
                                      <img src="@Url.Content("~/img/Hinh/HangHoa/" + (string.IsNullOrEmpty(item.Hinh) ? "no-image.jpg" : item.Hinh))"
-                                          class="card-img-top w-100 h-100"
-                                          style="object-fit: cover; object-position: center;"
-                                          alt="@item.TenHh">
+                                          class="card-img-top img-fluid"
+                                          style="max-height: 180px; object-fit: contain; transition: transform 0.3s;"
+                                          alt="@item.TenHh"
+                                          onmouseover="this.style.transform='scale(1.08)'" onmouseout="this.style.transform='scale(1)'">
                                      @if (!item.HieuLuc) {
                                          <span class="badge bg-danger text-white rounded-pill position-absolute top-50 start-50 translate-middle fw-bold py-2 px-3 shadow" style="font-size: 0.85rem; transform: translate(-50%, -50%) rotate(-12deg) !important; pointer-events: none; z-index: 100; border: 2px solid white;">Ngưng bán</span>
                                      }
@@ -78,7 +93,19 @@
                                  <a asp-action="Details" asp-route-id="@item.MaHh" class="text-decoration-none text-dark">
                                      <h6 class="card-title text-truncate mb-1" title="@item.TenHh">@item.TenHh</h6>
                                  </a>
-                                <p class="text-primary fw-bold fs-5 mb-3" style="color: #81c408 !important;">$@item.DonGia</p>
+                                 <div class="d-flex justify-content-between align-items-center mb-3">
+                                     <span class="text-primary fw-bold fs-5" style="color: #81c408 !important;">$@item.DonGia</span>
+                                     @{
+                                         int soldCount = 0;
+                                         if (ViewBag.SoldCounts != null) {
+                                             var dict = (Dictionary<int, int>)ViewBag.SoldCounts;
+                                             if (dict.ContainsKey(item.MaHh)) {
+                                                 soldCount = dict[item.MaHh];
+                                             }
+                                         }
+                                     }
+                                     <span class="text-muted small"><i class="fa-solid fa-fire text-danger me-1"></i>Đã bán @soldCount</span>
+                                 </div>
 
                                 <!-- BẢO MẬT: PHÂN QUYỀN HIỂN THỊ NÚT Ở TỪNG SẢN PHẨM -->
                                 <div class="btn-group mt-auto w-100 shadow-sm rounded-pill overflow-hidden">
@@ -160,6 +187,28 @@
 
 @section Scripts {
 <script>
+    function changeSort(sortBy) {
+        const urlParams = new URLSearchParams(window.location.search);
+        if (sortBy) {
+            urlParams.set('sortBy', sortBy);
+        } else {
+            urlParams.delete('sortBy');
+        }
+        urlParams.set('page', '1');
+        window.location.search = urlParams.toString();
+    }
+
+    function toggleManageMode(isChecked) {
+        const urlParams = new URLSearchParams(window.location.search);
+        if (isChecked) {
+            urlParams.set('manage', 'true');
+        } else {
+            urlParams.delete('manage');
+        }
+        urlParams.set('page', '1');
+        window.location.search = urlParams.toString();
+    }
+
     $(document).ready(function() {
         // Xử lý nút Thêm vào giỏ hàng bằng AJAX
         $('.add-to-cart-ajax').click(function(e) {

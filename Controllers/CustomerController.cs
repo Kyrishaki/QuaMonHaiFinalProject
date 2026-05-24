@@ -610,6 +610,14 @@ namespace LTWEB_QuaMonHai_CuoiKy.Controllers {
                 .OrderByDescending(y => y.NgayChon)
                 .ToListAsync();
 
+            var favoriteProductIds = favorites.Where(y => y.MaHh.HasValue).Select(y => y.MaHh!.Value).ToList();
+            var wishlistSoldCounts = await db.ChiTietHds
+                .Where(ct => favoriteProductIds.Contains(ct.MaHh) && ct.MaHdNavigation.MaTrangThai != -1)
+                .GroupBy(ct => ct.MaHh)
+                .Select(g => new { MaHh = g.Key, TotalSold = g.Sum(ct => ct.SoLuong) })
+                .ToDictionaryAsync(x => x.MaHh, x => x.TotalSold);
+            ViewBag.SoldCounts = wishlistSoldCounts;
+
             return View(favorites);
         }
         #endregion

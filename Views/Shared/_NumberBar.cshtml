@@ -1,4 +1,4 @@
-﻿@{
+@{
     // Tự động nhận diện Controller hiện tại để link phân trang không bị nhảy nhầm
     var currentController = ViewContext.RouteData.Values["controller"]?.ToString();
     var currentAction = ViewContext.RouteData.Values["action"]?.ToString() ?? "Index";
@@ -18,7 +18,9 @@
                        asp-route-page="1"
                        asp-route-loaiId="@ViewBag.CurrentLoai"
                        asp-route-searchQuery="@Context.Request.Query["searchQuery"]"
-                       asp-route-priceRange="@Context.Request.Query["priceRange"]">
+                       asp-route-priceRange="@Context.Request.Query["priceRange"]"
+                       asp-route-sortBy="@Context.Request.Query["sortBy"]"
+                       asp-route-manage="@Context.Request.Query["manage"]">
                         <i class="fa fa-angle-double-left"></i> Đầu
                     </a>
                 </li>
@@ -29,7 +31,9 @@
                        asp-route-page="@(currentPage - 1)"
                        asp-route-loaiId="@ViewBag.CurrentLoai"
                        asp-route-searchQuery="@Context.Request.Query["searchQuery"]"
-                       asp-route-priceRange="@Context.Request.Query["priceRange"]">
+                       asp-route-priceRange="@Context.Request.Query["priceRange"]"
+                       asp-route-sortBy="@Context.Request.Query["sortBy"]"
+                       asp-route-manage="@Context.Request.Query["manage"]">
                         <i class="fa fa-angle-left"></i> Trước
                     </a>
                 </li>
@@ -41,7 +45,7 @@
 
                     if (startPage > 1) {
                         <li class="page-item">
-                            <a class="page-link shadow-sm" asp-action="@currentAction" asp-controller="@currentController" asp-route-page="1" asp-route-loaiId="@ViewBag.CurrentLoai" asp-route-searchQuery="@Context.Request.Query["searchQuery"]" asp-route-priceRange="@Context.Request.Query["priceRange"]">1</a>
+                            <a class="page-link shadow-sm" asp-action="@currentAction" asp-controller="@currentController" asp-route-page="1" asp-route-loaiId="@ViewBag.CurrentLoai" asp-route-searchQuery="@Context.Request.Query["searchQuery"]" asp-route-priceRange="@Context.Request.Query["priceRange"]" asp-route-sortBy="@Context.Request.Query["sortBy"]" asp-route-manage="@Context.Request.Query["manage"]">1</a>
                         </li>
                         if (startPage > 2) {
                             <li class="page-item disabled"><span class="page-link shadow-sm border-0 bg-transparent text-muted">...</span></li>
@@ -50,7 +54,7 @@
 
                     for (int i = startPage; i <= endPage; i++) {
                         <li class="page-item @(i == currentPage ? "active" : "")">
-                            <a class="page-link shadow-sm" asp-action="@currentAction" asp-controller="@currentController" asp-route-page="@i" asp-route-loaiId="@ViewBag.CurrentLoai" asp-route-searchQuery="@Context.Request.Query["searchQuery"]" asp-route-priceRange="@Context.Request.Query["priceRange"]">@i</a>
+                            <a class="page-link shadow-sm" asp-action="@currentAction" asp-controller="@currentController" asp-route-page="@i" asp-route-loaiId="@ViewBag.CurrentLoai" asp-route-searchQuery="@Context.Request.Query["searchQuery"]" asp-route-priceRange="@Context.Request.Query["priceRange"]" asp-route-sortBy="@Context.Request.Query["sortBy"]" asp-route-manage="@Context.Request.Query["manage"]">@i</a>
                         </li>
                     }
 
@@ -59,7 +63,7 @@
                             <li class="page-item disabled"><span class="page-link shadow-sm border-0 bg-transparent text-muted">...</span></li>
                         }
                         <li class="page-item">
-                            <a class="page-link shadow-sm" asp-action="@currentAction" asp-controller="@currentController" asp-route-page="@totalPages" asp-route-loaiId="@ViewBag.CurrentLoai" asp-route-searchQuery="@Context.Request.Query["searchQuery"]" asp-route-priceRange="@Context.Request.Query["priceRange"]">@totalPages</a>
+                            <a class="page-link shadow-sm" asp-action="@currentAction" asp-controller="@currentController" asp-route-page="@totalPages" asp-route-loaiId="@ViewBag.CurrentLoai" asp-route-searchQuery="@Context.Request.Query["searchQuery"]" asp-route-priceRange="@Context.Request.Query["priceRange"]" asp-route-sortBy="@Context.Request.Query["sortBy"]" asp-route-manage="@Context.Request.Query["manage"]">@totalPages</a>
                         </li>
                     }
                 }
@@ -70,7 +74,9 @@
                        asp-route-page="@(currentPage + 1)"
                        asp-route-loaiId="@ViewBag.CurrentLoai"
                        asp-route-searchQuery="@Context.Request.Query["searchQuery"]"
-                       asp-route-priceRange="@Context.Request.Query["priceRange"]">
+                       asp-route-priceRange="@Context.Request.Query["priceRange"]"
+                       asp-route-sortBy="@Context.Request.Query["sortBy"]"
+                       asp-route-manage="@Context.Request.Query["manage"]">
                         Tiếp <i class="fa fa-angle-right"></i>
                     </a>
                 </li>
@@ -81,7 +87,9 @@
                        asp-route-page="@totalPages"
                        asp-route-loaiId="@ViewBag.CurrentLoai"
                        asp-route-searchQuery="@Context.Request.Query["searchQuery"]"
-                       asp-route-priceRange="@Context.Request.Query["priceRange"]">
+                       asp-route-priceRange="@Context.Request.Query["priceRange"]"
+                       asp-route-sortBy="@Context.Request.Query["sortBy"]"
+                       asp-route-manage="@Context.Request.Query["manage"]">
                         Cuối <i class="fa fa-angle-double-right"></i>
                     </a>
                 </li>

@@ -14,7 +14,7 @@ namespace LTWEB_QuaMonHai_CuoiKy.Controllers {
         }
 
         // GET: HangHoas (Mở cho tất cả mọi người xem danh sách)
-        public async Task<IActionResult> Index(int? loaiId, string searchQuery, string priceRange, int page = 1, bool manage = false) {
+        public async Task<IActionResult> Index(int? loaiId, string searchQuery, string priceRange, string sortBy, int page = 1, bool manage = false) {
             int pageSize = 9;
 
             // Lấy danh sách ID sản phẩm yêu thích của người dùng hiện tại
@@ -33,6 +33,7 @@ namespace LTWEB_QuaMonHai_CuoiKy.Controllers {
             ViewBag.DanhMucs = await _context.Loais.Include(l => l.HangHoas).AsNoTracking().ToListAsync();
             ViewBag.TotalProductCount = await _context.HangHoas.CountAsync();
             ViewBag.CurrentLoai = loaiId;
+            ViewBag.CurrentSort = sortBy;
 
             var query = _context.HangHoas
                                 .Include(h => h.MaLoaiNavigation)
@@ -74,6 +75,13 @@ namespace LTWEB_QuaMonHai_CuoiKy.Controllers {
                 }
             }
 
+            // 4. Xử lý Sắp xếp
+            if (sortBy == "price_asc") {
+                query = query.OrderBy(h => h.DonGia);
+            } else if (sortBy == "price_desc") {
+                query = query.OrderByDescending(h => h.DonGia);
+            }
+
             int totalItems = await query.CountAsync();
             int totalPages = (int)Math.Ceiling(totalItems / (double)pageSize);
 
@@ -84,6 +92,14 @@ namespace LTWEB_QuaMonHai_CuoiKy.Controllers {
                 .Skip((page - 1) * pageSize)
                 .Take(pageSize)
                 .ToListAsync();
+
+            var productIds = items.Select(i => i.MaHh).ToList();
+            var soldCounts = await _context.ChiTietHds
+                .Where(ct => productIds.Contains(ct.MaHh) && ct.MaHdNavigation.MaTrangThai != -1)
+                .GroupBy(ct => ct.MaHh)
+                .Select(g => new { MaHh = g.Key, TotalSold = g.Sum(ct => ct.SoLuong) })
+                .ToDictionaryAsync(x => x.MaHh, x => x.TotalSold);
+            ViewBag.SoldCounts = soldCounts;
 
             ViewBag.CurrentPage = page;
             ViewBag.TotalPages = totalPages;
@@ -157,6 +173,18 @@ namespace LTWEB_QuaMonHai_CuoiKy.Controllers {
                 .Take(4)
                 .ToListAsync();
             ViewBag.RelatedProducts = relatedProducts;
+
+            // Truy xuất lượng đã bán cho cả sản phẩm chính và sản phẩm liên quan
+            var relatedProductIds = relatedProducts.Select(i => i.MaHh).ToList();
+            var allProductIds = new List<int> { hangHoa.MaHh };
+            allProductIds.AddRange(relatedProductIds);
+
+            var detailsSoldCounts = await _context.ChiTietHds
+                .Where(ct => allProductIds.Contains(ct.MaHh) && ct.MaHdNavigation.MaTrangThai != -1)
+                .GroupBy(ct => ct.MaHh)
+                .Select(g => new { MaHh = g.Key, TotalSold = g.Sum(ct => ct.SoLuong) })
+                .ToDictionaryAsync(x => x.MaHh, x => x.TotalSold);
+            ViewBag.SoldCounts = detailsSoldCounts;
 
             // Lấy danh sách mã giảm giá đang hoạt động
             var activeVouchers = await _context.GiamGias

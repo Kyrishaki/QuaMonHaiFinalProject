@@ -320,14 +320,26 @@
                                             @item.TenHh
                                         </h6>
                                     </a>
-                                    <!-- Giá -->
-                                    <div class="d-flex align-items-center gap-2 mb-2">
-                                        @if (item.GiamGia > 0) {
-                                            <span class="text-muted text-decoration-line-through small">$@item.DonGia</span>
-                                            <span class="text-danger fw-bold">$@itemSalePrice.ToString("N2")</span>
-                                        } else {
-                                            <span class="text-success fw-bold" style="color: var(--primary) !important;">$@item.DonGia</span>
+                                    <!-- Giá & Đã bán -->
+                                    <div class="d-flex justify-content-between align-items-center mb-2">
+                                        <div class="d-flex align-items-center gap-2">
+                                            @if (item.GiamGia > 0) {
+                                                <span class="text-muted text-decoration-line-through small" style="font-size: 0.8rem;">$@item.DonGia</span>
+                                                <span class="text-danger fw-bold" style="font-size: 0.95rem;">$@itemSalePrice.ToString("N2")</span>
+                                            } else {
+                                                <span class="text-success fw-bold" style="color: var(--primary) !important; font-size: 0.95rem;">$@item.DonGia</span>
+                                            }
+                                        </div>
+                                        @{
+                                            int relSoldCount = 0;
+                                            if (ViewBag.SoldCounts != null) {
+                                                var dict = (Dictionary<int, int>)ViewBag.SoldCounts;
+                                                if (dict.ContainsKey(item.MaHh)) {
+                                                    relSoldCount = dict[item.MaHh];
+                                                }
+                                            }
                                         }
+                                        <span class="text-muted small" style="font-size: 0.75rem;"><i class="fa-solid fa-fire text-danger me-1"></i>Đã bán @relSoldCount</span>
                                     </div>
                                 </div>
                                 <div class="d-flex gap-2 mt-2">

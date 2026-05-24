@@ -14,7 +14,7 @@ namespace LTWEB_QuaMonHai_CuoiKy.Controllers {
             _context = context;
         }
 
-        public async Task<IActionResult> Index(int? loaiId, string searchQuery, string priceRange, int page = 1) {
+        public async Task<IActionResult> Index(int? loaiId, string searchQuery, string priceRange, string sortBy, int page = 1) {
             int pageSize = 9; // Số sản phẩm trên mỗi trang
 
             // Lấy danh sách ID sản phẩm yêu thích của người dùng hiện tại
@@ -34,6 +34,7 @@ namespace LTWEB_QuaMonHai_CuoiKy.Controllers {
             ViewBag.DanhMucs = await _context.Loais.Include(l => l.HangHoas).AsNoTracking().ToListAsync();
             ViewBag.TotalProductCount = await _context.HangHoas.CountAsync();
             ViewBag.CurrentLoai = loaiId;
+            ViewBag.CurrentSort = sortBy;
 
             // Lấy dữ liệu cơ bản
             var query = _context.HangHoas
@@ -73,6 +74,13 @@ namespace LTWEB_QuaMonHai_CuoiKy.Controllers {
                 }
             }
 
+            // 4. Xử lý Sắp xếp
+            if (sortBy == "price_asc") {
+                query = query.OrderBy(h => h.DonGia);
+            } else if (sortBy == "price_desc") {
+                query = query.OrderByDescending(h => h.DonGia);
+            }
+
             // Xử lý Phân trang
             int totalItems = await query.CountAsync();
             int totalPages = (int)Math.Ceiling(totalItems / (double)pageSize);
@@ -84,6 +92,14 @@ namespace LTWEB_QuaMonHai_CuoiKy.Controllers {
                 .Skip((page - 1) * pageSize)
                 .Take(pageSize)
                 .ToListAsync();
+
+            var productIds = items.Select(i => i.MaHh).ToList();
+            var soldCounts = await _context.ChiTietHds
+                .Where(ct => productIds.Contains(ct.MaHh) && ct.MaHdNavigation.MaTrangThai != -1)
+                .GroupBy(ct => ct.MaHh)
+                .Select(g => new { MaHh = g.Key, TotalSold = g.Sum(ct => ct.SoLuong) })
+                .ToDictionaryAsync(x => x.MaHh, x => x.TotalSold);
+            ViewBag.SoldCounts = soldCounts;
 
             ViewBag.CurrentPage = page;
             ViewBag.TotalPages = totalPages;

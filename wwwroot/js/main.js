@@ -35,17 +35,97 @@
     
     
     // Back to top button
+    var backToTopBtn = document.querySelector('.back-to-top');
+    var isBackToTopVisible = false;
+
     $(window).scroll(function () {
         if ($(this).scrollTop() > 300) {
-            $('.back-to-top').fadeIn('slow');
+            if (!isBackToTopVisible) {
+                isBackToTopVisible = true;
+                if (backToTopBtn) {
+                    backToTopBtn.style.display = 'flex';
+                    anime({
+                        targets: backToTopBtn,
+                        opacity: [0, 1],
+                        scale: [0.5, 1],
+                        translateY: [20, 0],
+                        duration: 500,
+                        easing: 'easeOutBack'
+                    });
+                }
+            }
         } else {
-            $('.back-to-top').fadeOut('slow');
+            if (isBackToTopVisible) {
+                isBackToTopVisible = false;
+                if (backToTopBtn) {
+                    anime({
+                        targets: backToTopBtn,
+                        opacity: [1, 0],
+                        scale: [1, 0.5],
+                        translateY: [0, 20],
+                        duration: 400,
+                        easing: 'easeInQuad',
+                        complete: function() {
+                            if (!isBackToTopVisible && backToTopBtn) {
+                                backToTopBtn.style.display = 'none';
+                            }
+                        }
+                    });
+                }
+            }
         }
     });
-    $('.back-to-top').click(function () {
-        $('html, body').animate({scrollTop: 0}, 1500, 'easeInOutExpo');
-        return false;
-    });
+
+    if (backToTopBtn) {
+        // Hiệu ứng hover bằng anime.js
+        backToTopBtn.addEventListener('mouseenter', function() {
+            if (isBackToTopVisible) {
+                anime({
+                    targets: backToTopBtn,
+                    scale: 1.15,
+                    rotate: '1turn',
+                    duration: 500,
+                    easing: 'easeOutQuad'
+                });
+            }
+        });
+
+        backToTopBtn.addEventListener('mouseleave', function() {
+            if (isBackToTopVisible) {
+                anime({
+                    targets: backToTopBtn,
+                    scale: 1.0,
+                    rotate: '0turn',
+                    duration: 500,
+                    easing: 'easeOutQuad'
+                });
+            }
+        });
+
+        // Click cuộn lên đầu trang bằng anime.js
+        backToTopBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            
+            // Hiệu ứng nhấp nháy/phóng to thu nhỏ khi click
+            anime({
+                targets: backToTopBtn,
+                scale: [1, 0.8, 1.25, 1],
+                duration: 500,
+                easing: 'easeInOutQuad'
+            });
+
+            // Cuộn mượt lên đầu trang
+            var scrollElement = window.document.scrollingElement || window.document.documentElement || window.document.body;
+            anime({
+                targets: scrollElement,
+                scrollTop: 0,
+                duration: 1000,
+                easing: 'easeInOutExpo'
+            });
+            
+            return false;
+        });
+    }
 
 
     // Testimonials carousel
