@@ -71,11 +71,16 @@
     </div>
 
     <!-- Right Column: Title, Description, Actions, Horizontal Code View -->
-    <div class="flex-grow-1 p-3 d-flex flex-column overflow-hidden">
+    <div id="inspector-card-body-content" class="flex-grow-1 p-3 d-flex flex-column overflow-hidden">
         
         <!-- Component Header & Action buttons -->
         <div class="d-flex align-items-center justify-content-between mb-2">
-            <div class="overflow-hidden">
+            <div class="d-flex align-items-center overflow-hidden">
+                <!-- Mobile Back Button -->
+                <button id="btn-mobile-back" class="btn btn-sm btn-outline-warning me-2 border-0" 
+                        style="border-radius: 6px; background: rgba(255,152,0,0.12); padding: 5px 10px; display: none; align-items: center; justify-content: center; color: #ff9800;">
+                    <i class="fa-solid fa-arrow-left fs-6"></i>
+                </button>
                 <h5 id="inspect-title" class="fw-bold text-warning m-0 text-truncate" style="font-family: 'Lora', serif; font-size: 1.25rem;">
                     Chưa Chọn Thành Phần
                 </h5>
@@ -99,17 +104,129 @@
             </p>
         </div>
 
+        <!-- Sub-tabs for View, Controller, Model, Workflow -->
+        <div class="d-flex gap-2 mb-2 font-monospace" id="inspect-sub-tabs" style="font-size: 0.75rem; border-bottom: 1.5px solid rgba(255,255,255,0.06); padding-bottom: 6px;">
+            <button id="btn-sub-view" class="btn btn-sm btn-outline-warning border-0 px-3 py-1 fw-bold active" style="border-radius: 4px; transition: all 0.2s;">
+                <i class="fa-solid fa-file-code me-1"></i> VIEW (cshtml)
+            </button>
+            <button id="btn-sub-controller" class="btn btn-sm btn-outline-info border-0 px-3 py-1 fw-bold text-secondary d-none" style="border-radius: 4px; transition: all 0.2s;">
+                <i class="fa-solid fa-gears me-1"></i> CONTROLLER (cs)
+            </button>
+            <button id="btn-sub-model" class="btn btn-sm btn-outline-success border-0 px-3 py-1 fw-bold text-secondary d-none" style="border-radius: 4px; transition: all 0.2s;">
+                <i class="fa-solid fa-database me-1"></i> MODEL (cs)
+            </button>
+            <button id="btn-sub-workflow" class="btn btn-sm btn-outline-danger border-0 px-3 py-1 fw-bold text-secondary d-none" style="border-radius: 4px; transition: all 0.2s;">
+                <i class="fa-solid fa-circle-play me-1"></i> CƠ CHẾ HOẠT ĐỘNG (Flow)
+            </button>
+        </div>
+
         <!-- Wide Code Container (No wrapping, horizontal scrolling) -->
-        <div class="flex-grow-1 d-flex flex-column overflow-hidden position-relative">
+        <div class="flex-grow-1 d-flex flex-column overflow-hidden position-relative" id="inspect-code-wrapper">
             <div class="position-absolute top-0 end-0 m-2 z-3">
                 <span class="badge bg-dark text-warning border border-secondary border-opacity-50 font-monospace" style="font-size: 0.65rem;">CODE CONSOLE</span>
             </div>
             <pre class="bg-black bg-opacity-40 p-3 rounded-4 font-monospace small scrollbar-custom flex-grow-1 m-0" style="overflow: auto; line-height: 1.45; border: 1.5px solid rgba(255,255,255,0.06);"><code id="inspect-code" style="color: #abb2bf; display: block; white-space: pre;">// Code block...</code></pre>
         </div>
+
+        <!-- Animated Workflow Diagram Container -->
+        <div id="inspect-workflow-container" class="flex-grow-1 overflow-auto scrollbar-custom p-3 bg-black bg-opacity-40 rounded-4 border border-secondary border-opacity-10 d-none">
+            <!-- Workflow content dynamically generated -->
+        </div>
     </div>
 </div>
 
 <style>
+    /* Active sub-tab styles */
+    #btn-sub-view.active {
+        color: #ff9800 !important;
+        background: rgba(255, 152, 0, 0.15) !important;
+        border: 1.5px solid rgba(255, 152, 0, 0.35) !important;
+    }
+    #btn-sub-controller.active {
+        color: #0dcaf0 !important;
+        background: rgba(13, 202, 240, 0.15) !important;
+        border: 1.5px solid rgba(13, 202, 240, 0.35) !important;
+    }
+    #btn-sub-model.active {
+        color: #198754 !important;
+        background: rgba(25, 135, 84, 0.15) !important;
+        border: 1.5px solid rgba(25, 135, 84, 0.35) !important;
+    }
+
+    #btn-sub-workflow.active {
+        color: #dc3545 !important;
+        background: rgba(220, 53, 69, 0.15) !important;
+        border: 1.5px solid rgba(220, 53, 69, 0.35) !important;
+    }
+
+    /* Workflow Timeline Styling */
+    .workflow-timeline {
+        position: relative;
+        padding-left: 26px;
+        margin: 5px 0;
+    }
+    .workflow-timeline::before {
+        content: '';
+        position: absolute;
+        left: 8px;
+        top: 5px;
+        bottom: 5px;
+        width: 2px;
+        background: rgba(255, 255, 255, 0.12);
+    }
+    .workflow-step {
+        position: relative;
+        margin-bottom: 18px;
+        opacity: 0;
+        transform: translateY(12px);
+        animation: slideInUp 0.35s forwards ease-out;
+    }
+    .workflow-badge {
+        position: absolute;
+        left: -26px;
+        top: 2px;
+        width: 18px;
+        height: 18px;
+        border-radius: 50%;
+        background: #333;
+        border: 1.5px solid #222;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.6rem;
+        font-weight: bold;
+        color: #fff;
+        z-index: 2;
+    }
+    .workflow-badge-pulsing {
+        background: linear-gradient(135deg, #ff5722 0%, #ff9800 100%) !important;
+        box-shadow: 0 0 8px rgba(255, 87, 34, 0.5);
+        animation: pulseBadge 1.2s infinite alternate ease-in-out;
+    }
+    .workflow-card {
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid rgba(255, 255, 255, 0.06);
+        border-radius: 6px;
+        padding: 8px 12px;
+        transition: all 0.25s ease;
+    }
+    .workflow-card:hover {
+        background: rgba(255, 255, 255, 0.06);
+        border-color: rgba(255, 255, 255, 0.12);
+        transform: translateX(3px);
+    }
+    
+    @@keyframes slideInUp {
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    @@keyframes pulseBadge {
+        0% { transform: scale(1); box-shadow: 0 0 4px rgba(255, 87, 34, 0.4); }
+        100% { transform: scale(1.12); box-shadow: 0 0 12px rgba(255, 87, 34, 0.7); }
+    }
+
     /* Backdrop active state for blurring */
     body.inspector-active #inspector-backdrop {
         opacity: 1 !important;
@@ -187,16 +304,77 @@
     .scrollbar-custom::-webkit-scrollbar-thumb:hover {
         background: rgba(255, 255, 255, 0.3);
     }
+
+    /* Mobile-specific responsive styles for the Code Inspector */
+    @@media (max-width: 767px) {
+        #inspector-bottom-drawer {
+            height: 75vh !important;
+            flex-direction: column !important;
+            border-top-left-radius: 16px;
+            border-top-right-radius: 16px;
+        }
+        /* Make the left list column full-width */
+        #inspector-bottom-drawer > div:first-child {
+            width: 100% !important;
+            height: 100% !important;
+            border-right: none !important;
+            background: rgba(26, 26, 26, 0.98) !important;
+        }
+        /* Make the right detail column full-width */
+        #inspector-card-body-content {
+            width: 100% !important;
+            height: 100% !important;
+            padding: 12px !important;
+            background: rgba(20, 20, 20, 0.98) !important;
+        }
+        /* Simplify margins and gaps for smaller viewports */
+        #inspect-desc {
+            max-height: 80px !important;
+            font-size: 0.75rem !important;
+        }
+        #inspect-sub-tabs {
+            flex-wrap: wrap !important;
+            gap: 4px !important;
+        }
+        #inspect-sub-tabs button {
+            padding: 4px 8px !important;
+            font-size: 0.65rem !important;
+        }
+        #btn-bookmark-action span, #btn-copy-code span {
+            display: none !important; /* Hide button text on mobile to save space, keeping only the icons */
+        }
+        #btn-bookmark-action, #btn-copy-code {
+            padding: 6px !important;
+            width: 32px !important;
+            height: 32px !important;
+            display: inline-flex !important;
+            align-items: center;
+            justify-content: center;
+        }
+        #inspect-code-wrapper pre {
+            font-size: 0.65rem !important;
+            padding: 8px !important;
+        }
+        /* Floating action toggle button */
+        #btn-toggle-inspector {
+            width: 48px !important;
+            height: 48px !important;
+        }
+    }
 </style>
 
 <script>
     document.addEventListener("DOMContentLoaded", function () {
+        let isActive = false;
+        let lastSelectedId = null;
+
         const toggleBtn = document.getElementById("btn-toggle-inspector");
         const toggleContainer = document.getElementById("code-inspector-toggle-container");
         const closeDrawerBtn = document.getElementById("btn-close-drawer");
         const backdrop = document.getElementById("inspector-backdrop");
         const drawer = document.getElementById("inspector-bottom-drawer");
         const toast = document.getElementById("inspector-toast");
+        const mobileBackBtn = document.getElementById("btn-mobile-back");
         
         const inspectTitle = document.getElementById("inspect-title");
         const inspectDesc = document.getElementById("inspect-desc");
@@ -210,28 +388,1324 @@
         const tabBtnBookmarks = document.getElementById("tab-btn-bookmarks");
         const tabContentComponents = document.getElementById("tab-content-components");
         const tabContentBookmarks = document.getElementById("tab-content-bookmarks");
+
+        const btnSubView = document.getElementById("btn-sub-view");
+        const btnSubController = document.getElementById("btn-sub-controller");
+        const btnSubModel = document.getElementById("btn-sub-model");
+        const btnSubWorkflow = document.getElementById("btn-sub-workflow");
+
+        const inspectCodeWrapper = document.getElementById("inspect-code-wrapper");
+        const inspectWorkflowContainer = document.getElementById("inspect-workflow-container");
+        
+        let activeSubTab = "view"; // "view", "controller", "model", "workflow"
+        const workflowDb = {
+            "navbar": [
+                {
+                    title: "1. Lắng nghe sự kiện Cuộn chuột (Scroll Event)",
+                    desc: "JavaScript lắng nghe sự kiện scroll trên đối tượng window để theo dõi tọa độ cuộn màn hình."
+                },
+                {
+                    title: "2. Kiểm tra mốc tọa độ 300px",
+                    desc: "Nếu vị trí cuộn vượt quá 300px, JS thêm class 'custom-sticky' vào header, ngược lại loại bỏ class để trả về nguyên bản."
+                },
+                {
+                    title: "3. Cố định phần tử (Sticky Style)",
+                    desc: "Class 'custom-sticky' áp dụng CSS 'position: fixed; top: 0;' giúp Navbar bám dính đầu trang kèm hiệu ứng trượt mượt mà."
+                }
+            ],
+            "navbar-brand": [
+                {
+                    title: "1. Nạp Tài nguyên Thương hiệu",
+                    desc: "Trình duyệt tải logo, phông chữ nghệ thuật 'Lora' serif từ Google Fonts."
+                },
+                {
+                    title: "2. Xử lý định dạng màu thương hiệu",
+                    desc: "Áp dụng màu Primary (Xanh lá) và Secondary (Cam) với kiểu nghiêng 'italic' độc đáo ở chữ 'Hai'."
+                },
+                {
+                    title: "3. Liên kết trang chủ (Index Routing)",
+                    desc: "Tag Helper chèn URL trang chủ '/Home/Index' vào thẻ Anchor, giúp người dùng chuyển hướng nhanh chóng khi click."
+                }
+            ],
+            "navbar-links": [
+                {
+                    title: "1. Lấy Route hiện tại (RouteData)",
+                    desc: "Razor đọc tham số Route của Controller và Action đang xử lý yêu cầu phía máy chủ."
+                },
+                {
+                    title: "2. Đối chiếu Menu Item",
+                    desc: "So sánh Route hiện tại với đường dẫn của từng liên kết điều hướng trên Navbar chính."
+                },
+                {
+                    title: "3. Gán trạng thái kích hoạt (Active Class)",
+                    desc: "Tự động thêm class 'active' vào thẻ liên kết tương thích để tô sáng vị trí người dùng trên menu."
+                }
+            ],
+            "navbar-cart": [
+                {
+                    title: "1. Đọc Session Giỏ Hàng",
+                    desc: "Razor đọc danh sách CartItem từ Session 'GioHang' khi nạp trang."
+                },
+                {
+                    title: "2. Sum SoLuong sản phẩm",
+                    desc: "Nếu Session tồn tại, Razor tính tổng số lượng: soLuongGioHang = cart.Sum(c => c.SoLuong)."
+                },
+                {
+                    title: "3. Hiển thị Badge đỏ nổi bật",
+                    desc: "Nếu số lượng lớn hơn 0, một thẻ span badge vòng tròn đỏ được render động hiển thị số lượng."
+                },
+                {
+                    title: "4. Đồng bộ AJAX thời gian thực",
+                    desc: "Khi khách hàng click 'Thêm vào giỏ' ở bất kỳ đâu, AJAX POST cập nhật lại số lượng này ngay lập tức."
+                }
+            ],
+            "search-input": [
+                {
+                    title: "1. Nhập từ khóa sản phẩm",
+                    desc: "Người dùng nhập văn bản tên sản phẩm muốn tìm kiếm vào ô input ở Sidebar."
+                },
+                {
+                    title: "2. Submit GET request đến HomeController",
+                    desc: "Khi nhấn biểu tượng Kính lúp, hệ thống submit form gửi tham số searchQuery qua URL."
+                },
+                {
+                    title: "3. Lọc danh sách bằng EF LINQ",
+                    desc: "Hành động Index nhận searchQuery, lọc các HangHoa có TenHh chứa từ khóa và trả về View hiển thị kết quả."
+                }
+            ],
+            "categories-list": [
+                {
+                    title: "1. Tải danh mục loại sản phẩm",
+                    desc: "Hệ thống truy vấn danh sách các thực thể Loai từ DB kết hợp Include các HangHoa thuộc loại đó."
+                },
+                {
+                    title: "2. Đếm số lượng sản phẩm động",
+                    desc: "Razor đọc số lượng sản phẩm của từng loại thông qua thuộc tính Loai.HangHoas.Count để hiển thị lên badge."
+                },
+                {
+                    title: "3. Lọc danh sách theo MaLoai",
+                    desc: "Nhấp vào tên loại sẽ chèn tham số loaiId vào URL để lọc sản phẩm của danh mục được chọn."
+                }
+            ],
+            "price-slider": [
+                {
+                    title: "1. Kéo trượt thanh chỉnh giá",
+                    desc: "Người dùng kéo con chạy trên input range để tăng/giảm ngưỡng lọc giá mong muốn."
+                },
+                {
+                    title: "2. Lắng nghe sự kiện change",
+                    desc: "JavaScript lắng nghe sự kiện 'change' khi người dùng nhả chuột và tự động thực hiện submit form."
+                },
+                {
+                    title: "3. Lọc sản phẩm trong CSDL",
+                    desc: "Backend nhận tham số priceRange và thực hiện lọc các sản phẩm có DonGia nhỏ hơn hoặc bằng giá trị này."
+                }
+            ],
+            "price-milestone-chips": [
+                {
+                    title: "1. Click chọn mốc giá nhanh",
+                    desc: "Người dùng nhấp vào một trong các chip chọn nhanh giá dưới $50, dưới $150, dưới $300."
+                },
+                {
+                    title: "2. Gán giá trị lên thanh trượt",
+                    desc: "JS lấy giá trị từ thuộc tính data-value của nút, gán ngược lại cho thanh trượt và tự động submit form."
+                },
+                {
+                    title: "3. Load lại dữ liệu sản phẩm",
+                    desc: "Trình duyệt tải lại lưới sản phẩm mới phù hợp với khoảng lọc giá nhanh đã chọn."
+                }
+            ],
+            "sort-select": [
+                {
+                    title: "1. Chọn tiêu chí sắp xếp",
+                    desc: "Khách hàng bấm chọn sắp xếp theo giá tăng dần hoặc giảm dần trên dropdown."
+                },
+                {
+                    title: "2. Kích hoạt hàm JS changeSort",
+                    desc: "Hàm changeSort lấy giá trị được chọn, cập nhật tham số 'sortBy' vào URL và chuyển hướng trang."
+                },
+                {
+                    title: "3. Sắp xếp danh sách qua LINQ OrderBy",
+                    desc: "HomeController đọc sortBy và gọi LINQ OrderBy/OrderByDescending theo DonGia trước khi kết xuất View."
+                }
+            ],
+            "product-card": [
+                {
+                    title: "1. Khởi tạo card sản phẩm",
+                    desc: "Razor lặp danh sách sản phẩm và hiển thị thông tin tên, ảnh và giá dưới dạng thẻ grid."
+                },
+                {
+                    title: "2. Xác định trạng thái Yêu thích",
+                    desc: "Razor đối chiếu ViewBag.FavoriteProductIds để hiển thị trái tim rỗng (chưa thích) hoặc trái tim đỏ (đã thích)."
+                },
+                {
+                    title: "3. Hiển thị nút thao tác phân quyền",
+                    desc: "Kiểm tra quyền hạn người dùng hiện tại để hiển thị nút Chi tiết/Thêm giỏ (Khách) hoặc Sửa/Xóa (Admin)."
+                }
+            ],
+            "product-image": [
+                {
+                    title: "1. Tải ảnh sản phẩm từ Server",
+                    desc: "Trình duyệt tải ảnh sản phẩm tương ứng từ thư mục '~/img/Hinh/HangHoa/'."
+                },
+                {
+                    title: "2. Kích hoạt sự kiện di chuột (Hover)",
+                    desc: "Lắng nghe sự kiện hover chuột qua các thuộc tính onmouseover và onmouseout được tích hợp."
+                },
+                {
+                    title: "3. Chạy hiệu ứng scale phóng to 1.08",
+                    desc: "CSS thay đổi transform scale ảnh lên 1.08 với hiệu ứng transition mượt mà trong 0.3 giây."
+                }
+            ],
+            "navbar-user": [
+                {
+                    title: "1. Kiểm tra trạng thái đăng nhập",
+                    desc: "Razor kiểm tra User.Identity.IsAuthenticated để xác minh người dùng đã đăng nhập hay chưa."
+                },
+                {
+                    title: "2. Hiển thị Avatar & Tên khách hàng",
+                    desc: "Nếu đã đăng nhập, nạp tên hiển thị và liên kết menu dropdown chứa các tác vụ cá nhân tiện lợi."
+                },
+                {
+                    title: "3. Hiển thị liên kết Đăng nhập/Đăng ký",
+                    desc: "Nếu là khách vãng lai, hiển thị các nút điều hướng dẫn đến trang đăng nhập tài khoản mới."
+                }
+            ],
+            "search-product": [
+                {
+                    title: "1. Mở modal tìm kiếm toàn cục",
+                    desc: "Khách hàng click nút tìm kiếm trên Navbar, kích hoạt Bootstrap Modal trùm màn hình."
+                },
+                {
+                    title: "2. Nhập từ khóa & submit form",
+                    desc: "Nhập tên sản phẩm vào ô tìm kiếm, submit form gửi tham số searchQuery qua phương thức GET."
+                },
+                {
+                    title: "3. Tìm kiếm sản phẩm trong DB",
+                    desc: "HomeController thực hiện truy vấn các sản phẩm có TenHh khớp từ khóa và nạp kết quả lên màn hình chính."
+                }
+            ],
+            "product-sold": [
+                {
+                    title: "1. Nhận danh sách ID hàng hóa",
+                    desc: "HomeController lấy danh sách ID của các sản phẩm đang chuẩn bị hiển thị trên trang."
+                },
+                {
+                    title: "2. Truy vấn & Sum GroupBy (EF Core)",
+                    desc: "Truy vấn bảng ChiTietHd, lọc bỏ hóa đơn hủy (MaTrangThai = -1), nhóm theo MaHh và tính tổng SoLuong đã bán."
+                },
+                {
+                    title: "3. Truyền dữ liệu qua ViewBag",
+                    desc: "Chuyển đổi dữ liệu đếm được thành Dictionary và lưu vào ViewBag.SoldCounts để hiển thị số đã bán lên từng thẻ sản phẩm."
+                }
+            ],
+            "product-actions": [
+                {
+                    title: "1. Xác thực vai trò (User Role)",
+                    desc: "Razor kiểm tra vai trò người dùng hiện tại thông qua ClaimsPrincipal (User.IsInRole)."
+                },
+                {
+                    title: "2. Phân quyền hiển thị hành động",
+                    desc: "Nếu là Admin/Staff: hiển thị nút Sửa/Xóa. Nếu là Khách/Ẩn danh: hiển thị nút Xem chi tiết và Thêm vào giỏ."
+                },
+                {
+                    title: "3. Đăng ký sự kiện Click AJAX",
+                    desc: "Nếu là Khách thường, đăng ký sự kiện gửi AJAX POST lên '/Cart/AddToCartAjax' để thêm sản phẩm tức thì vào giỏ hàng."
+                }
+            ],
+            "cart-table": [
+                {
+                    title: "1. AJAX Delete Trigger",
+                    desc: "Khách hàng click nút xóa (thùng rác). JavaScript bắt sự kiện và lấy MaHh qua thuộc tính data-id."
+                },
+                {
+                    title: "2. Gửi AJAX POST '/Cart/DeleteAjax'",
+                    desc: "Gửi yêu cầu xóa bất đồng bộ lên CartController.cs để loại bỏ sản phẩm này khỏi Session 'GioHang'."
+                },
+                {
+                    title: "3. Hiệu ứng làm mờ FadeOut",
+                    desc: "Khi nhận phản hồi thành công, jQuery chạy `.fadeOut(300)` để ẩn dòng sản phẩm đó trên bảng giỏ hàng trước khi xóa khỏi DOM."
+                },
+                {
+                    title: "4. Tính toán lại tổng tiền giỏ hàng",
+                    desc: "Tự động chạy hàm `calculateCheckedTotal()` để cập nhật lại tổng số tiền thanh toán thực tế tức thời."
+                }
+            ],
+            "cart-totals": [
+                {
+                    title: "1. Theo dõi Checkbox & Số lượng",
+                    desc: "JS lắng nghe sự thay đổi của các ô tích chọn sản phẩm (checkbox) hoặc sự kiện thay đổi số lượng (quantity input)."
+                },
+                {
+                    title: "2. Duyệt qua các hàng được tích chọn",
+                    desc: "Hàm calculateCheckedTotal chạy vòng lặp duyệt qua tất cả các phần tử có class `.item-checkbox:checked`."
+                },
+                {
+                    title: "3. Tính tổng tiền & Số mặt hàng",
+                    desc: "Lấy đơn giá nhân với số lượng của từng hàng được chọn rồi cộng dồn vào tổng số tiền thanh toán."
+                },
+                {
+                    title: "4. Cập nhật giao diện & Nút mua hàng",
+                    desc: "Cập nhật chữ hiển thị tổng tiền ở '#final-total' và tự động khóa/mở nút 'Mua Hàng' nếu số lượng chọn lớn hơn 0."
+                }
+            ],
+            "checkout-address": [
+                {
+                    title: "1. Đọc thông tin cá nhân mặc định",
+                    desc: "Nếu đã đăng nhập, thông tin Họ tên, Email, Điện thoại và Địa chỉ cũ sẽ được tự động điền (autofill) từ Claims."
+                },
+                {
+                    title: "2. Gọi API địa chính provinces.open-api.vn",
+                    desc: "Khi thay đổi Tỉnh/Thành, AJAX gửi mã số tỉnh để nạp danh mục Quận/Huyện, và tiếp tục nạp Phường/Xã tương tự."
+                },
+                {
+                    title: "3. Ràng buộc dữ liệu địa chỉ chi tiết",
+                    desc: "Toàn bộ chuỗi địa chỉ đầy đủ (Số nhà + Xã + Huyện + Tỉnh) được nối chuỗi và cập nhật vào thẻ input ẩn."
+                },
+                {
+                    title: "4. Bám dữ liệu gửi POST (EF Core)",
+                    desc: "Khi submit form Checkout, chuỗi địa chỉ được ánh xạ vào trường DiaChi của HoaDon trong CSDL."
+                }
+            ],
+            "checkout-voucher": [
+                {
+                    title: "1. Chọn voucher giảm giá",
+                    desc: "Khách hàng nhấp vào danh sách voucher khả dụng, kích hoạt hàm applyVoucher(maGg, tenMa, phanTram)."
+                },
+                {
+                    title: "2. Lưu trữ mã voucher ẩn",
+                    desc: "Mã voucher được gán vào input ẩn 'selectedMaGg' để gửi lên Server khi thanh toán đơn hàng."
+                },
+                {
+                    title: "3. Tính tỷ lệ giảm giá trực tiếp",
+                    desc: "JavaScript lấy phần trăm giảm giá của voucher và trừ trực tiếp vào hóa đơn: SoTienGiam = TongTien * (PhanTram / 100)."
+                },
+                {
+                    title: "4. Cập nhật UI & Lưu DB",
+                    desc: "Hiển thị nhãn voucher đã áp dụng thành công và nạp lại tổng tiền cuối cùng phải trả."
+                }
+            ],
+            "checkout-payment": [
+                {
+                    title: "1. Chọn phương thức thanh toán",
+                    desc: "Người dùng lựa chọn hình thức thanh toán (COD - nhận hàng trả tiền hoặc Chuyển khoản ngân hàng)."
+                },
+                {
+                    title: "2. Gửi phương thức qua Form POST",
+                    desc: "Giá trị radio button thanh toán được đính kèm vào trường CachThanhToan khi submit Form đặt hàng."
+                },
+                {
+                    title: "3. Nhận xử lý ở CartController.cs",
+                    desc: "Backend nhận tham số. Nếu là thanh toán chuyển khoản điện tử, hệ thống khởi tạo redirect sang cổng thanh toán trực tuyến."
+                },
+                {
+                    title: "4. Ghi nhận hóa đơn CSDL",
+                    desc: "Lưu phương thức thanh toán vào bảng HoaDon trong database và gửi email thông báo đặt hàng cho khách."
+                }
+            ],
+            "order-lookup-form": [
+                {
+                    title: "1. Nhập mã số vận đơn",
+                    desc: "Khách hàng điền mã số hóa đơn (MaHd) dạng số vào ô nhập liệu bắt buộc."
+                },
+                {
+                    title: "2. Gửi yêu cầu tra cứu (HTTP GET)",
+                    desc: "Gửi request GET lên hành động '/Cart/LookupOrder?orderId=...' để nạp thông tin đơn hàng."
+                },
+                {
+                    title: "3. Tìm kiếm & Trả kết quả",
+                    desc: "Controller tìm kiếm thông tin đơn hàng trong DB. Trả về kết xuất giao diện tiến trình nếu tồn tại, ngược lại báo lỗi."
+                }
+            ],
+            "order-lookup-timeline": [
+                {
+                    title: "1. Đọc trạng thái đơn hàng (MaTrangThai)",
+                    desc: "Razor lấy mã số trạng thái đơn hàng hiện tại từ Model (0: Mới đặt, 1: Đang chuẩn bị, 2: Đang giao, 3: Đã hủy)."
+                },
+                {
+                    title: "2. Đánh dấu mốc tiến trình",
+                    desc: "Đối chiếu mã trạng thái để thêm các class CSS màu sắc tương ứng (xanh lá cho thành công, đỏ cho hủy)."
+                },
+                {
+                    title: "3. Render giao diện timeline",
+                    desc: "Hiển thị các nút tiến độ và đường nối động biểu diễn trực quan quá trình giao nhận cho khách hàng dễ theo dõi."
+                }
+            ],
+            "team-member-card": [
+                {
+                    title: "1. Di chuột vào phân vùng (Hover Zone)",
+                    desc: "Khách hàng di chuột vào 1 trong 3 phân vùng lề Trái, Giữa, Phải vô hình trên thẻ."
+                },
+                {
+                    title: "2. Kích hoạt bộ chọn CSS (Sibling Selector)",
+                    desc: "Sử dụng bộ chọn sibling '~' trong CSS để bắt sự kiện hover của phân vùng đó ảnh hưởng lên thanh trượt ảnh."
+                },
+                {
+                    title: "3. Dịch chuyển thanh trượt (TranslateX)",
+                    desc: "Dịch chuyển thanh trượt ảnh (translateX) sang 0%, -33.33% hoặc -66.66% để đổi ảnh mượt mà không cần JS."
+                }
+            ],
+            "company-values": [
+                {
+                    title: "1. Nạp phông chữ Font Awesome",
+                    desc: "Tải các thư viện biểu tượng vector chất lượng cao phục vụ hiển thị hình ảnh minh họa."
+                },
+                {
+                    title: "2. Thiết kế lưới Responsive Grid",
+                    desc: "Sử dụng các class Bootstrap col-lg-4 để chia lưới đều 3 cột tự động co giãn trên điện thoại/máy tính."
+                },
+                {
+                    title: "3. Hiển thị cam kết dịch vụ",
+                    desc: "Render biểu tượng tấm khiên, xe tải, hoặc nhân viên kết hợp văn bản cam kết để gia tăng lòng tin mua sắm."
+                }
+            ],
+            "footer": [
+                {
+                    title: "1. Render cấu trúc chân trang HTML5",
+                    desc: "Sử dụng thẻ semantic <footer> hoặc <div> chứa class footer để phân vùng chân trang dưới cùng."
+                },
+                {
+                    title: "2. Tải danh sách liên kết nhanh",
+                    desc: "Render các nhóm cột thông tin giới thiệu, chính sách bảo mật, liên hệ và bản đồ của QuaMonHai."
+                },
+                {
+                    title: "3. Đăng ký nhận tin tức (Newsletter)",
+                    desc: "Hiển thị form nhập email đăng ký nhận khuyến mãi gửi về hệ thống tiếp thị của cửa hàng."
+                }
+            ],
+            "chat-bubble": [
+                {
+                    title: "1. Kiểm tra điều kiện phân quyền",
+                    desc: "Hệ thống kiểm tra nếu người dùng hiện tại là Admin hoặc Nhân viên thì ẩn bong bóng chat để tránh đè giao diện."
+                },
+                {
+                    title: "2. Khởi tạo bong bóng chat nổi",
+                    desc: "Nếu là khách, render nút bong bóng chat tròn cố định ở góc dưới bên phải màn hình (CSS position fixed)."
+                },
+                {
+                    title: "3. Nhấp mở khung chat thời gian thực",
+                    desc: "Đăng ký sự kiện Click mở bảng nhập nội dung gửi yêu cầu tư vấn trực tiếp đến phòng hỗ trợ của cửa hàng."
+                }
+            ],
+            "profile-form": [
+                {
+                    title: "1. Nhập thông tin cá nhân mới",
+                    desc: "Khách hàng cập nhật lại Họ tên, Email, Địa chỉ, Ngày sinh hoặc Giới tính trên form."
+                },
+                {
+                    title: "2. Mã hóa đa phần (Multipart Form)",
+                    desc: "Sử dụng thuộc tính enctype='multipart/form-data' để đóng gói kèm tệp ảnh đại diện gửi POST lên Controller."
+                },
+                {
+                    title: "3. Cập nhật Database & Ký lại Cookie",
+                    desc: "Controller lưu ảnh, ghi DB, đồng thời gọi SignInAsync để nạp lại cookie đồng bộ tên mới hiển thị trên Navbar."
+                }
+            ],
+            "profile-avatar-upload": [
+                {
+                    title: "1. Chọn tệp ảnh từ thiết bị",
+                    desc: "Người dùng nhấp nút chọn tệp, input lọc chỉ nhận các định dạng tệp hình ảnh (accept='image/*')."
+                },
+                {
+                    title: "2. Gửi tệp nhị phân qua Form POST",
+                    desc: "Tệp ảnh được đính kèm vào tham số IFormFile fHinh khi submit form lên Server."
+                },
+                {
+                    title: "3. Tạo tên ngẫu nhiên & Lưu trữ vật lý",
+                    desc: "Helper sinh chuỗi Guid duy nhất tránh trùng lặp, lưu tệp vào thư mục 'wwwroot/img/Hinh/KhachHang/' và ghi tên tệp vào DB."
+                }
+            ],
+            "profile-info-fields": [
+                {
+                    title: "1. Ràng buộc binding tag helper",
+                    desc: "Các thẻ input sử dụng asp-for để tự động đồng bộ hóa kiểu dữ liệu từ thực thể KhachHang."
+                },
+                {
+                    title: "2. Xác thực dữ liệu đầu vào (Validation)",
+                    desc: "Kiểm tra tính hợp lệ phía Client (HTML5 required, type='email') trước khi cho phép submit."
+                },
+                {
+                    title: "3. Nạp dữ liệu hiển thị",
+                    desc: "Tự động điền (autofill) các giá trị thông tin cũ đã lưu từ cơ sở dữ liệu lên các ô input tương ứng."
+                }
+            ],
+            "change-password-form": [
+                {
+                    title: "1. Nhập thông tin xác thực mật khẩu",
+                    desc: "Người dùng cung cấp mật khẩu cũ, mật khẩu mới và nhập lại xác nhận mật khẩu mới."
+                },
+                {
+                    title: "2. Kiểm tra đối chiếu băm MD5",
+                    desc: "Controller băm mật khẩu cũ với khóa RandomKey, so sánh với trường MatKhau cũ trong DB để xác minh quyền hạn."
+                },
+                {
+                    title: "3. Lưu mật khẩu băm mới",
+                    desc: "Nếu khớp, băm mật khẩu mới với RandomKey, cập nhật DB và lưu thay đổi thành công."
+                }
+            ],
+            "login-form": [
+                {
+                    title: "1. Nhập tài khoản & Gửi yêu cầu POST",
+                    desc: "Người dùng điền tài khoản, mật khẩu và submit form có đính kèm ReturnUrl."
+                },
+                {
+                    title: "2. Xác thực danh tính (Authentication)",
+                    desc: "Controller kiểm tra tài khoản, băm so khớp mật khẩu và khởi tạo Claims Identity."
+                },
+                {
+                    title: "3. Đăng nhập cookie & Chuyển hướng",
+                    desc: "Ký Cookie đăng nhập và chuyển hướng người dùng quay lại ReturnUrl cũ của họ."
+                }
+            ],
+            "login-recaptcha": [
+                {
+                    title: "1. Render Widget reCAPTCHA v2",
+                    desc: "Thư viện JS của Google nạp khóa công khai SiteKey hiển thị checkbox xác minh không phải robot."
+                },
+                {
+                    title: "2. Đính kèm g-recaptcha-response",
+                    desc: "Khi hoàn tất check, một mã token phản hồi được tạo ra và đính kèm tự động vào Form submit."
+                },
+                {
+                    title: "3. Gọi API Google Verify xác thực",
+                    desc: "Backend dùng HttpClient gửi mã token cùng Secret Key bảo mật lên máy chủ Google để xác minh hợp lệ."
+                }
+            ],
+            "register-form": [
+                {
+                    title: "1. Nhập hồ sơ & Thực hiện gửi OTP",
+                    desc: "Điền các thông tin tài khoản đăng ký và hoàn tất xác thực OTP từ Email."
+                },
+                {
+                    title: "2. Gửi Form POST dữ liệu đăng ký",
+                    desc: "Form đóng gói dữ liệu và tệp ảnh gửi POST lên hành động Register trong CustomerController."
+                },
+                {
+                    title: "3. Lưu cơ sở dữ liệu",
+                    desc: "Hệ thống kiểm tra tồn tại trùng lặp tài khoản, mã hóa bảo mật mật khẩu và tạo mới bản ghi khách hàng."
+                }
+            ],
+            "register-otp-section": [
+                {
+                    title: "1. Yêu cầu mã OTP qua AJAX",
+                    desc: "Nhập email và click 'Gửi mã', AJAX gửi email lên Backend để xử lý."
+                },
+                {
+                    title: "2. Sinh mã OTP & Lưu trữ Session",
+                    desc: "Tạo ngẫu nhiên mã số OTP 6 chữ số và lưu trữ tạm thời trong Session để đối chiếu."
+                },
+                {
+                    title: "3. Kết nối SMTP gửi MailKit",
+                    desc: "Sử dụng SMTP kết nối tài khoản Gmail, gửi thư chứa mã xác nhận đến hộp thư người dùng tức thời."
+                }
+            ],
+            "blog-list": [
+                {
+                    title: "1. Nạp danh mục bài viết",
+                    desc: "Tải danh sách các tin tức và hướng dẫn sử dụng từ cơ sở dữ liệu."
+                },
+                {
+                    title: "2. Mở Modal chi tiết nhanh",
+                    desc: "Sử dụng data-bs-target kích hoạt hộp thoại Bootstrap Modal nạp thông tin bài viết tương ứng."
+                },
+                {
+                    title: "3. Xem nội dung bài viết",
+                    desc: "Hiển thị chi tiết bài viết hướng dẫn sử dụng sản phẩm hoặc tin tức của cửa hàng."
+                }
+            ],
+            "product-detail": [
+                {
+                    title: "1. Nạp ID hàng hóa & Truy vấn dữ liệu",
+                    desc: "Truy vấn thông tin chi tiết của hàng hóa kèm các đánh giá, mã giảm giá liên quan."
+                },
+                {
+                    title: "2. Tính toán mức giá khuyến mãi",
+                    desc: "Tính giá bán thực tế sau khi trừ đi tỷ lệ phần trăm giảm giá trực tiếp qua C# trên Razor."
+                },
+                {
+                    title: "3. Cập nhật lượt xem (SoLanXem)",
+                    desc: "Tự động cộng thêm 1 vào trường SoLanXem của hàng hóa trong cơ sở dữ liệu và lưu thay đổi."
+                }
+            ],
+            "wishlist-remove-btn": [
+                {
+                    title: "1. Kích hoạt sự kiện click Bỏ thích",
+                    desc: "Khách hàng nhấp nút thả tim đỏ trong lưới danh sách sản phẩm yêu thích."
+                },
+                {
+                    title: "2. Gửi AJAX ToggleFavorite",
+                    desc: "Gửi request AJAX POST chứa ID sản phẩm lên hành động ToggleFavorite để xóa bản ghi khỏi DB."
+                },
+                {
+                    title: "3. Hiệu ứng phai mờ FadeOut",
+                    desc: "Khi nhận phản hồi thành công, jQuery chạy hiệu ứng fadeOut(400) làm biến mất card sản phẩm đó trên màn hình."
+                }
+            ],
+            "forgot-password-form": [
+                {
+                    title: "1. Điền form khôi phục mật khẩu",
+                    desc: "Khách hàng cung cấp Tên đăng nhập và Email chính xác liên kết với tài khoản."
+                },
+                {
+                    title: "2. Kiểm khớp dữ liệu Backend",
+                    desc: "Backend kiểm tra sự tồn tại của KhachHang khớp chính xác MaKh và Email đã nhập."
+                },
+                {
+                    title: "3. Sinh OTP & Gửi Email MailKit",
+                    desc: "Sinh mã OTP ngẫu nhiên 6 chữ số, lưu trữ vào Session, đồng thời chuyển tiếp email bằng MailKit SMTP Gmail bảo mật."
+                },
+                {
+                    title: "4. Định tuyến ResetPassword",
+                    desc: "Redirect khách hàng sang trang nhập mã xác nhận khôi phục ResetPassword."
+                }
+            ],
+            "reset-password-form": [
+                {
+                    title: "1. Điền mã OTP & Mật khẩu mới",
+                    desc: "Người dùng cung cấp mã OTP 6 số nhận từ email, mật khẩu mới và xác nhận mật khẩu mới."
+                },
+                {
+                    title: "2. So khớp OTP Session",
+                    desc: "Controller đối chiếu mã người dùng nhập với mã 'ResetPasswordCode' lưu trong Session."
+                },
+                {
+                    title: "3. Sinh khóa bảo mật muối mới",
+                    desc: "Tạo ngẫu nhiên RandomKey mới, băm MD5 mật khẩu mới kết hợp khóa muối đó để lưu vào DB."
+                },
+                {
+                    title: "4. Invalidate Session & Redirect",
+                    desc: "Hủy mã trong Session tránh dùng lại và chuyển hướng người dùng về trang Đăng nhập."
+                }
+            ],
+            "pagination": [
+                {
+                    title: "1. Tính toán số lượng trang",
+                    desc: "Lấy tổng số sản phẩm chia cho số sản phẩm mỗi trang để tính tổng số trang (totalPages)."
+                },
+                {
+                    title: "2. Giữ nguyên tham số truy vấn cũ",
+                    desc: "Đọc các tham số lọc tìm kiếm (sortBy, priceRange, loaiId) từ Context.Request để đính kèm vào link chuyển trang."
+                },
+                {
+                    title: "3. Tự động chuyển trang & Reload",
+                    desc: "Khi nhấp số trang, trình duyệt chuyển hướng nạp lại danh sách sản phẩm khớp với số trang và tham số lọc tương ứng."
+                }
+            ],
+            "detail-back-btn": [
+                {
+                    title: "1. Tạo thẻ điều hướng Index",
+                    desc: "Sử dụng tag helper 'asp-action=Index asp-controller=Home' để tạo liên kết quay lại cửa hàng chính."
+                },
+                {
+                    title: "2. Click chuyển GET request",
+                    desc: "Người dùng click nút, trình duyệt chuyển GET request để nạp lại trang chủ Index."
+                },
+                {
+                    title: "3. Khởi tạo lại cửa hàng",
+                    desc: "Render lại trang chủ cùng toàn bộ cấu hình bộ lọc ban đầu."
+                }
+            ],
+            "detail-image": [
+                {
+                    title: "1. Render hình ảnh lớn",
+                    desc: "Hiển thị ảnh đại diện hàng hóa với kích thước lớn sắc nét."
+                },
+                {
+                    title: "2. Lắng nghe Hover di chuột",
+                    desc: "CSS & Inline JS bắt sự kiện 'onmouseover' và 'onmouseout' trên khung ảnh."
+                },
+                {
+                    title: "3. Phóng to mượt mà scale(1.08)",
+                    desc: "Tự động kích hoạt thuộc tính transform scale(1.08) kéo dài trong 0.4 giây cực kỳ sinh động."
+                }
+            ],
+            "detail-stats": [
+                {
+                    title: "1. Tổng hợp chỉ số sản phẩm",
+                    desc: "Controller truy vấn các phản hồi đánh giá và lượt mua bán của sản phẩm."
+                },
+                {
+                    title: "2. Tính điểm đánh giá sao trung bình",
+                    desc: "EF Core thực hiện lệnh Average trên cột 'Sao' của bảng BinhLuan khớp MaHh."
+                },
+                {
+                    title: "3. Đọc số lượng đã bán & lượt xem",
+                    desc: "Nạp tổng số đã bán qua ChiTietHd và cộng 1 vào cột SoLanXem của HangHoa."
+                }
+            ],
+            "detail-price": [
+                {
+                    title: "1. Lấy đơn giá & tỷ lệ giảm giá",
+                    desc: "Đọc giá trị DonGia gốc và tỷ lệ GiamGia% được cấu hình cho hàng hóa."
+                },
+                {
+                    title: "2. Tính giá bán khuyến mãi thực tế",
+                    desc: "Razor áp dụng công thức: salePrice = DonGia * (1 - GiamGia / 100) trực tiếp trên giao diện."
+                },
+                {
+                    title: "3. Render phân lớp giá nổi bật",
+                    desc: "Nếu giảm giá > 0, hiển thị giá cũ gạch ngang nhạt màu và nổi bật giá khuyến mãi màu đỏ."
+                }
+            ],
+            "detail-vouchers": [
+                {
+                    title: "1. Nạp voucher ưu đãi hoạt động",
+                    desc: "Tải danh mục các mã giảm giá GiamGia còn hiệu lực thời gian và số lượng từ DB."
+                },
+                {
+                    title: "2. Render các chip ưu đãi",
+                    desc: "Hiển thị danh sách các mã giảm dưới dạng huy hiệu (badge) màu đỏ rực rỡ."
+                },
+                {
+                    title: "3. Nhấp đúp sao chép coupon",
+                    desc: "Khi khách nhấp chip, JS gọi API 'navigator.clipboard.writeText' sao chép mã code vào khay nhớ tạm."
+                }
+            ],
+            "detail-specs": [
+                {
+                    title: "1. Eager Loading danh mục & NSX",
+                    desc: "Controller sử dụng Include('MaLoaiNavigation').Include('MaNccNavigation') để nạp dữ liệu liên đới."
+                },
+                {
+                    title: "2. Bind thông số kỹ thuật",
+                    desc: "Razor hiển thị Tên loại, Tên nhà cung cấp và Đơn vị tính của hàng hóa."
+                },
+                {
+                    title: "3. Kiểm tra số lượng tồn kho",
+                    desc: "Hiển thị số lượng sản phẩm hiện có trong kho hàng (SoLuong) để thúc đẩy hành vi mua hàng."
+                }
+            ],
+            "detail-qty-select": [
+                {
+                    title: "1. Nhận số lượng tồn kho tối đa",
+                    desc: "Gán giá trị Model.SoLuong vào thuộc tính data-max của ô input số lượng chọn mua."
+                },
+                {
+                    title: "2. Click nút tăng/giảm (+/-)",
+                    desc: "Lắng nghe sự kiện click gọi hàm decreaseQty() hoặc increaseQty() phía Client."
+                },
+                {
+                    title: "3. Khống chế giới hạn số lượng",
+                    desc: "JS ngăn chặn số lượng giảm xuống dưới 1 hoặc vượt quá số lượng hàng hiện có trong kho."
+                }
+            ],
+            "detail-add-to-cart": [
+                {
+                    title: "1. Đọc mã hàng hóa & số lượng",
+                    desc: "Lấy MaHh từ data-id của nút bấm và số lượng người dùng đã tích chọn ở ô input."
+                },
+                {
+                    title: "2. Gửi AJAX POST '/Cart/AddToCartAjax'",
+                    desc: "Gửi tham số MaHh và số lượng lên Backend xử lý thêm vào Session giỏ hàng."
+                },
+                {
+                    title: "3. Nạp và phản hồi giỏ hàng",
+                    desc: "CartController thêm mới hoặc cộng dồn số lượng, trả về tổng số lượng hàng hiện tại trong giỏ."
+                },
+                {
+                    title: "4. Đồng bộ hóa số lượng trên Navbar",
+                    desc: "Nhận response success, JS cập nhật lại con số hiển thị trên biểu tượng giỏ hàng ở Navbar."
+                }
+            ],
+            "detail-wishlist-toggle": [
+                {
+                    title: "1. Nhấp biểu tượng Trái tim",
+                    desc: "Khách hàng click nút thả tim yêu thích sản phẩm ở trang chi tiết."
+                },
+                {
+                    title: "2. Gửi AJAX POST '/Customer/ToggleFavorite'",
+                    desc: "Gửi MaHh lên Controller xác thực trạng thái yêu thích của khách hiện tại."
+                },
+                {
+                    title: "3. Thêm mới / Xóa bỏ trong CSDL",
+                    desc: "Nếu đã thích: xóa bản ghi trong bảng YeuThich. Nếu chưa thích: tạo mới bản ghi với thời gian hiện tại."
+                },
+                {
+                    title: "4. Cập nhật diện mạo trái tim",
+                    desc: "Nhận phản hồi, thay đổi icon tim đỏ (solid) hoặc tim viền rỗng tương ứng để phản hồi người dùng."
+                }
+            ],
+            "detail-tabs-nav": [
+                {
+                    title: "1. Nhấp tab chọn phân vùng",
+                    desc: "Khách click vào tiêu đề Mô tả hoặc Đánh giá trên menu tab."
+                },
+                {
+                    title: "2. Kích hoạt thuộc tính Bootstrap Tab",
+                    desc: "Bộ thư viện Bootstrap kích hoạt class active cho tab tương ứng và đổi trạng thái aria-selected."
+                },
+                {
+                    title: "3. Trượt mở phân khu nội dung",
+                    desc: "Ẩn pane cũ, chạy hiệu ứng fade in hiển thị pane nội dung được chọn mượt mà."
+                }
+            ],
+            "detail-desc-tab": [
+                {
+                    title: "1. Tải văn bản mô tả",
+                    desc: "Razor nạp trường dữ liệu Model.MoTa chứa thông tin chi tiết cấu tạo sản phẩm."
+                },
+                {
+                    title: "2. Bảo toàn định dạng văn bản",
+                    desc: "Sử dụng CSS 'white-space: pre-line' giúp hiển thị đúng các dấu xuống dòng và khoảng trắng được Admin soạn thảo."
+                },
+                {
+                    title: "3. Bố cục hiển thị tối ưu",
+                    desc: "Văn bản được căn chỉnh đều, dễ đọc bên trong khung tab chi tiết."
+                }
+            ],
+            "detail-reviews-list": [
+                {
+                    title: "1. Truy vấn các bình luận sản phẩm",
+                    desc: "Nạp danh sách các bản ghi từ bảng BinhLuan có MaHh khớp sản phẩm đang xem."
+                },
+                {
+                    title: "2. Render thông tin đánh giá",
+                    desc: "Lặp hiển thị Tên khách bình luận (HoTen), thời gian gửi và nội dung bình luận chi tiết."
+                },
+                {
+                    title: "3. Hiển thị sao xếp hạng",
+                    desc: "Sử dụng vòng lặp xuất ra số biểu tượng ngôi sao màu vàng tương ứng với điểm đánh giá cột Sao."
+                }
+            ],
+            "detail-reviews-form": [
+                {
+                    title: "1. Kiểm tra điều kiện viết đánh giá",
+                    desc: "Hệ thống truy vấn DB xem khách hàng đã mua sản phẩm này thành công hay chưa."
+                },
+                {
+                    title: "2. Giới hạn số lượng phản hồi",
+                    desc: "Đếm số bình luận cũ của khách hàng với sản phẩm này, đảm bảo không vượt quá số lượng hàng đã mua."
+                },
+                {
+                    title: "3. Nhập liệu & gửi POST SendReview",
+                    desc: "Khách chọn số sao (1-5), điền văn bản ý kiến và submit form gửi lên Server."
+                },
+                {
+                    title: "4. Lưu CSDL & Tải lại luồng bình luận",
+                    desc: "Tạo thực thể BinhLuan mới, chạy saveChanges để lưu vào CSDL và cập nhật giao diện nạp review mới."
+                }
+            ],
+            "detail-related-products": [
+                {
+                    title: "1. Lọc sản phẩm tương tự cùng danh mục",
+                    desc: "Tìm các HangHoa có MaLoai khớp với sản phẩm hiện tại nhưng loại trừ MaHh đang xem."
+                },
+                {
+                    title: "2. Giới hạn 4 sản phẩm nổi bật",
+                    desc: "Sử dụng `.Take(4)` trong LINQ để lấy ngẫu nhiên hoặc theo thứ tự 4 sản phẩm tương thích nhất."
+                },
+                {
+                    title: "3. Render lưới sản phẩm gợi ý",
+                    desc: "Hiển thị danh sách card nhỏ kèm ảnh, tên và giá bán khuyến mãi giúp gia tăng doanh số."
+                }
+            ],
+            "admin-chat-dashboard": [
+                {
+                    title: "1. Nạp danh sách phòng chat khách hàng",
+                    desc: "Tải toàn bộ phòng chat đang hoạt động và số lượng tin nhắn chưa đọc lên bảng điều khiển Admin."
+                },
+                {
+                    title: "2. Lấy lịch sử hội thoại",
+                    desc: "Khi Admin chọn phòng, gửi AJAX lấy tin nhắn của phòng đó và đánh dấu các tin nhắn chưa đọc thành 'Đã đọc'."
+                },
+                {
+                    title: "3. Gửi tin nhắn phản hồi",
+                    desc: "Admin gõ văn bản trả lời và gửi POST lên hành động ReplyMessage để lưu tin nhắn phản hồi mới vào DB."
+                }
+            ],
+            "admin-order-management": [
+                {
+                    title: "1. Xem danh sách đơn hàng",
+                    desc: "Tải toàn bộ đơn hàng trong hệ thống kèm trạng thái đơn và thông tin chi tiết khách đặt mua."
+                },
+                {
+                    title: "2. Cập nhật tiến trình đơn hàng",
+                    desc: "Admin chọn trạng thái mới (Đã giao, Hủy, Đang xử lý) và submit form cập nhật."
+                },
+                {
+                    title: "3. Lưu thay đổi cơ sở dữ liệu",
+                    desc: "Cập nhật MaTrangThai của đơn hàng trong DB, chạy saveChanges để xác nhận tiến độ giao nhận mới."
+                }
+            ],
+            "admin-review-management": [
+                {
+                    title: "1. Duyệt danh sách bình luận đánh giá",
+                    desc: "Liệt kê đầy đủ các phản hồi đánh giá kèm số sao của khách hàng đối với từng sản phẩm."
+                },
+                {
+                    title: "2. Xử lý kiểm duyệt (Xóa đánh giá)",
+                    desc: "Admin nhấp nút xóa đối với bình luận vi phạm chính sách hoặc chứa nội dung nhạy cảm."
+                },
+                {
+                    title: "3. Xóa bản ghi khỏi DB",
+                    desc: "Gửi Form POST xóa bản ghi BinhLuan tương ứng và cập nhật giao diện điều hành."
+                }
+            ],
+            "admin-user-management": [
+                {
+                    title: "1. Xem danh sách tài khoản thành viên",
+                    desc: "Tải danh sách khách hàng gồm tên, email, điện thoại, vai trò và trạng thái hiệu lực hoạt động."
+                },
+                {
+                    title: "2. Thay đổi vai trò hoặc Khóa tài khoản",
+                    desc: "Admin thay đổi vai trò (VaiTro = 1: Admin, 2: Staff, 0: Customer) hoặc bật/tắt kích hoạt hiệu lực tài khoản."
+                },
+                {
+                    title: "3. Lưu Database & Áp dụng thay đổi",
+                    desc: "Cập nhật trường VaiTro/HieuLuc của KhachHang tương ứng trong CSDL và lưu thay đổi thành công."
+                }
+            ],
+            "order-history": [
+                {
+                    title: "1. Đọc lịch sử đơn hàng thành viên",
+                    desc: "CartController đọc mã khách hàng từ Claims, tiến hành truy vấn danh sách hóa đơn từ bảng HoaDon."
+                },
+                {
+                    title: "2. Lọc đơn hàng & Tìm kiếm",
+                    desc: "Lọc hóa đơn theo MaTrangThai hoặc tìm theo từ khóa tên người nhận/mã vận đơn bằng LINQ."
+                },
+                {
+                    title: "3. Tải chi tiết các mặt hàng mua",
+                    desc: "Eager loading nạp bảng ChiTietHd kèm thông tin HangHoa tương ứng để hiển thị trọn vẹn danh mục mua."
+                },
+                {
+                    title: "4. Hiển thị danh sách tiến độ",
+                    desc: "Render bảng lịch sử đơn hàng kèm nút 'Xem chi tiết/Tra cứu' trạng thái vận đơn trực quan."
+                }
+            ],
+            "about-content": [
+                {
+                    title: "1. Thiết kế bố cục AboutUs",
+                    desc: "Bố trí mạng lưới hiển thị thông tin giới thiệu, tầm nhìn và triết lý kinh doanh của QuaMonHai."
+                },
+                {
+                    title: "2. Định dạng kiểu chữ Typography",
+                    desc: "Áp dụng kiểu chữ Google Fonts sang trọng và bố cục hình ảnh minh họa tinh tế."
+                },
+                {
+                    title: "3. Tải các thông số uy tín",
+                    desc: "Hiển thị các chỉ số cam kết phục vụ chất lượng để thuyết phục khách hàng."
+                }
+            ],
+            "customer-sidebar": [
+                {
+                    title: "1. Nạp khung menu Cabinet",
+                    desc: "Hiển thị menu quản lý cá nhân bên trái của khu vực thông tin tài khoản Khách hàng."
+                },
+                {
+                    title: "2. Nhận diện vị trí trang hiện hành",
+                    desc: "JS đọc URL hiện tại để gán class active làm nổi bật mục menu tương ứng."
+                },
+                {
+                    title: "3. Chuyển hướng tác vụ tài khoản",
+                    desc: "Nhấp chuột chuyển đổi nhanh giữa các trang Hồ sơ, Đổi mật khẩu, Lịch sử mua hàng, Sản phẩm yêu thích."
+                }
+            ],
+            "wishlist-table": [
+                {
+                    title: "1. Tải danh mục sản phẩm yêu thích",
+                    desc: "Controller truy vấn các HangHoa nằm trong danh sách thả tim của khách hàng từ bảng YeuThich."
+                },
+                {
+                    title: "2. Render lưới sản phẩm ưa thích",
+                    desc: "Razor xuất dữ liệu thành lưới thẻ Card sản phẩm bắt mắt kèm nút mua nhanh."
+                },
+                {
+                    title: "3. Tích hợp nút hủy nhanh",
+                    desc: "Mỗi thẻ card chứa nút Bỏ thích tích hợp AJAX giúp tối ưu trải nghiệm khách hàng."
+                }
+            ],
+            "order-success": [
+                {
+                    title: "1. Chuyển hướng sau thanh toán",
+                    desc: "Khi lưu hóa đơn thành công, CartController.cs chuyển hướng người dùng sang URL OrderSuccess kèm mã đơn."
+                },
+                {
+                    title: "2. Truy vấn hóa đơn hoàn tất",
+                    desc: "Tải thông tin hóa đơn chi tiết, các sản phẩm đã mua và phí giao nhận để tổng kết hiển thị."
+                },
+                {
+                    title: "3. Làm trống Giỏ hàng Session",
+                    desc: "Backend dọn sạch Session 'GioHang' để đặt lại giỏ hàng về trống cho lần mua sau."
+                },
+                {
+                    title: "4. Hoàn tất kết xuất giao diện",
+                    desc: "Hiển thị màn hình đặt hàng thành công đầy cảm hứng kèm lời cảm ơn và các nút tác vụ đi kèm."
+                }
+            ],
+            "order-summary-info": [
+                {
+                    title: "1. Báo cáo thông tin giao nhận",
+                    desc: "Razor nạp và hiển thị Họ tên người nhận, Số điện thoại và địa chỉ giao hàng của đơn hàng."
+                },
+                {
+                    title: "2. Hiển thị phương thức thanh toán",
+                    desc: "Đọc cách thanh toán để ghi nhận hình thức COD hoặc cổng thanh toán trực tuyến."
+                },
+                {
+                    title: "3. Định dạng hộp thông tin",
+                    desc: "Bọc nội dung bằng khung card Bootstrap đẹp mắt và trực quan."
+                }
+            ],
+            "order-success-items": [
+                {
+                    title: "1. Duyệt chi tiết hàng hóa đã mua",
+                    desc: "Razor lặp qua danh sách ChiTietHds đính kèm trong Model đơn hàng thành công."
+                },
+                {
+                    title: "2. Hiển thị dòng sản phẩm chi tiết",
+                    desc: "Hiển thị ảnh thu nhỏ (thumbnail), tên sản phẩm, số lượng đặt mua và thành tiền tương ứng."
+                },
+                {
+                    title: "3. Tổng kết hóa đơn tài chính",
+                    desc: "Tính toán tổng tiền sản phẩm, cộng phí vận chuyển mặc định (30k) và trừ khuyến mãi để xuất tổng thanh toán."
+                }
+            ],
+            "order-success-actions": [
+                {
+                    title: "1. Render các nút hành động nhanh",
+                    desc: "Hiển thị hai nút tác vụ chính ở cuối trang xác nhận đặt hàng thành công."
+                },
+                {
+                    title: "2. Click 'Lịch sử đơn hàng'",
+                    desc: "Dẫn khách hàng đến trang tra cứu lịch sử mua sắm để theo dõi trạng thái vận chuyển."
+                },
+                {
+                    title: "3. Click 'Tiếp tục mua sắm'",
+                    desc: "Điều hướng người dùng quay trở lại trang chủ Index để tiếp tục xem các sản phẩm khác."
+                }
+            ],
+            "product-create-form": [
+                {
+                    title: "1. Xác thực quyền hạn Admin/Staff",
+                    desc: "Kiểm tra quyền truy cập của tài khoản quản lý trước khi nạp trang thêm sản phẩm."
+                },
+                {
+                    title: "2. Điền thông tin & Upload ảnh",
+                    desc: "Admin điền biểu mẫu, tải ảnh sản phẩm lên. Form sử dụng mã hóa multipart/form-data."
+                },
+                {
+                    title: "3. Tạo tên Alias & Upload vật lý",
+                    desc: "Backend tự động sinh Slug URL cho sản phẩm, lưu tệp ảnh vật lý vào thư mục hàng hóa thông qua Helper."
+                },
+                {
+                    title: "4. Lưu CSDL & Quay về quản lý",
+                    desc: "Thêm thực thể HangHoa mới vào DbContext, chạy SaveChanges và redirect về trang danh sách sản phẩm."
+                }
+            ],
+            "product-create-fields": [
+                {
+                    title: "1. Ràng buộc binding tag helper",
+                    desc: "Các ô input sử dụng thuộc tính asp-for khớp với các trường thuộc tính của HangHoa Model."
+                },
+                {
+                    title: "2. Cấu hình Dropdown khóa ngoại",
+                    desc: "Hiển thị hộp chọn Dropdown nạp danh mục Loại sản phẩm và Nhà cung cấp từ CSDL."
+                },
+                {
+                    title: "3. Ràng buộc Validation phía Client",
+                    desc: "HTML5 required và các thuộc tính min/max ngăn chặn nhập liệu sai giá hoặc số lượng."
+                }
+            ],
+            "product-edit-form": [
+                {
+                    title: "1. Tải dữ liệu sản phẩm cũ (GET)",
+                    desc: "Admin bấm Sửa, Controller tải thực thể HangHoa cũ theo ID để điền sẵn vào các ô input."
+                },
+                {
+                    title: "2. Nhận dữ liệu cập nhật (POST)",
+                    desc: "Admin thay đổi thông tin và submit form gửi POST dữ liệu mới lên Server."
+                },
+                {
+                    title: "3. Xử lý tệp hình ảnh mới",
+                    desc: "Nếu có tệp ảnh mới, tải lên thay thế ảnh cũ; ngược lại giữ nguyên tên ảnh cũ qua hidden input."
+                },
+                {
+                    title: "4. Lưu DB & Redirect",
+                    desc: "Gọi _context.Update để cập nhật thay đổi thực thể và lưu DB thành công."
+                }
+            ],
+            "product-edit-fields": [
+                {
+                    title: "1. Báo cáo ảnh hiện tại",
+                    desc: "Hiển thị khung hình ảnh cũ đang sử dụng của sản phẩm để Admin dễ đối chiếu."
+                },
+                {
+                    title: "2. Input chỉnh số lượng tồn kho",
+                    desc: "Cung cấp ô nhập số lượng sản phẩm hiện có trong kho hàng (SoLuong) để điều tiết bán hàng."
+                },
+                {
+                    title: "3. Hidden fields bảo toàn dữ liệu",
+                    desc: "Sử dụng các thẻ hidden lưu giữ MaHh và số lượt xem cũ tránh bị ghi đè dữ liệu rác."
+                }
+            ],
+            "product-delete-confirm": [
+                {
+                    title: "1. GET xác nhận tắt sản phẩm",
+                    desc: "Nạp thông tin chi tiết sản phẩm muốn ngưng bán và hiển thị hộp cảnh báo cho Admin."
+                },
+                {
+                    title: "2. POST xác nhận soft-delete",
+                    desc: "Khi Admin đồng ý, gửi POST yêu cầu ngưng kích hoạt lên HangHoasController."
+                },
+                {
+                    title: "3. Chuyển trạng thái HieuLuc = false",
+                    desc: "Thay đổi cột HieuLuc thành false (không xóa vĩnh viễn khỏi DB để bảo toàn lịch sử hóa đơn)."
+                },
+                {
+                    title: "4. Lưu CSDL & Cập nhật danh sách",
+                    desc: "Lưu thay đổi vào CSDL và quay trở lại trang danh sách quản lý sản phẩm chính."
+                }
+            ],
+            "product-delete-form": [
+                {
+                    title: "1. Form ẩn chứa mã sản phẩm",
+                    desc: "Form chứa thẻ hidden input lưu giữ MaHh của sản phẩm cần ngưng bán."
+                },
+                {
+                    title: "2. Submit yêu cầu soft-delete",
+                    desc: "Admin nhấp nút xác nhận gửi yêu cầu POST bảo mật lên Server."
+                },
+                {
+                    title: "3. Điều hướng thoát an toàn",
+                    desc: "Cung cấp liên kết Hủy quay lại để Admin dễ dàng hủy thao tác nếu nhấp nhầm."
+                }
+            ],
+            "customer-order-history": [
+                {
+                    title: "1. Đọc lịch sử đơn hàng thành viên",
+                    desc: "CartController đọc mã khách hàng từ Claims, tiến hành truy vấn danh sách hóa đơn từ bảng HoaDon."
+                },
+                {
+                    title: "2. Lọc đơn hàng & Tìm kiếm",
+                    desc: "Lọc hóa đơn theo MaTrangThai hoặc tìm theo từ khóa tên người nhận/mã vận đơn bằng LINQ."
+                },
+                {
+                    title: "3. Tải chi tiết các mặt hàng mua",
+                    desc: "Eager loading nạp bảng ChiTietHd kèm thông tin HangHoa tương ứng để hiển thị trọn vẹn danh mục mua."
+                },
+                {
+                    title: "4. Hiển thị danh sách tiến độ",
+                    desc: "Render bảng lịch sử đơn hàng kèm nút 'Xem chi tiết/Tra cứu' trạng thái vận đơn trực quan."
+                }
+            ]
+        };
+
+        function renderWorkflowUI(data) {
+            inspectWorkflowContainer.innerHTML = "";
+            let steps = data.workflow;
+            const id = lastSelectedId;
+            
+            if (!steps || steps.length === 0) {
+                steps = workflowDb[id] || [];
+                if (steps.length === 0) {
+                    // Context-aware smart MVC generator based on properties present
+                    const hasController = !!data.controller || (data.desc && data.desc.toLowerCase().includes("controller"));
+                    const hasModel = !!data.model || (data.desc && (data.desc.toLowerCase().includes("model") || data.desc.toLowerCase().includes("csdl") || data.desc.toLowerCase().includes("database")));
+                    
+                    steps = [
+                        {
+                            title: "1. Hiển thị Giao diện (Razor View CSHTML)",
+                            desc: `Thành phần <strong>${data.title}</strong> được kết xuất trên trình duyệt. Lắng nghe sự kiện người dùng tương tác.`
+                        }
+                    ];
+                    
+                    if (hasController) {
+                        steps.push({
+                            title: "2. Gửi Yêu cầu & Nhận xử lý (C# Controller)",
+                            desc: "Request được gửi lên Backend. Controller tiếp nhận tham số từ URL/Form và xử lý kiểm duyệt bảo mật."
+                        });
+                    } else {
+                        steps.push({
+                            title: "2. Định tuyến URL & Xử lý (Routing Engine)",
+                            desc: "Hệ thống định tuyến ASP.NET Core phân tích yêu cầu để ánh xạ URL đến tài nguyên xử lý tương thích."
+                        });
+                    }
+                    
+                    if (hasModel) {
+                        steps.push({
+                            title: "3. Truy vấn Dữ liệu thực thể (Entity Framework Model)",
+                            desc: "Entity Framework Core truy vấn cơ sở dữ liệu SQL Server qua các Class Entity Model để lấy hoặc cập nhật thông tin."
+                        });
+                    } else {
+                        steps.push({
+                            title: "3. Chuyển tải dữ liệu (ViewBag / ViewBag Binding)",
+                            desc: "Nạp dữ liệu cấu hình hoặc trạng thái từ Session, Cookie hoặc ViewBag để chuẩn bị kết xuất giao diện phản hồi."
+                        });
+                    }
+                    
+                    steps.push({
+                        title: "4. Render phản hồi & Đồng bộ DOM (UI Rendering)",
+                        desc: "Máy chủ trả về kết quả. JavaScript client-side cập nhật lại giao diện DOM và kích hoạt các hiệu ứng hoạt họa mượt mà."
+                    });
+            }
+        }
+
+            const timeline = document.createElement("div");
+            timeline.className = "workflow-timeline";
+            
+            steps.forEach((step, idx) => {
+                const stepEl = document.createElement("div");
+                stepEl.className = "workflow-step";
+                stepEl.style.animationDelay = `${idx * 0.12}s`;
+                
+                stepEl.innerHTML = `
+                    <div class="workflow-badge ${idx === 0 ? 'workflow-badge-pulsing' : ''}">${idx + 1}</div>
+                    <div class="workflow-card">
+                        <h6 class="fw-bold text-warning mb-1" style="font-size: 0.82rem;"><i class="fa-solid fa-circle-check text-success me-1.5" style="font-size:0.75rem;"></i>${step.title}</h6>
+                        <p class="text-white-50 small mb-0 lh-sm" style="font-size:0.75rem;">${step.desc}</p>
+                    </div>
+                `;
+                timeline.appendChild(stepEl);
+            });
+            
+            inspectWorkflowContainer.appendChild(timeline);
+        }
+
+        function updateSubTabUI() {
+            const data = inspectorDb[lastSelectedId];
+            if (!data) return;
+
+            btnSubView.classList.remove("active");
+            btnSubController.classList.remove("active");
+            btnSubModel.classList.remove("active");
+            btnSubWorkflow.classList.remove("active");
+
+            if (activeSubTab === "workflow") {
+                inspectCodeWrapper.classList.add("d-none");
+                inspectWorkflowContainer.classList.remove("d-none");
+                btnSubWorkflow.classList.add("active");
+                renderWorkflowUI(data);
+            } else {
+                inspectCodeWrapper.classList.remove("d-none");
+                inspectWorkflowContainer.classList.add("d-none");
+
+                if (activeSubTab === "view") {
+                    btnSubView.classList.add("active");
+                    inspectCode.innerHTML = data.code;
+                } else if (activeSubTab === "controller") {
+                    btnSubController.classList.add("active");
+                    inspectCode.innerHTML = data.controller || `// Controller C# code not available.`;
+                } else if (activeSubTab === "model") {
+                    btnSubModel.classList.add("active");
+                    inspectCode.innerHTML = data.model || `// Model C# code not available.`;
+                }
+            }
+        }
+
+        btnSubView.addEventListener("click", () => {
+            activeSubTab = "view";
+            updateSubTabUI();
+        });
+
+        btnSubController.addEventListener("click", () => {
+            activeSubTab = "controller";
+            updateSubTabUI();
+        });
+
+        btnSubModel.addEventListener("click", () => {
+            activeSubTab = "model";
+            updateSubTabUI();
+        });
+
+        btnSubWorkflow.addEventListener("click", () => {
+            activeSubTab = "workflow";
+            updateSubTabUI();
+        });
                 const loginFieldsEntry = {
             title: "Trường Nhập Đăng Nhập (Login Input Fields)",
             desc: "<strong>HƯỚNG DẪN HOẠT ĐỘNG:</strong><br>1. Ô nhập Tên đăng nhập và Mật khẩu của khách hàng.<br>2. So sánh mật khẩu bằng cách băm MD5 kết hợp với RandomKey muối bảo mật trong Database.<br>3. Thiết lập Claims và đăng nhập phiên bằng Cookie Authentication.",
-            code: `<span class="cm">// ViewModel: ViewModels/LoginVM.cs</span>\n<span class="kw">public class</span> <span class="vr">LoginVM</span> {\n    [<span class="vr">Display</span>(Name = <span class="st">"Tên đăng nhập"</span>), <span class="vr">Required</span>(ErrorMessage = <span class="st">"Chưa nhập tên đăng nhập"</span>)]\n    [<span class="vr">MaxLength</span>(20, ErrorMessage = <span class="st">"Tối đa 20 ký tự"</span>)]\n    <span class="kw">public string</span> UserName { <span class="kw">get</span>; <span class="kw">set</span>; }\n\n    [<span class="vr">Display</span>(Name = <span class="st">"Mật khẩu"</span>), <span class="vr">Required</span>(ErrorMessage = <span class="st">"Chưa nhập mật khẩu"</span>)]\n    [<span class="vr">DataType</span>(<span class="vr">DataType</span>.Password)]\n    <span class="kw">public string</span> Password { <span class="kw">get</span>; <span class="kw">set</span>; }\n    <span class="kw">public string</span>? RecaptchaResponse { <span class="kw">get</span>; <span class="kw">set</span>; }\n}\n\n&lt;!-- Nhóm input thông tin đăng nhập trong Login.cshtml --&gt;\n&lt;div class="form-floating mb-4"&gt;\n    &lt;input asp-for="UserName" class="form-control" placeholder="Tên đăng nhập" /&gt;\n&lt;/div&gt;\n&lt;div class="form-floating mb-4"&gt;\n    &lt;input asp-for="Password" type="password" class="form-control" /&gt;\n&lt;/div&gt;\n\n// C# Backend xử lý Claims trong CustomerController.cs\nvar khachHang = db.KhachHangs.SingleOrDefault(kh =&gt; kh.MaKh == model.UserName);\nif (khachHang != null && khachHang.MatKhau == model.Password.ToMd5Hash(khachHang.RandomKey)) {\n    string userRole = khachHang.VaiTro == 1 ? "Admin" : (khachHang.VaiTro == 2 ? "Staff" : "Customer");\n    var claims = new List&lt;Claim&gt; {\n        new Claim(ClaimTypes.Email, khachHang.Email ?? ""),\n        new Claim(ClaimTypes.Name, khachHang.HoTen ?? ""),\n        new Claim("CustomerID", khachHang.MaKh),\n        new Claim(ClaimTypes.Role, userRole)\n    };\n    var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);\n    await HttpContext.SignInAsync(new ClaimsPrincipal(claimsIdentity));\n}`
+            code: `<span class="cm">// ViewModel: ViewModels/LoginVM.cs</span>\n<span class="kw">public class</span> <span class="vr">LoginVM</span> {\n    [<span class="vr">Display</span>(Name = <span class="st">"Tên đăng nhập"</span>), <span class="vr">Required</span>(ErrorMessage = <span class="st">"Chưa nhập tên đăng nhập"</span>)]\n    [<span class="vr">MaxLength</span>(20, ErrorMessage = <span class="st">"Tối đa 20 ký tự"</span>)]\n    <span class="kw">public string</span> UserName { <span class="kw">get</span>; <span class="kw">set</span>; }\n\n    [<span class="vr">Display</span>(Name = <span class="st">"Mật khẩu"</span>), <span class="vr">Required</span>(ErrorMessage = <span class="st">"Chưa nhập mật khẩu"</span>)]\n    [<span class="vr">DataType</span>(<span class="vr">DataType</span>.Password)]\n    <span class="kw">public string</span> Password { <span class="kw">get</span>; <span class="kw">set</span>; }\n    <span class="kw">public string</span>? RecaptchaResponse { <span class="kw">get</span>; <span class="kw">set</span>; }\n}\n\n&lt;!-- Nhóm input thông tin đăng nhập trong Login.cshtml --&gt;\n&lt;div class="form-floating mb-4"&gt;\n    &lt;input asp-for="UserName" class="form-control" placeholder="Tên đăng nhập" /&gt;\n&lt;/div&gt;\n&lt;div class="form-floating mb-4"&gt;\n    &lt;input asp-for="Password" type="password" class="form-control" /&gt;\n&lt;/div&gt;\n\n// C# Backend xử lý Claims trong CustomerController.cs\nvar khachHang = db.KhachHangs.SingleOrDefault(kh =&gt; kh.MaKh == model.UserName);\nif (khachHang != null && khachHang.MatKhau == model.Password.ToMd5Hash(khachHang.RandomKey)) {\n    string userRole = khachHang.VaiTro == 1 ? "Admin" : (khachHang.VaiTro == 2 ? "Staff" : "Customer");\n    var claims = new List&lt;Claim&gt; {\n        new Claim(ClaimTypes.Email, khachHang.Email ?? ""),\n        new Claim(ClaimTypes.Name, khachHang.HoTen ?? ""),\n        new Claim("CustomerID", khachHang.MaKh),\n        new Claim(ClaimTypes.Role, userRole)\n    };\n    var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);\n    await HttpContext.SignInAsync(new ClaimsPrincipal(claimsIdentity));\n}`,
+            workflow: [
+                {
+                    title: "Nhập tài khoản & Mật khẩu",
+                    desc: "Người dùng điền tên đăng nhập và mật khẩu vào form đăng nhập Client-side."
+                },
+                {
+                    title: "Truy vấn khách hàng & Khóa muối (Salt)",
+                    desc: "C# Controller tìm kiếm tài khoản trong DB bằng MaKh. Nếu tồn tại, lấy khóa muối RandomKey duy nhất của tài khoản đó."
+                },
+                {
+                    title: "Băm MD5 xác thực mật khẩu",
+                    desc: "Hệ thống băm MD5 mật khẩu người dùng nhập kết hợp với RandomKey, so sánh chuỗi băm với MatKhau đã lưu trong DB."
+                },
+                {
+                    title: "Cấp Cookie Authentication (Claims)",
+                    desc: "Nếu hợp lệ, hệ thống tạo các Claim (Email, Name, CustomerID, Role) và ghi nhận phiên đăng nhập an toàn qua Cookie."
+                }
+            ]
         };
 
         const registerFieldsEntry = {
             title: "Thông Tin Tài Khoản Đăng Ký (Member Registration Info Fields)",
             desc: "<strong>HƯỚNG DẪN HOẠT ĐỘNG:</strong><br>1. Nhập các thông tin Họ tên, Giới tính, Ngày sinh, Điện thoại, Địa chỉ, Email và mã OTP xác thực.<br>2. Kiểm tra tính hợp lệ dữ liệu bằng regex số điện thoại và email.<br>3. Tạo RandomKey ngẫu nhiên, mã hóa MD5 mật khẩu và lưu Khách hàng vào CSDL.",
-            code: `<span class="cm">// ViewModel: ViewModels/RegisterVM.cs</span>\n<span class="kw">public class</span> <span class="vr">RegisterVM</span> {\n    [<span class="vr">Display</span>(Name = <span class="st">"Tên đăng nhập"</span>), <span class="vr">Required</span>, <span class="vr">MaxLength</span>(20)]\n    <span class="kw">public string</span> MaKh { <span class="kw">get</span>; <span class="kw">set</span>; }\n\n    [<span class="vr">Display</span>(Name = <span class="st">"Mật Khẩu"</span>), <span class="vr">Required</span>, <span class="vr">DataType</span>(<span class="vr">DataType</span>.Password)]\n    <span class="kw">public string</span> MatKhau { <span class="kw">get</span>; <span class="kw">set</span>; }\n\n    [<span class="vr">Display</span>(Name = <span class="st">"Họ Tên"</span>), <span class="vr">Required</span>, <span class="vr">MaxLength</span>(50)]\n    <span class="kw">public string</span> HoTen { <span class="kw">get</span>; <span class="kw">set</span>; }\n    <span class="kw">public bool</span> GioiTinh { <span class="kw">get</span>; <span class="kw">set</span>; } = <span class="kw">true</span>;\n\n    [<span class="vr">Display</span>(Name = <span class="st">"Ngày sinh"</span>), <span class="vr">DataType</span>(<span class="vr">DataType</span>.Date), <span class="vr">AgeRange</span>]\n    <span class="kw">public DateTime</span>? NgaySinh { <span class="kw">get</span>; <span class="kw">set</span>; }\n\n    [<span class="vr">Display</span>(Name = <span class="st">"Điện Thoại"</span>), <span class="vr">MaxLength</span>(10), <span class="vr">RegularExpression</span>(@@"^0(3|5|7|8|9)\\d{8}$")]\n    <span class="kw">public string</span> DienThoai { <span class="kw">get</span>; <span class="kw">set</span>; }\n\n    [<span class="vr">Display</span>(Name = <span class="st">"Email"</span>), <span class="vr">Required</span>, <span class="vr">EmailAddress</span>]\n    <span class="kw">public string</span> Email { <span class="kw">get</span>; <span class="kw">set</span>; }\n    <span class="kw">public string</span>? Hinh { <span class="kw">get</span>; <span class="kw">set</span>; }\n\n    [<span class="vr">Display</span>(Name = <span class="st">"Mã xác nhận Email"</span>), <span class="vr">Required</span>]\n    <span class="kw">public string</span> VerificationCode { <span class="kw">get</span>; <span class="kw">set</span>; }\n}\n\n&lt;!-- Markup trong Register.cshtml --&gt;\n&lt;input asp-for="MaKh" class="form-control" /&gt; ...\n\n// C# Backend xử lý tạo mới tài khoản trong CustomerController.cs\n[HttpPost]\npublic IActionResult Register(RegisterVM model, IFormFile? Hinh) {\n    var sessionCode = HttpContext.Session.GetString("EmailVerifyCode");\n    if (model.VerificationCode == sessionCode && ModelState.IsValid) {\n        var khachHang = _mapper.Map&lt;KhachHang&gt;(model);\n        khachHang.RandomKey = MyUtil.GenerateRandomKey();\n        khachHang.MatKhau = model.MatKhau.ToMd5Hash(khachHang.RandomKey);\n        khachHang.HieuLuc = true;\n        khachHang.VaiTro = 0;\n        db.Add(khachHang); db.SaveChanges();\n    }\n}`
+            code: `<span class="cm">// ViewModel: ViewModels/RegisterVM.cs</span>\n<span class="kw">public class</span> <span class="vr">RegisterVM</span> {\n    [<span class="vr">Display</span>(Name = <span class="st">"Tên đăng nhập"</span>), <span class="vr">Required</span>, <span class="vr">MaxLength</span>(20)]\n    <span class="kw">public string</span> MaKh { <span class="kw">get</span>; <span class="kw">set</span>; }\n\n    [<span class="vr">Display</span>(Name = <span class="st">"Mật Khẩu"</span>), <span class="vr">Required</span>, <span class="vr">DataType</span>(<span class="vr">DataType</span>.Password)]\n    <span class="kw">public string</span> MatKhau { <span class="kw">get</span>; <span class="kw">set</span>; }\n\n    [<span class="vr">Display</span>(Name = <span class="st">"Họ Tên"</span>), <span class="vr">Required</span>, <span class="vr">MaxLength</span>(50)]\n    <span class="kw">public string</span> HoTen { <span class="kw">get</span>; <span class="kw">set</span>; }\n    <span class="kw">public bool</span> GioiTinh { <span class="kw">get</span>; <span class="kw">set</span>; } = <span class="kw">true</span>;\n\n    [<span class="vr">Display</span>(Name = <span class="st">"Ngày sinh"</span>), <span class="vr">DataType</span>(<span class="vr">DataType</span>.Date), <span class="vr">AgeRange</span>]\n    <span class="kw">public DateTime</span>? NgaySinh { <span class="kw">get</span>; <span class="kw">set</span>; }\n\n    [<span class="vr">Display</span>(Name = <span class="st">"Điện Thoại"</span>), <span class="vr">MaxLength</span>(10), <span class="vr">RegularExpression</span>(@@"^0(3|5|7|8|9)\\d{8}$")]\n    <span class="kw">public string</span> DienThoai { <span class="kw">get</span>; <span class="kw">set</span>; }\n\n    [<span class="vr">Display</span>(Name = <span class="st">"Email"</span>), <span class="vr">Required</span>, <span class="vr">EmailAddress</span>]\n    <span class="kw">public string</span> Email { <span class="kw">get</span>; <span class="kw">set</span>; }\n    <span class="kw">public string</span>? Hinh { <span class="kw">get</span>; <span class="kw">set</span>; }\n\n    [<span class="vr">Display</span>(Name = <span class="st">"Mã xác nhận Email"</span>), <span class="vr">Required</span>]\n    <span class="kw">public string</span> VerificationCode { <span class="kw">get</span>; <span class="kw">set</span>; }\n}\n\n&lt;!-- Markup trong Register.cshtml --&gt;\n&lt;input asp-for="MaKh" class="form-control" /&gt; ...\n\n// C# Backend xử lý tạo mới tài khoản trong CustomerController.cs\n[HttpPost]\npublic IActionResult Register(RegisterVM model, IFormFile? Hinh) {\n    var sessionCode = HttpContext.Session.GetString("EmailVerifyCode");\n    if (model.VerificationCode == sessionCode && ModelState.IsValid) {\n        var khachHang = _mapper.Map&lt;KhachHang&gt;(model);\n        khachHang.RandomKey = MyUtil.GenerateRandomKey();\n        khachHang.MatKhau = model.MatKhau.ToMd5Hash(khachHang.RandomKey);\n        khachHang.HieuLuc = true;\n        khachHang.VaiTro = 0;\n        db.Add(khachHang); db.SaveChanges();\n    }\n}`,
+            workflow: [
+                {
+                    title: "Nhập thông tin & Yêu cầu OTP",
+                    desc: "Người dùng điền form đăng ký, nhập Email chính xác và click nút gửi mã xác minh OTP."
+                },
+                {
+                    title: "Xác thực OTP Email",
+                    desc: "Người dùng nhập mã OTP được gửi về hộp thư. Hệ thống so khớp OTP này với mã lưu trữ trong Session."
+                },
+                {
+                    title: "Map dữ liệu & Tạo khóa muối",
+                    desc: "Nếu hợp lệ, AutoMapper chuyển đổi dữ liệu từ ViewModel sang thực thể KhachHang. Tạo RandomKey ngẫu nhiên bảo mật."
+                },
+                {
+                    title: "Băm mật khẩu & Lưu CSDL",
+                    desc: "Băm MD5 mật khẩu với RandomKey vừa tạo, gán vai trò mặc định (VaiTro = 0 là Khách hàng), lưu Khách hàng vào CSDL và kết thúc."
+                }
+            ]
         };
 
         const forgotFieldsEntry = {
             title: "Yêu Cầu Quên Mật Khẩu (Forgot Password Form Fields)",
             desc: "<strong>HƯỚNG DẪN HOẠT ĐỘNG:</strong><br>1. Khách hàng nhập Tên đăng nhập và Email.<br>2. Hệ thống kiểm tra khớp thông tin trong CSDL, sinh mã OTP 6 số lưu Session và gửi email xác nhận khôi phục.<br>3. Chuyển hướng người dùng đến trang ResetPassword.",
-            code: `<span class="cm">// ViewModel: ViewModels/ForgotPasswordVM.cs</span>\n<span class="kw">public class</span> <span class="vr">ForgotPasswordVM</span> {\n    <span class="kw">public string</span> UserName { <span class="kw">get</span>; <span class="kw">set</span>; }\n    <span class="kw">public string</span> Email { <span class="kw">get</span>; <span class="kw">set</span>; }\n}\n\n&lt;!-- Markup trong ForgotPassword.cshtml --&gt;\n&lt;input asp-for="UserName" /&gt;\n&lt;input asp-for="Email" /&gt;\n\n// Backend: CustomerController.cs [POST]\nvar kh = db.KhachHangs.SingleOrDefault(k =&gt; k.MaKh == model.UserName &amp;&amp; k.Email == model.Email);\nif (kh != null) {\n    string otpCode = new Random().Next(100000, 999999).ToString();\n    HttpContext.Session.SetString("ResetPasswordCode", otpCode);\n    HttpContext.Session.SetString("ResetPasswordUser", kh.MaKh);\n    // Gửi mail bằng MailKit SMTP...\n}`
+            code: `<span class="cm">// ViewModel: ViewModels/ForgotPasswordVM.cs</span>\n<span class="kw">public class</span> <span class="vr">ForgotPasswordVM</span> {\n    <span class="kw">public string</span> UserName { <span class="kw">get</span>; <span class="kw">set</span>; }\n    <span class="kw">public string</span> Email { <span class="kw">get</span>; <span class="kw">set</span>; }\n}\n\n&lt;!-- Markup trong ForgotPassword.cshtml --&gt;\n&lt;input asp-for="UserName" /&gt;\n&lt;input asp-for="Email" /&gt;\n\n// Backend: CustomerController.cs [POST]\nvar kh = db.KhachHangs.SingleOrDefault(k =&gt; k.MaKh == model.UserName &amp;&amp; k.Email == model.Email);\nif (kh != null) {\n    string otpCode = new Random().Next(100000, 999999).ToString();\n    HttpContext.Session.SetString("ResetPasswordCode", otpCode);\n    HttpContext.Session.SetString("ResetPasswordUser", kh.MaKh);\n    // Gửi mail bằng MailKit SMTP...\n}`,
+            workflow: [
+                {
+                    title: "Nhập Tên Đăng Nhập & Email",
+                    desc: "Người dùng gửi yêu cầu khôi phục mật khẩu bằng cách điền Tên đăng nhập và Email đã đăng ký."
+                },
+                {
+                    title: "Kiểm tra cơ sở dữ liệu",
+                    desc: "Hệ thống xác minh xem thông tin Tên đăng nhập và Email có tồn tại và khớp nhau trong bảng KhachHang hay không."
+                },
+                {
+                    title: "Sinh mã OTP & Gửi Email",
+                    desc: "Sinh ngẫu nhiên mã OTP 6 chữ số, lưu trữ OTP và Username vào Session, đồng thời gửi email chứa mã khôi phục cho người dùng qua MailKit SMTP."
+                },
+                {
+                    title: "Định tuyến đến ResetPassword",
+                    desc: "Redirect người dùng đến trang thiết lập lại mật khẩu mới cùng thông báo gửi mã thành công."
+                }
+            ]
         };
 
         const resetFieldsEntry = {
             title: "Đặt Lại Mật Khẩu Mới (Reset Password Fields)",
             desc: "<strong>HƯỚNG DẪN HOẠT ĐỘNG:</strong><br>1. Người dùng cung cấp mã xác nhận OTP từ Email và nhập mật khẩu mới.<br>2. Đối chiếu mã OTP với mã được lưu trong Session.<br>3. Tạo khóa muối mới, băm MD5 mật khẩu mới và cập nhật CSDL.",
-            code: `<span class="cm">// ViewModel: ViewModels/ResetPasswordVM.cs</span>\n<span class="kw">public class</span> <span class="vr">ResetPasswordVM</span> {\n    <span class="kw">public string</span> VerificationCode { <span class="kw">get</span>; <span class="kw">set</span>; }\n    <span class="kw">public string</span> NewPassword { <span class="kw">get</span>; <span class="kw">set</span>; }\n    <span class="kw">public string</span> ConfirmPassword { <span class="kw">get</span>; <span class="kw">set</span>; }\n}\n\n&lt;!-- Markup trong ResetPassword.cshtml --&gt;\n&lt;input asp-for="VerificationCode" /&gt;\n&lt;input asp-for="NewPassword" type="password" /&gt;\n\n// Backend: CustomerController.cs [POST]\nvar sessionOtp = HttpContext.Session.GetString("ResetPasswordCode");\nif (model.VerificationCode == sessionOtp) {\n    var kh = db.KhachHangs.SingleOrDefault(k =&gt; k.MaKh == sessionUser);\n    kh.RandomKey = MyUtil.GenerateRandomKey();\n    kh.MatKhau = model.NewPassword.ToMd5Hash(kh.RandomKey);\n    db.SaveChanges();\n}`
+            code: `<span class="cm">// ViewModel: ViewModels/ResetPasswordVM.cs</span>\n<span class="kw">public class</span> <span class="vr">ResetPasswordVM</span> {\n    [<span class="vr">Display</span>(Name = <span class="st">"Mã xác nhận"</span>), <span class="vr">Required</span>]\n    <span class="kw">public string</span> VerificationCode { <span class="kw">get</span>; <span class="kw">set</span>; }\n\n    [<span class="vr">Display</span>(Name = <span class="st">"Mật khẩu mới"</span>), <span class="vr">Required</span>, <span class="vr">MinLength</span>(6)]\n    <span class="kw">public string</span> NewPassword { <span class="kw">get</span>; <span class="kw">set</span>; }\n\n    [<span class="vr">Display</span>(Name = <span class="st">"Xác nhận mật khẩu"</span>), <span class="vr">Compare</span>(<span class="st">"NewPassword"</span>)]\n    <span class="kw">public string</span> ConfirmPassword { <span class="kw">get</span>; <span class="kw">set</span>; }\n}`,
+            workflow: [
+                {
+                    title: "Nhập mã OTP & Mật khẩu mới",
+                    desc: "Người dùng điền mã OTP nhận được từ Email cùng mật khẩu mới và xác nhận mật khẩu."
+                },
+                {
+                    title: "Xác thực mã OTP (Session)",
+                    desc: "Hệ thống đối chiếu mã OTP người dùng nhập với mã được lưu trữ tạm thời trong Session (ResetPasswordCode)."
+                },
+                {
+                    title: "Mã hóa MD5 với Salt mới",
+                    desc: "Hệ thống tự động sinh khóa muối RandomKey mới, băm MD5 mật khẩu mới và cập nhật thông tin trong cơ sở dữ liệu."
+                },
+                {
+                    title: "Hoàn tất & Chuyển hướng",
+                    desc: "Hủy mã OTP trong Session để bảo mật và chuyển hướng người dùng quay lại trang Đăng nhập để sử dụng mật khẩu mới."
+                }
+            ]
         };
 
         const inspectorDb = {
@@ -247,53 +1721,64 @@
             },
             "navbar-links": {
                 title: "Menu Điều Hướng Chính (Navbar Links Menu)",
-                desc: "Chứa các liên kết chính của website (Trang chủ, Trang tin: Bài viết & Về chúng tôi, Tra cứu đơn hàng). Tự động thêm class 'active' và đổi màu chữ thành xanh lá dựa trên Controller/Action hiện tại.",
-                code: `&lt;!-- Link Phân Trang trong _Navbar.cshtml --&gt;\n&lt;div class="navbar-nav ms-auto p-4 p-lg-0"&gt;\n    &lt;a asp-controller="Home" asp-action="Index" \n       class="nav-item nav-link @@(controller == \"Home\" ? \"active text-primary\" : \"\")"&gt;Trang chủ&lt;/a&gt;\n    &lt;a asp-controller="Cart" asp-action="LookupOrder" \n       class="nav-item nav-link @@(action == \"LookupOrder\" ? \"active text-primary\" : \"\")"&gt;Tra cứu đơn hàng&lt;/a&gt;\n&lt;/div&gt;`
-            },
-            "navbar-user": {
-                title: "Dropdown Menu Tài Khoản (Navbar User Dropdown)",
-                desc: "Dropdown hiển thị Avatar người dùng và các liên kết tài khoản. Kiểm tra cookie 'User.Identity.IsAuthenticated' để phân chia giao diện: nếu chưa đăng nhập hiện nút Đăng nhập/Đăng ký; nếu đã đăng nhập thì hiện Hồ sơ, Lịch sử mua hàng, Sản phẩm yêu thích. Nếu là Admin/Staff thì hiện thêm các liên kết quản trị.",
-                code: `&lt;!-- Phân quyền menu tài khoản trong _Navbar.cshtml --&gt;\n@@if (User.Identity.IsAuthenticated) {\n    &lt;span class="fw-bold text-dark"&gt;@@displayName&lt;/span&gt;\n    &lt;div class="dropdown-menu dropdown-menu-end"&gt;\n        &lt;a asp-controller="Customer" asp-action="Profile"&gt;Hồ sơ cá nhân&lt;/a&gt;\n        @@if (User.IsInRole("Admin") || User.IsInRole("Staff")) {\n            &lt;a asp-controller="HangHoas" asp-action="Index"&gt;Quản lý sản phẩm&lt;/a&gt;\n        }\n    &lt;/div&gt;\n}`
+                desc: "Chứa các liên kết chính của website. Tự động thêm class 'active' dựa trên Controller/Action hiện tại.",
+                code: `&lt;div class="navbar-nav ms-auto"&gt;...&lt;/div&gt;`
             },
             "navbar-cart": {
                 title: "Giỏ Hàng & Badge Số Lượng (Navbar Cart Badge)",
-                desc: "Biểu tượng giỏ hàng nổi bật ở góc phải Navbar. Đọc danh sách giỏ hàng lưu trữ trong Session để cộng dồn tổng số lượng sản phẩm, hiển thị số lượng tức thời trên một badge màu đỏ tròn bên trên giỏ hàng.",
-                code: `// Lấy số lượng giỏ hàng từ Session hoặc DB trong CartController.cs\npublic async Task&lt;IActionResult&gt; CartCount() {\n    var customerId = GetCustomerId();\n    int count = 0;\n    if (string.IsNullOrEmpty(customerId)) {\n        var cartSession = HttpContext.Session.Get&lt;List&lt;CartItem&gt;&gt;("MyCart");\n        if (cartSession != null) count = cartSession.Sum(c =&gt; c.SoLuong);\n    } else {\n        count = await _Context.GioHangs.Where(g =&gt; g.MaKh == customerId).SumAsync(g =&gt; (int?)g.SoLuong) ?? 0;\n    }\n    return Json(count);\n}`
+                desc: "Giỏ hàng hiển thị ở góc phải Navbar. Tự động cập nhật số lượng hàng trong giỏ tức thời mà không cần load lại trang nhờ AJAX và Session.",
+                code: `&lt;!-- Nút Giỏ hàng trong _Navbar.cshtml --&gt;\n&lt;a class="btn-sm-square bg-white rounded-circle ms-3 shadow-sm border text-decoration-none d-flex align-items-center justify-content-center position-relative" asp-controller="Cart" asp-action="Index" data-inspect-id="navbar-cart"&gt;\n    &lt;i class="fa fa-shopping-bag text-primary"&gt;&lt;/i&gt;\n    @@if (soLuongGioHang &gt; 0) {\n        &lt;span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"&gt;\n            @@soLuongGioHang\n        &lt;/span&gt;\n    }\n&lt;/a&gt;`,
+                controller: `// Controller: CartController.cs / GetCartCount\n[HttpGet]\npublic IActionResult GetCartCount() {\n    var cart = HttpContext.Session.Get&lt;List&lt;CartItem&gt;&gt;("GioHang") ?? new List&lt;CartItem&gt;();\n    return Json(new { count = cart.Sum(c => c.SoLuong) });\n}`,
+                model: `// Model: ViewModels/CartItem.cs\npublic class CartItem {\n    public int MaHh { get; set; }\n    public string TenHh { get; set; }\n    public string Hinh { get; set; }\n    public double DonGia { get; set; }\n    public int SoLuong { get; set; }\n    public double ThanhTien => SoLuong * DonGia;\n}`
             },
             "search-input": {
-                title: "Thanh Tìm Kiếm Sản Phẩm (Search Input)",
-                desc: "Form tìm kiếm sản phẩm theo tên. Sử dụng thẻ input truyền tham số 'searchQuery' qua phương thức GET. Để giữ trạng thái lọc khi bấm tìm kiếm, Form được nhúng kèm các tham số ẩn như 'loaiId' và 'priceRange' hiện tại.",
-                code: `&lt;!-- Form tìm kiếm trong _Sidebar.cshtml --&gt;\n&lt;form asp-action="@@currentAction" asp-controller="@@currentController" method="get"&gt;\n    &lt;input type="hidden" name="loaiId" value="@@ViewBag.CurrentLoai" /&gt;\n    &lt;input type="text" class="form-control" placeholder="Tên sản phẩm..." \n           name="searchQuery" value="@@Context.Request.Query[\"searchQuery\"]"&gt;\n&lt;/form&gt;`
+                title: "Thanh Tìm Kiếm Sản Phẩm Sidebar (Sidebar Search Input)",
+                desc: "Thanh nhập liệu tìm kiếm ở Sidebar bên trái. Cho phép khách hàng tìm nhanh sản phẩm qua việc nhập từ khóa và bấm nút Gửi (GET request) chuyển tham số searchQuery đến Controller xử lý.",
+                code: `&lt;!-- Thanh tìm kiếm trong _Sidebar.cshtml --&gt;\n&lt;div class="card border-0 shadow-sm mb-4 rounded-3" data-inspect-id="search-input"&gt;\n    &lt;form asp-action="@@currentAction" asp-controller="@@currentController" method="get"&gt;\n        &lt;div class="input-group"&gt;\n            &lt;input type="text" class="form-control bg-white" placeholder="Tên sản phẩm..." name="searchQuery" value="@@Context.Request.Query[\"searchQuery\"]"&gt;\n            &lt;button class="btn text-white" type="submit" style="background-color: #81c408;"&gt;&lt;i class="fa fa-search"&gt;&lt;/i&gt;&lt;/button&gt;\n        &lt;/div&gt;\n    &lt;/form&gt;\n&lt;/div&gt;`,
+                controller: `// Controller: HomeController.cs / Index\npublic IActionResult Index(string? searchQuery, int? loaiId) {\n    var query = _context.HangHoas.AsQueryable();\n    if (!string.IsNullOrEmpty(searchQuery)) {\n        query = query.Where(h => h.TenHh.Contains(searchQuery));\n    }\n    return View(query.ToList());\n}`
             },
             "categories-list": {
-                title: "Danh Mục Lọc Phân Loại (Categories List)",
-                desc: "Liệt kê danh sách các nhóm hàng. Nhấp chọn một loại sẽ kích hoạt tải lại trang kèm theo ID loại sản phẩm để lọc. Sử dụng Entity Framework Core liên kết bảng để đếm nhanh tổng số lượng sản phẩm đang có của từng loại.",
-                code: `&lt;!-- Hiển thị danh mục sidebar trong _Sidebar.cshtml --&gt;\n@@foreach (var loai in ViewBag.DanhMucs) {\n    bool isActive = ViewBag.CurrentLoai == loai.MaLoai;\n    &lt;a asp-route-loaiId="@@loai.MaLoai" class="@@(isActive ? \"text-success fw-bold\" : \"text-dark\")"&gt;\n        &lt;span&gt;@@loai.TenLoai&lt;/span&gt;\n        &lt;span class="badge"&gt;@@loai.HangHoas.Count&lt;/span&gt;\n    &lt;/a&gt;\n}`
+                title: "Danh Mục Phân Loại Sản Phẩm (Categories Sidebar List)",
+                desc: "Danh mục hiển thị ở Sidebar. Liệt kê toàn bộ các nhóm Loại sản phẩm được bán. Mỗi dòng hiển thị tên loại cùng số lượng sản phẩm đang có của loại đó (tính động bằng LINQ qua bảng HangHoa).",
+                code: `&lt;!-- Lọc Theo Loại trong _Sidebar.cshtml --&gt;\n&lt;div class="card border-0 shadow-sm mb-4 rounded-3" data-inspect-id="categories-list"&gt;\n    @@foreach (var loai in ViewBag.DanhMucs) {\n        &lt;a asp-action="@@currentAction" asp-route-loaiId="@@loai.MaLoai"&gt;\n            &lt;span&gt;@@loai.TenLoai&lt;/span&gt;\n            &lt;span class="badge"&gt;@@loai.HangHoas.Count&lt;/span&gt;\n        &lt;/a&gt;\n    }\n&lt;/div&gt;`,
+                controller: `// Controller: HomeController.cs / Index\nvar danhMucs = _context.Loais.Include(l => l.HangHoas).ToList();\nViewBag.DanhMucs = danhMucs;`
             },
             "price-slider": {
-                title: "Bộ Kéo Lọc Giá (Price Range Slider)",
-                desc: "Thanh trượt mức giá từ $0 đến $500. Đã được nâng cấp tối ưu trải nghiệm: Khi người dùng nhả chuột kéo (sự kiện 'change'), JavaScript sẽ tự động submit form để lọc sản phẩm ngay lập tức mà không cần nhấn nút.",
-                code: `&lt;!-- Input range trong _Sidebar.cshtml --&gt;\n&lt;input type="range" class="form-range" min="0" max="500" name="priceRange" id="priceRangeSlider" value="@@maxPriceVal"&gt;\n\n// JS tự động gửi form khi thay đổi\nslider.addEventListener("change", function () {\n    this.form.submit();\n});`
+                title: "Thanh Trượt Lọc Giá Sản Phẩm (Price Range Slider)",
+                desc: "Bộ lọc khoảng giá động bằng thanh trượt kép (Dual Slider). Khách hàng kéo trượt để giới hạn mức giá bán sản phẩm. Thả chuột sẽ tự động kích hoạt `form.submit()` để nạp lại danh sách sản phẩm khớp giá lọc.",
+                code: `&lt;!-- Lọc Theo Giá trong _Sidebar.cshtml --&gt;\n&lt;input type="range" class="form-range" min="0" max="500" step="10" name="priceRange" id="priceRangeSlider" value="@@maxPriceVal" style="accent-color: #3CB815;"&gt;\n\n// Javascript xử lý tự động gửi Form khi thả chuột\nslider.addEventListener("change", function () {\n    this.form.submit();\n});`,
+                controller: `// Controller: HomeController.cs / Index\nif (priceRange.HasValue) {\n    query = query.Where(h => h.DonGia <= priceRange.Value);\n}`
             },
             "price-milestone-chips": {
-                title: "Nút Lọc Giá Nhanh (Price Milestone Chips)",
-                desc: "Danh sách các chip lọc nhanh tương ứng các khoảng giá phổ biến ($50, $150, $300, Tất cả giá). Khi click, mã JavaScript sẽ gán giá trị tương ứng vào thanh trượt Slider và lập tức submit form lọc đi.",
-                code: `&lt;!-- Các nút milestone trong _Sidebar.cshtml --&gt;\n&lt;button type="button" data-value="150"&gt;Dưới $150&lt;/button&gt;\n\n// Javascript xử lý click\n$("#quickPriceMilestones button").click(function () {\n    var val = $(this).data('value');\n    $('#priceRangeSlider').val(val);\n    $('#priceRangeSlider').closest('form').submit();\n});`
+                title: "Mốc Lọc Giá Chọn Nhanh (Quick Price Filters)",
+                desc: "Các nút chip hình con nhộng tròn để người dùng nhấp chọn nhanh khoảng giá (Dưới $50, Dưới $150, Dưới $300, v.v.). Khi bấm sẽ tự động gán giá trị tương ứng lên thanh trượt và kích hoạt submit form.",
+                code: `&lt;!-- Nút chọn mốc giá nhanh trong _Sidebar.cshtml --&gt;\n&lt;div class="d-flex flex-wrap gap-2" id="quickPriceMilestones"&gt;\n    &lt;button type="button" class="btn btn-sm" data-value="150"&gt;Dưới $150&lt;/button&gt;\n&lt;/div&gt;\n\n// JS gán giá trị và submit\nmilestones.forEach(btn => {\n    btn.addEventListener("click", function () {\n        slider.value = this.getAttribute("data-value");\n        slider.form.submit();\n    });\n});`
             },
             "sort-select": {
                 title: "Bộ Sắp Xếp Sản Phẩm (Product Sort Dropdown)",
-                desc: "Dropdown cho phép khách hàng thay đổi thứ tự sản phẩm (Giá tăng/giảm dần, Tên A-Z/Z-A, Độ phổ biến). Thay đổi giá trị sẽ kích hoạt trigger gọi hàm JS `changeSort` để reload lại trang với query string tương ứng.",
-                code: `&lt;!-- Dropdown sắp xếp trong Index.cshtml --&gt;\n&lt;select onchange="changeSort(this.value)" data-inspect-id="sort-select"&gt;\n    &lt;option value="price-asc"&gt;Giá tăng dần&lt;/option&gt;\n&lt;/select&gt;\n\n// JavaScript changeSort\nfunction changeSort(val) {\n    const urlParams = new URLSearchParams(window.location.search);\n    urlParams.set('sortBy', val);\n    window.location.search = urlParams.toString();\n}`
+                desc: "Dropdown chọn tiêu chí sắp xếp sản phẩm (Mặc định, Giá: Thấp đến Cao, Giá: Cao đến Thấp). Khi thay đổi sẽ gọi hàm Javascript `changeSort()` để chèn tham số sortBy vào URL và reload trang.",
+                code: `&lt;!-- Dropdown sắp xếp trong Index.cshtml --&gt;\n&lt;select class="form-select form-select-sm" onchange="changeSort(this.value)" data-inspect-id="sort-select"&gt;\n    &lt;option value="price_asc"&gt;Giá: Thấp đến Cao&lt;/option&gt;\n&lt;/select&gt;\n\n// Hàm JS điều hướng thay đổi\nfunction changeSort(val) {\n    var url = new URL(window.location.href);\n    url.searchParams.set("sortBy", val);\n    window.location.href = url.href;\n}`
             },
             "product-card": {
-                title: "Thẻ Sản Phẩm Lưới (Product Card Container)",
-                desc: "Bọc ngoài cho một sản phẩm trong lưới, hiển thị khung ảnh, tên, giá bán và các nút thao tác. Tự động áp dụng hiệu ứng nổi (hover shadow) cực kỳ mượt mà để tăng trải nghiệm người dùng.",
-                code: `&lt;!-- Khung sản phẩm trong Index.cshtml --&gt;\n&lt;div class="card h-100 product-card" data-inspect-id="product-card"&gt;\n    &lt;div class="overflow-hidden" data-inspect-id="product-image"&gt;...&lt;/div&gt;\n    &lt;div class="card-body"&gt;...&lt;/div&gt;\n&lt;/div&gt;`
+                title: "Thẻ Hiển Thị Sản Phẩm (Product Card)",
+                desc: "Thẻ Card hiển thị các thông tin cơ bản của một sản phẩm bao gồm Tên sản phẩm, Đơn giá, phân loại danh mục, ảnh sản phẩm, số lượng đã bán, nút yêu thích thả tim và bộ nút thao tác Xem chi tiết / Thêm giỏ.",
+                code: `&lt;!-- Markup trong Views/Home/Index.cshtml --&gt;\n&lt;div class="card h-100 product-card" data-inspect-id="product-card"&gt;\n    &lt;h6&gt;@@item.TenHh&lt;/h6&gt;\n    &lt;span&gt;$@@item.DonGia&lt;/span&gt;\n&lt;/div&gt;`
             },
             "product-image": {
-                title: "Ảnh Sản Phẩm Thu Nhỏ (Product Card Image)",
-                desc: "Hình ảnh sản phẩm hiển thị trên thẻ. Được bao quanh bởi khung nền trắng, sử dụng CSS 'object-fit: contain' để ảnh tự động co giãn vừa vặn khung, không bị tràn ảnh hay móp méo, đồng thời thêm hiệu ứng zoom-in nhẹ khi hover.",
-                code: `&lt;!-- HTML hiển thị ảnh sản phẩm trong Index.cshtml --&gt;\n&lt;div class="bg-white d-flex align-items-center justify-content-center" style="height: 220px;"&gt;\n    &lt;img src="~/img/Hinh/HangHoa/@@item.Hinh" class="img-fluid" \n         style="max-height: 180px; object-fit: contain; transition: transform 0.3s;"\n         onmouseover="this.style.transform='scale(1.08)'" onmouseout="this.style.transform='scale(1)'"&gt;\n&lt;/div&gt;`
+                title: "Khung Ảnh Sản Phẩm (Product Image & Over Effect)",
+                desc: "Ảnh đại diện sản phẩm trong card. Sử dụng hiệu ứng hover CSS/JS nhẹ nhàng phóng to scale 1.08 mang lại độ tương tác sinh động khi người dùng di chuột qua.",
+                code: `&lt;!-- HTML hiển thị ảnh sản phẩm trong Index.cshtml --&gt;\n&lt;div class="overflow-hidden bg-white d-flex align-items-center justify-content-center p-3" style="height: 220px;" data-inspect-id="product-image"&gt;\n    &lt;img src="~/img/Hinh/HangHoa/@@item.Hinh" class="img-fluid" \n         style="max-height: 180px; object-fit: contain; transition: transform 0.3s;"\n         onmouseover="this.style.transform='scale(1.08)'" onmouseout="this.style.transform='scale(1)'"&gt;\n&lt;/div&gt;`
+            },
+            "navbar-user": {
+                title: "Hồ Sơ & Thao Tác Thành Viên (Navbar User Dropdown)",
+                desc: "Nút tác vụ người dùng hiển thị ở góc phải Navbar. Nếu chưa đăng nhập, hiển thị nút dẫn đến Đăng nhập/Đăng ký. Nếu đã đăng nhập, hiển thị avatar động và menu dropdown tác vụ chứa các nút dẫn đến cập nhật hồ sơ, lịch sử mua hàng, trang Admin (nếu có quyền) và nút Đăng xuất.",
+                code: `&lt;!-- Dropdown tài khoản trong _Navbar.cshtml --&gt;\n&lt;div class="nav-item dropdown ms-3" data-inspect-id="navbar-user"&gt;\n    @@if (User.Identity?.IsAuthenticated == true) {\n        &lt;a class="nav-link dropdown-toggle" data-bs-toggle="dropdown"&gt;Chào, @@User.Identity.Name&lt;/a&gt;\n    } else {\n        &lt;a asp-controller="Customer" asp-action="Login"&gt;Đăng nhập&lt;/a&gt;\n    }\n&lt;/div&gt;`
+            },
+            "search-product": {
+                title: "Thanh Tìm Kiếm Sản Phẩm Toàn Cục (Global Search Modal)",
+                desc: "Form tìm kiếm sản phẩm phủ rộng toàn màn hình dạng Modal. Nhập từ khóa sản phẩm và bấm nút Tìm kiếm (GET request) chuyển tham số searchQuery đến HomeController xử lý hiển thị.",
+                code: `&lt;!-- Form tìm kiếm phủ modal trong _Navbar.cshtml --&gt;\n&lt;form asp-controller="Home" asp-action="Index" method="get" class="input-group" style="max-width: 600px;" data-inspect-id="search-product"&gt;\n    &lt;input type="text" name="searchQuery" class="form-control" placeholder="Tìm sản phẩm..."&gt;\n    &lt;button type="submit" class="btn btn-primary"&gt;&lt;i class="fa fa-search"&gt;&lt;/i&gt;&lt;/button&gt;\n&lt;/form&gt;`,
+                controller: `// Controller: HomeController.cs / Index\npublic IActionResult Index(string? searchQuery) {\n    var list = db.HangHoas.Where(hh => hh.TenHh.Contains(searchQuery)).ToList();\n    return View(list);\n}`
             },
             "product-sold": {
                 title: "Badge Đã Bán Sản Phẩm (Product Card Sold Count)",
@@ -650,7 +2135,9 @@
 1. <strong>Lọc theo trạng thái:</strong> Hỗ trợ filter đơn hàng theo trạng thái (Mới đặt / Đang chuẩn bị / Đã giao / Đã hủy).<br>
 2. <strong>Tìm kiếm:</strong> Tìm theo mã đơn hoặc tên người nhận.<br>
 3. <strong>Controller (CartController.cs):</strong> Query HoaDons theo CustomerId kèm Include ChiTietHds.`,
-                code: `// Controller: CartController.cs\npublic async Task&lt;IActionResult&gt; OrderHistory(string searchQuery, int? statusId) {\n    var customerId = GetCustomerId();\n    var query = _Context.HoaDons\n        .Include(h =&gt; h.ChiTietHds).ThenInclude(c =&gt; c.MaHhNavigation)\n        .Where(h =&gt; h.MaKh == customerId).AsQueryable();\n    if (!string.IsNullOrEmpty(searchQuery)) {\n        query = query.Where(h =&gt; h.HoTen.Contains(searchQuery) || h.MaHd.ToString() == searchQuery);\n    }\n    if (statusId.HasValue) {\n        query = query.Where(h =&gt; h.MaTrangThai == statusId.Value);\n    }\n    var dsHoaDon = await query.OrderByDescending(h =&gt; h.NgayDat).ToListAsync();\n    return View(dsHoaDon);\n}`
+                code: `&lt;!-- Form tìm kiếm và lọc trạng thái trong OrderHistory.cshtml --&gt;\n&lt;form asp-action="OrderHistory" asp-controller="Cart" method="get" class="row g-3"&gt;\n    &lt;input type="text" name="searchQuery" value="@@ViewBag.SearchQuery" placeholder="Nhập mã đơn hàng hoặc tên người nhận..." /&gt;\n    &lt;select name="statusId"&gt;\n        &lt;option value=""&gt;-- Tất cả trạng thái --&lt;/option&gt;\n        &lt;option value="0"&gt;Mới đặt&lt;/option&gt;\n        &lt;option value="1"&gt;Đang xử lý&lt;/option&gt;\n    &lt;/select&gt;\n    &lt;button type="submit"&gt;Tìm&lt;/button&gt;\n&lt;/form&gt;`,
+                controller: `// Controller: CartController.cs\npublic async Task&lt;IActionResult&gt; OrderHistory(string searchQuery, int? statusId) {\n    var customerId = GetCustomerId();\n    var query = _Context.HoaDons\n        .Include(h =&gt; h.ChiTietHds).ThenInclude(c =&gt; c.MaHhNavigation)\n        .Where(h =&gt; h.MaKh == customerId).AsQueryable();\n    if (!string.IsNullOrEmpty(searchQuery)) {\n        query = query.Where(h =&gt; h.HoTen.Contains(searchQuery) || h.MaHd.ToString() == searchQuery);\n    }\n    if (statusId.HasValue) {\n        query = query.Where(h =&gt; h.MaTrangThai == statusId.Value);\n    }\n    var dsHoaDon = await query.OrderByDescending(h =&gt; h.NgayDat).ToListAsync();\n    return View(dsHoaDon);\n}`,
+                model: `// Model: Models/HoaDon.cs (Hóa đơn) & Models/ChiTietHd.cs (Chi tiết đơn hàng)\npublic partial class HoaDon {\n    public int MaHd { get; set; }\n    public string HoTen { get; set; } = null!;\n    public string? DiaChi { get; set; }\n    public int MaTrangThai { get; set; }\n    public virtual ICollection&lt;ChiTietHd&gt; ChiTietHds { get; set; }\n}\n\npublic partial class ChiTietHd {\n    public int MaCt { get; set; }\n    public int MaHd { get; set; }\n    public int MaHh { get; set; }\n    public int SoLuong { get; set; }\n    public double DonGia { get; set; }\n}`
             },
             // Input Fields mappings (to avoid huge file size & duplicates)
             "forgot-username-field": forgotFieldsEntry,
@@ -786,7 +2273,6 @@
                     inspectComponent(id);
                     const targetEl = document.querySelector(`[data-inspect-id="${id}"]`);
                     if (targetEl) {
-                        targetEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
                         // Flash outline
                         let flashCount = 0;
                         const interval = setInterval(() => {
@@ -865,9 +2351,29 @@
 
                 inspectTitle.innerText = data.title;
                 inspectDesc.innerHTML = data.desc;
-                inspectCode.innerHTML = data.code;
+                
+                // Check which tabs should be shown
+                if (data.controller) {
+                    btnSubController.classList.remove("d-none");
+                } else {
+                    btnSubController.classList.add("d-none");
+                }
+
+                if (data.model) {
+                    btnSubModel.classList.remove("d-none");
+                } else {
+                    btnSubModel.classList.add("d-none");
+                }
+
+                // CƠ CHẾ HOẠT ĐỘNG (Flow) is always active to explain the workflow
+                btnSubWorkflow.classList.remove("d-none");
+
+                // Default to 'view' tab
+                activeSubTab = "view";
+                updateSubTabUI();
                 
                 updateBookmarkButtonUI(id);
+                adjustMobileLayout();
             }
         }
 
@@ -884,6 +2390,44 @@
             e.stopPropagation();
             deactivateInspector();
         });
+
+        if (mobileBackBtn) {
+            mobileBackBtn.addEventListener("click", function (e) {
+                e.stopPropagation();
+                lastSelectedId = null;
+                adjustMobileLayout();
+            });
+        }
+
+        function adjustMobileLayout() {
+            const isMobile = window.innerWidth < 768;
+            const leftCol = drawer.firstElementChild; // The left column
+            const rightCol = document.getElementById("inspector-card-body-content");
+            
+            if (isMobile) {
+                if (!isActive || lastSelectedId === null) {
+                    leftCol.style.display = "flex";
+                    rightCol.style.display = "none";
+                    if (mobileBackBtn) mobileBackBtn.style.display = "none";
+                } else {
+                    leftCol.style.display = "none";
+                    rightCol.style.display = "flex";
+                    if (mobileBackBtn) mobileBackBtn.style.display = "flex";
+                }
+            } else {
+                leftCol.style.display = "flex";
+                rightCol.style.display = "flex";
+                if (mobileBackBtn) mobileBackBtn.style.display = "none";
+            }
+            
+            // Adjust toggle button position dynamically based on actual drawer height
+            if (isActive) {
+                const drawerHeight = drawer.offsetHeight;
+                toggleContainer.style.bottom = `${drawerHeight + 25}px`;
+            } else {
+                toggleContainer.style.bottom = "25px";
+            }
+        }
 
         function positionBadges() {
             if (!isActive) return;
@@ -930,7 +2474,6 @@
                     e.stopPropagation();
                     e.preventDefault();
                     inspectComponent(id);
-                    el.scrollIntoView({ behavior: 'smooth', block: 'center' });
                     // Flash outline
                     let flashCount = 0;
                     const interval = setInterval(() => {
@@ -964,7 +2507,10 @@
             positionBadges();
             
             window.addEventListener("scroll", positionBadges, { passive: true });
-            window.addEventListener("resize", positionBadges);
+            window.addEventListener("resize", () => {
+                positionBadges();
+                adjustMobileLayout();
+            });
         }
 
         function removeInspectorBadges() {
@@ -983,17 +2529,21 @@
             toggleBtn.style.transform = "rotate(135deg)";
             toggleBtn.style.background = "linear-gradient(135deg, #f44336 0%, #d32f2f 100%)";
             
-            anime({
-                targets: toggleContainer,
-                bottom: 505,
-                duration: 450,
-                easing: 'cubicBezier(0.25, 0.8, 0.25, 1)'
-            });
+            adjustMobileLayout();
 
             // Slide up bottom drawer console
             anime({
                 targets: drawer,
                 bottom: 0,
+                duration: 450,
+                easing: 'cubicBezier(0.25, 0.8, 0.25, 1)'
+            });
+
+            // Adjust toggle button position dynamically based on actual drawer height
+            const drawerHeight = drawer.offsetHeight;
+            anime({
+                targets: toggleContainer,
+                bottom: drawerHeight + 25,
                 duration: 450,
                 easing: 'cubicBezier(0.25, 0.8, 0.25, 1)'
             });
@@ -1020,9 +2570,10 @@
             });
 
             // Slide down bottom drawer console
+            const drawerHeight = drawer.offsetHeight;
             anime({
                 targets: drawer,
-                bottom: -500,
+                bottom: -drawerHeight - 50,
                 duration: 400,
                 easing: 'easeInQuad'
             });
@@ -1036,6 +2587,8 @@
             inspectCode.innerText = "// Code block...";
             lastSelectedId = null;
             updateBookmarkButtonUI(null);
+            
+            adjustMobileLayout();
         }
 
         // Hover element scales up its badge to link them visually
@@ -1141,5 +2694,6 @@
         
         // Initial bookmarks check count
         bookmarkCountBadge.innerText = getBookmarks().length;
+        adjustMobileLayout();
     });
 </script>
