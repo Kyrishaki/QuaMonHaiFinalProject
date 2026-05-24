@@ -11,13 +11,34 @@
 
     // Lấy tên hiển thị mới nhất từ Database để tránh lỗi phông chữ từ Cookie cũ
     string displayName = User.Identity?.Name ?? "";
+    LTWEB_QuaMonHai_CuoiKy.Models.KhachHang khachHang = null;
     if (User.Identity?.IsAuthenticated == true) {
         var customerId = User.Claims.SingleOrDefault(c => c.Type == "CustomerID")?.Value;
         if (!string.IsNullOrEmpty(customerId)) {
-            var khachHang = DbContext.KhachHangs.FirstOrDefault(kh => kh.MaKh == customerId);
+            khachHang = DbContext.KhachHangs.FirstOrDefault(kh => kh.MaKh == customerId);
             if (khachHang != null) {
                 displayName = khachHang.HoTen;
             }
+        }
+    }
+
+    var avatarUrl = "";
+    if (User.Identity?.IsAuthenticated == true) {
+        // 1. Nếu có tag nhận diện API
+        if (khachHang != null && khachHang.Hinh != null && khachHang.Hinh.StartsWith("[API]:"))
+        {
+            string userName = khachHang.Hinh.Replace("[API]:", "");
+            avatarUrl = Url.Content($"~/api/Avatar/generate?name={Uri.EscapeDataString(userName)}");
+        }
+        // 2. Nếu có ảnh thật tự upload (loại trừ các chuỗi mặc định)
+        else if (khachHang != null && !string.IsNullOrEmpty(khachHang.Hinh) && khachHang.Hinh != "default-avatar.jpg" && khachHang.Hinh != "avatar.jpg")
+        {
+            avatarUrl = Url.Content("~/img/Hinh/KhachHang/" + khachHang.Hinh);
+        }
+        // 3. ÉP BUỘC: Quay về gọi API vẽ chữ
+        else
+        {
+            avatarUrl = Url.Content($"~/api/Avatar/generate?name={Uri.EscapeDataString(khachHang?.HoTen ?? "User")}");
         }
     }
 }
@@ -30,10 +51,10 @@
         </div>
         <div class="col-lg-6 px-5 text-end">
             <small class="text-muted">Theo dõi chúng tôi:</small>
-            <a class="text-body ms-3" href="#"><i class="fab fa-facebook-f"></i></a>
-            <a class="text-body ms-3" href="#"><i class="fab fa-x-twitter"></i></a>
-            <a class="text-body ms-3" href="#"><i class="fab fa-linkedin-in"></i></a>
-            <a class="text-body ms-3" href="#"><i class="fab fa-instagram"></i></a>
+            <a class="text-body ms-3" asp-controller="Social" asp-action="Facebook" target="_blank"><i class="fab fa-facebook-f"></i></a>
+            <a class="text-body ms-3" asp-controller="Social" asp-action="X" target="_blank"><i class="fab fa-x-twitter"></i></a>
+            <a class="text-body ms-3" asp-controller="Social" asp-action="LinkedIn" target="_blank"><i class="fab fa-linkedin-in"></i></a>
+            <a class="text-body ms-3" asp-controller="Social" asp-action="Instagram" target="_blank"><i class="fab fa-instagram"></i></a>
         </div>
     </div>
 
@@ -65,8 +86,16 @@
 
                 <div class="nav-item dropdown ms-3">
                     <a href="#" class="nav-link dropdown-toggle d-flex align-items-center gap-2 bg-white rounded-pill px-3 py-1 shadow-sm border" data-bs-toggle="dropdown">
-                        <div class="bg-primary rounded-circle d-flex align-items-center justify-content-center position-relative" style="width: 30px; height: 30px;">
-                            <i class="fa fa-user text-white" style="font-size: 0.8rem;"></i>
+                        <div class="bg-primary rounded-circle d-flex align-items-center justify-content-center position-relative overflow-hidden" style="width: 30px; height: 30px;">
+                            @if (User.Identity?.IsAuthenticated == true) {
+                                <img src="@avatarUrl" 
+                                     alt="Avatar" 
+                                     class="w-100 h-100 object-fit-cover"
+                                     onerror="this.src='/api/Avatar/generate?name=@(Uri.EscapeDataString(khachHang?.HoTen ?? "User"))';"
+                                     style="object-fit: cover;" />
+                            } else {
+                                <i class="fa fa-user text-white" style="font-size: 0.8rem;"></i>
+                            }
                             @if (User.IsInRole("Admin") || User.IsInRole("Staff")) {
                                 <span id="admin-chat-global-badge" class="position-absolute top-0 start-100 translate-middle p-1 bg-danger border border-light rounded-circle d-none animate__animated animate__heartBeat animate__infinite" style="width: 10px; height: 10px; background-color: #ff5722 !important;"></span>
                             }

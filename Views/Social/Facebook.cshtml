@@ -1,0 +1,590 @@
+@model List<LTWEB_QuaMonHai_CuoiKy.Models.HangHoa>
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QuaMonHai - Trang chủ | Facebook</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            background-color: #f0f2f5;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            color: #1c1e21;
+        }
+        .fb-header {
+            background-color: #ffffff;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            height: 56px;
+        }
+        .fb-logo {
+            color: #1877f2;
+            font-size: 2.5rem;
+            display: flex;
+            align-items: center;
+        }
+        .fb-search {
+            background-color: #f0f2f5;
+            border-radius: 50px;
+            padding: 8px 16px;
+            border: none;
+            width: 240px;
+            font-size: 0.9rem;
+            outline: none;
+        }
+        .fb-nav-icon {
+            font-size: 1.5rem;
+            color: #65676b;
+            padding: 12px 30px;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            transition: all 0.2s ease;
+        }
+        .fb-nav-icon.active {
+            color: #1877f2;
+            border-bottom-color: #1877f2;
+        }
+        .fb-nav-icon:hover:not(.active) {
+            background-color: #f2f2f2;
+            border-radius: 8px;
+        }
+        .fb-profile-header {
+            background-color: #ffffff;
+            border-bottom: 1px solid #ced0d4;
+        }
+        .cover-photo {
+            height: 350px;
+            background: linear-gradient(135deg, #1877f2 0%, #1152a8 50%, #082d61 100%);
+            position: relative;
+            border-bottom-left-radius: 8px;
+            border-bottom-right-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            overflow: hidden;
+        }
+        .cover-photo::before {
+            content: "";
+            position: absolute;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.15) 10%, transparent 80%);
+            animation: rotateBg 20s linear infinite;
+        }
+        @@keyframes rotateBg {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .cover-title {
+            position: relative;
+            font-size: 3rem;
+            font-weight: 800;
+            letter-spacing: 2px;
+            text-shadow: 2px 2px 8px rgba(0,0,0,0.5);
+            font-family: 'Lora', serif;
+        }
+        .profile-section {
+            margin-top: -30px;
+            padding-bottom: 20px;
+        }
+        .avatar-container {
+            width: 168px;
+            height: 168px;
+            border-radius: 50%;
+            background-color: white;
+            padding: 4px;
+            position: relative;
+            display: inline-block;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+        .avatar-img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background-color: #81c408;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 5rem;
+            font-weight: bold;
+            border: 2px solid white;
+        }
+        .profile-name {
+            font-size: 2rem;
+            font-weight: 800;
+        }
+        .profile-subtitle {
+            color: #65676b;
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+        .btn-fb {
+            font-weight: 600;
+            padding: 8px 16px;
+            border-radius: 6px;
+            border: none;
+            transition: all 0.2s ease;
+        }
+        .btn-fb-primary {
+            background-color: #1877f2;
+            color: white;
+        }
+        .btn-fb-primary:hover {
+            background-color: #156bec;
+        }
+        .btn-fb-secondary {
+            background-color: #e4e6eb;
+            color: #050505;
+        }
+        .btn-fb-secondary:hover {
+            background-color: #d8dadf;
+        }
+        .fb-tabs {
+            border-top: 1px solid #ced0d4;
+            display: flex;
+        }
+        .fb-tab {
+            padding: 16px 20px;
+            font-weight: 600;
+            color: #65676b;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+        }
+        .fb-tab.active {
+            color: #1877f2;
+            border-bottom-color: #1877f2;
+        }
+        .fb-tab:hover:not(.active) {
+            background-color: #f2f2f2;
+        }
+        .left-card {
+            background-color: white;
+            border-radius: 8px;
+            padding: 16px;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+            margin-bottom: 16px;
+        }
+        .left-card-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+        .intro-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 12px;
+            color: #050505;
+            font-size: 0.95rem;
+        }
+        .intro-item i {
+            font-size: 1.2rem;
+            color: #8f9296;
+            width: 24px;
+            text-align: center;
+        }
+        .post-card {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+            margin-bottom: 16px;
+            padding: 16px;
+        }
+        .post-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+        .post-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: #81c408;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+        .post-meta-name {
+            font-weight: 700;
+            color: #050505;
+            margin: 0;
+            font-size: 0.95rem;
+        }
+        .post-meta-time {
+            font-size: 0.8rem;
+            color: #65676b;
+            margin: 0;
+        }
+        .post-image-container {
+            margin-left: -16px;
+            margin-right: -16px;
+            background-color: #f0f2f5;
+            text-align: center;
+            border-top: 1px solid #e4e6eb;
+            border-bottom: 1px solid #e4e6eb;
+        }
+        .post-image {
+            max-height: 450px;
+            object-fit: cover;
+            width: 100%;
+        }
+        .post-stats {
+            display: flex;
+            justify-content: space-between;
+            color: #65676b;
+            font-size: 0.9rem;
+            padding: 10px 0;
+            border-bottom: 1px solid #e4e6eb;
+        }
+        .like-icon-bg {
+            background-color: #1877f2;
+            color: white;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.65rem;
+            margin-right: 4px;
+        }
+        .post-actions {
+            display: flex;
+            padding-top: 4px;
+        }
+        .post-action-btn {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 8px;
+            border-radius: 4px;
+            color: #65676b;
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            user-select: none;
+            transition: background-color 0.2s ease;
+        }
+        .post-action-btn:hover {
+            background-color: #f2f2f2;
+        }
+        .post-action-btn.liked {
+            color: #1877f2;
+        }
+        .floating-back-btn {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            background: linear-gradient(135deg, #81c408 0%, #689f06 100%);
+            color: white;
+            border-radius: 50px;
+            padding: 12px 24px;
+            box-shadow: 0 4px 15px rgba(129, 196, 8, 0.4);
+            z-index: 10000;
+            text-decoration: none;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            animation: pulseBtn 2s infinite;
+        }
+        .floating-back-btn:hover {
+            transform: scale(1.05) translateY(-3px);
+            box-shadow: 0 6px 20px rgba(129, 196, 8, 0.6);
+            color: white;
+        }
+        @@keyframes pulseBtn {
+            0% { box-shadow: 0 4px 15px rgba(129, 196, 8, 0.4); }
+            50% { box-shadow: 0 4px 25px rgba(129, 196, 8, 0.7); }
+            100% { box-shadow: 0 4px 15px rgba(129, 196, 8, 0.4); }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Floating Back Button -->
+    <a href="/" class="floating-back-btn">
+        <i class="fa fa-arrow-left"></i> Quay lại QuaMonHai
+    </a>
+
+    <!-- Header Facebook -->
+    <header class="fb-header container-fluid d-flex align-items-center justify-content-between px-3">
+        <div class="d-flex align-items-center gap-2">
+            <span class="fb-logo"><i class="fab fa-facebook"></i></span>
+            <div class="position-relative d-none d-md-block">
+                <i class="fa fa-search position-absolute text-muted" style="top: 12px; left: 12px;"></i>
+                <input type="text" class="fb-search ps-5" placeholder="Tìm kiếm trên Facebook">
+            </div>
+        </div>
+        <div class="d-flex align-items-center justify-content-center h-100">
+            <div class="fb-nav-icon active"><i class="fa fa-home"></i></div>
+            <div class="fb-nav-icon"><i class="fa fa-users"></i></div>
+            <div class="fb-nav-icon position-relative">
+                <i class="fa-solid fa-store"></i>
+                <span class="badge bg-danger position-absolute top-1 start-50 translate-middle-x rounded-pill" style="font-size: 0.6rem;">9+</span>
+            </div>
+            <div class="fb-nav-icon"><i class="fa-solid fa-gamepad"></i></div>
+        </div>
+        <div class="d-flex align-items-center gap-2">
+            <button class="btn btn-fb-secondary rounded-circle" style="width: 40px; height: 40px; padding: 0;"><i class="fa-solid fa-bars"></i></button>
+            <button class="btn btn-fb-secondary rounded-circle" style="width: 40px; height: 40px; padding: 0;"><i class="fab fa-facebook-messenger"></i></button>
+            <button class="btn btn-fb-secondary rounded-circle" style="width: 40px; height: 40px; padding: 0;"><i class="fa fa-bell"></i></button>
+            <div class="rounded-circle bg-secondary text-white d-flex align-items-center justify-content-center" style="width: 40px; height: 40px; font-weight: bold; cursor: pointer;">Q</div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="container px-0" style="max-width: 940px; margin-top: 0;">
+        <!-- Profile Header Section -->
+        <section class="fb-profile-header">
+            <!-- Cover Photo -->
+            <div class="cover-photo">
+                <div class="cover-title">QuaMonHai Store</div>
+            </div>
+            <!-- Profile Info -->
+            <div class="profile-section px-4">
+                <div class="row align-items-end">
+                    <div class="col-md-auto text-center text-md-start">
+                        <div class="avatar-container">
+                            <div class="avatar-img">Q</div>
+                        </div>
+                    </div>
+                    <div class="col text-center text-md-start mt-3 mt-md-0">
+                        <h1 class="profile-name mb-1">QuaMonHai <i class="fa fa-circle-check text-primary fs-5" title="Trang chính chủ"></i></h1>
+                        <p class="profile-subtitle mb-0"><span id="page-likes">15,483</span> người thích • <span id="page-followers">16,290</span> người theo dõi</p>
+                    </div>
+                    <div class="col-md-auto text-center text-md-end mt-3 mt-md-0 d-flex gap-2 justify-content-center">
+                        <button class="btn-fb btn-fb-primary" id="btn-follow" onclick="toggleFollow()"><i class="fa fa-user-plus me-1"></i> Theo dõi</button>
+                        <button class="btn-fb btn-fb-secondary" href="mailto:quamonhai@gmail.com"><i class="fab fa-facebook-messenger me-1"></i> Nhắn tin</button>
+                        <button class="btn-fb btn-fb-secondary"><i class="fa fa-ellipsis"></i></button>
+                    </div>
+                </div>
+
+                <!-- Tabs -->
+                <div class="fb-tabs mt-4">
+                    <div class="fb-tab active">Bài viết</div>
+                    <div class="fb-tab">Giới thiệu</div>
+                    <div class="fb-tab">Bạn bè</div>
+                    <div class="fb-tab">Ảnh</div>
+                    <div class="fb-tab">Video</div>
+                    <div class="fb-tab">Thêm</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Profile Content Section -->
+        <div class="row gx-3 py-3 px-2">
+            <!-- Left Sidebar -->
+            <div class="col-lg-5">
+                <!-- Intro Card -->
+                <div class="left-card">
+                    <h3 class="left-card-title">Giới thiệu</h3>
+                    <p class="text-center text-muted" style="font-size: 0.95rem;">Hệ thống phân phối hàng điện tử & phụ kiện uy tín hàng đầu. Cam kết chất lượng, bảo hành tận tâm.</p>
+                    <hr>
+                    <div class="intro-item">
+                        <i class="fa-solid fa-briefcase"></i>
+                        <span>Trang • Cửa hàng công nghệ & phụ kiện điện tử</span>
+                    </div>
+                    <div class="intro-item">
+                        <i class="fa-solid fa-location-dot"></i>
+                        <span>Biên Hòa, Đồng Nai</span>
+                    </div>
+                    <div class="intro-item">
+                        <i class="fa-solid fa-phone"></i>
+                        <span>0936 363 636</span>
+                    </div>
+                    <div class="intro-item">
+                        <i class="fa-solid fa-envelope"></i>
+                        <span>quamonhai@gmail.com</span>
+                    </div>
+                    <div class="intro-item">
+                        <i class="fa-solid fa-globe"></i>
+                        <a href="/" class="text-primary text-decoration-none fw-semibold">quamonhai.vn</a>
+                    </div>
+                </div>
+
+                <!-- Photos Card -->
+                <div class="left-card">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h3 class="left-card-title mb-0">Ảnh</h3>
+                        <a href="#" class="text-primary text-decoration-none btn-link" style="font-size: 0.9rem;">Xem tất cả ảnh</a>
+                    </div>
+                    <div class="row g-2">
+                        @foreach (var prod in Model)
+                        {
+                            <div class="col-4">
+                                <div class="ratio ratio-1x1 bg-light rounded overflow-hidden border">
+                                    <img src="~/img/Hinh/HangHoa/@(string.IsNullOrEmpty(prod.Hinh) ? "no-image.jpg" : prod.Hinh)" class="w-100 h-100 object-fit-cover" alt="@prod.TenHh">
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+
+            <!-- Feed Column -->
+            <div class="col-lg-7">
+                <!-- Create Post Box Mockup -->
+                <div class="left-card mb-3">
+                    <div class="d-flex align-items-center gap-2 mb-2">
+                        <div class="post-avatar">Q</div>
+                        <input type="text" class="form-control rounded-pill bg-light border-0 py-2" placeholder="Bạn đang nghĩ gì thế, QuaMonHai?" disabled>
+                    </div>
+                    <hr class="my-2">
+                    <div class="d-flex text-center">
+                        <div class="flex-fill py-2 text-muted fw-semibold" style="font-size: 0.85rem; cursor: not-allowed;"><i class="fa-solid fa-video text-danger me-2"></i>Video trực tiếp</div>
+                        <div class="flex-fill py-2 text-muted fw-semibold" style="font-size: 0.85rem; cursor: not-allowed;"><i class="fa-solid fa-images text-success me-2"></i>Ảnh/video</div>
+                        <div class="flex-fill py-2 text-muted fw-semibold" style="font-size: 0.85rem; cursor: not-allowed;"><i class="fa-regular fa-face-smile text-warning me-2"></i>Cảm xúc/hoạt động</div>
+                    </div>
+                </div>
+
+                <!-- Feed Posts -->
+                @if (Model.Any())
+                {
+                    var firstProd = Model[0];
+                    <!-- Post 1 -->
+                    <div class="post-card">
+                        <div class="post-header">
+                            <div class="post-avatar">Q</div>
+                            <div>
+                                <h4 class="post-meta-name">QuaMonHai <i class="fa fa-circle-check text-primary fs-6" title="Trang chính chủ"></i></h4>
+                                <p class="post-meta-time">2 giờ trước • <i class="fa fa-globe"></i></p>
+                            </div>
+                        </div>
+                        <p class="post-text">
+                            🌟 SIÊU PHẨM CỰC HOT ĐÃ CÓ MẶT TẠI CỬA HÀNG! 🌟<br>
+                            Mẫu <b>@firstProd.TenHh</b> chính hãng với thiết kế hiện đại, chất lượng đỉnh cao và hiệu năng vượt trội đã chính thức lên kệ tại QuaMonHai.<br><br>
+                            ⚡️ Giá ưu đãi cực sốc: <b>$@firstProd.DonGia</b><br>
+                            🎁 Tặng gói bảo hành 12 tháng vàng cùng quà tặng đi kèm hấp dẫn!<br><br>
+                            👉 Ghé thăm gian hàng trực tuyến để sở hữu ngay hôm nay: <a href="/" class="text-primary text-decoration-none">quamonhai.vn</a>
+                        </p>
+                        @if (!string.IsNullOrEmpty(firstProd.Hinh))
+                        {
+                            <div class="post-image-container">
+                                <img src="~/img/Hinh/HangHoa/@firstProd.Hinh" class="post-image img-fluid" alt="@firstProd.TenHh">
+                            </div>
+                        }
+                        <div class="post-stats">
+                            <div>
+                                <span class="like-icon-bg"><i class="fa fa-thumbs-up"></i></span>
+                                <span class="like-count">142</span>
+                            </div>
+                            <div>
+                                <span>32 bình luận • 15 chia sẻ</span>
+                            </div>
+                        </div>
+                        <div class="post-actions">
+                            <div class="post-action-btn" onclick="likePost(this, 142)">
+                                <i class="fa-regular fa-thumbs-up"></i> Thích
+                            </div>
+                            <div class="post-action-btn">
+                                <i class="fa-regular fa-comment"></i> Bình luận
+                            </div>
+                            <div class="post-action-btn">
+                                <i class="fa-regular fa-share-from-square"></i> Chia sẻ
+                            </div>
+                        </div>
+                    </div>
+
+                    @if (Model.Count > 1)
+                    {
+                        var secondProd = Model[1];
+                        <!-- Post 2 -->
+                        <div class="post-card">
+                            <div class="post-header">
+                                <div class="post-avatar">Q</div>
+                                <div>
+                                    <h4 class="post-meta-name">QuaMonHai <i class="fa fa-circle-check text-primary fs-6" title="Trang chính chủ"></i></h4>
+                                    <p class="post-meta-time">Hôm qua lúc 18:30 • <i class="fa fa-globe"></i></p>
+                                </div>
+                            </div>
+                            <p class="post-text">
+                                Bạn đang tìm kiếm giải pháp công nghệ hoàn hảo? Đừng bỏ qua sản phẩm <b>@secondProd.TenHh</b> đang làm mưa làm gió tại thị trường.<br><br>
+                                📌 Hàng chính hãng 100%<br>
+                                📌 Hỗ trợ trả góp 0% nhanh chóng<br>
+                                📌 Miễn phí giao hàng khu vực Biên Hòa<br><br>
+                                Nhanh tay săn ngay sản phẩm này với giá chỉ <b>$@secondProd.DonGia</b> tại link: <a href="/" class="text-primary text-decoration-none">quamonhai.vn</a>
+                            </p>
+                            @if (!string.IsNullOrEmpty(secondProd.Hinh))
+                            {
+                                <div class="post-image-container">
+                                    <img src="~/img/Hinh/HangHoa/@secondProd.Hinh" class="post-image img-fluid" alt="@secondProd.TenHh">
+                                </div>
+                            }
+                            <div class="post-stats">
+                                <div>
+                                    <span class="like-icon-bg"><i class="fa fa-thumbs-up"></i></span>
+                                    <span class="like-count">95</span>
+                                </div>
+                                <div>
+                                    <span>18 bình luận • 6 chia sẻ</span>
+                                </div>
+                            </div>
+                            <div class="post-actions">
+                                <div class="post-action-btn" onclick="likePost(this, 95)">
+                                    <i class="fa-regular fa-thumbs-up"></i> Thích
+                                </div>
+                                <div class="post-action-btn">
+                                    <i class="fa-regular fa-comment"></i> Bình luận
+                                </div>
+                                <div class="post-action-btn">
+                                    <i class="fa-regular fa-share-from-square"></i> Chia sẻ
+                                </div>
+                            </div>
+                        </div>
+                    }
+                }
+            </div>
+        </div>
+    </main>
+
+    <script>
+        function toggleFollow() {
+            const btn = document.getElementById("btn-follow");
+            const followersSpan = document.getElementById("page-followers");
+            let followers = parseInt(followersSpan.innerText.replace(",", ""));
+
+            if (btn.classList.contains("btn-fb-primary")) {
+                btn.classList.remove("btn-fb-primary");
+                btn.classList.add("btn-fb-secondary");
+                btn.innerHTML = '<i class="fa fa-check me-1"></i> Đang theo dõi';
+                followersSpan.innerText = (followers + 1).toLocaleString();
+            } else {
+                btn.classList.remove("btn-fb-secondary");
+                btn.classList.add("btn-fb-primary");
+                btn.innerHTML = '<i class="fa fa-user-plus me-1"></i> Theo dõi';
+                followersSpan.innerText = (followers - 1).toLocaleString();
+            }
+        }
+
+        function likePost(btn, initialCount) {
+            const countSpan = btn.closest('.post-card').querySelector('.like-count');
+            
+            if (btn.classList.contains('liked')) {
+                btn.classList.remove('liked');
+                btn.querySelector('i').className = 'fa-regular fa-thumbs-up';
+                countSpan.innerText = initialCount;
+            } else {
+                btn.classList.add('liked');
+                btn.querySelector('i').className = 'fa-solid fa-thumbs-up';
+                countSpan.innerText = initialCount + 1;
+            }
+        }
+    </script>
+</body>
+</html>

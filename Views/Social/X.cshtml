@@ -1,0 +1,636 @@
+@model List<LTWEB_QuaMonHai_CuoiKy.Models.HangHoa>
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QuaMonHai (@("@QuaMonHai")) / X</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            background-color: #000000;
+            color: #e7e9ea;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+        .x-sidebar-left {
+            border-right: 1px solid #2f3336;
+            height: 100vh;
+            position: sticky;
+            top: 0;
+            padding-right: 20px;
+        }
+        .x-menu-item {
+            font-size: 1.25rem;
+            font-weight: 700;
+            padding: 12px 20px;
+            border-radius: 9999px;
+            cursor: pointer;
+            width: fit-content;
+            transition: background-color 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            color: #e7e9ea;
+            text-decoration: none;
+        }
+        .x-menu-item:hover {
+            background-color: #16181c;
+            color: #e7e9ea;
+        }
+        .x-menu-item.active {
+            font-weight: 800;
+        }
+        .x-logo {
+            font-size: 1.8rem;
+            color: #e7e9ea;
+            padding: 12px;
+            display: inline-block;
+            margin-bottom: 10px;
+        }
+        .btn-tweet-nav {
+            background-color: #1d9bf0;
+            color: white;
+            font-weight: 700;
+            border: none;
+            border-radius: 9999px;
+            padding: 14px 0;
+            width: 90%;
+            margin-top: 15px;
+            font-size: 1.05rem;
+            transition: background-color 0.2s ease;
+        }
+        .btn-tweet-nav:hover {
+            background-color: #1a8cd8;
+        }
+        .x-main {
+            border-right: 1px solid #2f3336;
+            min-height: 100vh;
+        }
+        .x-header {
+            position: sticky;
+            top: 0;
+            background-color: rgba(0, 0, 0, 0.65);
+            backdrop-filter: blur(12px);
+            z-index: 10;
+            border-bottom: 1px solid #2f3336;
+            padding: 10px 15px;
+        }
+        .x-cover {
+            height: 200px;
+            background: linear-gradient(135deg, #1d9bf0 0%, #0d4b73 100%);
+            position: relative;
+        }
+        .x-avatar-container {
+            margin-top: -70px;
+            margin-left: 15px;
+            position: relative;
+            z-index: 2;
+        }
+        .x-avatar {
+            width: 134px;
+            height: 134px;
+            border-radius: 50%;
+            border: 4px solid #000000;
+            background-color: #81c408;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+            font-weight: bold;
+        }
+        .btn-x-edit {
+            border: 1px solid #536471;
+            background-color: transparent;
+            color: #e7e9ea;
+            font-weight: 700;
+            border-radius: 9999px;
+            padding: 8px 16px;
+            font-size: 0.95rem;
+            transition: background-color 0.2s ease;
+        }
+        .btn-x-edit:hover {
+            background-color: rgba(231, 233, 234, 0.1);
+        }
+        .x-profile-info {
+            padding: 15px;
+        }
+        .x-name {
+            font-size: 1.3rem;
+            font-weight: 800;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .x-handle {
+            color: #71767b;
+            font-size: 0.95rem;
+            margin-bottom: 12px;
+        }
+        .x-bio {
+            font-size: 0.95rem;
+            line-height: 1.4;
+            margin-bottom: 12px;
+        }
+        .x-meta-item {
+            color: #71767b;
+            font-size: 0.9rem;
+            margin-right: 15px;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .x-meta-item i {
+            font-size: 1rem;
+        }
+        .x-stats {
+            margin-top: 12px;
+            font-size: 0.9rem;
+        }
+        .x-stat-num {
+            color: #e7e9ea;
+            font-weight: 700;
+        }
+        .x-stat-label {
+            color: #71767b;
+        }
+        .x-tabs {
+            border-bottom: 1px solid #2f3336;
+            display: flex;
+            text-align: center;
+        }
+        .x-tab {
+            flex: 1;
+            padding: 15px 0;
+            font-weight: 700;
+            color: #71767b;
+            cursor: pointer;
+            position: relative;
+            transition: background-color 0.2s ease;
+        }
+        .x-tab:hover {
+            background-color: rgba(231, 233, 234, 0.03);
+        }
+        .x-tab.active {
+            color: #e7e9ea;
+        }
+        .x-tab.active::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 4px;
+            background-color: #1d9bf0;
+            border-radius: 9999px;
+        }
+        .tweet-card {
+            border-bottom: 1px solid #2f3336;
+            padding: 15px;
+            display: flex;
+            gap: 12px;
+            transition: background-color 0.2s ease;
+        }
+        .tweet-card:hover {
+            background-color: rgba(255, 255, 255, 0.015);
+        }
+        .tweet-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: #81c408;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+        .tweet-header {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            margin-bottom: 4px;
+        }
+        .tweet-author {
+            font-weight: 700;
+            color: #e7e9ea;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 3px;
+        }
+        .tweet-handle {
+            color: #71767b;
+            font-size: 0.9rem;
+        }
+        .tweet-time {
+            color: #71767b;
+            font-size: 0.9rem;
+        }
+        .tweet-text {
+            font-size: 0.95rem;
+            line-height: 1.5;
+            color: #e7e9ea;
+            margin-bottom: 10px;
+        }
+        .tweet-media-container {
+            border: 1px solid #2f3336;
+            border-radius: 16px;
+            overflow: hidden;
+            background-color: #0c0d0e;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+        .tweet-image {
+            max-height: 380px;
+            object-fit: cover;
+            max-width: 100%;
+        }
+        .tweet-actions {
+            display: flex;
+            justify-content: space-between;
+            color: #71767b;
+            max-width: 425px;
+            font-size: 0.85rem;
+            margin-top: 10px;
+        }
+        .tweet-action-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            transition: color 0.2s ease;
+        }
+        .tweet-action-btn:hover {
+            color: #1d9bf0;
+        }
+        .tweet-action-btn.retweeted {
+            color: #00ba7c;
+        }
+        .tweet-action-btn.liked {
+            color: #f91880;
+        }
+        .x-sidebar-right {
+            border-left: 1px solid #2f3336;
+            padding: 15px 0 15px 25px;
+            height: 100vh;
+            position: sticky;
+            top: 0;
+        }
+        .x-search-right {
+            background-color: #202327;
+            border-radius: 9999px;
+            border: none;
+            padding: 12px 20px;
+            width: 100%;
+            color: white;
+            font-size: 0.95rem;
+            outline: none;
+            margin-bottom: 15px;
+        }
+        .x-widget-card {
+            background-color: #16181c;
+            border-radius: 16px;
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+        .x-widget-title {
+            font-size: 1.2rem;
+            font-weight: 800;
+            margin-bottom: 15px;
+        }
+        .trend-item {
+            margin-bottom: 15px;
+        }
+        .trend-category {
+            font-size: 0.8rem;
+            color: #71767b;
+        }
+        .trend-name {
+            font-weight: 700;
+            font-size: 0.95rem;
+            color: #e7e9ea;
+        }
+        .trend-tweets {
+            font-size: 0.8rem;
+            color: #71767b;
+        }
+        .floating-back-btn {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            background: linear-gradient(135deg, #81c408 0%, #689f06 100%);
+            color: white;
+            border-radius: 50px;
+            padding: 12px 24px;
+            box-shadow: 0 4px 15px rgba(129, 196, 8, 0.4);
+            z-index: 10000;
+            text-decoration: none;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            animation: pulseBtn 2s infinite;
+        }
+        .floating-back-btn:hover {
+            transform: scale(1.05) translateY(-3px);
+            box-shadow: 0 6px 20px rgba(129, 196, 8, 0.6);
+            color: white;
+        }
+        @@keyframes pulseBtn {
+            0% { box-shadow: 0 4px 15px rgba(129, 196, 8, 0.4); }
+            50% { box-shadow: 0 4px 25px rgba(129, 196, 8, 0.7); }
+            100% { box-shadow: 0 4px 15px rgba(129, 196, 8, 0.4); }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Floating Back Button -->
+    <a href="/" class="floating-back-btn">
+        <i class="fa fa-arrow-left"></i> Quay lại QuaMonHai
+    </a>
+
+    <div class="container-fluid" style="max-width: 1200px;">
+        <div class="row">
+            <!-- Left Sidebar Navigation -->
+            <div class="col-3 x-sidebar-left d-flex flex-column align-items-start py-3">
+                <a href="#" class="x-logo"><i class="fab fa-x-twitter"></i></a>
+                <a class="x-menu-item active" href="/"><i class="fa-solid fa-house"></i> <span>Trang chủ</span></a>
+                <a class="x-menu-item" href="#"><i class="fa-solid fa-magnifying-glass"></i> <span>Khám phá</span></a>
+                <a class="x-menu-item" href="#"><i class="fa-regular fa-bell"></i> <span>Thông báo</span></a>
+                <a class="x-menu-item" href="#"><i class="fa-regular fa-envelope"></i> <span>Hộp thư</span></a>
+                <a class="x-menu-item" href="#"><i class="fa-regular fa-bookmark"></i> <span>Đánh dấu</span></a>
+                <a class="x-menu-item" href="#"><i class="fa-solid fa-users"></i> <span>Cộng đồng</span></a>
+                <a class="x-menu-item" href="#"><i class="fa-regular fa-user"></i> <span>Hồ sơ</span></a>
+                <a class="x-menu-item" href="#"><i class="fa-solid fa-ellipsis"></i> <span>Thêm</span></a>
+                <button class="btn-tweet-nav">Đăng</button>
+            </div>
+
+            <!-- Middle Feed Area -->
+            <div class="col-6 x-main px-0">
+                <!-- Profile Header -->
+                <div class="x-header d-flex align-items-center gap-4">
+                    <a href="/" class="text-white text-decoration-none"><i class="fa fa-arrow-left"></i></a>
+                    <div>
+                        <h2 class="x-name">QuaMonHai <i class="fa fa-circle-check text-primary fs-6" style="color: #1d9bf0 !important;" title="Verified account"></i></h2>
+                        <span class="text-muted" style="font-size: 0.85rem;">42 Tweets</span>
+                    </div>
+                </div>
+
+                <!-- Cover Image -->
+                <div class="x-cover"></div>
+
+                <!-- Avatar and Action Buttons -->
+                <div class="d-flex justify-content-between align-items-start px-3">
+                    <div class="x-avatar-container">
+                        <div class="x-avatar">Q</div>
+                    </div>
+                    <div class="pt-3">
+                        <button class="btn-x-edit" id="btn-follow" onclick="toggleFollow()">Follow</button>
+                    </div>
+                </div>
+
+                <!-- Profile Info -->
+                <div class="x-profile-info">
+                    <h1 class="x-name mb-0">QuaMonHai <i class="fa fa-circle-check text-primary fs-6" style="color: #1d9bf0 !important;" title="Verified account"></i></h1>
+                    <div class="x-handle">@("@QuaMonHai")</div>
+                    <div class="x-bio">
+                        Cửa hàng chính hãng phân phối sỉ lẻ hàng công nghệ cao cấp, thiết bị thông minh & phụ kiện thời trang. Bảo hành cực xịn, chăm sóc tận tâm! 💻📱🎧
+                    </div>
+                    <div class="x-meta">
+                        <div class="x-meta-item">
+                            <i class="fa-solid fa-location-dot"></i>
+                            <span>Biên Hòa, Đồng Nai</span>
+                        </div>
+                        <div class="x-meta-item">
+                            <i class="fa-solid fa-link"></i>
+                            <a href="/" class="text-primary text-decoration-none">quamonhai.vn</a>
+                        </div>
+                        <div class="x-meta-item">
+                            <i class="fa-regular fa-calendar-days"></i>
+                            <span>Tham gia Tháng 9, 2023</span>
+                        </div>
+                    </div>
+                    <div class="x-stats">
+                        <span class="me-3"><span class="x-stat-num" id="following-count">192</span> <span class="x-stat-label">Following</span></span>
+                        <span><span class="x-stat-num" id="followers-count">45.2K</span> <span class="x-stat-label">Followers</span></span>
+                    </div>
+                </div>
+
+                <!-- Tabs -->
+                <div class="x-tabs">
+                    <div class="x-tab active">Tweets</div>
+                    <div class="x-tab">Replies</div>
+                    <div class="x-tab">Highlights</div>
+                    <div class="x-tab">Media</div>
+                    <div class="x-tab">Likes</div>
+                </div>
+
+                <!-- Tweets List -->
+                @if (Model.Any())
+                {
+                    var tweetProd1 = Model[0];
+                    <!-- Tweet 1 -->
+                    <div class="tweet-card">
+                        <div class="tweet-avatar">Q</div>
+                        <div class="flex-fill">
+                            <div class="tweet-header">
+                                <span class="tweet-author">QuaMonHai <i class="fa fa-circle-check text-primary fs-6" style="color: #1d9bf0 !important;"></i></span>
+                                <span class="tweet-handle">@("@QuaMonHai")</span>
+                                <span class="text-muted">•</span>
+                                <span class="tweet-time text-muted">2h</span>
+                            </div>
+                            <div class="tweet-text">
+                                🔥 BÙNG NỔ THUẬT TOÁN SALES! 🔥<br>
+                                Siêu phẩm <b>@tweetProd1.TenHh</b> vừa đáp cánh tại hệ thống với số lượng giới hạn.<br><br>
+                                Giá cực tốt chỉ: <b>$@tweetProd1.DonGia</b><br>
+                                Đừng bỏ lỡ ưu đãi hoàn tiền và giao hàng siêu tốc trong ngày.<br><br>
+                                Click để săn ngay: <a href="/" class="text-primary text-decoration-none">quamonhai.vn</a> #QuaMonHai #TechDeal
+                            </div>
+                            @if (!string.IsNullOrEmpty(tweetProd1.Hinh))
+                            {
+                                <div class="tweet-media-container">
+                                    <img src="~/img/Hinh/HangHoa/@tweetProd1.Hinh" class="tweet-image" alt="@tweetProd1.TenHh">
+                                </div>
+                            }
+                            <div class="tweet-actions">
+                                <div class="tweet-action-btn"><i class="fa-regular fa-comment"></i> <span>12</span></div>
+                                <div class="tweet-action-btn" onclick="retweet(this, 35)"><i class="fa-solid fa-arrows-rotate"></i> <span class="rt-count">35</span></div>
+                                <div class="tweet-action-btn" onclick="likeTweet(this, 128)"><i class="fa-regular fa-heart"></i> <span class="like-count">128</span></div>
+                                <div class="tweet-action-btn"><i class="fa-solid fa-chart-simple"></i> <span>10.5K</span></div>
+                                <div class="tweet-action-btn"><i class="fa-regular fa-bookmark"></i></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    @if (Model.Count > 1)
+                    {
+                        var tweetProd2 = Model[1];
+                        <!-- Tweet 2 -->
+                        <div class="tweet-card">
+                            <div class="tweet-avatar">Q</div>
+                            <div class="flex-fill">
+                                <div class="tweet-header">
+                                    <span class="tweet-author">QuaMonHai <i class="fa fa-circle-check text-primary fs-6" style="color: #1d9bf0 !important;"></i></span>
+                                    <span class="tweet-handle">@("@QuaMonHai")</span>
+                                    <span class="text-muted">•</span>
+                                    <span class="tweet-time text-muted">18h</span>
+                                </div>
+                                <div class="tweet-text">
+                                    Mùa hè này, hãy làm mới không gian làm việc và phong cách cá nhân của bạn cùng <b>@tweetProd2.TenHh</b>!<br><br>
+                                    Đang áp dụng chương trình trả góp 0% lãi suất cùng quà tặng tai nghe Bluetooth độc quyền chỉ có tại cửa hàng QuaMonHai Biên Hòa.<br><br>
+                                    Chi tiết sản phẩm: <a href="/" class="text-primary text-decoration-none">quamonhai.vn</a>
+                                </div>
+                                @if (!string.IsNullOrEmpty(tweetProd2.Hinh))
+                                {
+                                    <div class="tweet-media-container">
+                                        <img src="~/img/Hinh/HangHoa/@tweetProd2.Hinh" class="tweet-image" alt="@tweetProd2.TenHh">
+                                    </div>
+                                }
+                                <div class="tweet-actions">
+                                    <div class="tweet-action-btn"><i class="fa-regular fa-comment"></i> <span>8</span></div>
+                                    <div class="tweet-action-btn" onclick="retweet(this, 14)"><i class="fa-solid fa-arrows-rotate"></i> <span class="rt-count">14</span></div>
+                                    <div class="tweet-action-btn" onclick="likeTweet(this, 75)"><i class="fa-regular fa-heart"></i> <span class="like-count">75</span></div>
+                                    <div class="tweet-action-btn"><i class="fa-solid fa-chart-simple"></i> <span>5.4K</span></div>
+                                    <div class="tweet-action-btn"><i class="fa-regular fa-bookmark"></i></div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+
+                    <!-- Tweet 3 (No Image) -->
+                    <div class="tweet-card">
+                        <div class="tweet-avatar">Q</div>
+                        <div class="flex-fill">
+                            <div class="tweet-header">
+                                <span class="tweet-author">QuaMonHai <i class="fa fa-circle-check text-primary fs-6" style="color: #1d9bf0 !important;"></i></span>
+                                <span class="tweet-handle">@("@QuaMonHai")</span>
+                                <span class="text-muted">•</span>
+                                <span class="tweet-time text-muted">23 May</span>
+                            </div>
+                            <div class="tweet-text">
+                                📞 BẠN CẦN TRỢ GIÚP? Đội ngũ support tận tình của QuaMonHai luôn sẵn sàng phục vụ 24/7.<br><br>
+                                🌟 Hotline/Zalo: 0936 363 636<br>
+                                ✉️ Email: quamonhai@gmail.com<br>
+                                Hoặc chat trực tiếp trực tiếp trên website <a href="/" class="text-primary text-decoration-none">quamonhai.vn</a> nhé! Hân hạnh được đón tiếp.
+                            </div>
+                            <div class="tweet-actions">
+                                <div class="tweet-action-btn"><i class="fa-regular fa-comment"></i> <span>4</span></div>
+                                <div class="tweet-action-btn" onclick="retweet(this, 9)"><i class="fa-solid fa-arrows-rotate"></i> <span class="rt-count">9</span></div>
+                                <div class="tweet-action-btn" onclick="likeTweet(this, 41)"><i class="fa-regular fa-heart"></i> <span class="like-count">41</span></div>
+                                <div class="tweet-action-btn"><i class="fa-solid fa-chart-simple"></i> <span>3.2K</span></div>
+                                <div class="tweet-action-btn"><i class="fa-regular fa-bookmark"></i></div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+
+            <!-- Right Sidebar Widgets -->
+            <div class="col-3 x-sidebar-right d-none d-lg-block">
+                <input type="text" class="x-search-right" placeholder="Tìm kiếm">
+
+                <div class="x-widget-card">
+                    <h3 class="x-widget-title">What's happening</h3>
+                    <div class="trend-item">
+                        <div class="trend-category">Technology • Trending</div>
+                        <div class="trend-name">#QuaMonHai</div>
+                        <div class="trend-tweets">18.5K Tweets</div>
+                    </div>
+                    <div class="trend-item">
+                        <div class="trend-category">Shopping • Trending</div>
+                        <div class="trend-name">#TechSale</div>
+                        <div class="trend-tweets">84.2K Tweets</div>
+                    </div>
+                    <div class="trend-item">
+                        <div class="trend-category">Trending in Vietnam</div>
+                        <div class="trend-name">Đồng Nai</div>
+                        <div class="trend-tweets">12.8K Tweets</div>
+                    </div>
+                </div>
+
+                <div class="x-widget-card">
+                    <h3 class="x-widget-title">Who to follow</h3>
+                    <div class="d-flex align-items-center justify-content-between mb-3">
+                        <div class="d-flex align-items-center gap-2">
+                            <div class="rounded-circle bg-secondary text-white d-flex align-items-center justify-content-center" style="width: 40px; height: 40px; font-weight: bold;">T</div>
+                            <div>
+                                <div class="fw-bold text-white" style="font-size: 0.9rem; line-height: 1.2;">TechNews</div>
+                                <div class="text-muted" style="font-size: 0.8rem;">@("@technews")</div>
+                            </div>
+                        </div>
+                        <button class="btn btn-light btn-sm rounded-pill fw-bold px-3">Follow</button>
+                    </div>
+                    <div class="d-flex align-items-center justify-content-between">
+                        <div class="d-flex align-items-center gap-2">
+                            <div class="rounded-circle bg-success text-white d-flex align-items-center justify-content-center" style="width: 40px; height: 40px; font-weight: bold;">Q</div>
+                            <div>
+                                <div class="fw-bold text-white" style="font-size: 0.9rem; line-height: 1.2;">QuaMonGroup</div>
+                                <div class="text-muted" style="font-size: 0.8rem;">@("@quamongroup")</div>
+                            </div>
+                        </div>
+                        <button class="btn btn-light btn-sm rounded-pill fw-bold px-3">Follow</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function toggleFollow() {
+            const btn = document.getElementById("btn-follow");
+            const countSpan = document.getElementById("followers-count");
+            
+            if (btn.innerText === "Follow") {
+                btn.innerText = "Following";
+                btn.style.backgroundColor = "transparent";
+                btn.style.color = "#e7e9ea";
+                btn.style.borderColor = "#536471";
+                countSpan.innerText = "45.3K";
+            } else {
+                btn.innerText = "Follow";
+                btn.style.backgroundColor = "#e7e9ea";
+                btn.style.color = "#0f1419";
+                btn.style.borderColor = "transparent";
+                countSpan.innerText = "45.2K";
+            }
+        }
+
+        function likeTweet(btn, initialCount) {
+            const countSpan = btn.querySelector('.like-count');
+            const icon = btn.querySelector('i');
+            
+            if (btn.classList.contains('liked')) {
+                btn.classList.remove('liked');
+                icon.className = 'fa-regular fa-heart';
+                countSpan.innerText = initialCount;
+            } else {
+                btn.classList.add('liked');
+                icon.className = 'fa-solid fa-heart';
+                countSpan.innerText = initialCount + 1;
+            }
+        }
+
+        function retweet(btn, initialCount) {
+            const countSpan = btn.querySelector('.rt-count');
+            
+            if (btn.classList.contains('retweeted')) {
+                btn.classList.remove('retweeted');
+                countSpan.innerText = initialCount;
+            } else {
+                btn.classList.add('retweeted');
+                countSpan.innerText = initialCount + 1;
+            }
+        }
+    </script>
+</body>
+</html>

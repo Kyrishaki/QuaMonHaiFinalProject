@@ -1,0 +1,533 @@
+@model List<LTWEB_QuaMonHai_CuoiKy.Models.HangHoa>
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QuaMonHai | LinkedIn</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            background-color: #f3f2f0;
+            color: rgba(0,0,0,0.9);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+        .li-header {
+            background-color: #ffffff;
+            border-bottom: 1px solid #eef3f8;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            height: 52px;
+        }
+        .li-logo {
+            color: #0a66c2;
+            font-size: 2.2rem;
+            display: flex;
+            align-items: center;
+        }
+        .li-search {
+            background-color: #edf3f8;
+            border-radius: 4px;
+            padding: 6px 12px;
+            border: none;
+            width: 280px;
+            font-size: 0.85rem;
+            outline: none;
+        }
+        .li-nav-icon {
+            font-size: 1.3rem;
+            color: #666666;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            width: 80px;
+            font-size: 0.75rem;
+            gap: 2px;
+        }
+        .li-nav-icon i {
+            font-size: 1.25rem;
+        }
+        .li-nav-icon:hover {
+            color: #000000;
+        }
+        .li-nav-icon.active {
+            color: #000000;
+            border-bottom: 2px solid #000000;
+        }
+        .li-card {
+            background-color: #ffffff;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            overflow: hidden;
+        }
+        .li-cover {
+            height: 180px;
+            background: linear-gradient(135deg, #0a66c2 0%, #1d82f3 100%);
+        }
+        .li-logo-container {
+            margin-top: -60px;
+            margin-left: 30px;
+            display: inline-block;
+            background-color: white;
+            padding: 8px;
+            border-radius: 4px;
+            box-shadow: 0 0 0 1px rgba(0,0,0,0.15);
+        }
+        .li-company-logo {
+            width: 96px;
+            height: 96px;
+            background-color: #81c408;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3.5rem;
+            font-weight: bold;
+        }
+        .li-profile-info {
+            padding: 20px 30px;
+        }
+        .li-name {
+            font-size: 1.6rem;
+            font-weight: 700;
+        }
+        .li-tagline {
+            font-size: 0.95rem;
+            color: rgba(0,0,0,0.9);
+            margin-bottom: 8px;
+        }
+        .li-sub-info {
+            font-size: 0.85rem;
+            color: rgba(0,0,0,0.6);
+            margin-bottom: 15px;
+        }
+        .btn-li {
+            font-weight: 600;
+            padding: 6px 18px;
+            border-radius: 16px;
+            font-size: 0.95rem;
+            transition: all 0.2s ease;
+        }
+        .btn-li-primary {
+            background-color: #0a66c2;
+            color: white;
+            border: none;
+        }
+        .btn-li-primary:hover {
+            background-color: #004182;
+        }
+        .btn-li-secondary {
+            background-color: transparent;
+            color: #0a66c2;
+            border: 1px solid #0a66c2;
+        }
+        .btn-li-secondary:hover {
+            background-color: rgba(10, 102, 194, 0.08);
+            border-width: 2px;
+            padding: 5px 17px;
+        }
+        .li-tabs {
+            border-top: 1px solid #e0e0e0;
+            padding-left: 20px;
+            display: flex;
+        }
+        .li-tab {
+            padding: 15px 20px;
+            font-weight: 600;
+            color: rgba(0,0,0,0.6);
+            cursor: pointer;
+        }
+        .li-tab.active {
+            color: #0a66c2;
+            border-bottom: 2px solid #0a66c2;
+        }
+        .li-tab:hover:not(.active) {
+            background-color: #f3f2f0;
+        }
+        .li-section-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+        .li-spec-item {
+            font-size: 0.9rem;
+            margin-bottom: 12px;
+        }
+        .li-spec-label {
+            font-weight: 600;
+            color: rgba(0,0,0,0.6);
+            width: 150px;
+            display: inline-block;
+        }
+        .li-spec-value {
+            color: rgba(0,0,0,0.9);
+        }
+        .post-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+        .post-avatar {
+            width: 48px;
+            height: 48px;
+            background-color: #81c408;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.5rem;
+            border-radius: 4px;
+        }
+        .post-author-name {
+            font-weight: 700;
+            font-size: 0.95rem;
+            margin: 0;
+        }
+        .post-author-sub {
+            font-size: 0.8rem;
+            color: rgba(0,0,0,0.6);
+            margin: 0;
+        }
+        .post-text {
+            font-size: 0.9rem;
+            line-height: 1.45;
+            margin-bottom: 15px;
+        }
+        .post-img-box {
+            background-color: #f3f2f0;
+            border: 1px solid #e0e0e0;
+            border-radius: 4px;
+            overflow: hidden;
+            text-align: center;
+            margin-bottom: 12px;
+        }
+        .post-img {
+            max-height: 350px;
+            object-fit: cover;
+            width: 100%;
+        }
+        .post-stats {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.8rem;
+            color: rgba(0,0,0,0.6);
+            padding-bottom: 8px;
+            border-bottom: 1px solid #e8e8e8;
+        }
+        .li-reactions {
+            display: flex;
+            align-items: center;
+        }
+        .reaction-circle {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.55rem;
+            color: white;
+            border: 1px solid white;
+            margin-right: -4px;
+        }
+        .react-like { background-color: #0a66c2; }
+        .react-insight { background-color: #008f72; }
+        .post-actions {
+            display: flex;
+            padding-top: 8px;
+        }
+        .post-action-btn {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 10px;
+            color: rgba(0,0,0,0.6);
+            font-weight: 600;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+            border-radius: 4px;
+        }
+        .post-action-btn:hover {
+            background-color: rgba(0,0,0,0.05);
+        }
+        .post-action-btn.liked {
+            color: #0a66c2;
+        }
+        .floating-back-btn {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            background: linear-gradient(135deg, #81c408 0%, #689f06 100%);
+            color: white;
+            border-radius: 50px;
+            padding: 12px 24px;
+            box-shadow: 0 4px 15px rgba(129, 196, 8, 0.4);
+            z-index: 10000;
+            text-decoration: none;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            animation: pulseBtn 2s infinite;
+        }
+        .floating-back-btn:hover {
+            transform: scale(1.05) translateY(-3px);
+            box-shadow: 0 6px 20px rgba(129, 196, 8, 0.6);
+            color: white;
+        }
+        @@keyframes pulseBtn {
+            0% { box-shadow: 0 4px 15px rgba(129, 196, 8, 0.4); }
+            50% { box-shadow: 0 4px 25px rgba(129, 196, 8, 0.7); }
+            100% { box-shadow: 0 4px 15px rgba(129, 196, 8, 0.4); }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Floating Back Button -->
+    <a href="/" class="floating-back-btn">
+        <i class="fa fa-arrow-left"></i> Quay lại QuaMonHai
+    </a>
+
+    <!-- Header -->
+    <header class="li-header container-fluid d-flex align-items-center justify-content-between px-5">
+        <div class="d-flex align-items-center gap-3">
+            <span class="li-logo"><i class="fab fa-linkedin"></i></span>
+            <div class="position-relative d-none d-md-block">
+                <i class="fa fa-search position-absolute text-muted" style="top: 8px; left: 10px;"></i>
+                <input type="text" class="li-search ps-5" placeholder="Tìm kiếm">
+            </div>
+        </div>
+        <div class="d-flex align-items-center h-100">
+            <div class="li-nav-icon"><i class="fa-solid fa-house"></i> <span>Home</span></div>
+            <div class="li-nav-icon"><i class="fa-solid fa-user-group"></i> <span>Network</span></div>
+            <div class="li-nav-icon"><i class="fa-solid fa-briefcase"></i> <span>Jobs</span></div>
+            <div class="li-nav-icon"><i class="fa-solid fa-comment-dots"></i> <span>Messaging</span></div>
+            <div class="li-nav-icon"><i class="fa-solid fa-bell"></i> <span>Notifications</span></div>
+            <div class="li-nav-icon active"><i class="fa-solid fa-circle-user"></i> <span>Me</span></div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container py-4" style="max-width: 960px;">
+        <!-- Top Company Header Card -->
+        <div class="li-card">
+            <div class="li-cover"></div>
+            <div class="li-logo-container">
+                <div class="li-company-logo">Q</div>
+            </div>
+            <div class="li-profile-info">
+                <h1 class="li-name">QuaMonHai <span class="badge bg-secondary text-white fs-8 align-middle" style="font-size: 0.65rem;">Page</span></h1>
+                <p class="li-tagline">Hệ thống phân phối sỉ lẻ thiết bị công nghệ chính hãng, điện tử & phụ kiện chất lượng cao.</p>
+                <p class="li-sub-info">Bán lẻ thiết bị công nghệ • Biên Hòa, Đồng Nai • <span id="followers-count">1,420</span> followers</p>
+                <div class="d-flex gap-2">
+                    <button class="btn-li btn-li-primary" id="btn-follow" onclick="toggleFollow()"><i class="fa fa-plus me-1"></i> Follow</button>
+                    <a href="/" class="btn btn-li btn-li-secondary text-decoration-none">Visit website <i class="fa-solid fa-arrow-up-right-from-square ms-1" style="font-size: 0.75rem;"></i></a>
+                </div>
+            </div>
+
+            <!-- Tabs -->
+            <div class="li-tabs">
+                <div class="li-tab active">Home</div>
+                <div class="li-tab">About</div>
+                <div class="li-tab">Products</div>
+                <div class="li-tab">Posts</div>
+                <div class="li-tab">Jobs</div>
+                <div class="li-tab">People</div>
+            </div>
+        </div>
+
+        <div class="row">
+            <!-- Left Side: About / Specs -->
+            <div class="col-md-5">
+                <div class="li-card p-4">
+                    <h3 class="li-section-title">About</h3>
+                    <p class="text-muted" style="font-size: 0.9rem; line-height: 1.45;">
+                        QuaMonHai là thương hiệu phân phối sản phẩm công nghệ thông minh, phụ kiện kỹ thuật số và thiết bị cá nhân hàng đầu tại Việt Nam. Định hướng cung cấp các sản phẩm chất lượng, nguồn gốc rõ ràng và chính sách chăm sóc khách hàng hàng đầu.
+                    </p>
+                    <hr>
+                    <div class="li-spec-item">
+                        <span class="li-spec-label">Website</span>
+                        <a href="/" class="li-spec-value text-primary text-decoration-none fw-semibold">quamonhai.vn</a>
+                    </div>
+                    <div class="li-spec-item">
+                        <span class="li-spec-label">Industry</span>
+                        <span class="li-spec-value">Technology Retail</span>
+                    </div>
+                    <div class="li-spec-item">
+                        <span class="li-spec-label">Company size</span>
+                        <span class="li-spec-value">11-50 employees</span>
+                    </div>
+                    <div class="li-spec-item">
+                        <span class="li-spec-label">Headquarters</span>
+                        <span class="li-spec-value">Biên Hòa, Đồng Nai</span>
+                    </div>
+                    <div class="li-spec-item">
+                        <span class="li-spec-label">Type</span>
+                        <span class="li-spec-value">Privately Held</span>
+                    </div>
+                    <div class="li-spec-item">
+                        <span class="li-spec-label">Founded</span>
+                        <span class="li-spec-value">2023</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Side: Posts Feed -->
+            <div class="col-md-7">
+                <!-- Share Widget Mockup -->
+                <div class="li-card p-3">
+                    <div class="d-flex align-items-center gap-3">
+                        <div class="rounded bg-light text-center fw-bold text-success border d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">Q</div>
+                        <input type="text" class="form-control rounded-pill bg-light border-0 py-2.5" placeholder="Start a post..." disabled>
+                    </div>
+                </div>
+
+                <!-- Feed Posts -->
+                @if (Model.Any())
+                {
+                    var postProd1 = Model[0];
+                    <!-- Post 1 -->
+                    <div class="li-card p-3">
+                        <div class="post-header">
+                            <div class="post-avatar">Q</div>
+                            <div>
+                                <h4 class="post-author-name">QuaMonHai</h4>
+                                <p class="post-author-sub">1,420 followers • 1d</p>
+                            </div>
+                        </div>
+                        <div class="post-text">
+                            🚀 <b>BUSINESS UPDATE:</b> Chúng tôi hân hạnh giới thiệu siêu phẩm công nghệ mới nhất vừa cập bến kho hàng của QuaMonHai Store: Mẫu <b>@postProd1.TenHh</b>!<br><br>
+                            Sản phẩm này mang tính đột phá cao về mặt thiết kế, tối ưu hóa tối đa trải nghiệm người dùng và đi kèm chất lượng vượt trội. Thích hợp cho cả khách hàng cá nhân và doanh nghiệp có yêu cầu khắt khe.<br><br>
+                            💼 Giá phân phối đặc quyền: <b>$@postProd1.DonGia</b><br>
+                            👉 Đặt mua ngay qua hệ thống: <a href="/" class="text-primary text-decoration-none">quamonhai.vn</a>
+                        </div>
+                        @if (!string.IsNullOrEmpty(postProd1.Hinh))
+                        {
+                            <div class="post-img-box">
+                                <img src="~/img/Hinh/HangHoa/@postProd1.Hinh" class="post-img img-fluid" alt="@postProd1.TenHh">
+                            </div>
+                        }
+                        <div class="post-stats">
+                            <div class="li-reactions">
+                                <span class="reaction-circle react-like"><i class="fa-solid fa-thumbs-up"></i></span>
+                                <span class="reaction-circle react-insight"><i class="fa-solid fa-lightbulb"></i></span>
+                                <span class="ms-2 reactions-count">48</span>
+                            </div>
+                            <div>
+                                <span>12 comments • 4 shares</span>
+                            </div>
+                        </div>
+                        <div class="post-actions">
+                            <div class="post-action-btn" onclick="likePost(this, 48)">
+                                <i class="fa-regular fa-thumbs-up"></i> Like
+                            </div>
+                            <div class="post-action-btn">
+                                <i class="fa-regular fa-comment"></i> Comment
+                            </div>
+                            <div class="post-action-btn">
+                                <i class="fa-solid fa-share"></i> Share
+                            </div>
+                        </div>
+                    </div>
+
+                    @if (Model.Count > 1)
+                    {
+                        var postProd2 = Model[1];
+                        <!-- Post 2 -->
+                        <div class="li-card p-3">
+                            <div class="post-header">
+                                <div class="post-avatar">Q</div>
+                                <div>
+                                    <h4 class="post-author-name">QuaMonHai</h4>
+                                    <p class="post-author-sub">1,420 followers • 3d</p>
+                                </div>
+                            </div>
+                            <div class="post-text">
+                                Phát triển giải pháp công nghệ xanh và thân thiện với môi trường cùng <b>@postProd2.TenHh</b>.<br><br>
+                                Tại QuaMonHai, chúng tôi luôn nỗ lực tuyển chọn và cung cấp các sản phẩm thiết bị tiết kiệm điện năng vượt trội, nâng cấp chất lượng cuộc sống bền vững hơn.<br><br>
+                                📍 Trực tiếp xem sản phẩm tại showroom Biên Hòa hoặc truy cập: <a href="/" class="text-primary text-decoration-none">quamonhai.vn</a>
+                            </div>
+                            @if (!string.IsNullOrEmpty(postProd2.Hinh))
+                            {
+                                <div class="post-img-box">
+                                    <img src="~/img/Hinh/HangHoa/@postProd2.Hinh" class="post-img img-fluid" alt="@postProd2.TenHh">
+                                </div>
+                            }
+                            <div class="post-stats">
+                                <div class="li-reactions">
+                                    <span class="reaction-circle react-like"><i class="fa-solid fa-thumbs-up"></i></span>
+                                    <span class="ms-2 reactions-count">32</span>
+                                </div>
+                                <div>
+                                    <span>5 comments • 1 share</span>
+                                </div>
+                            </div>
+                            <div class="post-actions">
+                                <div class="post-action-btn" onclick="likePost(this, 32)">
+                                    <i class="fa-regular fa-thumbs-up"></i> Like
+                                </div>
+                                <div class="post-action-btn">
+                                    <i class="fa-regular fa-comment"></i> Comment
+                                </div>
+                                <div class="post-action-btn">
+                                    <i class="fa-solid fa-share"></i> Share
+                                </div>
+                            </div>
+                        </div>
+                    }
+                }
+            </div>
+        </div>
+    </main>
+
+    <script>
+        function toggleFollow() {
+            const btn = document.getElementById("btn-follow");
+            const countSpan = document.getElementById("followers-count");
+            let followers = parseInt(countSpan.innerText.replace(",", ""));
+
+            if (btn.innerText.includes("Follow")) {
+                btn.innerHTML = '<i class="fa fa-check me-1"></i> Following';
+                btn.classList.remove("btn-li-primary");
+                btn.classList.add("btn-li-secondary");
+                countSpan.innerText = (followers + 1).toLocaleString();
+            } else {
+                btn.innerHTML = '<i class="fa fa-plus me-1"></i> Follow';
+                btn.classList.remove("btn-li-secondary");
+                btn.classList.add("btn-li-primary");
+                countSpan.innerText = (followers - 1).toLocaleString();
+            }
+        }
+
+        function likePost(btn, initialCount) {
+            const countSpan = btn.closest('.li-card').querySelector('.reactions-count');
+            const icon = btn.querySelector('i');
+            
+            if (btn.classList.contains('liked')) {
+                btn.classList.remove('liked');
+                icon.className = 'fa-regular fa-thumbs-up';
+                countSpan.innerText = initialCount;
+            } else {
+                btn.classList.add('liked');
+                icon.className = 'fa-solid fa-thumbs-up';
+                countSpan.innerText = initialCount + 1;
+            }
+        }
+    </script>
+</body>
+</html>

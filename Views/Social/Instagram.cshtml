@@ -1,0 +1,443 @@
+@model List<LTWEB_QuaMonHai_CuoiKy.Models.HangHoa>
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QuaMonHai (@("@quamonhai")) • Ảnh và video trên Instagram</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            background-color: #ffffff;
+            color: #000000;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+        .ig-sidebar {
+            border-right: 1px solid #dbdbdb;
+            height: 100vh;
+            position: sticky;
+            top: 0;
+            padding: 25px 12px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        .ig-logo {
+            font-family: 'Instagram', cursive, sans-serif;
+            font-size: 1.8rem;
+            font-weight: bold;
+            margin-bottom: 35px;
+            padding-left: 12px;
+            letter-spacing: 1px;
+            font-style: italic;
+        }
+        .ig-menu-item {
+            font-size: 1rem;
+            color: #000000;
+            text-decoration: none;
+            padding: 12px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 4px;
+            font-weight: 500;
+            transition: background-color 0.2s ease;
+        }
+        .ig-menu-item:hover {
+            background-color: #f2f2f2;
+            color: #000000;
+        }
+        .ig-menu-item i {
+            font-size: 1.4rem;
+        }
+        .ig-menu-item.active {
+            font-weight: 700;
+        }
+        .ig-profile-header {
+            padding: 30px 20px 0;
+            max-width: 935px;
+            margin: 0 auto;
+        }
+        .ig-avatar-ring {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            padding: 3px;
+            background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto;
+        }
+        .ig-avatar {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background-color: #81c408;
+            border: 4px solid white;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4.5rem;
+            font-weight: bold;
+        }
+        .ig-username {
+            font-size: 1.25rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .btn-ig-follow {
+            background-color: #0095f6;
+            color: white;
+            font-weight: 600;
+            padding: 7px 16px;
+            border-radius: 8px;
+            border: none;
+            font-size: 0.9rem;
+            transition: background-color 0.2s ease;
+        }
+        .btn-ig-follow:hover {
+            background-color: #1877f2;
+        }
+        .btn-ig-follow.following {
+            background-color: #efefef;
+            color: black;
+        }
+        .btn-ig-follow.following:hover {
+            background-color: #dbdbdb;
+        }
+        .btn-ig-msg {
+            background-color: #efefef;
+            color: black;
+            font-weight: 600;
+            padding: 7px 16px;
+            border-radius: 8px;
+            border: none;
+            font-size: 0.9rem;
+            transition: background-color 0.2s ease;
+        }
+        .btn-ig-msg:hover {
+            background-color: #dbdbdb;
+        }
+        .ig-stat-num {
+            font-weight: 600;
+        }
+        .ig-bio-name {
+            font-weight: 600;
+            font-size: 0.95rem;
+            margin-top: 15px;
+            margin-bottom: 2px;
+        }
+        .ig-bio-text {
+            font-size: 0.95rem;
+            line-height: 1.4;
+        }
+        .ig-bio-link {
+            color: #00376b;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+        .ig-bio-link:hover {
+            text-decoration: underline;
+        }
+        .ig-stories-section {
+            max-width: 935px;
+            margin: 40px auto;
+            border-bottom: 1px solid #dbdbdb;
+            padding-bottom: 40px;
+        }
+        .story-highlight {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+        }
+        .story-ring {
+            width: 77px;
+            height: 77px;
+            border-radius: 50%;
+            border: 1px solid #dbdbdb;
+            padding: 3px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: white;
+            transition: transform 0.2s ease;
+        }
+        .story-highlight:hover .story-ring {
+            transform: scale(1.05);
+        }
+        .story-img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background-color: #f7f7f7;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            color: #81c408;
+            border: 2px solid white;
+        }
+        .story-label {
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        .ig-grid-tabs {
+            max-width: 935px;
+            margin: 0 auto;
+            border-top: 1px solid #dbdbdb;
+            display: flex;
+            justify-content: center;
+            gap: 60px;
+        }
+        .ig-grid-tab {
+            padding: 18px 0;
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            color: #737373;
+            cursor: pointer;
+            text-transform: uppercase;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            position: relative;
+        }
+        .ig-grid-tab.active {
+            color: #000000;
+        }
+        .ig-grid-tab.active::after {
+            content: "";
+            position: absolute;
+            top: -1px;
+            left: 0;
+            width: 100%;
+            height: 1px;
+            background-color: #000000;
+        }
+        .ig-grid-container {
+            max-width: 935px;
+            margin: 0 auto;
+        }
+        .ig-grid-item {
+            position: relative;
+            cursor: pointer;
+        }
+        .ig-grid-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 30px;
+            color: white;
+            font-weight: bold;
+            font-size: 1.1rem;
+            opacity: 0;
+            transition: opacity 0.2s ease;
+        }
+        .ig-grid-item:hover .ig-grid-overlay {
+            opacity: 1;
+        }
+        .floating-back-btn {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            background: linear-gradient(135deg, #81c408 0%, #689f06 100%);
+            color: white;
+            border-radius: 50px;
+            padding: 12px 24px;
+            box-shadow: 0 4px 15px rgba(129, 196, 8, 0.4);
+            z-index: 10000;
+            text-decoration: none;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            animation: pulseBtn 2s infinite;
+        }
+        .floating-back-btn:hover {
+            transform: scale(1.05) translateY(-3px);
+            box-shadow: 0 6px 20px rgba(129, 196, 8, 0.6);
+            color: white;
+        }
+        @@keyframes pulseBtn {
+            0% { box-shadow: 0 4px 15px rgba(129, 196, 8, 0.4); }
+            50% { box-shadow: 0 4px 25px rgba(129, 196, 8, 0.7); }
+            100% { box-shadow: 0 4px 15px rgba(129, 196, 8, 0.4); }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Floating Back Button -->
+    <a href="/" class="floating-back-btn">
+        <i class="fa fa-arrow-left"></i> Quay lại QuaMonHai
+    </a>
+
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Sidebar Navigation -->
+            <div class="col-lg-2 col-md-3 ig-sidebar d-none d-md-flex">
+                <div>
+                    <div class="ig-logo">Instagram</div>
+                    <div class="d-flex flex-column">
+                        <a class="ig-menu-item active" href="/"><i class="fa-solid fa-house"></i> <span>Trang chủ</span></a>
+                        <a class="ig-menu-item" href="#"><i class="fa-solid fa-magnifying-glass"></i> <span>Tìm kiếm</span></a>
+                        <a class="ig-menu-item" href="#"><i class="fa-regular fa-compass"></i> <span>Khám phá</span></a>
+                        <a class="ig-menu-item" href="#"><i class="fa-solid fa-clapperboard"></i> <span>Reels</span></a>
+                        <a class="ig-menu-item" href="#"><i class="fa-regular fa-paper-plane"></i> <span>Trực tiếp</span></a>
+                        <a class="ig-menu-item" href="#"><i class="fa-regular fa-heart"></i> <span>Thông báo</span></a>
+                        <a class="ig-menu-item" href="#"><i class="fa-regular fa-square-plus"></i> <span>Tạo</span></a>
+                        <a class="ig-menu-item" href="#"><i class="fa-regular fa-user"></i> <span>Hồ sơ</span></a>
+                    </div>
+                </div>
+                <div>
+                    <a class="ig-menu-item" href="#"><i class="fa-solid fa-bars"></i> <span>Xem thêm</span></a>
+                </div>
+            </div>
+
+            <!-- Content Area -->
+            <div class="col-lg-10 col-md-9 py-4">
+                <!-- Profile Header -->
+                <div class="ig-profile-header">
+                    <div class="row align-items-center">
+                        <div class="col-md-4 text-center">
+                            <div class="ig-avatar-ring">
+                                <div class="ig-avatar">Q</div>
+                            </div>
+                        </div>
+                        <div class="col-md-8 text-center text-md-start mt-4 mt-md-0">
+                            <div class="d-flex flex-wrap align-items-center gap-3 justify-content-center justify-content-md-start">
+                                <h2 class="ig-username mb-0">quamonhai <i class="fa-solid fa-circle-check text-primary fs-6" style="color: #0095f6 !important;" title="Đã xác minh"></i></h2>
+                                <button class="btn-ig-follow" id="btn-follow" onclick="toggleFollow()">Theo dõi</button>
+                                <button class="btn-ig-msg">Nhắn tin</button>
+                                <i class="fa-solid fa-user-check d-none text-dark fs-5" id="user-check-icon"></i>
+                                <i class="fa-solid fa-ellipsis fs-5" style="cursor: pointer;"></i>
+                            </div>
+
+                            <div class="d-flex gap-4 justify-content-center justify-content-md-start my-4">
+                                <div><span class="ig-stat-num">@Model.Count</span> bài viết</div>
+                                <div><span class="ig-stat-num" id="followers-count">18.6K</span> người theo dõi</div>
+                                <div><span class="ig-stat-num">82</span> đang theo dõi</div>
+                            </div>
+
+                            <div class="ig-bio-name">QuaMonHai Store</div>
+                            <div class="ig-bio-text">
+                                Cửa hàng phân phối chính hãng Thiết Bị Công Nghệ & Phụ Kiện Thời Trang cao cấp.<br>
+                                📍 Biên Hòa, Đồng Nai<br>
+                                📞 Hotline: 0936 363 636<br>
+                                🛍 Mua sắm trực tuyến giá sốc tại: <a href="/" class="ig-bio-link">quamonhai.vn</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Story Highlights -->
+                <div class="ig-stories-section">
+                    <div class="d-flex gap-5 justify-content-center justify-content-md-start px-2 overflow-auto">
+                        <div class="story-highlight">
+                            <div class="story-ring"><div class="story-img"><i class="fa-solid fa-fire"></i></div></div>
+                            <span class="story-label">Khuyến mãi</span>
+                        </div>
+                        <div class="story-highlight">
+                            <div class="story-ring"><div class="story-img"><i class="fa-solid fa-mobile-screen-button"></i></div></div>
+                            <span class="story-label">Sản phẩm</span>
+                        </div>
+                        <div class="story-highlight">
+                            <div class="story-ring"><div class="story-img"><i class="fa-solid fa-star"></i></div></div>
+                            <span class="story-label">Review</span>
+                        </div>
+                        <div class="story-highlight">
+                            <div class="story-ring"><div class="story-img"><i class="fa-solid fa-location-dot"></i></div></div>
+                            <span class="story-label">Cửa hàng</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Grid Tabs -->
+                <div class="ig-grid-tabs">
+                    <div class="ig-grid-tab active"><i class="fa-solid fa-table-cells"></i> Bài viết</div>
+                    <div class="ig-grid-tab"><i class="fa-solid fa-clapperboard"></i> Reels</div>
+                    <div class="ig-grid-tab"><i class="fa-regular fa-user"></i> Được gắn thẻ</div>
+                </div>
+
+                <!-- Grid of Posts -->
+                <div class="ig-grid-container py-3">
+                    <div class="row g-3">
+                        @if (Model.Any())
+                        {
+                            var rnd = new Random();
+                            foreach (var prod in Model)
+                            {
+                                int likes = rnd.Next(120, 950);
+                                int comments = rnd.Next(10, 85);
+                                <div class="col-4">
+                                    <div class="ig-grid-item ratio ratio-1x1 bg-light border overflow-hidden">
+                                        <img src="~/img/Hinh/HangHoa/@(string.IsNullOrEmpty(prod.Hinh) ? "no-image.jpg" : prod.Hinh)" class="w-100 h-100 object-fit-cover" alt="@prod.TenHh">
+                                        <div class="ig-grid-overlay" onclick="likeGridItem(this, @likes)">
+                                            <span><i class="fa-solid fa-heart"></i> <span class="overlay-likes">@likes</span></span>
+                                            <span><i class="fa-solid fa-comment"></i> @comments</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function toggleFollow() {
+            const btn = document.getElementById("btn-follow");
+            const countSpan = document.getElementById("followers-count");
+            let followers = parseFloat(countSpan.innerText.replace("K", "")) * 1000;
+            const checkIcon = document.getElementById("user-check-icon");
+
+            if (btn.innerText === "Theo dõi") {
+                btn.innerText = "Đang theo dõi";
+                btn.classList.add("following");
+                countSpan.innerText = ((followers + 1) / 1000).toFixed(3) + "K";
+                if(checkIcon) checkIcon.classList.remove("d-none");
+            } else {
+                btn.innerText = "Theo dõi";
+                btn.classList.remove("following");
+                countSpan.innerText = ((followers - 1) / 1000).toFixed(1) + "K";
+                if(checkIcon) checkIcon.classList.add("d-none");
+            }
+        }
+
+        function likeGridItem(overlay, initialLikes) {
+            const likesSpan = overlay.querySelector('.overlay-likes');
+            
+            if (overlay.classList.contains('liked')) {
+                overlay.classList.remove('liked');
+                overlay.querySelector('.fa-heart').style.color = 'white';
+                likesSpan.innerText = initialLikes;
+            } else {
+                overlay.classList.add('liked');
+                overlay.querySelector('.fa-heart').style.color = '#ff3040';
+                likesSpan.innerText = initialLikes + 1;
+            }
+        }
+    </script>
+</body>
+</html>
