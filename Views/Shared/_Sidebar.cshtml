@@ -5,7 +5,7 @@
 }
 
 <!-- 1. Thanh Tìm Kiếm -->
-<div class="card border-0 shadow-sm mb-4 rounded-3">
+<div class="card border-0 shadow-sm mb-4 rounded-3" data-inspect-id="search-input">
     <div class="card-body bg-light">
         <h5 class="card-title fw-bold mb-3"><i class="fa fa-search text-primary me-2"></i>Tìm kiếm</h5>
         <form asp-action="@currentAction" asp-controller="@currentController" method="get">
@@ -22,7 +22,7 @@
 </div>
 
 <!-- 2. Lọc Theo Loại Sản Phẩm -->
-<div class="card border-0 shadow-sm mb-4 rounded-3">
+<div class="card border-0 shadow-sm mb-4 rounded-3" data-inspect-id="categories-list">
     <div class="card-body">
         <h5 class="card-title fw-bold border-bottom pb-2 mb-3">Danh Mục</h5>
         <div class="d-flex flex-column gap-2">
@@ -47,7 +47,7 @@
 </div>
 
 <!-- 3. Lọc Theo Giá -->
-<div class="card border-0 shadow-sm mb-4 rounded-3">
+<div class="card border-0 shadow-sm mb-4 rounded-3" data-inspect-id="price-slider">
     <div class="card-body">
         <h5 class="card-title fw-bold border-bottom pb-2 mb-3"><i class="fa-solid fa-sliders text-success me-2"></i>Mức Giá</h5>
         <form asp-action="@currentAction" asp-controller="@currentController" method="get">
@@ -84,7 +84,7 @@
             </div>
 
             <!-- Mốc giá chọn nhanh -->
-            <div class="mb-3">
+            <div class="mb-3" data-inspect-id="price-milestone-chips">
                 <span class="text-muted small d-block mb-2">Mốc giá chọn nhanh:</span>
                 <div class="d-flex flex-wrap gap-2" id="quickPriceMilestones">
                     <button type="button" class="btn btn-sm rounded-pill px-3 py-1 text-nowrap @(maxPriceVal == 50 && !string.IsNullOrEmpty(currentPriceRange) ? "btn-success text-white" : "btn-outline-success")" data-value="50" style="font-size: 0.8rem; border-color: #81c408; color: @(maxPriceVal == 50 && !string.IsNullOrEmpty(currentPriceRange) ? "#fff" : "#81c408"); background-color: @(maxPriceVal == 50 && !string.IsNullOrEmpty(currentPriceRange) ? "#81c408" : "transparent"); transition: all 0.2s;">Dưới $50</button>

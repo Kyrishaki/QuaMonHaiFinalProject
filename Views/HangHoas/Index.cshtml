@@ -47,7 +47,7 @@
 
                     <div class="d-flex align-items-center gap-2">
                         <span class="text-muted small text-nowrap"><i class="fa-solid fa-sort text-success me-1"></i>Sắp xếp:</span>
-                        <select class="form-select form-select-sm border border-secondary-subtle rounded-pill px-3 py-1 text-dark" style="cursor: pointer; min-width: 170px;" onchange="changeSort(this.value)">
+                        <select class="form-select form-select-sm border border-secondary-subtle rounded-pill px-3 py-1 text-dark" style="cursor: pointer; min-width: 170px;" onchange="changeSort(this.value)" data-inspect-id="sort-select">
                             <option value="" selected="@(string.IsNullOrEmpty(ViewBag.CurrentSort))">Mặc định</option>
                             <option value="price_asc" selected="@(ViewBag.CurrentSort == "price_asc")">Giá: Thấp đến Cao</option>
                             <option value="price_desc" selected="@(ViewBag.CurrentSort == "price_desc")">Giá: Cao đến Thấp</option>
@@ -59,7 +59,7 @@
             <div class="row g-3">
                 @foreach (var item in Model) {
                     <div class="col-sm-6 col-lg-4">
-                        <div class="card h-100 shadow-sm border-0 rounded-3 overflow-hidden product-card position-relative">
+                        <div class="card h-100 shadow-sm border-0 rounded-3 overflow-hidden product-card position-relative" data-inspect-id="product-card">
 
                             <div class="bg-secondary rounded text-white position-absolute start-0 top-0 m-3 py-1 px-2" style="z-index: 10; font-size: 0.8rem; background-color: rgba(129, 196, 8, 0.9) !important;">
                                 @(item.MaLoaiNavigation != null ? item.MaLoaiNavigation.TenLoai : "Sản phẩm")
@@ -74,7 +74,7 @@
                             </button>
 
                              <a asp-action="Details" asp-route-id="@item.MaHh" class="text-decoration-none">
-                                 <div class="position-relative overflow-hidden bg-white d-flex align-items-center justify-content-center p-3" style="height: 220px; @(!item.HieuLuc || item.SoLuong <= 0 ? "opacity: 0.68;" : "")">
+                                 <div class="position-relative overflow-hidden bg-white d-flex align-items-center justify-content-center p-3" style="height: 220px; @(!item.HieuLuc || item.SoLuong <= 0 ? "opacity: 0.68;" : "")" data-inspect-id="product-image">
                                      <img src="@Url.Content("~/img/Hinh/HangHoa/" + (string.IsNullOrEmpty(item.Hinh) ? "no-image.jpg" : item.Hinh))"
                                           class="card-img-top img-fluid"
                                           style="max-height: 180px; object-fit: contain; transition: transform 0.3s;"
@@ -104,11 +104,11 @@
                                              }
                                          }
                                      }
-                                     <span class="text-muted small"><i class="fa-solid fa-fire text-danger me-1"></i>Đã bán @soldCount</span>
+                                     <span class="text-muted small" data-inspect-id="product-sold"><i class="fa-solid fa-fire text-danger me-1"></i>Đã bán @soldCount</span>
                                  </div>
 
                                 <!-- BẢO MẬT: PHÂN QUYỀN HIỂN THỊ NÚT Ở TỪNG SẢN PHẨM -->
-                                <div class="btn-group mt-auto w-100 shadow-sm rounded-pill overflow-hidden">
+                                <div class="btn-group mt-auto w-100 shadow-sm rounded-pill overflow-hidden" data-inspect-id="product-actions">
 
                                     <!-- Nút Xem chi tiết thì ai cũng được bấm -->
                                     <a asp-action="Details" asp-route-id="@item.MaHh" class="btn btn-sm btn-light border-end text-info fw-bold">

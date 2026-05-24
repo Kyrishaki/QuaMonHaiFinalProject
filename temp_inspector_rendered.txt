@@ -1,0 +1,954 @@
+﻿<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const toggleBtn = document.getElementById("btn-toggle-inspector");
+        const toggleContainer = document.getElementById("code-inspector-toggle-container");
+        const closeDrawerBtn = document.getElementById("btn-close-drawer");
+        const backdrop = document.getElementById("inspector-backdrop");
+        const drawer = document.getElementById("inspector-bottom-drawer");
+        const toast = document.getElementById("inspector-toast");
+        
+        const inspectTitle = document.getElementById("inspect-title");
+        const inspectDesc = document.getElementById("inspect-desc");
+        const inspectCode = document.getElementById("inspect-code");
+        
+        const copyBtn = document.getElementById("btn-copy-code");
+        const bookmarkActionBtn = document.getElementById("btn-bookmark-action");
+        const bookmarkCountBadge = document.getElementById("bookmark-count");
+
+        const tabBtnComponents = document.getElementById("tab-btn-components");
+        const tabBtnBookmarks = document.getElementById("tab-btn-bookmarks");
+        const tabContentComponents = document.getElementById("tab-content-components");
+        const tabContentBookmarks = document.getElementById("tab-content-bookmarks");
+                const loginFieldsEntry = {
+            title: "Trường Nhập Đăng Nhập (Login Input Fields)",
+            desc: "<strong>HƯỚNG DẪN HOẠT ĐỘNG:</strong><br>1. Ô nhập Tên đăng nhập và Mật khẩu của khách hàng.<br>2. So sánh mật khẩu bằng cách băm MD5 kết hợp với RandomKey muối bảo mật trong Database.<br>3. Thiết lập Claims và đăng nhập phiên bằng Cookie Authentication.",
+            code: `<span class="cm">// ViewModel: ViewModels/LoginVM.cs</span>\n<span class="kw">public class</span> <span class="vr">LoginVM</span> {\n    [<span class="vr">Display</span>(Name = <span class="st">"Tên đăng nhập"</span>), <span class="vr">Required</span>(ErrorMessage = <span class="st">"Chưa nhập tên đăng nhập"</span>)]\n    [<span class="vr">MaxLength</span>(20, ErrorMessage = <span class="st">"Tối đa 20 ký tự"</span>)]\n    <span class="kw">public string</span> UserName { <span class="kw">get</span>; <span class="kw">set</span>; }\n\n    [<span class="vr">Display</span>(Name = <span class="st">"Mật khẩu"</span>), <span class="vr">Required</span>(ErrorMessage = <span class="st">"Chưa nhập mật khẩu"</span>)]\n    [<span class="vr">DataType</span>(<span class="vr">DataType</span>.Password)]\n    <span class="kw">public string</span> Password { <span class="kw">get</span>; <span class="kw">set</span>; }\n    <span class="kw">public string</span>? RecaptchaResponse { <span class="kw">get</span>; <span class="kw">set</span>; }\n}\n\n&lt;!-- Nhóm input thông tin đăng nhập trong Login.cshtml --&gt;\n&lt;div class="form-floating mb-4"&gt;\n    &lt;input asp-for="UserName" class="form-control" placeholder="Tên đăng nhập" /&gt;\n&lt;/div&gt;\n&lt;div class="form-floating mb-4"&gt;\n    &lt;input asp-for="Password" type="password" class="form-control" /&gt;\n&lt;/div&gt;\n\n// C# Backend xử lý Claims trong CustomerController.cs\nvar khachHang = db.KhachHangs.SingleOrDefault(kh =&gt; kh.MaKh == model.UserName);\nif (khachHang != null && khachHang.MatKhau == model.Password.ToMd5Hash(khachHang.RandomKey)) {\n    string userRole = khachHang.VaiTro == 1 ? "Admin" : (khachHang.VaiTro == 2 ? "Staff" : "Customer");\n    var claims = new List&lt;Claim&gt; {\n        new Claim(ClaimTypes.Email, khachHang.Email ?? ""),\n        new Claim(ClaimTypes.Name, khachHang.HoTen ?? ""),\n        new Claim("CustomerID", khachHang.MaKh),\n        new Claim(ClaimTypes.Role, userRole)\n    };\n    var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);\n    await HttpContext.SignInAsync(new ClaimsPrincipal(claimsIdentity));\n}`
+        };
+
+        const registerFieldsEntry = {
+            title: "Thông Tin Tài Khoản Đăng Ký (Member Registration Info Fields)",
+            desc: "<strong>HƯỚNG DẪN HOẠT ĐỘNG:</strong><br>1. Nhập các thông tin Họ tên, Giới tính, Ngày sinh, Điện thoại, Địa chỉ, Email và mã OTP xác thực.<br>2. Kiểm tra tính hợp lệ dữ liệu bằng regex số điện thoại và email.<br>3. Tạo RandomKey ngẫu nhiên, mã hóa MD5 mật khẩu và lưu Khách hàng vào CSDL.",
+            code: `<span class="cm">// ViewModel: ViewModels/RegisterVM.cs</span>\n<span class="kw">public class</span> <span class="vr">RegisterVM</span> {\n    [<span class="vr">Display</span>(Name = <span class="st">"Tên đăng nhập"</span>), <span class="vr">Required</span>, <span class="vr">MaxLength</span>(20)]\n    <span class="kw">public string</span> MaKh { <span class="kw">get</span>; <span class="kw">set</span>; }\n\n    [<span class="vr">Display</span>(Name = <span class="st">"Mật Khẩu"</span>), <span class="vr">Required</span>, <span class="vr">DataType</span>(<span class="vr">DataType</span>.Password)]\n    <span class="kw">public string</span> MatKhau { <span class="kw">get</span>; <span class="kw">set</span>; }\n\n    [<span class="vr">Display</span>(Name = <span class="st">"Họ Tên"</span>), <span class="vr">Required</span>, <span class="vr">MaxLength</span>(50)]\n    <span class="kw">public string</span> HoTen { <span class="kw">get</span>; <span class="kw">set</span>; }\n    <span class="kw">public bool</span> GioiTinh { <span class="kw">get</span>; <span class="kw">set</span>; } = <span class="kw">true</span>;\n\n    [<span class="vr">Display</span>(Name = <span class="st">"Ngày sinh"</span>), <span class="vr">DataType</span>(<span class="vr">DataType</span>.Date), <span class="vr">AgeRange</span>]\n    <span class="kw">public DateTime</span>? NgaySinh { <span class="kw">get</span>; <span class="kw">set</span>; }\n\n    [<span class="vr">Display</span>(Name = <span class="st">"Điện Thoại"</span>), <span class="vr">MaxLength</span>(10), <span class="vr">RegularExpression</span>(@"^0(3|5|7|8|9)\\d{8}$")]\n    <span class="kw">public string</span> DienThoai { <span class="kw">get</span>; <span class="kw">set</span>; }\n\n    [<span class="vr">Display</span>(Name = <span class="st">"Email"</span>), <span class="vr">Required</span>, <span class="vr">EmailAddress</span>]\n    <span class="kw">public string</span> Email { <span class="kw">get</span>; <span class="kw">set</span>; }\n    <span class="kw">public string</span>? Hinh { <span class="kw">get</span>; <span class="kw">set</span>; }\n\n    [<span class="vr">Display</span>(Name = <span class="st">"Mã xác nhận Email"</span>), <span class="vr">Required</span>]\n    <span class="kw">public string</span> VerificationCode { <span class="kw">get</span>; <span class="kw">set</span>; }\n}\n\n&lt;!-- Markup trong Register.cshtml --&gt;\n&lt;input asp-for="MaKh" class="form-control" /&gt; ...\n\n// C# Backend xử lý tạo mới tài khoản trong CustomerController.cs\n[HttpPost]\npublic IActionResult Register(RegisterVM model, IFormFile? Hinh) {\n    var sessionCode = HttpContext.Session.GetString("EmailVerifyCode");\n    if (model.VerificationCode == sessionCode && ModelState.IsValid) {\n        var khachHang = _mapper.Map&lt;KhachHang&gt;(model);\n        khachHang.RandomKey = MyUtil.GenerateRandomKey();\n        khachHang.MatKhau = model.MatKhau.ToMd5Hash(khachHang.RandomKey);\n        khachHang.HieuLuc = true;\n        khachHang.VaiTro = 0;\n        db.Add(khachHang); db.SaveChanges();\n    }\n}`
+        };
+
+        const forgotFieldsEntry = {
+            title: "Yêu Cầu Quên Mật Khẩu (Forgot Password Form Fields)",
+            desc: "<strong>HƯỚNG DẪN HOẠT ĐỘNG:</strong><br>1. Khách hàng nhập Tên đăng nhập và Email.<br>2. Hệ thống kiểm tra khớp thông tin trong CSDL, sinh mã OTP 6 số lưu Session và gửi email xác nhận khôi phục.<br>3. Chuyển hướng người dùng đến trang ResetPassword.",
+            code: `<span class="cm">// ViewModel: ViewModels/ForgotPasswordVM.cs</span>\n<span class="kw">public class</span> <span class="vr">ForgotPasswordVM</span> {\n    <span class="kw">public string</span> UserName { <span class="kw">get</span>; <span class="kw">set</span>; }\n    <span class="kw">public string</span> Email { <span class="kw">get</span>; <span class="kw">set</span>; }\n}\n\n&lt;!-- Markup trong ForgotPassword.cshtml --&gt;\n&lt;input asp-for="UserName" /&gt;\n&lt;input asp-for="Email" /&gt;\n\n// Backend: CustomerController.cs [POST]\nvar kh = db.KhachHangs.SingleOrDefault(k =&gt; k.MaKh == model.UserName &amp;&amp; k.Email == model.Email);\nif (kh != null) {\n    string otpCode = new Random().Next(100000, 999999).ToString();\n    HttpContext.Session.SetString("ResetPasswordCode", otpCode);\n    HttpContext.Session.SetString("ResetPasswordUser", kh.MaKh);\n    // Gửi mail bằng MailKit SMTP...\n}`
+        };
+
+        const resetFieldsEntry = {
+            title: "Đặt Lại Mật Khẩu Mới (Reset Password Fields)",
+            desc: "<strong>HƯỚNG DẪN HOẠT ĐỘNG:</strong><br>1. Người dùng cung cấp mã xác nhận OTP từ Email và nhập mật khẩu mới.<br>2. Đối chiếu mã OTP với mã được lưu trong Session.<br>3. Tạo khóa muối mới, băm MD5 mật khẩu mới và cập nhật CSDL.",
+            code: `<span class="cm">// ViewModel: ViewModels/ResetPasswordVM.cs</span>\n<span class="kw">public class</span> <span class="vr">ResetPasswordVM</span> {\n    <span class="kw">public string</span> VerificationCode { <span class="kw">get</span>; <span class="kw">set</span>; }\n    <span class="kw">public string</span> NewPassword { <span class="kw">get</span>; <span class="kw">set</span>; }\n    <span class="kw">public string</span> ConfirmPassword { <span class="kw">get</span>; <span class="kw">set</span>; }\n}\n\n&lt;!-- Markup trong ResetPassword.cshtml --&gt;\n&lt;input asp-for="VerificationCode" /&gt;\n&lt;input asp-for="NewPassword" type="password" /&gt;\n\n// Backend: CustomerController.cs [POST]\nvar sessionOtp = HttpContext.Session.GetString("ResetPasswordCode");\nif (model.VerificationCode == sessionOtp) {\n    var kh = db.KhachHangs.SingleOrDefault(k =&gt; k.MaKh == sessionUser);\n    kh.RandomKey = MyUtil.GenerateRandomKey();\n    kh.MatKhau = model.NewPassword.ToMd5Hash(kh.RandomKey);\n    db.SaveChanges();\n}`
+        };
+
+        const inspectorDb = {
+            "navbar": {
+                title: "Thanh Điều Hướng Hệ Thống (Sticky Navigation Bar)",
+                desc: "Thanh điều hướng chính của hệ thống. Tự động chuyển sang trạng thái sticky (cố định ở đầu trang) khi cuộn chuột qua mốc 300px nhờ mã Javascript bổ sung.",
+                code: `&lt;!-- Sticky Navbar trong _Navbar.cshtml --&gt;\n&lt;div class="container-fluid custom-sticky px-0" data-inspect-id="navbar"&gt;\n    &lt;nav class="navbar navbar-expand-lg navbar-light bg-white"&gt;\n        ...\n    &lt;/nav&gt;\n&lt;/div&gt;`
+            },
+            "navbar-brand": {
+                title: "Logo & Tên Thương Hiệu (Navbar Brand)",
+                desc: "Logo thương hiệu 'QuaMonHai' hiển thị ở góc trái Navbar. Sử dụng font chữ 'Lora' serif sang trọng kết hợp màu Primary (xanh lá) và Secondary (cam) để nhận diện thương hiệu.",
+                code: `&lt;!-- Markup trong _Navbar.cshtml --&gt;\n&lt;a asp-controller="Home" asp-action="Index" class="navbar-brand"&gt;\n    &lt;h1 class="fw-bold text-primary" style="font-family: 'Lora', serif;"&gt;\n        QuaMon&lt;span class="text-secondary" style="font-style: italic;"&gt;Hai&lt;/span&gt;\n    &lt;/h1&gt;\n&lt;/a&gt;`
+            },
+            "navbar-links": {
+                title: "Menu Điều Hướng Chính (Navbar Links Menu)",
+                desc: "Chứa các liên kết chính của website (Trang chủ, Trang tin: Bài viết & Về chúng tôi, Tra cứu đơn hàng). Tự động thêm class 'active' và đổi màu chữ thành xanh lá dựa trên Controller/Action hiện tại.",
+                code: `&lt;!-- Link Phân Trang trong _Navbar.cshtml --&gt;\n&lt;div class="navbar-nav ms-auto p-4 p-lg-0"&gt;\n    &lt;a asp-controller="Home" asp-action="Index" \n       class="nav-item nav-link @(controller == \"Home\" ? \"active text-primary\" : \"\")"&gt;Trang chủ&lt;/a&gt;\n    &lt;a asp-controller="Cart" asp-action="LookupOrder" \n       class="nav-item nav-link @(action == \"LookupOrder\" ? \"active text-primary\" : \"\")"&gt;Tra cứu đơn hàng&lt;/a&gt;\n&lt;/div&gt;`
+            },
+            "navbar-user": {
+                title: "Dropdown Menu Tài Khoản (Navbar User Dropdown)",
+                desc: "Dropdown hiển thị Avatar người dùng và các liên kết tài khoản. Kiểm tra cookie 'User.Identity.IsAuthenticated' để phân chia giao diện: nếu chưa đăng nhập hiện nút Đăng nhập/Đăng ký; nếu đã đăng nhập thì hiện Hồ sơ, Lịch sử mua hàng, Sản phẩm yêu thích. Nếu là Admin/Staff thì hiện thêm các liên kết quản trị.",
+                code: `&lt;!-- Phân quyền menu tài khoản trong _Navbar.cshtml --&gt;\n@if (User.Identity.IsAuthenticated) {\n    &lt;span class="fw-bold text-dark"&gt;@displayName&lt;/span&gt;\n    &lt;div class="dropdown-menu dropdown-menu-end"&gt;\n        &lt;a asp-controller="Customer" asp-action="Profile"&gt;Hồ sơ cá nhân&lt;/a&gt;\n        @if (User.IsInRole("Admin") || User.IsInRole("Staff")) {\n            &lt;a asp-controller="HangHoas" asp-action="Index"&gt;Quản lý sản phẩm&lt;/a&gt;\n        }\n    &lt;/div&gt;\n}`
+            },
+            "navbar-cart": {
+                title: "Giỏ Hàng & Badge Số Lượng (Navbar Cart Badge)",
+                desc: "Biểu tượng giỏ hàng nổi bật ở góc phải Navbar. Đọc danh sách giỏ hàng lưu trữ trong Session để cộng dồn tổng số lượng sản phẩm, hiển thị số lượng tức thời trên một badge màu đỏ tròn bên trên giỏ hàng.",
+                code: `// Lấy số lượng giỏ hàng từ Session hoặc DB trong CartController.cs\npublic async Task&lt;IActionResult&gt; CartCount() {\n    var customerId = GetCustomerId();\n    int count = 0;\n    if (string.IsNullOrEmpty(customerId)) {\n        var cartSession = HttpContext.Session.Get&lt;List&lt;CartItem&gt;&gt;("MyCart");\n        if (cartSession != null) count = cartSession.Sum(c =&gt; c.SoLuong);\n    } else {\n        count = await _Context.GioHangs.Where(g =&gt; g.MaKh == customerId).SumAsync(g =&gt; (int?)g.SoLuong) ?? 0;\n    }\n    return Json(count);\n}`
+            },
+            "search-input": {
+                title: "Thanh Tìm Kiếm Sản Phẩm (Search Input)",
+                desc: "Form tìm kiếm sản phẩm theo tên. Sử dụng thẻ input truyền tham số 'searchQuery' qua phương thức GET. Để giữ trạng thái lọc khi bấm tìm kiếm, Form được nhúng kèm các tham số ẩn như 'loaiId' và 'priceRange' hiện tại.",
+                code: `&lt;!-- Form tìm kiếm trong _Sidebar.cshtml --&gt;\n&lt;form asp-action="@currentAction" asp-controller="@currentController" method="get"&gt;\n    &lt;input type="hidden" name="loaiId" value="@ViewBag.CurrentLoai" /&gt;\n    &lt;input type="text" class="form-control" placeholder="Tên sản phẩm..." \n           name="searchQuery" value="@Context.Request.Query[\"searchQuery\"]"&gt;\n&lt;/form&gt;`
+            },
+            "categories-list": {
+                title: "Danh Mục Lọc Phân Loại (Categories List)",
+                desc: "Liệt kê danh sách các nhóm hàng. Nhấp chọn một loại sẽ kích hoạt tải lại trang kèm theo ID loại sản phẩm để lọc. Sử dụng Entity Framework Core liên kết bảng để đếm nhanh tổng số lượng sản phẩm đang có của từng loại.",
+                code: `&lt;!-- Hiển thị danh mục sidebar trong _Sidebar.cshtml --&gt;\n@foreach (var loai in ViewBag.DanhMucs) {\n    bool isActive = ViewBag.CurrentLoai == loai.MaLoai;\n    &lt;a asp-route-loaiId="@loai.MaLoai" class="@(isActive ? \"text-success fw-bold\" : \"text-dark\")"&gt;\n        &lt;span&gt;@loai.TenLoai&lt;/span&gt;\n        &lt;span class="badge"&gt;@loai.HangHoas.Count&lt;/span&gt;\n    &lt;/a&gt;\n}`
+            },
+            "price-slider": {
+                title: "Bộ Kéo Lọc Giá (Price Range Slider)",
+                desc: "Thanh trượt mức giá từ $0 đến $500. Đã được nâng cấp tối ưu trải nghiệm: Khi người dùng nhả chuột kéo (sự kiện 'change'), JavaScript sẽ tự động submit form để lọc sản phẩm ngay lập tức mà không cần nhấn nút.",
+                code: `&lt;!-- Input range trong _Sidebar.cshtml --&gt;\n&lt;input type="range" class="form-range" min="0" max="500" name="priceRange" id="priceRangeSlider" value="@maxPriceVal"&gt;\n\n// JS tự động gửi form khi thay đổi\nslider.addEventListener("change", function () {\n    this.form.submit();\n});`
+            },
+            "price-milestone-chips": {
+                title: "Nút Lọc Giá Nhanh (Price Milestone Chips)",
+                desc: "Danh sách các chip lọc nhanh tương ứng các khoảng giá phổ biến ($50, $150, $300, Tất cả giá). Khi click, mã JavaScript sẽ gán giá trị tương ứng vào thanh trượt Slider và lập tức submit form lọc đi.",
+                code: `&lt;!-- Các nút milestone trong _Sidebar.cshtml --&gt;\n&lt;button type="button" data-value="150"&gt;Dưới $150&lt;/button&gt;\n\n// Javascript xử lý click\n$("#quickPriceMilestones button").click(function () {\n    var val = $(this).data('value');\n    $('#priceRangeSlider').val(val);\n    $('#priceRangeSlider').closest('form').submit();\n});`
+            },
+            "sort-select": {
+                title: "Bộ Sắp Xếp Sản Phẩm (Product Sort Dropdown)",
+                desc: "Dropdown cho phép khách hàng thay đổi thứ tự sản phẩm (Giá tăng/giảm dần, Tên A-Z/Z-A, Độ phổ biến). Thay đổi giá trị sẽ kích hoạt trigger gọi hàm JS `changeSort` để reload lại trang với query string tương ứng.",
+                code: `&lt;!-- Dropdown sắp xếp trong Index.cshtml --&gt;\n&lt;select onchange="changeSort(this.value)" data-inspect-id="sort-select"&gt;\n    &lt;option value="price-asc"&gt;Giá tăng dần&lt;/option&gt;\n&lt;/select&gt;\n\n// JavaScript changeSort\nfunction changeSort(val) {\n    const urlParams = new URLSearchParams(window.location.search);\n    urlParams.set('sortBy', val);\n    window.location.search = urlParams.toString();\n}`
+            },
+            "product-card": {
+                title: "Thẻ Sản Phẩm Lưới (Product Card Container)",
+                desc: "Bọc ngoài cho một sản phẩm trong lưới, hiển thị khung ảnh, tên, giá bán và các nút thao tác. Tự động áp dụng hiệu ứng nổi (hover shadow) cực kỳ mượt mà để tăng trải nghiệm người dùng.",
+                code: `&lt;!-- Khung sản phẩm trong Index.cshtml --&gt;\n&lt;div class="card h-100 product-card" data-inspect-id="product-card"&gt;\n    &lt;div class="overflow-hidden" data-inspect-id="product-image"&gt;...&lt;/div&gt;\n    &lt;div class="card-body"&gt;...&lt;/div&gt;\n&lt;/div&gt;`
+            },
+            "product-image": {
+                title: "Ảnh Sản Phẩm Thu Nhỏ (Product Card Image)",
+                desc: "Hình ảnh sản phẩm hiển thị trên thẻ. Được bao quanh bởi khung nền trắng, sử dụng CSS 'object-fit: contain' để ảnh tự động co giãn vừa vặn khung, không bị tràn ảnh hay móp méo, đồng thời thêm hiệu ứng zoom-in nhẹ khi hover.",
+                code: `&lt;!-- HTML hiển thị ảnh sản phẩm trong Index.cshtml --&gt;\n&lt;div class="bg-white d-flex align-items-center justify-content-center" style="height: 220px;"&gt;\n    &lt;img src="~/img/Hinh/HangHoa/@item.Hinh" class="img-fluid" \n         style="max-height: 180px; object-fit: contain; transition: transform 0.3s;"\n         onmouseover="this.style.transform='scale(1.08)'" onmouseout="this.style.transform='scale(1)'"&gt;\n&lt;/div&gt;`
+            },
+            "product-sold": {
+                title: "Badge Đã Bán Sản Phẩm (Product Card Sold Count)",
+                desc: "Hiển thị tổng số lượng sản phẩm đã được bán thành công (không tính các đơn hàng bị hủy - mã trạng thái = -1). Dữ liệu được đếm tối ưu tại Controller bằng cách GroupBy theo mã hàng hóa trên bảng Chi tiết hóa đơn và truyền qua ViewBag.",
+                code: `// GroupBy đếm số lượng đã bán tại HangHoasController / HomeController\nvar soldCounts = await _context.ChiTietHds\n    .Where(ct =&gt; productIds.Contains(ct.MaHh) && ct.MaHdNavigation.MaTrangThai != -1)\n    .GroupBy(ct =&gt; ct.MaHh)\n    .Select(g =&gt; new { MaHh = g.Key, TotalSold = g.Sum(ct =&gt; ct.SoLuong) })\n    .ToDictionaryAsync(x =&gt; x.MaHh, x =&gt; x.TotalSold);\nViewBag.SoldCounts = soldCounts;`
+            },
+            "product-actions": {
+                title: "Thanh Nút Thao Tác (Product Card Actions)",
+                desc: "Nút hành động được phân quyền chi tiết. Nếu là khách thường thì hiển thị nút 'Chi tiết' và nút 'Thêm giỏ' (AJAX cập nhật số lượng tức thời). Nếu là Admin/Nhân viên thì hiển thị nút 'Sửa' và 'Xóa/Kích hoạt' sản phẩm.",
+                code: `&lt;!-- Nút thao tác phân quyền trong Index.cshtml --&gt;\n&lt;div class="btn-group mt-auto"&gt;\n    &lt;a asp-action="Details" asp-route-id="@item.MaHh"&gt;Chi tiết&lt;/a&gt;\n    @if (User.IsInRole("Admin") || User.IsInRole("Staff")) {\n        &lt;a asp-action="Edit" asp-route-id="@item.MaHh"&gt;Sửa&lt;/a&gt;\n    } else {\n        &lt;button type="button" data-id="@item.MaHh" class="add-to-cart-ajax"&gt;Thêm giỏ&lt;/button&gt;\n    }\n&lt;/div&gt;`
+            },
+            "cart-table": {
+                title: "Danh Sách Hàng Trong Giỏ (Cart Item Rows)",
+                desc: "Bảng hiển thị các sản phẩm đã chọn mua. Hỗ trợ cập nhật số lượng trực tuyến qua AJAX, tính lại thành tiền của dòng sản phẩm và xóa sản phẩm khỏi giỏ hàng kèm theo hiệu ứng phai mờ (fadeOut) đẹp mắt.",
+                code: `// AJAX xóa sản phẩm khỏi giỏ hàng trong Cart/Index.cshtml\n$('.delete-cart-item-ajax').click(function() {\n    var id = $(this).data('id');\n    $.ajax({\n        url: '/Cart/DeleteAjax', type: 'POST', data: { id: id },\n        success: function(res) {\n            $('#row-' + id).fadeOut(300, function() { \n                $(this).remove(); \n                calculateCheckedTotal(); \n            });\n        }\n    });\n});`
+            },
+            "cart-totals": {
+                title: "Tổng Kết & Thanh Toán Giỏ Hàng (Cart Totals Summary)",
+                desc: "Chứa nút chọn tất cả, tổng số lượng sản phẩm được chọn và tổng số tiền thanh toán thực tế (được tính động qua JavaScript). Nút 'Mua Hàng' sẽ tự động kích hoạt (enable) khi có ít nhất một sản phẩm được tích chọn.",
+                code: `// JS tính toán tổng tiền dựa trên checkbox được chọn trong Cart/Index.cshtml\nfunction calculateCheckedTotal() {\n    let total = 0, count = 0;\n    $('.item-checkbox:checked').each(function () {\n        let row = $(this).closest('.cart-item-row');\n        let price = parseFloat(row.find('.unit-price').data('price'));\n        let qty = parseInt(row.find('.qty-input').val());\n        total += price * qty;\n        count++;\n    });\n    $('#final-total').text(total + "$");\n    $('#btn-checkout').prop('disabled', count === 0);\n}`
+            },
+            "checkout-address": {
+                title: "Địa Chỉ Giao Hàng & API Địa Chính (Checkout Address & API)",
+                desc: "Khung thông tin người nhận hàng. Cho phép lấy nhanh địa chỉ đã lưu trong hồ sơ cá nhân hoặc điền địa chỉ mới thông qua việc gọi API địa chính công cộng Việt Nam để lấy động danh mục Tỉnh -> Quận -> Phường.",
+                code: `// AJAX gọi API lấy thông tin Tỉnh/Quận/Xã Việt Nam\nasync function onProvinceChange(provinceCode) {\n    const response = await fetch('https://provinces.open-api.vn/api/p/' + provinceCode + '?depth=2');\n    const data = await response.json();\n    districtSelect.innerHTML = '&lt;option value=""&gt;Chọn Quận/Huyện&lt;/option&gt;';\n    data.districts.forEach(d =&gt; {\n        // Thêm option quận mới...\n    });\n}`
+            },
+            "checkout-voucher": {
+                title: "Áp Dụng Voucher Giảm Giá (Checkout Voucher Application)",
+                desc: "Tích hợp chọn mã giảm giá. Khi áp dụng voucher, JavaScript sẽ tính toán số tiền được giảm dựa trên phần trăm của đơn hàng, trừ trực tiếp vào tổng tiền thanh toán cuối cùng và gửi ID voucher về Controller.",
+                code: `// Chọn áp dụng mã voucher\nfunction applyVoucher(maGg, tenMa, phanTram) {\n    document.getElementById('selectedMaGg').value = maGg;\n    document.getElementById('selectedVoucherLabel').textContent = '✔ Áp dụng mã: ' + tenMa;\n    currentDiscountPercent = parseFloat(phanTram);\n    calculateTotal(); // Tính lại hóa đơn\n}`
+            },
+            "checkout-payment": {
+                title: "Phương Thức Thanh Toán (Payment Methods)",
+                desc: "Cho phép lựa chọn phương thức thanh toán như Ship COD (thanh toán khi nhận hàng) hoặc chuyển khoản. Giá trị phương thức thanh toán được truyền về Controller để xử lý hóa đơn.",
+                code: `&lt;!-- Radio check thanh toán trong Check_Out.cshtml --&gt;\n&lt;div class="form-check"&gt;\n    &lt;input type="radio" name="payment_method" value="cod" id="pay_cod" checked&gt;\n    &lt;label for="pay_cod"&gt;Thanh toán khi nhận hàng&lt;/label&gt;\n&lt;/div&gt;`
+            },
+            "order-lookup-form": {
+                title: "Form Tra Cứu Mã Vận Đơn (Order Lookup Form)",
+                desc: "Nhập mã số đơn hàng để gửi yêu cầu GET tra cứu trạng thái đơn hàng. Controller sẽ đọc thông tin hóa đơn và các chi tiết hóa đơn liên quan từ Database để trả về kết quả.",
+                code: `&lt;!-- Form tra cứu đơn hàng trong LookupOrder.cshtml --&gt;\n&lt;form asp-action="LookupOrder" method="get"&gt;\n    &lt;input type="number" name="orderId" value="@ViewBag.OrderId" required /&gt;\n    &lt;button type="submit"&gt;Tra cứu&lt;/button&gt;\n&lt;/form&gt;`
+            },
+            "order-lookup-timeline": {
+                title: "Trực Quan Tiến Độ Vận Chuyển (Order Tracking Timeline)",
+                desc: "Thanh tiến trình hiển thị quy trình giao vận. Kiểm tra tham số trạng thái đơn hàng (0: Mới đặt, 1: Đang chuẩn bị, 2: Đã giao, 3: Đã hủy) để tô màu sắc xanh lá/cam/đỏ tương ứng.",
+                code: `&lt;!-- Tiến trình trạng thái vận đơn trong LookupOrder.cshtml --&gt;\n@{ int currentStatus = Model.MaTrangThai; }\n&lt;div class="timeline-container"&gt;\n    &lt;div class="@(currentStatus >= 0 ? \"bg-primary\" : \"\")"&gt;Mới đặt&lt;/div&gt;\n    &lt;div class="@(currentStatus == 1 || currentStatus >= 2 ? \"bg-warning\" : \"\")"&gt;Đang chuẩn bị&lt;/div&gt;\n&lt;/div&gt;`
+            },
+            "team-member-card": {
+                title: "Hiệu Ứng Ảnh Động Thành Viên (Team Member 3-Zone Hover)",
+                desc: "Thẻ thành viên nhóm phát triển. Ảnh thẻ có 3 phân vùng hover vô hình ở lề Trái, Giữa, Phải. Di chuột vào từng vùng sẽ thay đổi khoảng cách dịch chuyển 'translateX' của slider wrapper để đổi ảnh mượt mà mà không cần JS.",
+                code: `/* CSS trượt vùng hover của thẻ thành viên trong AboutUs.cshtml */\n.hover-left:hover ~ .image-slider-wrapper { transform: translateX(0%); }\n.hover-center:hover ~ .image-slider-wrapper { transform: translateX(-33.333%); }\n.hover-right:hover ~ .image-slider-wrapper { transform: translateX(-66.666%); }`
+            },
+            "company-values": {
+                title: "Giá Trị Cốt Lõi Của Cửa Hàng (Company Values Grid)",
+                desc: "Lưới hiển thị các tiêu chí cam kết dịch vụ của QuaMonHai: Đa dạng sản phẩm, Chất lượng uy tín và Tận tâm phục vụ, sử dụng các Font Awesome icon tương ứng.",
+                code: `&lt;!-- Lưới giá trị cốt lõi trong AboutUs.cshtml --&gt;\n&lt;div class="col-lg-4 text-center"&gt;\n    &lt;i class="fa fa-shield-alt text-primary mb-4" style="font-size: 4rem;"&gt;&lt;/i&gt;\n    &lt;h4&gt;Chất Lượng Uy Tín&lt;/h4&gt;\n&lt;/div&gt;`
+            },
+            "footer": {
+                title: "Chân Trang Hệ Thống (Footer)",
+                desc: "Mã nguồn đầy đủ của chân trang hệ thống (_Footer.cshtml). Chứa các thông tin liên kết xã hội, địa chỉ, các liên kết nhanh chính sách dịch vụ và hộp nhập đăng ký nhận bản tin từ QuaMonHai.",
+                code: `&lt;div class="container-fluid bg-dark footer pt-5" data-inspect-id="footer"&gt;\n    &lt;div class="container py-5"&gt;\n        &lt;div class="row g-5"&gt;\n            &lt;div class="col-lg-3 col-md-6"&gt;\n                &lt;h1 class="text-primary"&gt;QuaMon&lt;span class="text-secondary"&gt;Hai&lt;/span&gt;&lt;/h1&gt;\n                &lt;p&gt;Hệ thống cung cấp sản phẩm công nghệ & phụ kiện...&lt;/p&gt;\n            &lt;/div&gt;\n        &lt;/div&gt;\n    &lt;/div&gt;\n&lt;/div&gt;`
+            },
+            "chat-bubble": {
+                title: "Bong Bóng Chat Hỗ Trợ (Chat Bubble)",
+                desc: "Widget trò chuyện thời gian thực dành cho khách hàng. Không hiển thị nếu người dùng có vai trò là Admin hoặc Staff để tránh xung đột giao diện, hỗ trợ gửi nhanh yêu cầu tư vấn sản phẩm đang xem.",
+                code: `&lt;!-- Kiểm tra quyền hiển thị Widget chat trong _ChatBubble.cshtml --&gt;\n@if (shouldShowChat && !User.IsInRole("Admin") && !User.IsInRole("Staff")) {\n    &lt;div id="customer-chat-widget"&gt;\n        &lt;button id="chat-bubble-btn"&gt;&lt;i class="fa-comments"&gt;&lt;/i&gt;&lt;/button&gt;\n    &lt;/div&gt;\n}`
+            },
+            "profile-form": {
+                title: "Cập Nhật Hồ Sơ (Profile Form)",
+                desc: `<strong>HƯỚNG DẪN HOẠT ĐỘNG:</strong><br>\n1. <strong>Frontend:</strong> Form gửi thông tin cá nhân qua phương thức POST, sử dụng <code>enctype="multipart/form-data"</code> để hỗ trợ tải ảnh lên.<br>\n2. <strong>Backend (CustomerController.cs):</strong> Khớp dữ liệu từ Form POST vào Model <code>KhachHang</code>, lưu ảnh đại diện (nếu có) thông qua helper <code>MyUtil.UploadAvatar</code>, cập nhật Database và ký lại Claims cookie để đồng bộ giao diện.`,
+                code: `&lt;!-- Markup trong Views/Customer/Profile.cshtml --&gt;\n&lt;form asp-action="Profile" method="post" enctype="multipart/form-data"&gt;\n    &lt;input type="hidden" asp-for="MaKh" /&gt;\n    &lt;div class="row g-3" data-inspect-id="profile-info-fields"&gt;...&lt;/div&gt;\n    &lt;button type="submit" class="btn btn-success"&gt;Lưu Thay Đổi&lt;/button&gt;\n&lt;/form&gt;\n\n// Model KhachHang (Models/KhachHang.cs)\npublic partial class KhachHang {\n    public string MaKh { get; set; } = null!;\n    public string? MatKhau { get; set; }\n    public string HoTen { get; set; } = null!;\n    public bool GioiTinh { get; set; }\n    public DateTime NgaySinh { get; set; }\n    public string? DiaChi { get; set; }\n    public string? DienThoai { get; set; }\n    public string Email { get; set; } = null!;\n    public string? Hinh { get; set; }\n}\n\n// C# Controller xử lý POST trong CustomerController.cs\n[Authorize], [HttpPost], [ValidateAntiForgeryToken]\npublic async Task&lt;IActionResult&gt; Profile(KhachHang model, IFormFile? fHinh) {\n    var customerId = User.Claims.SingleOrDefault(c =&gt; c.Type == "CustomerID")?.Value;\n    var khachHang = db.KhachHangs.SingleOrDefault(kh =&gt; kh.MaKh == customerId);\n    khachHang.HoTen = model.HoTen;\n    khachHang.Email = model.Email;\n    khachHang.DienThoai = model.DienThoai;\n    khachHang.DiaChi = model.DiaChi;\n    khachHang.NgaySinh = model.NgaySinh;\n    khachHang.GioiTinh = model.GioiTinh;\n    if (fHinh != null && fHinh.Length &gt; 0) {\n        var uniqueFileName = MyUtil.UploadAvatar(fHinh, "KhachHang");\n        if (!string.IsNullOrEmpty(uniqueFileName)) khachHang.Hinh = uniqueFileName;\n    }\n    db.Update(khachHang);\n    db.SaveChanges();\n    await SignInUserAsync(khachHang);\n    return RedirectToAction("Profile");\n}`
+            },
+            "profile-avatar-upload": {
+                title: "Tải Ảnh Đại Diện & Xử Lý Lưu Trữ (Profile Avatar Upload & Storage)",
+                desc: `<strong>HƯỚNG DẪN HOẠT ĐỘNG:</strong><br>\n1. <strong>Frontend:</strong> Chọn tệp ảnh tải lên thông qua input <code>type="file" name="fHinh"</code> bên trong form có mã hóa <code>multipart/form-data</code>.<br>\n2. <strong>Backend (CustomerController.cs [POST]):</strong> Lấy tệp và lưu trữ bằng phương thức helper <code>MyUtil.UploadAvatar(fHinh, "KhachHang")</code> để tạo tên tệp duy nhất, sau đó cập nhật đường dẫn vào trường Hinh của Khách hàng trong Database.`,
+                code: `&lt;!-- Input Upload Ảnh trong Profile.cshtml --&gt;\n&lt;input type="file" name="fHinh" class="form-control" accept="image/*" /&gt;\n\n// Hàm Helper Xử lý Upload trong Helpers/MyUtil.cs\npublic static string UploadAvatar(IFormFile fHinh, string folder) {\n    try {\n        var fileName = Guid.NewGuid().ToString() + Path.GetExtension(fHinh.FileName);\n        var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "img", "Hinh", folder, fileName);\n        using (var stream = new FileStream(path, FileMode.Create)) {\n            fHinh.CopyTo(stream);\n        }\n        return fileName;\n    } catch { return string.Empty; }\n}`
+            },
+            "profile-info-fields": {
+                title: "Các Trường Thông Tin Cá Nhân (Profile Info Fields)",
+                desc: `<strong>HƯỚNG DẪN HOẠT ĐỘNG:</strong><br>\n1. <strong>Tự Động Điền & Binding:</strong> Sử dụng tag helper <code>asp-for</code> để tự động ánh xạ dữ liệu của 6 trường: Họ và tên, Giới tính, Ngày sinh, Số điện thoại, Email, Địa chỉ liên hệ.<br>\n2. <strong>Cập Nhật Backend (CustomerController.cs):</strong> Cập nhật các trường tương ứng của thực thể KhachHang trong DB và thực hiện <code>db.SaveChanges()</code>.`,
+                code: `&lt;!-- HTML hiển thị 6 trường trong Profile.cshtml --&gt;\n&lt;input asp-for="HoTen" required /&gt;\n&lt;input type="radio" asp-for="GioiTinh" value="true"&gt; Nam\n&lt;input type="radio" asp-for="GioiTinh" value="false"&gt; Nữ\n&lt;input asp-for="NgaySinh" type="date" /&gt;\n&lt;input asp-for="DienThoai" /&gt;\n&lt;input asp-for="Email" type="email" /&gt;\n&lt;input asp-for="DiaChi" /&gt;`
+            },
+            "change-password-form": {
+                title: "Đổi Mật Khẩu Khách Hàng (Change Customer Password)",
+                desc: `<strong>HƯỚNG DẪN HOẠT ĐỘNG:</strong><br>\n1. <strong>Validation:</strong> Dùng ViewModel <code>ChangePasswordVM</code> để kiểm tra Mật khẩu cũ, Mật khẩu mới tối thiểu 6 ký tự, và Xác nhận mật khẩu mới (sử dụng <code>[Compare]</code>).<br>\n2. <strong>Cập Nhật Backend:</strong> Kiểm tra so khớp mật khẩu cũ đã được mã hóa MD5 kết hợp với RandomKey, băm mật khẩu mới và lưu vào DB.`,
+                code: `// C# ViewModel (ViewModels/ChangePasswordVM.cs)\npublic class ChangePasswordVM {\n    public string OldPassword { get; set; }\n    public string NewPassword { get; set; }\n    [Compare("NewPassword")]\n    public string ConfirmPassword { get; set; }\n}\n\n// C# Backend đổi mật khẩu trong CustomerController.cs\n[HttpPost]\npublic IActionResult ChangePassword(ChangePasswordVM model) {\n    var customerId = User.Claims.SingleOrDefault(c =&gt; c.Type == "CustomerID")?.Value;\n    var khachHang = db.KhachHangs.SingleOrDefault(kh =&gt; kh.MaKh == customerId);\n    var hashedOldPassword = model.OldPassword.ToMd5Hash(khachHang.RandomKey);\n    if (khachHang.MatKhau == hashedOldPassword) {\n        khachHang.MatKhau = model.NewPassword.ToMd5Hash(khachHang.RandomKey);\n        db.SaveChanges();\n    }\n}`
+            },
+            "login-form": {
+                title: "Trang Đăng Nhập Tài Khoản (Customer Login Page Form)",
+                desc: `<strong>HƯỚNG DẪN HOẠT ĐỘNG:</strong><br>\n1. <strong>Giao diện:</strong> Form nhập Tên đăng nhập và Mật khẩu. Hỗ trợ ghi nhớ ReturnUrl để chuyển hướng sau khi đăng nhập thành công.<br>\n2. <strong>Xác thực:</strong> Gửi dữ liệu về Controller để xác minh thông tin tài khoản qua Cookie Authentication.`,
+                code: `&lt;!-- Form Đăng Nhập tổng thể trong Login.cshtml --&gt;\n&lt;form asp-action="Login" asp-route-returnurl="@ViewBag.ReturnUrl" method="post"&gt;\n    &lt;div data-inspect-id="login-fields"&gt;...&lt;/div&gt;\n    &lt;div data-inspect-id="login-recaptcha"&gt;...&lt;/div&gt;\n    &lt;button type="submit" class="btn btn-primary"&gt;ĐĂNG NHẬP&lt;/button&gt;\n&lt;/form&gt;`
+            },
+            "login-fields": {
+                title: "Thông Tin Tên Đăng Nhập & Mật Khẩu (Login Credentials Inputs)",
+                desc: `<strong>HƯỚNG DẪN HOẠT ĐỘNG:</strong><br>
+1. <strong>Frontend:</strong> Ô nhập Tên đăng nhập (UserName) và Mật khẩu (Password). Ràng buộc Validation kiểm tra dữ liệu đầu vào.<br>
+2. <strong>C# Backend (CustomerController.cs [POST]):</strong><br>
+&nbsp;&nbsp;&nbsp;- Sử dụng khóa muối <code>RandomKey</code> của thực thể KhachHang trong DB để băm MD5 mật khẩu và đối chiếu.<br>
+&nbsp;&nbsp;&nbsp;- Đăng ký phiên đăng nhập qua Cookie Authentication: tạo danh sách các <code>Claim</code> bao gồm Mã khách hàng, Tên hiển thị và Vai trò (Role).`,
+                code: `// C# ViewModel (ViewModels/LoginVM.cs)\npublic class LoginVM {\n    [Display(Name = "Tên đăng nhập"), Required(ErrorMessage = "Chưa nhập tên đăng nhập")]\n    [MaxLength(20, ErrorMessage = "Tối đa 20 ký tự")]\n    public string UserName { get; set; }\n\n    [Display(Name = "Mật khẩu"), Required(ErrorMessage = "Chưa nhập mật khẩu")]\n    [DataType(DataType.Password)]\n    public string Password { get; set; }\n    public string? RecaptchaResponse { get; set; }\n}\n\n&lt;!-- Nhóm input thông tin đăng nhập trong Login.cshtml --&gt;\n&lt;div class="form-floating mb-4"&gt;\n    &lt;input asp-for="UserName" class="form-control" placeholder="Tên đăng nhập" /&gt;\n&lt;/div&gt;\n&lt;div class="form-floating mb-4"&gt;\n    &lt;input asp-for="Password" type="password" class="form-control" /&gt;\n&lt;/div&gt;\n\n// C# Backend xử lý Claims trong CustomerController.cs\nvar khachHang = db.KhachHangs.SingleOrDefault(kh =&gt; kh.MaKh == model.UserName);\nif (khachHang != null && khachHang.MatKhau == model.Password.ToMd5Hash(khachHang.RandomKey)) {\n    string userRole = khachHang.VaiTro == 1 ? "Admin" : (khachHang.VaiTro == 2 ? "Staff" : "Customer");\n    var claims = new List&lt;Claim&gt; {\n        new Claim(ClaimTypes.Email, khachHang.Email ?? ""),\n        new Claim(ClaimTypes.Name, khachHang.HoTen ?? ""),\n        new Claim("CustomerID", khachHang.MaKh),\n        new Claim(ClaimTypes.Role, userRole)\n    };\n    var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);\n    await HttpContext.SignInAsync(new ClaimsPrincipal(claimsIdentity));\n}`
+            },
+            "login-recaptcha": {
+                title: "Tích Hợp Google reCAPTCHA v2 (Google reCAPTCHA Verification)",
+                desc: `<strong>HƯỚNG DẪN HOẠT ĐỘNG:</strong><br>
+1. <strong>Frontend:</strong> Hiển thị Widget reCAPTCHA bằng thư viện JS và gán khóa công khai <code>SiteKey</code>.<br>
+2. <strong>Backend:</strong> Gọi API Google Verify (gửi POST xác thực mã phản hồi <code>g-recaptcha-response</code>) bằng <code>HttpClient</code> kèm theo Secret Key bảo mật để kiểm duyệt Captcha.`,
+                code: `&lt;!-- Google reCAPTCHA Widget trong Login.cshtml --&gt;\n&lt;script src="https://www.google.com/recaptcha/api.js" async defer&gt;&lt;/script&gt;\n&lt;div class="g-recaptcha" data-sitekey="6Le0Z-MsAAAAAB7YQK_ITslpZxYtzmtTi5h8O6Nr"&gt;&lt;/div&gt;\n\n// C# Backend gọi API Google Verify\nvar captchaResponse = Request.Form["g-recaptcha-response"];\nusing (var client = new HttpClient()) {\n    var secretKey = "6Le0Z-MsAAAAABmtR4FCdgxg4GekC-nY9L_4Tdob";\n    var response = await client.PostAsync("https://www.google.com/recaptcha/api/siteverify?secret=" + secretKey + "&response=" + captchaResponse, null);\n    var jsonString = await response.Content.ReadAsStringAsync();\n    dynamic jsonData = JsonConvert.DeserializeObject(jsonString);\n    if (jsonData.success != "true") {\n        ModelState.AddModelError("loi", "Xác thực robot không hợp lệ.");\n    }\n}`
+            },
+            "register-form": {
+                title: "Trang Đăng Ký Tài Khoản Mới (Customer Registration Form)",
+                desc: `<strong>HƯỚNG DẪN HOẠT ĐỘNG:</strong><br>
+1. <strong>Giao diện:</strong> Form thu thập thông tin đăng ký thành viên mới của hệ thống.<br>
+2. <strong>Xác thực:</strong> Kiểm tra Email qua OTP và các thông tin bắt buộc trước khi lưu vào Database.`,
+                code: `&lt;!-- Form Đăng Ký thành viên trong Register.cshtml --&gt;\n&lt;form asp-action="Register" enctype="multipart/form-data" method="post"&gt;\n    &lt;div data-inspect-id="register-fields"&gt;...&lt;/div&gt;\n    &lt;div data-inspect-id="register-otp-section"&gt;...&lt;/div&gt;\n    &lt;button type="submit" class="btn btn-success"&gt;ĐĂNG KÝ TÀI KHOẢN&lt;/button&gt;\n&lt;/form&gt;`
+            },
+            "register-fields": {
+                title: "Thông Tin Tài Khoản Đăng Ký (Member Registration Info Fields)",
+                desc: `<strong>HƯỚNG DẪN HOẠT ĐỘNG:</strong><br>
+1. <strong>Frontend:</strong> Nhập Tên đăng nhập, Mật khẩu, Họ tên, Giới tính, Ngày sinh, Điện thoại, Địa chỉ, Email và hình ảnh.<br>
+2. <strong>C# Backend (CustomerController.cs [POST]):</strong><br>
+&nbsp;&nbsp;&nbsp;- So khớp OTP verify qua email.<br>
+&nbsp;&nbsp;&nbsp;- Map dữ liệu từ <code>RegisterVM</code> sang <code>KhachHang</code> bằng <code>AutoMapper</code>.<br>
+&nbsp;&nbsp;&nbsp;- Tạo khóa muối bảo mật ngẫu nhiên, băm mật khẩu MD5, phân quyền Khách hàng mặc định và lưu DB.`,
+                code: `// C# ViewModel (ViewModels/RegisterVM.cs)\npublic class RegisterVM {\n    [Display(Name = "Tên đăng nhập"), Required, MaxLength(20)]\n    public string MaKh { get; set; }\n\n    [Display(Name = "Mật Khẩu"), Required, DataType(DataType.Password)]\n    public string MatKhau { get; set; }\n\n    [Display(Name = "Họ Tên"), Required, MaxLength(50)]\n    public string HoTen { get; set; }\n    public bool GioiTinh { get; set; } = true;\n\n    [Display(Name = "Ngày sinh"), DataType(DataType.Date), AgeRange]\n    public DateTime? NgaySinh { get; set; }\n\n    [Display(Name = "Điện Thoại"), MaxLength(10), RegularExpression(@"^0(3|5|7|8|9)\\d{8}$")]\n    public string DienThoai { get; set; }\n\n    [Display(Name = "Email"), Required, EmailAddress]\n    public string Email { get; set; }\n    public string? Hinh { get; set; }\n\n    [Display(Name = "Mã xác nhận Email"), Required]\n    public string VerificationCode { get; set; }\n}\n\n// C# Backend xử lý tạo mới tài khoản trong CustomerController.cs\n[HttpPost]\npublic IActionResult Register(RegisterVM model, IFormFile? Hinh) {\n    var sessionCode = HttpContext.Session.GetString("EmailVerifyCode");\n    if (string.IsNullOrEmpty(sessionCode) || model.VerificationCode != sessionCode) {\n        ModelState.AddModelError("VerificationCode", "Mã xác thực không chính xác.");\n    }\n    if (ModelState.IsValid) {\n        if (db.KhachHangs.Any(kh =&gt; kh.MaKh == model.MaKh)) {\n            ModelState.AddModelError("MaKh", "Tên đăng nhập đã tồn tại.");\n            return View(model);\n        }\n        var khachHang = _mapper.Map&lt;KhachHang&gt;(model);\n        khachHang.RandomKey = MyUtil.GenerateRandomKey();\n        khachHang.MatKhau = model.MatKhau.ToMd5Hash(khachHang.RandomKey);\n        khachHang.HieuLuc = true;\n        khachHang.VaiTro = 0;\n        if (Hinh != null && Hinh.Length &gt; 0) {\n            khachHang.Hinh = MyUtil.UploadAvatar(Hinh, "KhachHang");\n        } else {\n            khachHang.Hinh = "[API]:" + model.HoTen;\n        }\n        db.Add(khachHang); db.SaveChanges();\n        return RedirectToAction("Login");\n    }\n    return View(model);\n}`
+            },
+            "register-otp-section": {
+                title: "Hệ Thống Gửi & Kiểm Tra Mã OTP Email (Email OTP Dispatcher)",
+                desc: `<strong>HƯỚNG DẪN HOẠT ĐỘNG:</strong><br>
+1. <strong>Frontend:</strong> Khi click nút 'Gửi mã', JavaScript gửi request AJAX POST chứa email nhập tới <code>/Customer/SendVerificationCode</code>.<br>
+2. <strong>Backend:</strong> Sinh ngẫu nhiên mã OTP 6 số, lưu vào Session <code>EmailVerifyCode</code>. Khởi tạo đối tượng <code>MimeMessage</code> và kết nối máy chủ SMTP Gmail của MailKit qua Port 587 bảo mật TLS để gửi email.`,
+                code: `&lt;!-- Nút bấm và ô nhập mã OTP trong Register.cshtml --&gt;\n&lt;input asp-for="Email" id="emailInput" /&gt;\n&lt;button type="button" id="btnSendCode"&gt;Gửi mã&lt;/button&gt;\n&lt;div id="verificationSection" style="display:none;"&gt;\n    &lt;input asp-for="VerificationCode" /&gt;\n&lt;/div&gt;\n\n// JavaScript xử lý gửi AJAX lấy mã OTP\n\$("#btnSendCode").click(function () {\n    var email = \$("#emailInput").val();\n    \$.post('/Customer/SendVerificationCode', { email: email }, function (res) {\n        if (res.success) { \$("#verificationSection").slideDown(); }\n    });\n});\n\n// C# gửi Email SMTP Gmail qua MailKit trong CustomerController.cs\n[HttpPost]\npublic async Task&lt;IActionResult&gt; SendVerificationCode(string email) {\n    if (string.IsNullOrEmpty(email)) return Json(new { success = false });\n    string otpCode = new Random().Next(100000, 999999).ToString();\n    HttpContext.Session.SetString("EmailVerifyCode", otpCode);\n    var message = new MimeKit.MimeMessage();\n    message.From.Add(new MimeKit.MailboxAddress("HShop", "trathanhclassic123@gmail.com"));\n    message.To.Add(new MimeKit.MailboxAddress("", email));\n    message.Subject = "Mã xác thực đăng ký tài khoản";\n    message.Body = new MimeKit.TextPart("html") { Text = $"&lt;h3&gt;Mã xác thực của bạn là: &lt;b style='color:red'&gt;{otpCode}&lt;/b&gt;&lt;/h3&gt;" };\n    using (var client = new MailKit.Net.Smtp.SmtpClient()) {\n        await client.ConnectAsync("smtp.gmail.com", 587, MailKit.Security.SecureSocketOptions.StartTls);\n        await client.AuthenticateAsync("trathanhclassic123@gmail.com", "sgpyhcoqqcpeziyj");\n        await client.SendAsync(message);\n        await client.DisconnectAsync(true);\n    }\n    return Json(new { success = true });\n}`
+            },
+            "blog-list": {
+                title: "Danh Sách Tin Tức (Blog Posts)",
+                desc: "Liệt kê các bài viết hướng dẫn sử dụng hệ thống và đánh giá chuyên môn. Click vào nút 'Đọc chi tiết' sẽ mở một hộp thoại Bootstrap Modal tương ứng để hiển thị thông tin bài viết nhanh chóng.",
+                code: `&lt;!-- Modal xem tin tức trong Blog.cshtml --&gt;\n&lt;a class="btn btn-outline-primary" data-bs-toggle="modal" \n   data-bs-target="#featureModal"&gt;Đọc chi tiết&lt;/a&gt;`
+            },
+            "product-detail": {
+                title: "Chi Tiết Sản Phẩm & Voucher (Product Detail Section)",
+                desc: "Trang thông tin chi tiết của hàng hóa. Hiển thị giá gốc và giá khuyến mãi (đã trừ phần trăm giảm giá). Tổng hợp số lượng đã bán từ CSDL và hiển thị danh sách các mã giảm giá áp dụng của cửa hàng.",
+                code: `// Tính toán giá khuyến mãi trong Details.cshtml\n@{ \n    double originalPrice = Model.DonGia ?? 0;\n    double discountPercent = Model.GiamGia;\n    double salePrice = originalPrice * (1 - discountPercent / 100);\n}`
+            },
+            "wishlist-remove-btn": {
+                title: "Nút Bỏ Thích AJAX Trong Lưới Yêu Thích (AJAX Remove Favorite Heart)",
+                desc: `<strong>HƯỚNG DẪN HOẠT ĐỘNG:</strong><br>
+1. <strong>Frontend:</strong> Khi click nút Tim Đỏ (Bỏ Thích), JavaScript kích hoạt request AJAX POST gửi <code>MaHh</code> lên action <code>ToggleFavorite</code>.<br>
+2. <strong>Backend (CustomerController.cs):</strong><br>
+&nbsp;&nbsp;&nbsp;- Tìm thực thể trong bảng <code>YeuThiches</code> tương ứng với <code>CustomerID</code> và <code>MaHh</code>.<br>
+&nbsp;&nbsp;&nbsp;- Xóa thực thể ra khỏi DB và lưu thay đổi.<br>
+&nbsp;&nbsp;&nbsp;- Trả về JSON <code>{ success: true, isFavorite: false }</code>.<br>
+3. <strong>Hiệu ứng UI:</strong> Nhận response, jQuery chạy hiệu ứng <code>fadeOut(400)</code> làm biến mất card sản phẩm đó.`,
+                code: `&lt;!-- Nút thả tim yêu thích trong Wishlist.cshtml --&gt;\n&lt;button class="remove-favorite-btn" data-id="@hh.MaHh" data-inspect-id="wishlist-remove-btn"&gt;\n    &lt;i class="fa-solid fa-heart text-danger"&gt;&lt;/i&gt;\n&lt;/button&gt;\n\n// Javascript gửi AJAX và làm mờ biến mất phần tử\n\$('.remove-favorite-btn').click(function(e) {\n    var btn = \$(this); var id = btn.data('id');\n    \$.ajax({\n        url: '/Customer/ToggleFavorite', type: 'POST', data: { id: id },\n        success: function(res) {\n            if(res.success && !res.isFavorite) {\n                \$('#wishlist-item-' + id).fadeOut(400, function() { \$(this).remove(); });\n            }\n        }\n    });\n});\n\n// C# Backend cập nhật thông tin ToggleFavorite\n[HttpPost]\npublic async Task&lt;IActionResult&gt; ToggleFavorite(int id) {\n    if (User.Identity?.IsAuthenticated != true) return Json(new { success = false });\n    var customerId = User.Claims.SingleOrDefault(c =&gt; c.Type == "CustomerID")?.Value;\n    var yeuThich = await db.YeuThiches.FirstOrDefaultAsync(y =&gt; y.MaKh == customerId && y.MaHh == id);\n    bool isFavorite = false;\n    if (yeuThich != null) {\n        db.YeuThiches.Remove(yeuThich); isFavorite = false;\n    } else {\n        db.YeuThiches.Add(new YeuThich { MaKh = customerId, MaHh = id, NgayChon = DateTime.Now });\n        isFavorite = true;\n    }\n    await db.SaveChangesAsync();\n    return Json(new { success = true, isFavorite = isFavorite });\n}`
+            },
+            "forgot-password-form": {
+                title: "Form Yêu Cầu Quên Mật Khẩu (Forgot Password Verification Request)",
+                desc: `<strong>HƯỚNG DẪN HOẠT ĐỘNG:</strong><br>
+1. <strong>Frontend:</strong> Khách hàng nhập Tên đăng nhập và Email đã đăng ký trong <code>ForgotPasswordVM</code>.<br>
+2. <strong>Backend (CustomerController.cs [POST]):</strong><br>
+&nbsp;&nbsp;&nbsp;- Kiểm tra CSDL khớp tài khoản và email.<br>
+&nbsp;&nbsp;&nbsp;- Sinh mã OTP ngẫu nhiên 6 số và lưu OTP cùng Username vào Session.<br>
+&nbsp;&nbsp;&nbsp;- Gửi Email chứa mã OTP để người dùng thực hiện khôi phục mật khẩu.`,
+                code: `// C# ViewModel (ViewModels/ForgotPasswordVM.cs)\npublic class ForgotPasswordVM {\n    [Display(Name = "Tên đăng nhập"), Required]\n    public string UserName { get; set; }\n\n    [Display(Name = "Email đã đăng ký"), Required, EmailAddress]\n    public string Email { get; set; }\n}\n\n&lt;!-- Form gửi yêu cầu quên mật khẩu trong ForgotPassword.cshtml --&gt;\n&lt;form asp-action="ForgotPassword" method="post"&gt;\n    &lt;input asp-for="UserName" class="form-control" /&gt;\n    &lt;input asp-for="Email" class="form-control" /&gt;\n    &lt;button type="submit"&gt;GỬI MÃ OTP&lt;/button&gt;\n&lt;/form&gt;\n\n// C# Backend xử lý trong CustomerController.cs\n[HttpPost]\npublic async Task&lt;IActionResult&gt; ForgotPassword(ForgotPasswordVM model) {\n    if (!ModelState.IsValid) return View(model);\n    var khachHang = db.KhachHangs.SingleOrDefault(kh =&gt; kh.MaKh == model.UserName && kh.Email == model.Email);\n    if (khachHang == null || !khachHang.HieuLuc) {\n        ModelState.AddModelError("", "Thông tin không chính xác hoặc bị khóa.");\n        return View(model);\n    }\n    string otpCode = new Random().Next(100000, 999999).ToString();\n    HttpContext.Session.SetString("ResetPassword_OTP", otpCode);\n    HttpContext.Session.SetString("ResetPassword_User", khachHang.MaKh);\n    // Gửi mail bằng MailKit SMTP\n    var message = new MimeKit.MimeMessage();\n    message.From.Add(new MimeKit.MailboxAddress("HShop", "trathanhclassic123@gmail.com"));\n    message.To.Add(new MimeKit.MailboxAddress(khachHang.HoTen, khachHang.Email));\n    message.Subject = "Mã xác thực đặt lại mật khẩu";\n    message.Body = new MimeKit.TextPart("html") { Text = $"&lt;p&gt;Mã OTP của bạn là: &lt;b&gt;{otpCode}&lt;/b&gt;&lt;/p&gt;" };\n    using (var client = new MailKit.Net.Smtp.SmtpClient()) {\n        await client.ConnectAsync("smtp.gmail.com", 587, MailKit.Security.SecureSocketOptions.StartTls);\n        await client.AuthenticateAsync("trathanhclassic123@gmail.com", "sgpyhcoqqcpeziyj");\n        await client.SendAsync(message);\n        await client.DisconnectAsync(true);\n    }\n    return RedirectToAction("ResetPassword");\n}`
+            },
+            "reset-password-form": {
+                title: "Form Đặt Lại Mật Khẩu Mới (Reset Password & OTP Validation)",
+                desc: `<strong>HƯỚNG DẪN HOẠT ĐỘNG:</strong><br>
+&nbsp;&nbsp;&nbsp;- Đọc mã OTP lưu trong Session, so sánh với mã người dùng điền.<br>
+&nbsp;&nbsp;&nbsp;- Đọc <code>MaKh</code> đang muốn reset mật khẩu trong Session.<br>
+&nbsp;&nbsp;&nbsp;- Lấy tài khoản khách hàng từ DB, tạo khóa bảo mật <code>RandomKey</code> mới, băm mật khẩu mới với RandomKey mới và lưu cập nhật vào CSDL.<br>
+&nbsp;&nbsp;&nbsp;- Hủy thông tin lưu trong Session để vô hiệu hóa OTP và chuyển hướng về trang Đăng nhập.`,
+                code: `&lt;!-- Form thiết lập lại mật khẩu mới trong ResetPassword.cshtml --&gt;\n&lt;form asp-action="ResetPassword" method="post" data-inspect-id="reset-password-form"&gt;\n    &lt;input asp-for="VerificationCode" class="form-control" required /&gt;\n    &lt;input asp-for="NewPassword" type="password" class="form-control" required /&gt;\n    &lt;input asp-for="ConfirmPassword" type="password" class="form-control" required /&gt;\n    &lt;button type="submit"&gt;HOÀN TẤT ĐẶT LẠI MẬT KHẨU&lt;/button&gt;\n&lt;/form&gt;\n\n// C# Backend xử lý lưu mật khẩu mới sau khi xác thực OTP\n[HttpPost]\npublic IActionResult ResetPassword(ResetPasswordVM model) {\n    var sessionOtp = HttpContext.Session.GetString("ResetPasswordCode");\n    var sessionUser = HttpContext.Session.GetString("ResetPasswordUser");\n    if (model.VerificationCode == sessionOtp && !string.IsNullOrEmpty(sessionUser)) {\n        var kh = db.KhachHangs.SingleOrDefault(k =&gt; k.MaKh == sessionUser);\n        kh.RandomKey = MyUtil.GenerateRandomKey();\n        kh.MatKhau = model.NewPassword.ToMd5Hash(kh.RandomKey);\n        db.Update(kh); db.SaveChanges();\n        HttpContext.Session.Remove("ResetPasswordCode");\n        return RedirectToAction("Login");\n    }\n}`
+            },
+            "pagination": {
+                title: "Thanh Phân Trang Hệ Thống (Pagination Bar)",
+                desc: "Thực hiện render danh sách các trang dựa trên tổng số sản phẩm và số lượng sản phẩm mỗi trang. Tự động giữ nguyên các tham số lọc tìm kiếm (loaiId, priceRange, searchQuery, sortBy) khi khách hàng nhấp chuyển trang.",
+                code: `&lt;!-- Markup trong _NumberBar.cshtml --&gt;\n&lt;nav aria-label="Page navigation" data-inspect-id="pagination"&gt;\n    &lt;ul class="pagination"&gt;\n        @for (int i = 1; i &lt;= totalPages; i++) {\n            &lt;li class="page-item @(currentPage == i ? \"active\" : \"\")"&gt;\n                &lt;a class="page-link" asp-action="Index" asp-route-page="@i"\n                   asp-route-loaiId="@Context.Request.Query[\"loaiId\"]"\n                   asp-route-searchQuery="@Context.Request.Query[\"searchQuery\"]"&gt;@i&lt;/a&gt;\n            &lt;/li&gt;\n        }\n    &lt;/ul&gt;\n&lt;/nav&gt;`
+            },
+            "detail-back-btn": {
+                title: "Nút Tiếp Tục Mua Sắm (Details Back Button)",
+                desc: "Nút điều hướng khách hàng nhanh chóng quay trở lại danh mục mua sắm sản phẩm.",
+                code: `&lt;!-- Nút quay lại trong HangHoas/Details.cshtml --&gt;\n&lt;a asp-action="Index" asp-controller="Home" class="btn btn-outline-success"&gt;\n    &lt;i class="fa fa-arrow-left me-2"&gt;&lt;/i&gt;Tiếp tục mua sắm\n&lt;/a&gt;`
+            },
+            "detail-image": {
+                title: "Ảnh Lớn Chi Tiết Sản Phẩm (Details Product Image & Hover Scale)",
+                desc: "Ảnh chính của sản phẩm tại trang chi tiết. Được tối ưu hóa giao diện hiển thị bằng hiệu ứng phóng to (hover scale) khi người dùng di chuột vào khung ảnh.",
+                code: `&lt;!-- Ảnh chi tiết trong Details.cshtml --&gt;\n&lt;img src="~/img/Hinh/HangHoa/@Model.Hinh" \n     style="transition: transform 0.4s ease;" \n     onmouseover="this.style.transform='scale(1.08)'" \n     onmouseout="this.style.transform='scale(1)'"&gt;`
+            },
+            "detail-stats": {
+                title: "Chỉ Số Đánh Giá & Số Lượng Đã Bán (Details Shopee-style Statistics Header)",
+                desc: "Hiển thị số sao đánh giá trung bình trực quan, tổng số lượng phản hồi đánh giá thực tế của khách hàng, số lượng sản phẩm bán ra và lượt người dùng đã xem trang chi tiết sản phẩm này.",
+                code: `&lt;!-- Điểm đánh giá sao và số lượt bán trong Details.cshtml --&gt;\n&lt;span class="text-warning fw-bold"&gt;@(ViewBag.AvgStars ?? "5.0")&lt;/span&gt;\n&lt;span&gt;@(ViewBag.TotalReviews ?? 0) Đánh giá&lt;/span&gt;\n&lt;span&gt;@(ViewBag.TotalSold ?? 0) Đã bán&lt;/span&gt;\n&lt;span&gt;@Model.SoLanXem Lượt xem&lt;/span&gt;`
+            },
+            "detail-price": {
+                title: "Giá Bán Khuyến Mãi Sản Phẩm (Details Pricing Calculation)",
+                desc: "Hiển thị giá gốc và giá khuyến mãi sau khi đã trừ đi phần trăm giảm giá của sản phẩm. Tính toán trực quan trực tiếp bằng C# trên Razor trước khi hiển thị ra giao diện người dùng.",
+                code: `// Tính toán giá khuyến mãi trực tiếp trên Razor trong Details.cshtml\n@{ \n    double originalPrice = Model.DonGia ?? 0;\n    double discountPercent = Model.GiamGia;\n    double salePrice = originalPrice * (1 - discountPercent / 100);\n}\n\n&lt;!-- Hiển thị giá --&gt;\n@if (discountPercent &gt; 0) {\n    &lt;span class="text-decoration-line-through text-muted"&gt;$@originalPrice&lt;/span&gt;\n    &lt;span class="text-danger fw-bold"&gt;$@salePrice&lt;/span&gt;\n}`
+            },
+            "detail-vouchers": {
+                title: "Mã Giảm Giá Áp Dụng (Details Shop Active Vouchers)",
+                desc: "Hiển thị danh sách các voucher giảm giá hiện có của cửa hàng. Khách hàng có thể nhấn vào từng mã voucher giảm giá để sao chép nhanh tên mã coupon lưu vào clipboard.",
+                code: `&lt;!-- Danh sách voucher của shop trong Details.cshtml --&gt;\n@foreach (var voucher in (List&lt;GiamGia&gt;)ViewBag.ActiveVouchers) {\n    &lt;span class="badge bg-danger" onclick="copyVoucher('@voucher.TenMa')"&gt;@voucher.TenMa&lt;/span&gt;\n}\n\n// JS sao chép mã coupon\nfunction copyVoucher(code) {\n    navigator.clipboard.writeText(code);\n    alert("Đã sao chép mã: " + code);\n}`
+            },
+            "detail-specs": {
+                title: "Thông Số Danh Mục & Tồn Kho (Details Specifications Summary)",
+                desc: "Hiển thị các thông tin nền tảng của sản phẩm bao gồm Tên danh mục phân loại, Tên nhà cung cấp và số lượng hàng hóa thực tế còn trong kho hàng để khách tiện theo dõi.",
+                code: `&lt;!-- Hiển thị danh mục & tồn kho trong Details.cshtml --&gt;\n&lt;span&gt;Danh mục: @(Model.MaLoaiNavigation?.TenLoai ?? "N/A")&lt;/span&gt;\n&lt;span&gt;Nhà cung cấp: @(Model.MaNccNavigation?.TenCongTy ?? "N/A")&lt;/span&gt;\n&lt;span&gt;Tồn kho: @Model.SoLuong&lt;/span&gt;`
+            },
+            "detail-qty-select": {
+                title: "Bộ Chọn Số Lượng Thêm Vào Giỏ (Details Quantity Selector Buttons)",
+                desc: "Bộ nút cộng trừ tăng giảm số lượng sản phẩm muốn mua. Khống chế giới hạn số lượng mua tối đa bằng số lượng sản phẩm còn tồn kho bằng mã JavaScript phía Client-side.",
+                code: `&lt;!-- Bộ tăng giảm số lượng trong Details.cshtml --&gt;\n&lt;button onclick="decreaseQty()"&gt;-&lt;/button&gt;\n&lt;input id="quantityInput" value="1" readonly /&gt;\n&lt;button onclick="increaseQty()"&gt;+&lt;/button&gt;\n\n// JS tăng giảm số lượng mua hàng\nfunction increaseQty() {\n    var val = parseInt(\$('#quantityInput').val());\n    var max = parseInt(\$('#quantityInput').data('max'));\n    if (val &lt; max) \$('#quantityInput').val(val + 1);\n}`
+            },
+            "detail-add-to-cart": {
+                title: "Thao Tác Thêm Giỏ Hàng AJAX (Details Add To Cart AJAX Button)",
+                desc: "Nút thêm sản phẩm vào giỏ hàng qua AJAX POST. Gửi yêu cầu gồm mã hàng hóa và số lượng chọn mua lên Controller và cập nhật badge giỏ hàng ngay lập tức.",
+                code: `// AJAX thêm giỏ hàng trong Details.cshtml\n\$('#addToCartBtn').click(function() {\n    var id = \$(this).data('id'); \n    var qty = parseInt(\$('#quantityInput').val());\n    \$.post('/Cart/AddToCartAjax', { id: id, quantity: qty }, function(res) {\n        if(res.success) { \$('.cart-badge').text(res.count); }\n    });\n});`
+            },
+            "detail-wishlist-toggle": {
+                title: "Nút Yêu Thích Sản Phẩm AJAX (Details AJAX Wishlist Heart Toggle)",
+                desc: "Thả tim yêu thích sản phẩm. Gửi request AJAX POST lên để thêm hoặc xóa sản phẩm khỏi bảng Yêu Thích trong CSDL dựa vào phiên đăng nhập của khách hàng hiện tại.",
+                code: `// AJAX thay đổi yêu thích sản phẩm trong Details.cshtml\n\$('.toggle-favorite-btn').click(function() {\n    var id = \$(this).data('id');\n    \$.post('/Customer/ToggleFavorite', { id: id }, function(res) {\n        // Toggle icon tim...\n    });\n});`
+            },
+            "detail-tabs-nav": {
+                title: "Bộ Tab Mô Tả & Đánh Giá (Details Info Nav Tabs)",
+                desc: "Thanh tiêu đề tab chuyển đổi giao diện giữa phần hiển thị Nội dung mô tả chi tiết của hàng hóa và lưới Danh sách ý kiến đánh giá phản hồi từ khách hàng.",
+                code: `&lt;!-- Tab điều hướng nội dung chi tiết trong Details.cshtml --&gt;\n&lt;ul class="nav nav-tabs" id="productTab"&gt;\n    &lt;button data-bs-target="#description-pane" class="nav-link active"&gt;Mô tả sản phẩm&lt;/button&gt;\n    &lt;button data-bs-target="#reviews-pane" class="nav-link"&gt;Đánh giá&lt;/button&gt;\n&lt;/ul&gt;`
+            },
+            "detail-desc-tab": {
+                title: "Nội Dung Mô Tả Chi Tiết (Details Description Pane)",
+                desc: "Khu vực render văn bản mô tả kỹ thuật, chức năng và hướng dẫn sử dụng của hàng hóa được người quản trị soạn thảo trong Database.",
+                code: `&lt;!-- Pane hiển thị mô tả trong Details.cshtml --&gt;\n&lt;div class="tab-pane fade show active" id="description-pane"&gt;\n    &lt;p style="white-space: pre-line;"&gt;@Model.MoTa&lt;/p&gt;\n&lt;/div&gt;`
+            },
+            "detail-reviews-list": {
+                title: "Danh Sách Ý Kiến Đánh Giá (Details Customer Reviews Feed)",
+                desc: "Hiển thị danh sách các phản hồi đánh giá của khách hàng đối với hàng hóa. Tự động hiển thị tên khách hàng, số lượng sao đánh giá, thời gian bình luận và nội dung phản hồi chi tiết.",
+                code: `&lt;!-- Danh sách phản hồi bình luận trong Details.cshtml --&gt;\n@foreach (var r in (List&lt;BinhLuan&gt;)ViewBag.Reviews) {\n    &lt;div class="review-item"&gt;\n        &lt;h6&gt;@r.MaKhNavigation?.HoTen&lt;/h6&gt;\n        &lt;span&gt;@r.Sao sao&lt;/span&gt;\n        &lt;p&gt;@r.NoiDung&lt;/p&gt;\n    &lt;/div&gt;\n}`
+            },
+            "detail-reviews-form": {
+                title: "Hộp Nhập Gửi Đánh Giá Sản Phẩm (Details Add Review Form)",
+                desc: "<strong>HƯỚNG DẪN HOẠT ĐỘNG:</strong><br>1. <strong>Kiểm duyệt mua hàng:</strong> Chỉ những khách hàng đã mua sản phẩm này thành công mới được quyền đánh giá.<br>2. <strong>Giới hạn lượt đánh giá:</strong> Số lượng đánh giá tối đa bằng tổng số lượng sản phẩm đó khách hàng đã từng mua.<br>3. <strong>Backend:</strong> Lưu bình luận mới vào Database qua <code>HangHoasController.cs [POST SendReview]</code>.",
+                code: `// C# Backend xử lý lưu đánh giá trong HangHoasController.cs\n[HttpPost]\npublic async Task&lt;IActionResult&gt; SendReview(int maHh, int sao, string noiDung) {\n    var customerId = User.Claims.SingleOrDefault(c =&gt; c.Type == "CustomerID")?.Value;\n    var maxReviews = await _context.ChiTietHds\n        .Where(ct =&gt; ct.MaHdNavigation.MaKh == customerId && ct.MaHh == maHh && ct.MaHdNavigation.MaTrangThai != -1)\n        .SumAsync(ct =&gt; ct.SoLuong);\n    var writtenReviews = await _context.BinhLuans.CountAsync(bl =&gt; bl.MaKh == customerId && bl.MaHh == maHh);\n    if (maxReviews &gt; 0 && writtenReviews &lt; maxReviews) {\n        var review = new BinhLuan { MaHh = maHh, MaKh = customerId, Sao = sao, NoiDung = noiDung, Ngay = DateTime.Now };\n        _context.BinhLuans.Add(review); await _context.SaveChangesAsync();\n    }\n}`
+            },
+            "detail-related-products": {
+                title: "Sản Phẩm Tương Tự (Details Related Products Grid)",
+                desc: "Hiển thị danh sách các sản phẩm khác cùng loại danh mục hàng hóa (MaLoai) để gợi ý mua sắm thêm cho khách hàng.",
+                code: `&lt;!-- Lưới sản phẩm tương tự trong Details.cshtml --&gt;\n@foreach (var item in (List&lt;HangHoa&gt;)ViewBag.RelatedProducts) {\n    &lt;div class="col-md-3"&gt;\n        &lt;a asp-action="Details" asp-route-id="@item.MaHh"&gt;@item.TenHh&lt;/a&gt;\n    &lt;/div&gt;\n}`
+            },
+            "admin-chat-dashboard": {
+                title: "Bảng Điều Khiển Chat Hỗ Trợ (Admin Support Chat Dashboard)",
+                desc: "<strong>HƯỚNG DẪN HOẠT ĐỘNG:</strong><br>1. <strong>Tải danh sách phòng:</strong> Gọi GET <code>GetActiveRooms</code> hiển thị số tin nhắn chưa đọc.<br>2. <strong>Xem hội thoại:</strong> Gọi GET <code>GetRoomMessages</code> để lấy lịch sử tin nhắn và đánh dấu đã đọc.<br>3. <strong>Trả lời tin nhắn:</strong> Admin gửi POST lên <code>ReplyMessage</code> để lưu phản hồi vào Database.",
+                code: `// C# Controller xử lý chat admin trong Controllers/AdminController.cs\n[Authorize(Roles = "Admin,Staff")]\npublic class AdminController : Controller {\n    public async Task&lt;IActionResult&gt; GetActiveRooms() {\n        var rooms = await _context.ChatMessages.GroupBy(m =&gt; m.ChatRoomId)\n            .Select(g =&gt; new { RoomId = g.Key, LastTime = g.Max(m =&gt; m.Timestamp) })\n            .OrderByDescending(r =&gt; r.LastTime).ToListAsync();\n        return Json(resultList);\n    }\n    public async Task&lt;IActionResult&gt; GetRoomMessages(string roomId) {\n        var unread = await _context.ChatMessages.Where(m =&gt; m.ChatRoomId == roomId && m.IsFromCustomer && !m.IsRead).ToListAsync();\n        foreach(var m in unread) m.IsRead = true; await _context.SaveChangesAsync();\n        return Json(messages);\n    }\n}`
+            },
+            "admin-order-management": {
+                title: "Quản Lý Đơn Hàng Hệ Thống (Admin Orders Manager)",
+                desc: "<strong>HƯỚNG DẪN HOẠT ĐỘNG:</strong><br>1. <strong>Hiển thị danh sách:</strong> Lấy toàn bộ danh sách đơn hàng kèm trạng thái.<br>2. <strong>Cập nhật trạng thái đơn:</strong> Admin gửi POST lên <code>UpdateOrderStatus</code> để cập nhật trạng thái.",
+                code: `// C# Cập nhật trạng thái đơn hàng trong Controllers/AdminController.cs\n[HttpPost], [ValidateAntiForgeryToken]\npublic async Task&lt;IActionResult&gt; UpdateOrderStatus(int id, int statusId) {\n    var order = await _context.Orders.FirstOrDefaultAsync(h =&gt; h.MaHd == id);\n    if (order != null) {\n        order.MaTrangThai = statusId;\n        _context.Update(order); await _context.SaveChangesAsync();\n    }\n    return RedirectToAction(nameof(OrderHistory));\n}`
+            },
+            "admin-review-management": {
+                title: "Quản Lý Đánh Giá Hệ Thống (Admin Reviews Moderator)",
+                desc: "<strong>HƯỚNG DẪN HOẠT ĐỘNG:</strong><br>1. <strong>Kiểm duyệt phản hồi:</strong> Xem danh sách tất cả bình luận đánh giá.<br>2. <strong>Xóa đánh giá:</strong> Nhấp xóa gửi POST lên <code>DeleteReview</code> để xóa khỏi DB.",
+                code: `// C# Xóa đánh giá của khách hàng trong Controllers/AdminController.cs\n[HttpPost], [ValidateAntiForgeryToken]\npublic async Task&lt;IActionResult&gt; DeleteReview(int id) {\n    var review = await _context.BinhLuans.FirstOrDefaultAsync(bl =&gt; bl.MaBl == id);\n    if (review != null) {\n        _context.BinhLuans.Remove(review); await _context.SaveChangesAsync();\n    }\n    return RedirectToAction(nameof(ReviewManagement));\n}`
+            },
+            "admin-user-management": {
+                title: "Quản Lý Tài Khoản Thành Viên (Admin Users Manager)",
+                desc: "<strong>HƯỚNG DẪN HOẠT ĐỘNG:</strong><br>1. <strong>Tìm kiếm thành viên:</strong> Hiển thị danh sách khách hàng.<br>2. <strong>Khóa tài khoản:</strong> Đổi trạng thái Hiệu lực (HieuLuc) của tài khoản khách hàng.<br>3. <strong>Phân quyền thành viên:</strong> Thay đổi vai trò (VaiTro) tài khoản.",
+                code: `// C# Thay đổi quyền hạn tài khoản trong Controllers/AdminController.cs\n[HttpPost], [ValidateAntiForgeryToken]\npublic async Task&lt;IActionResult&gt; ChangeRole(string id, int vaiTro) {\n    var kh = await _context.KhachHangs.FirstOrDefaultAsync(k =&gt; k.MaKh == id);\n    if (kh != null) {\n        kh.VaiTro = vaiTro;\n        _context.Update(kh); await _context.SaveChangesAsync();\n    }\n    return RedirectToAction(nameof(UserManagement));\n}`
+            },
+            "order-history": {
+                title: "Lịch Sử Mua Hàng Khách Hàng (Customer Orders History)",
+                desc: "Trang hiển thị danh sách đơn hàng đã mua của khách hàng hiện tại. Hỗ trợ tìm kiếm theo mã đơn hàng, tên người nhận và lọc danh sách đơn hàng theo trạng thái vận đơn.",
+                code: `// C# Khách hàng xem lịch sử đơn hàng trong Controllers/CartController.cs\npublic async Task&lt;IActionResult&gt; OrderHistory(string searchQuery, int? statusId) {\n    var customerId = GetCustomerId();\n    var query = _Context.HoaDons.Include(h =&gt; h.ChiTietHds).ThenInclude(c =&gt; c.MaHhNavigation)\n        .Where(h =&gt; h.MaKh == customerId).AsQueryable();\n    if (statusId.HasValue) query = query.Where(h =&gt; h.MaTrangThai == statusId.Value);\n    var dsHoaDon = await query.OrderByDescending(h =&gt; h.NgayDat).ToListAsync();\n    return View(dsHoaDon);\n}`
+            },
+            "about-content": {
+                title: "Thông Tin Giới Thiệu Cửa Hàng (About Us Page Content)",
+                desc: "Bố cục lưới Grid hiển thị thông tin giới thiệu về cửa hàng công nghệ QuaMonHai bao gồm lịch sử hình thành phát triển, sứ mệnh phục vụ khách hàng và đội ngũ nhân sự.",
+                code: `&lt;!-- Lưới bố cục giới thiệu trong AboutUs.cshtml --&gt;\n&lt;div class="container-xxl py-5 mt-5" data-inspect-id="about-content"&gt;\n    &lt;div class="row g-5"&gt;\n        &lt;div class="col-lg-6"&gt;\n            &lt;h1&gt;Chào mừng bạn đến với QuaMonHai&lt;/h1&gt;\n        &lt;/div&gt;\n    &lt;/div&gt;\n&lt;/div&gt;`
+            },
+            "customer-sidebar": {
+                title: "Thanh Tác Vụ Khách Hàng (Customer Cabinet Sidebar Menu)",
+                desc: "Thanh menu dọc bên trái của bảng quản lý tài khoản khách hàng, chứa liên kết nhanh dẫn đến trang thông tin hồ sơ cá nhân, đổi mật khẩu, lịch sử mua hàng, danh sách yêu thích và đăng xuất.",
+                code: `&lt;!-- Menu tác vụ khách hàng trong _CustomerSidebar.cshtml --&gt;\n&lt;div class="customer-sidebar" data-inspect-id="customer-sidebar"&gt;\n    &lt;a asp-action="Profile" asp-controller="Customer"&gt;Thông tin cá nhân&lt;/a&gt;\n    &lt;a asp-action="ChangePassword"&gt;Đổi mật khẩu&lt;/a&gt;\n&lt;/div&gt;`
+            },
+            "wishlist-table": {
+                title: "Danh Sách Sản Phẩm Yêu Thích (Wishlist Goods Grid)",
+                desc: "Lưới hiển thị các sản phẩm được khách hàng thả tim yêu thích để lưu lại xem sau. Cho phép xóa nhanh sản phẩm ra khỏi danh sách yêu thích bằng AJAX.",
+                code: `&lt;!-- Lưới sản phẩm yêu thích trong Wishlist.cshtml --&gt;\n&lt;div id="wishlist-container" class="row g-4" data-inspect-id="wishlist-table"&gt;\n    @foreach (var hh in Model) {\n        &lt;div id="wishlist-item-@hh.MaHh"&gt;...&lt;/div&gt;\n    }\n&lt;/div&gt;`
+            },
+
+
+            "order-success": {
+                title: "Trang Xác Nhận Đặt Hàng Thành Công (Order Success Page)",
+                desc: `<strong>HƯỚNG DẪN HOẠT ĐỘNG:</strong><br>
+1. <strong>Model:</strong> Nhận đối tượng <code>HoaDon</code> từ Controller sau khi checkout thành công.<br>
+2. <strong>Hiển thị:</strong> Render mã đơn hàng, tên người nhận, địa chỉ, phương thức thanh toán và danh sách sản phẩm.<br>
+3. <strong>Controller (CartController.cs):</strong> Action <code>CheckOut [POST]</code> tạo HoaDon, lưu DB và redirect sang trang Success.`,
+                code: `// Model: Models/HoaDon.cs\npublic partial class HoaDon {\n    public int MaHd { get; set; }\n    public string? MaKh { get; set; }\n    public string HoTen { get; set; } = null!;\n    public long? SoDienThoai { get; set; }\n    public string? DiaChi { get; set; }\n    public string? CachThanhToan { get; set; }\n    public DateTime? NgayDat { get; set; }\n    public int MaTrangThai { get; set; }\n    public decimal? PhiVanChuyen { get; set; }\n    public ICollection&lt;ChiTietHd&gt; ChiTietHds { get; set; }\n}\n\n// Controller: CartController.cs [POST]\npublic async Task&lt;IActionResult&gt; CheckOut(CheckOutVM model) {\n    var hoaDon = new HoaDon {\n        MaKh = GetCustomerId(),\n        HoTen = model.HoTen,\n        SoDienThoai = model.SoDienThoai,\n        DiaChi = model.DiaChi,\n        CachThanhToan = model.CachThanhToan,\n        NgayDat = DateTime.Now,\n        MaTrangThai = 0,\n        PhiVanChuyen = 30000\n    };\n    _Context.HoaDons.Add(hoaDon);\n    await _Context.SaveChangesAsync();\n    // Thêm chi tiết hóa đơn, xóa giỏ hàng session\n    return RedirectToAction("OrderSuccess", new { id = hoaDon.MaHd });\n}`
+            },
+            "order-summary-info": {
+                title: "Thông Tin Tóm Tắt Đơn Hàng (Order Info Summary Card)",
+                desc: "Hiển thị chi tiết đơn hàng: Mã đơn, tên người nhận, số điện thoại, phương thức thanh toán và địa chỉ giao hàng.",
+                code: `&lt;!-- Card tóm tắt đơn trong OrderSuccess.cshtml --&gt;\n&lt;div class="card bg-light border-0 rounded-3 mb-4" data-inspect-id="order-summary-info"&gt;\n    &lt;div class="card-body p-4"&gt;\n        &lt;h5&gt;&lt;i class="fa-solid fa-file-invoice"&gt;&lt;/i&gt;Thông tin đơn hàng&lt;/h5&gt;\n        &lt;span&gt;#@Model.MaHd&lt;/span&gt;\n        &lt;span&gt;@Model.HoTen&lt;/span&gt;\n        &lt;span&gt;@(Model.CachThanhToan == "cod" ? "Thanh toán khi nhận hàng" : Model.CachThanhToan)&lt;/span&gt;\n        &lt;span&gt;@Model.DiaChi&lt;/span&gt;\n    &lt;/div&gt;\n&lt;/div&gt;`
+            },
+            "order-success-items": {
+                title: "Danh Sách Sản Phẩm Đã Mua (Order Success Items List)",
+                desc: "Liệt kê tất cả sản phẩm trong đơn hàng vừa đặt thành công kèm hình ảnh, tên, số lượng và thành tiền. Tính tổng cộng phí vận chuyển và giảm giá.",
+                code: `&lt;!-- Hiển thị sản phẩm trong OrderSuccess.cshtml --&gt;\n@foreach (var cthd in Model.ChiTietHds) {\n    &lt;div class="list-group-item p-3"&gt;\n        &lt;img src="~/img/Hinh/HangHoa/@cthd.MaHhNavigation.Hinh" /&gt;\n        &lt;h6&gt;@cthd.MaHhNavigation.TenHh&lt;/h6&gt;\n        &lt;small&gt;Số lượng: @cthd.SoLuong&lt;/small&gt;\n        &lt;span&gt;@((cthd.DonGia * cthd.SoLuong).ToString("N0"))₫&lt;/span&gt;\n    &lt;/div&gt;\n}\n\n// Tổng thanh toán gồm phí vận chuyển:\n@((Model.ChiTietHds.Sum(c => c.DonGia * c.SoLuong) + Model.PhiVanChuyen - Model.ChiTietHds.Sum(c => c.GiamGia)).ToString("N0"))₫`
+            },
+            "order-success-actions": {
+                title: "Nút Hành Động Sau Đặt Hàng (Order Success Action Buttons)",
+                desc: "Hai nút điều hướng sau khi đặt hàng thành công: Xem lịch sử đơn hàng và Tiếp tục mua sắm.",
+                code: `&lt;!-- Nút điều hướng trong OrderSuccess.cshtml --&gt;\n&lt;a href="/Cart/OrderHistory" class="btn btn-outline-success"&gt;\n    &lt;i class="fa-solid fa-clock-rotate-left"&gt;&lt;/i&gt;Lịch sử đơn hàng\n&lt;/a&gt;\n&lt;a href="/" class="btn btn-success"&gt;\n    &lt;i class="fa-solid fa-bag-shopping"&gt;&lt;/i&gt;Tiếp tục mua sắm\n&lt;/a&gt;`
+            },
+            "product-create-form": {
+                title: "Form Thêm Mới Sản Phẩm - Admin (Product Create Form)",
+                desc: `<strong>HƯỚNG DẪN HOẠT ĐỘNG:</strong><br>
+1. <strong>Phân quyền:</strong> Chỉ Admin/Staff mới truy cập được (Authorize Role).<br>
+2. <strong>Upload ảnh:</strong> File ảnh được nhận qua <code>IFormFile fHinh</code> và lưu vào <code>wwwroot/img/Hinh/HangHoa/</code>.<br>
+3. <strong>Controller (HangHoasController.cs [POST]):</strong> Map dữ liệu form vào Model HangHoa, lưu DB và redirect về Index.`,
+                code: `// Model: Models/HangHoa.cs\npublic partial class HangHoa {\n    public int MaHh { get; set; }\n    public string TenHh { get; set; } = null!;\n    public string? TenAlias { get; set; }\n    public int MaLoai { get; set; }\n    public int MaNcc { get; set; }\n    public double? DonGia { get; set; }\n    public double GiamGia { get; set; }\n    public int SoLuong { get; set; }\n    public string? MoTa { get; set; }\n    public string? MoTaDonVi { get; set; }\n    public string? Hinh { get; set; }\n    public DateTime? NgaySx { get; set; }\n    public bool HieuLuc { get; set; }\n    public int SoLanXem { get; set; }\n}\n\n// Controller: HangHoasController.cs [POST]\n[Authorize(Roles = "Admin,Staff")]\n[HttpPost, ValidateAntiForgeryToken]\npublic async Task&lt;IActionResult&gt; Create(HangHoa hangHoa, IFormFile? fHinh) {\n    if (ModelState.IsValid) {\n        if (fHinh != null &amp;&amp; fHinh.Length &gt; 0) {\n            hangHoa.Hinh = MyUtil.UploadHinhSP(fHinh);\n        }\n        hangHoa.TenAlias = MyUtil.GenerateSlug(hangHoa.TenHh);\n        _context.HangHoas.Add(hangHoa);\n        await _context.SaveChangesAsync();\n        return RedirectToAction(nameof(Index));\n    }\n    return View(hangHoa);\n}`
+            },
+            "product-create-fields": {
+                title: "Các Trường Thêm Mới Sản Phẩm (Product Create Input Fields)",
+                desc: "Grid các trường nhập liệu thông tin sản phẩm: Tên, Tên alias, Danh mục, Nhà cung cấp, Đơn giá, Giảm giá%, Đơn vị tính, Ảnh, Ngày sản xuất, Hiệu lực kinh doanh và Mô tả chi tiết.",
+                code: `&lt;!-- Markup tạo sản phẩm trong HangHoas/Create.cshtml --&gt;\n&lt;form asp-action="Create" enctype="multipart/form-data" data-inspect-id="product-create-form"&gt;\n    &lt;input asp-for="TenHh" class="form-control" /&gt;\n    &lt;input asp-for="TenAlias" class="form-control" /&gt;\n    &lt;select asp-for="MaLoai" asp-items="ViewBag.MaLoai"&gt;&lt;/select&gt;\n    &lt;select asp-for="MaNcc" asp-items="ViewBag.MaNcc"&gt;&lt;/select&gt;\n    &lt;input asp-for="DonGia" type="number" step="0.01" /&gt;\n    &lt;input asp-for="GiamGia" type="number" /&gt;\n    &lt;input type="file" name="fHinh" accept="image/*" /&gt;\n    &lt;input asp-for="NgaySx" type="date" /&gt;\n    &lt;input type="checkbox" asp-for="HieuLuc" /&gt;\n    &lt;textarea asp-for="MoTa"&gt;&lt;/textarea&gt;\n    &lt;button type="submit"&gt;Lưu Sản Phẩm&lt;/button&gt;\n&lt;/form&gt;`
+            },
+            "product-edit-form": {
+                title: "Form Chỉnh Sửa Sản Phẩm - Admin (Product Edit Form)",
+                desc: `<strong>HƯỚNG DẪN HOẠT ĐỘNG:</strong><br>
+1. <strong>GET:</strong> Controller load thông tin HangHoa hiện tại từ DB theo ID và render Form điền sẵn.<br>
+2. <strong>POST:</strong> Nhận dữ liệu mới, cập nhật Entity (kể cả thay ảnh nếu có file mới upload), gọi <code>_context.Update()</code> và lưu.<br>
+3. <strong>Giữ ảnh cũ:</strong> Sử dụng hidden field <code>Hinh</code> để giữ tên ảnh cũ nếu không upload ảnh mới.`,
+                code: `// Controller: HangHoasController.cs [GET + POST Edit]\n[Authorize(Roles = "Admin,Staff")]\npublic async Task&lt;IActionResult&gt; Edit(int id) {\n    var hh = await _context.HangHoas.FindAsync(id);\n    if (hh == null) return NotFound();\n    ViewBag.MaLoai = new SelectList(_context.Loais, "MaLoai", "TenLoai", hh.MaLoai);\n    ViewBag.MaNcc = new SelectList(_context.NhaCungCaps, "MaNcc", "TenCongTy", hh.MaNcc);\n    return View(hh);\n}\n\n[HttpPost, ValidateAntiForgeryToken]\npublic async Task&lt;IActionResult&gt; Edit(int id, HangHoa hangHoa, IFormFile? fHinh) {\n    if (id != hangHoa.MaHh) return NotFound();\n    if (ModelState.IsValid) {\n        if (fHinh != null &amp;&amp; fHinh.Length &gt; 0) {\n            hangHoa.Hinh = MyUtil.UploadHinhSP(fHinh);\n        }\n        hangHoa.TenAlias = MyUtil.GenerateSlug(hangHoa.TenHh);\n        _context.Update(hangHoa);\n        await _context.SaveChangesAsync();\n        return RedirectToAction(nameof(Index));\n    }\n    return View(hangHoa);\n}`
+            },
+            "product-edit-fields": {
+                title: "Các Trường Chỉnh Sửa Sản Phẩm (Product Edit Input Fields)",
+                desc: "Tất cả các trường chỉnh sửa giống Create nhưng có thêm trường Số lượng tồn kho, hidden field giữ ảnh cũ, và hiển thị ảnh preview hiện tại trước khi thay.",
+                code: `&lt;!-- Giữ ảnh cũ nếu không upload mới --&gt;\n&lt;input type="hidden" asp-for="MaHh" /&gt;\n&lt;input type="hidden" asp-for="Hinh" /&gt;\n&lt;input type="hidden" asp-for="SoLanXem" /&gt;\n\n&lt;!-- Preview ảnh hiện tại --&gt;\n&lt;img src="@(Model.Hinh.StartsWith("http") ? Model.Hinh : Url.Content("~/img/Hinh/HangHoa/" + Model.Hinh))" /&gt;\n&lt;input type="file" name="fHinh" accept="image/*" /&gt;\n\n&lt;!-- Số lượng tồn kho (chỉ Edit mới có) --&gt;\n&lt;input asp-for="SoLuong" type="number" min="0" required /&gt;`
+            },
+            "product-delete-confirm": {
+                title: "Trang Xác Nhận Ngưng Kích Hoạt Sản Phẩm (Product Deactivate Confirm)",
+                desc: `<strong>HƯỚNG DẪN HOẠT ĐỘNG:</strong><br>
+1. <strong>Không xóa vĩnh viễn:</strong> Hệ thống KHÔNG xóa bản ghi khỏi DB mà chỉ đặt <code>HieuLuc = false</code> để ngưng bán.<br>
+2. <strong>GET:</strong> Load thông tin sản phẩm để hiển thị confirm card.<br>
+3. <strong>POST:</strong> Cập nhật <code>HieuLuc = false</code> và lưu DB.`,
+                code: `// Controller: HangHoasController.cs [POST Delete - soft disable]\n[HttpPost, ActionName("Delete"), ValidateAntiForgeryToken]\n[Authorize(Roles = "Admin,Staff")]\npublic async Task&lt;IActionResult&gt; DeleteConfirmed(int id) {\n    var hangHoa = await _context.HangHoas.FindAsync(id);\n    if (hangHoa != null) {\n        hangHoa.HieuLuc = false; // Soft disable, không xóa khỏi DB\n        _context.Update(hangHoa);\n        await _context.SaveChangesAsync();\n    }\n    return RedirectToAction(nameof(Index));\n}\n\n&lt;!-- Markup confirm trong HangHoas/Delete.cshtml --&gt;\n&lt;h4&gt;@Model.TenHh&lt;/h4&gt;\n&lt;p&gt;Giá: $@Model.DonGia | Danh mục: @Model.MaLoaiNavigation?.TenLoai&lt;/p&gt;\n&lt;form asp-action="Delete"&gt;\n    &lt;input type="hidden" asp-for="MaHh" /&gt;\n    &lt;button type="submit"&gt;Có, Tắt Ngay&lt;/button&gt;\n&lt;/form&gt;`
+            },
+            "product-delete-form": {
+                title: "Form Xác Nhận Ngưng Bán (Confirm Deactivate Form)",
+                desc: "Form POST chứa hidden field MaHh để gửi ID sản phẩm cần tắt kích hoạt. Chỉ truyền mã sản phẩm lên Controller để thực hiện soft-disable.",
+                code: `&lt;!-- Form tắt sản phẩm trong HangHoas/Delete.cshtml --&gt;\n&lt;form asp-action="Delete"&gt;\n    &lt;input type="hidden" asp-for="MaHh" /&gt;\n    &lt;a asp-action="Index"&gt;Hủy, Quay lại&lt;/a&gt;\n    &lt;button type="submit"&gt;Có, Tắt Ngay&lt;/button&gt;\n&lt;/form&gt;`
+            },
+            "customer-order-history": {
+                title: "Lịch Sử Mua Hàng Cá Nhân (Customer Order History Page)",
+                desc: `<strong>HƯỚNG DẪN HOẠT ĐỘNG:</strong><br>
+1. <strong>Lọc theo trạng thái:</strong> Hỗ trợ filter đơn hàng theo trạng thái (Mới đặt / Đang chuẩn bị / Đã giao / Đã hủy).<br>
+2. <strong>Tìm kiếm:</strong> Tìm theo mã đơn hoặc tên người nhận.<br>
+3. <strong>Controller (CartController.cs):</strong> Query HoaDons theo CustomerId kèm Include ChiTietHds.`,
+                code: `// Controller: CartController.cs\npublic async Task&lt;IActionResult&gt; OrderHistory(string searchQuery, int? statusId) {\n    var customerId = GetCustomerId();\n    var query = _Context.HoaDons\n        .Include(h =&gt; h.ChiTietHds).ThenInclude(c =&gt; c.MaHhNavigation)\n        .Where(h =&gt; h.MaKh == customerId).AsQueryable();\n    if (!string.IsNullOrEmpty(searchQuery)) {\n        query = query.Where(h =&gt; h.HoTen.Contains(searchQuery) || h.MaHd.ToString() == searchQuery);\n    }\n    if (statusId.HasValue) {\n        query = query.Where(h =&gt; h.MaTrangThai == statusId.Value);\n    }\n    var dsHoaDon = await query.OrderByDescending(h =&gt; h.NgayDat).ToListAsync();\n    return View(dsHoaDon);\n}`
+            },
+            // Input Fields mappings (to avoid huge file size & duplicates)
+            "forgot-username-field": forgotFieldsEntry,
+            "forgot-email-field": forgotFieldsEntry,
+            "forgot-submit-btn": forgotFieldsEntry,
+            "reset-otp-field": resetFieldsEntry,
+            "reset-new-password": resetFieldsEntry,
+            "reset-confirm-password": resetFieldsEntry,
+            "reset-submit-btn": resetFieldsEntry,
+            "login-username": loginFieldsEntry,
+            "login-password": loginFieldsEntry,
+            "login-submit-btn": loginFieldsEntry,
+            "login-redirect-links": loginFieldsEntry,
+            "register-username": registerFieldsEntry,
+            "register-password": registerFieldsEntry,
+            "register-fullname": registerFieldsEntry,
+            "register-birthday": registerFieldsEntry,
+            "register-gender": registerFieldsEntry,
+            "register-phone": registerFieldsEntry,
+            "register-address": registerFieldsEntry,
+            "register-email-input": registerFieldsEntry,
+            "register-otp-input": registerFieldsEntry,
+            "register-avatar-field": registerFieldsEntry,
+            "register-submit-btn": registerFieldsEntry
+        };
+
+        // Load Bookmarks from LocalStorage
+        function getBookmarks() {
+            const val = localStorage.getItem("code_bookmarks");
+            return val ? JSON.parse(val) : [];
+        }
+
+        function saveBookmarks(arr) {
+            localStorage.setItem("code_bookmarks", JSON.stringify(arr));
+            updateBookmarkTabUI();
+        }
+
+        // Bookmark check / toggle
+        function isBookmarked(id) {
+            return getBookmarks().includes(id);
+        }
+
+        function toggleBookmark(id) {
+            let bookmarks = getBookmarks();
+            if (bookmarks.includes(id)) {
+                bookmarks = bookmarks.filter(item => item !== id);
+                showToast("Đã xóa khỏi Thư mục nhớ!", "danger");
+            } else {
+                bookmarks.push(id);
+                const data = inspectorDb[id];
+                const name = data ? data.title : id;
+                showToast("Đã lưu " + name + " vào Thư mục nhớ!", "success");
+            }
+            saveBookmarks(bookmarks);
+            updateBookmarkButtonUI(id);
+        }
+
+        function updateBookmarkButtonUI(id) {
+            if (!id) {
+                bookmarkActionBtn.classList.add("d-none");
+                return;
+            }
+            bookmarkActionBtn.classList.remove("d-none");
+            if (isBookmarked(id)) {
+                bookmarkActionBtn.innerHTML = `<i class="fa-solid fa-star text-warning"></i> <span class="text-warning">Đã lưu (Click xóa)</span>`;
+                bookmarkActionBtn.style.background = "rgba(255,193,7,0.15)";
+            } else {
+                bookmarkActionBtn.innerHTML = `<i class="fa-regular fa-star"></i> <span>Lưu thư mục nhớ</span>`;
+                bookmarkActionBtn.style.background = "rgba(255,152,0,0.08)";
+            }
+        }
+
+        function showToast(message, type = "success") {
+            toast.innerText = message;
+            toast.style.background = type === "success" ? "rgba(40, 167, 69, 0.95)" : "rgba(220, 53, 69, 0.95)";
+            toast.style.opacity = "1";
+            toast.style.transform = "translateX(-50%) translateY(0)";
+            setTimeout(() => {
+                toast.style.opacity = "0";
+                toast.style.transform = "translateX(-50%) translateY(20px)";
+            }, 2200);
+        }
+
+        // Scans all elements with data-inspect-id on the current page
+        function scanPageElements() {
+            tabContentComponents.innerHTML = "";
+            const elements = document.querySelectorAll("[data-inspect-id]");
+            const ids = new Set();
+            
+            elements.forEach(el => {
+                const id = el.getAttribute("data-inspect-id");
+                if (id) ids.add(id);
+            });
+
+            if (ids.size === 0) {
+                tabContentComponents.innerHTML = `<div class="text-muted text-center p-3 small font-italic">Không tìm thấy cấu phần nào trên trang này.</div>`;
+                return;
+            }
+
+            ids.forEach(id => {
+                const data = inspectorDb[id];
+                const name = data ? data.title : id;
+                
+                const item = document.createElement("button");
+                item.className = "btn btn-sm btn-dark text-start text-white-50 border-0 py-1.5 px-3 rounded w-100 d-flex align-items-center justify-content-between transition-all";
+                item.style.background = "rgba(255,255,255,0.03)";
+                item.style.fontSize = "0.78rem";
+                item.style.fontFamily = "'Open Sans', sans-serif";
+                
+                item.innerHTML = `
+                    <span class="text-truncate" style="max-width: 250px;"><i class="fa-solid fa-cube text-warning me-1.5" style="font-size:0.7rem;"></i>${name}</span>
+                    <i class="fa-solid fa-chevron-right text-muted" style="font-size:0.6rem;"></i>
+                `;
+
+                // Hovering menu element flashes outline on page
+                item.addEventListener("mouseenter", () => {
+                    const targetEl = document.querySelector(`[data-inspect-id="${id}"]`);
+                    if (targetEl) {
+                        targetEl.style.outline = "3px dashed #ff9800";
+                        targetEl.style.outlineOffset = "3px";
+                    }
+                });
+                item.addEventListener("mouseleave", () => {
+                    const targetEl = document.querySelector(`[data-inspect-id="${id}"]`);
+                    if (targetEl) {
+                        targetEl.style.outline = "";
+                        targetEl.style.outlineOffset = "";
+                    }
+                });
+
+                // Click scrolls to component and inspects it
+                item.addEventListener("click", () => {
+                    inspectComponent(id);
+                    const targetEl = document.querySelector(`[data-inspect-id="${id}"]`);
+                    if (targetEl) {
+                        targetEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        // Flash outline
+                        let flashCount = 0;
+                        const interval = setInterval(() => {
+                            targetEl.style.outline = flashCount % 2 === 0 ? "4px dashed #81c408" : "3px dashed #ff9800";
+                            flashCount++;
+                            if (flashCount > 5) {
+                                clearInterval(interval);
+                                targetEl.style.outline = "";
+                            }
+                        }, 180);
+                    }
+                });
+
+                tabContentComponents.appendChild(item);
+            });
+        }
+
+        // Renders Bookmarks list from localStorage
+        function updateBookmarkTabUI() {
+            tabContentBookmarks.innerHTML = "";
+            const bookmarks = getBookmarks();
+            bookmarkCountBadge.innerText = bookmarks.length;
+
+            if (bookmarks.length === 0) {
+                tabContentBookmarks.innerHTML = `<div class="text-muted text-center p-3 small font-italic">Thư mục nhớ trống. Click chọn cấu phần rồi nhấn 'Lưu thư mục nhớ'!</div>`;
+                return;
+            }
+
+            bookmarks.forEach(id => {
+                const data = inspectorDb[id];
+                const name = data ? data.title : id;
+
+                const wrapper = document.createElement("div");
+                wrapper.className = "d-flex align-items-center gap-1 w-100";
+                
+                const item = document.createElement("button");
+                item.className = "btn btn-sm btn-dark text-start text-white-50 border-0 py-1.5 px-3 rounded flex-grow-1 text-truncate transition-all";
+                item.style.background = "rgba(255,255,255,0.03)";
+                item.style.fontSize = "0.78rem";
+                item.style.fontFamily = "'Open Sans', sans-serif";
+                item.innerHTML = `<i class="fa-solid fa-star text-warning me-1.5" style="font-size:0.7rem;"></i>${name}`;
+                item.addEventListener("click", () => {
+                    inspectComponent(id);
+                });
+
+                const deleteBtn = document.createElement("button");
+                deleteBtn.className = "btn btn-sm btn-outline-danger border-0 d-flex align-items-center justify-content-center p-0 rounded-circle";
+                deleteBtn.style.width = "28px";
+                deleteBtn.style.height = "28px";
+                deleteBtn.innerHTML = `<i class="fa-solid fa-trash-can" style="font-size:0.8rem;"></i>`;
+                deleteBtn.addEventListener("click", (e) => {
+                    e.stopPropagation();
+                    toggleBookmark(id);
+                });
+
+                wrapper.appendChild(item);
+                wrapper.appendChild(deleteBtn);
+                tabContentBookmarks.appendChild(wrapper);
+            });
+        }
+
+        // Loads component data into right-side detail drawer view
+        function inspectComponent(id) {
+            const data = inspectorDb[id];
+            if (data) {
+                lastSelectedId = id;
+                
+                // Animate card content transition (quick crossfade)
+                anime({
+                    targets: '#inspector-card-body-content',
+                    opacity: [0, 1],
+                    translateY: [10, 0],
+                    duration: 300,
+                    easing: 'easeOutQuad'
+                });
+
+                inspectTitle.innerText = data.title;
+                inspectDesc.innerHTML = data.desc;
+                inspectCode.innerHTML = data.code;
+                
+                updateBookmarkButtonUI(id);
+            }
+        }
+
+        // Toggle inspector activation
+        toggleBtn.addEventListener("click", function () {
+            if (isActive) {
+                deactivateInspector();
+            } else {
+                activateInspector();
+            }
+        });
+
+        closeDrawerBtn.addEventListener("click", function (e) {
+            e.stopPropagation();
+            deactivateInspector();
+        });
+
+        function positionBadges() {
+            if (!isActive) return;
+            const badges = document.querySelectorAll(".inspector-element-badge");
+            badges.forEach(badge => {
+                const id = badge.getAttribute("data-target-id");
+                const el = document.querySelector(`[data-inspect-id="${id}"]`);
+                if (el) {
+                    const rect = el.getBoundingClientRect();
+                    if (rect.width === 0 || rect.height === 0) {
+                        badge.style.display = "none";
+                    } else {
+                        badge.style.display = "flex";
+                        // Position badge at the top-left of the target element with slight offset
+                        const top = rect.top + window.scrollY - 10;
+                        const left = rect.left + window.scrollX - 10;
+                        badge.style.top = `${top}px`;
+                        badge.style.left = `${left}px`;
+                    }
+                } else {
+                    badge.style.display = "none";
+                }
+            });
+        }
+
+        function createInspectorBadges() {
+            removeInspectorBadges();
+            
+            const elements = document.querySelectorAll("[data-inspect-id]");
+            const createdIds = new Set();
+            elements.forEach(el => {
+                const id = el.getAttribute("data-inspect-id");
+                if (!id || createdIds.has(id)) return;
+                createdIds.add(id);
+                
+                const badge = document.createElement("div");
+                badge.className = "inspector-element-badge";
+                badge.setAttribute("data-target-id", id);
+                badge.title = `Nhấp để xem code của: ${inspectorDb[id] ? inspectorDb[id].title : id}`;
+                badge.innerHTML = `<i class="fa-solid fa-code"></i>`;
+                
+                // Click badge performs inspection
+                badge.addEventListener("click", function (e) {
+                    e.stopPropagation();
+                    e.preventDefault();
+                    inspectComponent(id);
+                    el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    // Flash outline
+                    let flashCount = 0;
+                    const interval = setInterval(() => {
+                        el.style.outline = flashCount % 2 === 0 ? "4px dashed #81c408" : "3px dashed #ff9800";
+                        flashCount++;
+                        if (flashCount > 5) {
+                            clearInterval(interval);
+                            el.style.outline = "";
+                        }
+                    }, 180);
+                });
+                
+                // Badge hover highlights target element
+                badge.addEventListener("mouseenter", function () {
+                    el.style.outline = "3px dashed #ff9800";
+                    el.style.outlineOffset = "3px";
+                    el.style.boxShadow = "0 0 25px rgba(255, 152, 0, 0.4)";
+                    el.style.transform = "scale(1.006)";
+                });
+                
+                badge.addEventListener("mouseleave", function () {
+                    el.style.outline = "";
+                    el.style.outlineOffset = "";
+                    el.style.boxShadow = "";
+                    el.style.transform = "";
+                });
+                
+                document.body.appendChild(badge);
+            });
+            
+            positionBadges();
+            
+            window.addEventListener("scroll", positionBadges, { passive: true });
+            window.addEventListener("resize", positionBadges);
+        }
+
+        function removeInspectorBadges() {
+            const badges = document.querySelectorAll(".inspector-element-badge");
+            badges.forEach(badge => badge.remove());
+            
+            window.removeEventListener("scroll", positionBadges);
+            window.removeEventListener("resize", positionBadges);
+        }
+
+        function activateInspector() {
+            isActive = true;
+            document.body.classList.add("inspector-active");
+            
+            // Toggle button animation (Turns red/rotate and slides up above bottom drawer)
+            toggleBtn.style.transform = "rotate(135deg)";
+            toggleBtn.style.background = "linear-gradient(135deg, #f44336 0%, #d32f2f 100%)";
+            
+            anime({
+                targets: toggleContainer,
+                bottom: 505,
+                duration: 450,
+                easing: 'cubicBezier(0.25, 0.8, 0.25, 1)'
+            });
+
+            // Slide up bottom drawer console
+            anime({
+                targets: drawer,
+                bottom: 0,
+                duration: 450,
+                easing: 'cubicBezier(0.25, 0.8, 0.25, 1)'
+            });
+
+            scanPageElements();
+            updateBookmarkTabUI();
+            createInspectorBadges();
+            bindInspectEvents();
+        }
+
+        function deactivateInspector() {
+            isActive = false;
+            document.body.classList.remove("inspector-active");
+            
+            // Toggle button animation (Returns to orange/default and moves to bottom)
+            toggleBtn.style.transform = "rotate(0deg)";
+            toggleBtn.style.background = "linear-gradient(135deg, #ff9800 0%, #ff5722 100%)";
+            
+            anime({
+                targets: toggleContainer,
+                bottom: 25,
+                duration: 400,
+                easing: 'easeInQuad'
+            });
+
+            // Slide down bottom drawer console
+            anime({
+                targets: drawer,
+                bottom: -500,
+                duration: 400,
+                easing: 'easeInQuad'
+            });
+
+            removeInspectorBadges();
+            unbindInspectEvents();
+            
+            // Reset contents
+            inspectTitle.innerText = "Chưa Chọn Thành Phần";
+            inspectDesc.innerText = "Bật Thanh Tra Giao Diện bằng cách nhấn nút biểu tượng Code ở góc trái. Di chuột để xem viền nhấp nháy, click trực tiếp vào thành phần bất kỳ (hoặc nhấp vào icon code nổi ở góc) để hiển thị toàn bộ code và hướng dẫn hoạt động, rồi nhấn 'Lưu thư mục nhớ' nếu muốn lưu lại xem sau!";
+            inspectCode.innerText = "// Code block...";
+            lastSelectedId = null;
+            updateBookmarkButtonUI(null);
+        }
+
+        // Hover element scales up its badge to link them visually
+        function handleElementHover(e) {
+            e.stopPropagation();
+            if (!isActive) return;
+
+            const id = this.getAttribute("data-inspect-id");
+            const badge = document.querySelector(`.inspector-element-badge[data-target-id="${id}"]`);
+            if (badge) {
+                badge.style.transform = "scale(1.25)";
+            }
+        }
+
+        function handleElementHoverLeave(e) {
+            e.stopPropagation();
+            if (!isActive) return;
+
+            const id = this.getAttribute("data-inspect-id");
+            const badge = document.querySelector(`.inspector-element-badge[data-target-id="${id}"]`);
+            if (badge) {
+                badge.style.transform = "";
+            }
+        }
+
+        // Intercept clicks on inspectable elements to view code (no auto-bookmark)
+        function handleElementClick(e) {
+            if (!isActive) return;
+            
+            e.preventDefault();
+            e.stopPropagation();
+            
+            const id = this.getAttribute("data-inspect-id");
+            if (id) {
+                // Inspect component only
+                inspectComponent(id);
+            }
+        }
+
+        function bindInspectEvents() {
+            const elements = document.querySelectorAll("[data-inspect-id]");
+            elements.forEach(el => {
+                el.addEventListener("mouseenter", handleElementHover);
+                el.addEventListener("mouseleave", handleElementHoverLeave);
+                el.addEventListener("click", handleElementClick, true); // Use capture phase to intercept before other click handlers
+            });
+        }
+
+        function unbindInspectEvents() {
+            const elements = document.querySelectorAll("[data-inspect-id]");
+            elements.forEach(el => {
+                el.removeEventListener("mouseenter", handleElementHover);
+                el.removeEventListener("mouseleave", handleElementHoverLeave);
+                el.removeEventListener("click", handleElementClick, true);
+            });
+        }
+
+        // Manual Bookmark button click action
+        bookmarkActionBtn.addEventListener("click", function () {
+            if (!isActive || !lastSelectedId) return;
+            toggleBookmark(lastSelectedId);
+        });
+
+        // Copy button action
+        copyBtn.addEventListener("click", function () {
+            if (!isActive || !lastSelectedId) return;
+
+            const codeText = inspectCode.innerText;
+            navigator.clipboard.writeText(codeText).then(function () {
+                const originalText = copyBtn.innerHTML;
+                copyBtn.innerHTML = `<i class="fa-solid fa-check text-success"></i> <span class="text-success">Copied!</span>`;
+                setTimeout(function () {
+                    copyBtn.innerHTML = originalText;
+                }, 2000);
+            }).catch(function (err) {
+                console.error("Could not copy text: ", err);
+            });
+        });
+
+        // Segment Tabs Event switching
+        tabBtnComponents.addEventListener("click", () => {
+            tabBtnComponents.classList.add("active-tab-style");
+            tabBtnComponents.style.background = "rgba(255,255,255,0.08)";
+            tabBtnBookmarks.classList.remove("active-tab-style");
+            tabBtnBookmarks.style.background = "transparent";
+            tabBtnBookmarks.style.color = "#6c757d";
+            
+            tabContentComponents.classList.remove("d-none");
+            tabContentBookmarks.classList.add("d-none");
+        });
+
+        tabBtnBookmarks.addEventListener("click", () => {
+            tabBtnBookmarks.classList.add("active-tab-style");
+            tabBtnBookmarks.style.background = "rgba(255,255,255,0.08)";
+            tabBtnComponents.classList.remove("active-tab-style");
+            tabBtnComponents.style.background = "transparent";
+            tabBtnComponents.style.color = "#6c757d";
+            
+            tabContentBookmarks.classList.remove("d-none");
+            tabContentComponents.classList.add("d-none");
+            updateBookmarkTabUI();
+        });
+        
+        // Initial bookmarks check count
+        bookmarkCountBadge.innerText = getBookmarks().length;
+    });
+

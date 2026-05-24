@@ -7,16 +7,16 @@
 <div class="container-fluid py-5 mt-4 px-xl-5">
 
     <!-- NÚT QUAY LẠI -->
-    <div class="mb-4">
+    <div class="mb-4" data-inspect-id="detail-back-btn">
         <a asp-action="Index" asp-controller="Home" class="btn btn-outline-success rounded-pill px-4 shadow-sm transition-all" style="border-width: 2px;">
             <i class="fa fa-arrow-left me-2"></i>Tiếp tục mua sắm
         </a>
     </div>
 
-    <div class="card shadow-lg border-0 rounded-4 overflow-hidden mb-5">
+    <div class="card shadow-lg border-0 rounded-4 overflow-hidden mb-5" data-inspect-id="product-detail">
         <div class="row g-0">
             <!-- CỘT ẢNH -->
-            <div class="col-lg-5 bg-white d-flex align-items-center justify-content-center p-4 p-md-5 border-end">
+            <div class="col-lg-5 bg-white d-flex align-items-center justify-content-center p-4 p-md-5 border-end" data-inspect-id="detail-image">
                 <div class="position-relative overflow-hidden rounded-3 p-3 shadow-sm bg-light-subtle d-flex align-items-center justify-content-center" style="min-height: 400px; width: 100%;">
                     <img class="img-fluid"
                          src="@(Model.Hinh != null && Model.Hinh.StartsWith("http") ? Model.Hinh : Url.Content("~/img/Hinh/HangHoa/" + (string.IsNullOrEmpty(Model.Hinh) ? "no-image.jpg" : Model.Hinh)))"
@@ -32,7 +32,7 @@
                     <h1 class="fw-bold text-dark mb-2" style="font-family: 'Lora', serif; font-size: 2.2rem;">@Model.TenHh</h1>
                     
                     <!-- SHOPEE STYLE STATS HEADER -->
-                    <div class="d-flex align-items-center flex-wrap gap-3 mb-4 pb-3 border-bottom text-muted" style="font-size: 0.95rem;">
+                    <div class="d-flex align-items-center flex-wrap gap-3 mb-4 pb-3 border-bottom text-muted" style="font-size: 0.95rem;" data-inspect-id="detail-stats">
                         <div class="d-flex align-items-center">
                             <span class="text-warning fw-bold me-1">@(ViewBag.AvgStars ?? "5.0")</span>
                             <span class="text-warning me-2">
@@ -68,7 +68,7 @@
                         double salePrice = originalPrice * (1 - discountPercent / 100);
                     }
                     <!-- GIÁ VÀ GIẢM GIÁ -->
-                    <div class="d-flex align-items-center gap-3 mb-4 bg-light p-4 rounded-3 border-start border-success border-4">
+                    <div class="d-flex align-items-center gap-3 mb-4 bg-light p-4 rounded-3 border-start border-success border-4" data-inspect-id="detail-price">
                         <div>
                             @if (discountPercent > 0) {
                                 <span class="text-muted text-decoration-line-through me-2 fs-5">$@originalPrice.ToString("N2")</span>
@@ -82,7 +82,7 @@
 
                     <!-- SHOP VOUCHERS -->
                     @if (ViewBag.ActiveVouchers != null && ((List<GiamGia>)ViewBag.ActiveVouchers).Any()) {
-                        <div class="d-flex align-items-center gap-3 mb-4 flex-wrap">
+                        <div class="d-flex align-items-center gap-3 mb-4 flex-wrap" data-inspect-id="detail-vouchers">
                             <span class="text-muted fw-bold small text-uppercase tracking-wider">Mã Giảm Giá Của Shop:</span>
                             <div class="d-flex flex-wrap gap-2">
                                 @foreach (var voucher in (List<GiamGia>)ViewBag.ActiveVouchers) {
@@ -98,7 +98,7 @@
                     }
 
                     <!-- THÔNG SỐ CƠ BẢN -->
-                    <ul class="list-group list-group-flush mb-4 fs-5">
+                    <ul class="list-group list-group-flush mb-4 fs-5" data-inspect-id="detail-specs">
                         <li class="list-group-item d-flex justify-content-between align-items-center px-0 bg-transparent border-bottom py-3">
                             <span class="text-muted"><i class="fa fa-tag me-2 text-success"></i>Danh mục:</span>
                             <span class="fw-bold text-dark">@(Model.MaLoaiNavigation?.TenLoai ?? "N/A")</span>
@@ -118,9 +118,8 @@
                     </ul>
                 </div>
 
-                <!-- CHỌN SỐ LƯỢNG VÀ THÊM VÀO GIỎ HÀNG -->
                 <div class="d-flex align-items-center mt-4 pt-4 border-top flex-wrap gap-3">
-                    <div class="input-group quantity shadow-sm rounded-pill overflow-hidden border border-success" style="width: 160px; height: 50px;">
+                    <div class="input-group quantity shadow-sm rounded-pill overflow-hidden border border-success" style="width: 160px; height: 50px;" data-inspect-id="detail-qty-select">
                         <button class="btn btn-light btn-minus border-end d-flex align-items-center justify-content-center" type="button" onclick="decreaseQty()" style="width: 48px;">
                             <i class="fa fa-minus text-success"></i>
                         </button>
@@ -132,11 +131,11 @@
                         </button>
                     </div>
 
-                    <button type="button" id="addToCartBtn" data-id="@Model.MaHh" class="btn btn-success rounded-pill px-5 shadow-sm d-flex align-items-center justify-content-center text-white fw-bold flex-grow-1 flex-sm-grow-0" style="background-color: var(--primary); border-color: var(--primary); height: 50px; font-size: 1.1rem; transition: all 0.3s ease;">
+                    <button type="button" id="addToCartBtn" data-id="@Model.MaHh" class="btn btn-success rounded-pill px-5 shadow-sm d-flex align-items-center justify-content-center text-white fw-bold flex-grow-1 flex-sm-grow-0" style="background-color: var(--primary); border-color: var(--primary); height: 50px; font-size: 1.1rem; transition: all 0.3s ease;" data-inspect-id="detail-add-to-cart">
                         <i class="fa fa-shopping-cart me-2 fs-4"></i> Thêm vào giỏ hàng
                     </button>
 
-                    <button type="button" class="btn btn-outline-danger rounded-circle shadow-sm d-flex align-items-center justify-content-center toggle-favorite-btn transition-all" data-id="@Model.MaHh" style="width: 50px; height: 50px; border-color: #dc3545; transition: 0.3s;">
+                    <button type="button" class="btn btn-outline-danger rounded-circle shadow-sm d-flex align-items-center justify-content-center toggle-favorite-btn transition-all" data-id="@Model.MaHh" style="width: 50px; height: 50px; border-color: #dc3545; transition: 0.3s;" data-inspect-id="detail-wishlist-toggle">
                         @if (ViewBag.FavoriteProductIds != null && ((List<int>)ViewBag.FavoriteProductIds).Contains(Model.MaHh)) {
                             <i class="fa-solid fa-heart fs-4 text-danger animate__animated animate__heartBeat"></i>
                         } else {
@@ -151,7 +150,7 @@
 
         <!-- MÔ TẢ CHI TIẾT SẢN PHẨM Ở DƯỚI CÙNG VỚI TAB ĐÁNH GIÁ -->
         <div class="card-footer bg-white p-4 p-md-5 border-top">
-            <ul class="nav nav-tabs border-bottom mb-4 fs-5" id="productTab" role="tablist">
+            <ul class="nav nav-tabs border-bottom mb-4 fs-5" id="productTab" role="tablist" data-inspect-id="detail-tabs-nav">
                 <li class="nav-item" role="presentation">
                     <button class="nav-link active fw-bold border-0 bg-transparent pb-3 px-4 position-relative" id="description-tab" data-bs-toggle="tab" data-bs-target="#description-pane" type="button" role="tab" aria-controls="description-pane" aria-selected="true" style="transition: 0.3s;">
                         Mô tả sản phẩm
@@ -165,7 +164,7 @@
             </ul>
             <div class="tab-content" id="productTabContent">
                 <!-- Tab Mô tả -->
-                <div class="tab-pane fade show active" id="description-pane" role="tabpanel" aria-labelledby="description-tab" tabindex="0">
+                <div class="tab-pane fade show active" id="description-pane" role="tabpanel" aria-labelledby="description-tab" tabindex="0" data-inspect-id="detail-desc-tab">
                     <p class="text-secondary mb-0 fs-5 lh-lg" style="white-space: pre-line;">
                         @(string.IsNullOrEmpty(Model.MoTa) ? "Sản phẩm này hiện chưa có mô tả chi tiết." : Model.MoTa)
                     </p>
@@ -175,7 +174,7 @@
                 <div class="tab-pane fade" id="reviews-pane" role="tabpanel" aria-labelledby="reviews-tab" tabindex="0">
                     <div class="row g-4">
                         <!-- Cột hiển thị danh sách đánh giá -->
-                        <div class="col-lg-7 pe-lg-4 border-end">
+                        <div class="col-lg-7 pe-lg-4 border-end" data-inspect-id="detail-reviews-list">
                             <h4 class="fw-bold mb-4 text-dark">Ý kiến của khách hàng</h4>
                             <div id="reviewsList" class="d-flex flex-column gap-4" style="max-height: 500px; overflow-y: auto; padding-right: 10px;">
                                 @if (ViewBag.Reviews != null && ((List<BinhLuan>)ViewBag.Reviews).Any()) {
@@ -215,7 +214,7 @@
 
                         <!-- Cột form gửi đánh giá -->
                         <div class="col-lg-5 ps-lg-4">
-                            <div class="card border-0 bg-light p-4 rounded-3 shadow-sm">
+                            <div class="card border-0 bg-light p-4 rounded-3 shadow-sm" data-inspect-id="detail-reviews-form">
                                 <h4 class="fw-bold mb-3 text-dark">Viết đánh giá của bạn</h4>
                                 @if (User.Identity?.IsAuthenticated == true) {
                                     var maxReviews = (int)(ViewBag.MaxReviews ?? 0);
@@ -288,7 +287,7 @@
     
     <!-- SẢN PHẨM TƯƠNG TỰ (RELATED PRODUCTS) -->
     @if (ViewBag.RelatedProducts != null && ((List<HangHoa>)ViewBag.RelatedProducts).Any()) {
-        <div class="mb-5 mt-5">
+        <div class="mb-5 mt-5" data-inspect-id="detail-related-products">
             <div class="d-flex align-items-center justify-content-between mb-4">
                 <h3 class="fw-bold text-dark mb-0" style="font-family: 'Lora', serif; font-size: 1.8rem;">Sản phẩm tương tự</h3>
                 <a href="@Url.Action("Index", "Home", new { loaiId = Model.MaLoai })" class="btn btn-link text-success fw-bold p-0 text-decoration-none font-weight-bold" style="color: var(--primary) !important;">

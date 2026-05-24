@@ -94,29 +94,29 @@
 
         <!-- Danh sách sản phẩm -->
         <form asp-action="Check_Out" asp-controller="Cart" method="post">
-        <div id="cart-list">
+        <div id="cart-list" data-inspect-id="cart-table">
             
             @if (Model != null && Model.Any()) {
                 @foreach (var item in Model) {
                     <div class="row bg-white py-3 px-2 mb-2 rounded shadow-sm align-items-center cart-item-row mx-0" id="row-@item.MaHh">
                         <!-- Checkbox chọn sản phẩm -->
-                        <div class="col-md-1 text-center">
+                        <div class="col-md-1 text-center" data-inspect-id="cart-item-checkbox">
                                 <input type="checkbox" class="form-check-input item-checkbox" name="selectedIds" value="@item.MaHh">
                         </div>
 
                         <!-- Hình ảnh và tên -->
-                        <div class="col-md-4 d-flex align-items-center">
+                        <div class="col-md-4 d-flex align-items-center" data-inspect-id="cart-item-info">
                             <img src="~/img/Hinh/HangHoa/@item.Hinh" class="product-img rounded me-3" alt="@item.TenHh">
                             <div><div class="fw-bold text-truncate" style="max-width: 250px;">@item.TenHh</div></div>
                         </div>
 
                         <!-- Đơn giá (USD) -->
-                        <div class="col-md-2 text-center">
+                        <div class="col-md-2 text-center" data-inspect-id="cart-item-price">
                             <span class="unit-price" data-price="@item.DonGia">@string.Format("{0:N0}$", item.DonGia)</span>
                         </div>
 
                         <!-- Số lượng (Cập nhật qua Controller) -->
-                        <div class="col-md-2 d-flex justify-content-center">
+                        <div class="col-md-2 d-flex justify-content-center" data-inspect-id="cart-item-qty">
                             <div class="d-flex border rounded">
                                 <a href="javascript:void(0);" class="qty-btn qty-update" data-id="@item.MaHh" data-delta="-1">-</a>
                                 <input type="text" class="qty-input" value="@item.SoLuong" readonly>
@@ -125,12 +125,12 @@
                         </div>
 
                         <!-- Thành tiền của sản phẩm đó -->
-                        <div class="col-md-2 text-center text-orange fw-bold">
+                        <div class="col-md-2 text-center text-orange fw-bold" data-inspect-id="cart-item-line-total">
                             <span class="item-total" id="item-total-@item.MaHh">@string.Format("{0:N0}$", item.DonGia * item.SoLuong)</span>
                         </div>
 
                         <!-- Nút Xóa -->
-                        <div class="col-md-1 text-center">
+                        <div class="col-md-1 text-center" data-inspect-id="cart-item-delete">
                             <button type="button" data-id="@item.MaHh" class="btn btn-sm btn-outline-danger shadow-sm delete-cart-item-ajax">Xóa</button>
                         </div>
                     </div>
@@ -146,7 +146,7 @@
         </div>
 
         <!-- Footer Thanh Toán -->
-        <div class="row py-3 px-4 mt-4 rounded shadow-sm sticky-bottom-custom align-items-center border-top mx-0">
+        <div class="row py-3 px-4 mt-4 rounded shadow-sm sticky-bottom-custom align-items-center border-top mx-0" data-inspect-id="cart-checkout-summary">
             <div class="col-md-6">
                 <div class="form-check">
                     <input class="form-check-input" type="checkbox" id="checkAllFooter">

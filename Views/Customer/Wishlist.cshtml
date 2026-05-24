@@ -33,7 +33,7 @@
                         </a>
                     </div>
                 } else {
-                    <div id="wishlist-container" class="row g-4">
+                    <div id="wishlist-container" class="row g-4" data-inspect-id="wishlist-table">
                         @foreach (var item in Model) {
                             var hh = item.MaHhNavigation;
                             if (hh != null) {
@@ -41,7 +41,7 @@
                                     <div class="card h-100 shadow-sm border-0 rounded-4 overflow-hidden product-card position-relative transition-all" style="transition: transform 0.3s ease, box-shadow 0.3s ease;">
                                         
                                         <!-- Bỏ thích AJAX -->
-                                        <button type="button" class="btn btn-light rounded-circle shadow-sm position-absolute end-0 top-0 m-3 remove-favorite-btn" data-id="@hh.MaHh" style="z-index: 10; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; border: none; transition: transform 0.2s ease;">
+                                        <button type="button" class="btn btn-light rounded-circle shadow-sm position-absolute end-0 top-0 m-3 remove-favorite-btn" data-id="@hh.MaHh" data-inspect-id="wishlist-remove-btn" style="z-index: 10; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; border: none; transition: transform 0.2s ease;">
                                             <i class="fa-solid fa-heart text-danger fs-5"></i>
                                         </button>
 

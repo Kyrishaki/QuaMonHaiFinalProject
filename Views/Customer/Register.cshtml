@@ -18,31 +18,31 @@
                             <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
                         }
 
-                        <form asp-action="Register" enctype="multipart/form-data">
+                        <form asp-action="Register" enctype="multipart/form-data" data-inspect-id="register-form">
                             <div class="row g-4">
-                                <div class="col-md-6">
+                                <div class="col-md-6" data-inspect-id="register-username">
                                     <label asp-for="@Model.MaKh" class="form-label fw-bold text-muted">Tên đăng nhập <sup class="text-danger">*</sup></label>
                                     <input asp-for="@Model.MaKh" type="text" class="form-control rounded-pill px-3">
                                     <span asp-validation-for="@Model.MaKh" class="text-danger small"></span>
                                 </div>
-                                <div class="col-md-6">
+                                <div class="col-md-6" data-inspect-id="register-password">
                                     <label asp-for="@Model.MatKhau" class="form-label fw-bold text-muted">Mật khẩu <sup class="text-danger">*</sup></label>
                                     <input asp-for="@Model.MatKhau" type="password" class="form-control rounded-pill px-3">
                                     <span asp-validation-for="@Model.MatKhau" class="text-danger small"></span>
                                 </div>
 
-                                <div class="col-md-6">
+                                <div class="col-md-6" data-inspect-id="register-fullname">
                                     <label asp-for="@Model.HoTen" class="form-label fw-bold text-muted">Họ và tên <sup class="text-danger">*</sup></label>
                                     <input asp-for="@Model.HoTen" class="form-control rounded-pill px-3" />
                                     <span asp-validation-for="@Model.HoTen" class="text-danger small"></span>
                                 </div>
-                                <div class="col-md-6">
+                                <div class="col-md-6" data-inspect-id="register-birthday">
                                     <label asp-for="@Model.NgaySinh" class="form-label fw-bold text-muted">Ngày sinh</label>
                                     <input asp-for="@Model.NgaySinh" type="date" class="form-control rounded-pill px-3" />
                                     <span asp-validation-for="@Model.NgaySinh" class="text-danger small"></span>
                                 </div>
 
-                                <div class="col-md-6">
+                                <div class="col-md-6" data-inspect-id="register-gender">
                                     <label class="form-label fw-bold text-muted d-block">Giới tính</label>
                                     <div class="d-flex gap-4 mt-2 px-2">
                                         <div class="form-check">
@@ -55,19 +55,21 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-6">
+                                <div class="col-md-6" data-inspect-id="register-phone">
                                     <label asp-for="@Model.DienThoai" class="form-label fw-bold text-muted">Điện thoại <sup class="text-danger">*</sup></label>
                                     <input asp-for="@Model.DienThoai" class="form-control rounded-pill px-3" />
                                     <span asp-validation-for="@Model.DienThoai" class="text-danger small"></span>
                                 </div>
 
-                                <div class="col-12">
+                                <div class="col-12" data-inspect-id="register-address">
                                     <label asp-for="@Model.DiaChi" class="form-label fw-bold text-muted">Địa chỉ <sup class="text-danger">*</sup></label>
                                     <input asp-for="@Model.DiaChi" class="form-control rounded-pill px-3" />
                                     <span asp-validation-for="@Model.DiaChi" class="text-danger small"></span>
                                 </div>
+                            </div>
 
-                                <div class="col-md-6">
+                            <div class="row g-4 mt-2">
+                                <div class="col-md-6" data-inspect-id="register-email-input">
                                     <label asp-for="Email" class="form-label fw-bold text-muted">Email <sup class="text-danger">*</sup></label>
                                     <div class="input-group">
                                         <input asp-for="Email" type="email" class="form-control" style="border-radius: 50rem 0 0 50rem;" id="emailInput">
@@ -76,18 +78,20 @@
                                     <span asp-validation-for="Email" class="text-danger small"></span>
                                 </div>
 
-                                <div class="col-md-6" id="verificationSection" style="@showOtpSection">
+                                <div class="col-md-6" id="verificationSection" style="@showOtpSection" data-inspect-id="register-otp-input">
                                     <label class="form-label fw-bold text-muted">Mã xác thực <sup class="text-danger">*</sup></label>
                                     <input asp-for="VerificationCode" class="form-control rounded-pill px-3" placeholder="Nhập mã 6 số gửi về email">
                                     <span asp-validation-for="VerificationCode" class="text-danger small fw-bold"></span>
                                 </div>
+                            </div>
 
-                                <div class="col-12">
+                            <div class="row g-4 mt-2">
+                                <div class="col-12" data-inspect-id="register-avatar-field">
                                     <label class="form-label fw-bold text-muted" for="Hinh">Hình đại diện</label>
                                     <input type="file" name="Hinh" id="Hinh" class="form-control rounded-pill px-3" accept="image/*" />
                                 </div>
 
-                                <div class="col-12 text-center mt-5">
+                                <div class="col-12 text-center mt-5" data-inspect-id="register-submit-btn">
                                     <button type="submit" class="btn text-white rounded-pill py-3 px-5 fw-bold shadow-sm" style="background-color: #81c408; font-size: 1.1rem; width: 100%; max-width: 400px;">
                                         ĐĂNG KÝ TÀI KHOẢN
                                     </button>

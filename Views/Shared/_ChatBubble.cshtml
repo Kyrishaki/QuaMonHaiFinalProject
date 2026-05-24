@@ -13,7 +13,7 @@
 
 @if (shouldShowChat && !User.IsInRole("Admin") && !User.IsInRole("Staff")) {
     <!-- Floating Chat Widget (Positioned at bottom: 95px to avoid overlapping with Back-to-top button) -->
-    <div id="customer-chat-widget" class="position-fixed" style="bottom: 95px; right: 30px; z-index: 9999;">
+    <div id="customer-chat-widget" class="position-fixed" style="bottom: 95px; right: 30px; z-index: 9999;" data-inspect-id="chat-bubble">
         <!-- Chat Bubble Button (Green with White Icon) -->
         <button id="chat-bubble-btn" class="btn d-flex align-items-center justify-content-center shadow-lg position-relative" 
                 style="width: 60px; height: 60px; border-radius: 50%; border: 2px solid #ffffff; background: linear-gradient(135deg, #81c408 0%, #68a006 100%); transition: transform 0.3s ease, box-shadow 0.3s ease;">

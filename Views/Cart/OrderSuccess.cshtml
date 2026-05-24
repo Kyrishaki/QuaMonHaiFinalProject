@@ -3,7 +3,7 @@
     ViewData["Title"] = "Đặt hàng thành công";
 }
 
-<div class="container my-5 py-3">
+<div class="container my-5 py-3" data-inspect-id="order-success">
     <div class="row justify-content-center">
         <div class="col-md-8 col-lg-6">
             <div class="card border-0 shadow-lg rounded-4 overflow-hidden">
@@ -24,7 +24,7 @@
                     @if (Model != null)
                     {
                         <!-- Order Summary Card -->
-                        <div class="card bg-light border-0 rounded-3 mb-4">
+                        <div class="card bg-light border-0 rounded-3 mb-4" data-inspect-id="order-summary-info">
                             <div class="card-body p-4">
                                 <h5 class="fw-bold mb-3 text-dark border-bottom pb-2">
                                     <i class="fa-solid fa-file-invoice text-success me-2"></i>Thông tin đơn hàng
@@ -59,7 +59,7 @@
                         </div>
 
                         <!-- Product details -->
-                        <div class="card border-0 shadow-sm rounded-3 mb-4 overflow-hidden">
+                        <div class="card border-0 shadow-sm rounded-3 mb-4 overflow-hidden" data-inspect-id="order-success-items">
                             <div class="card-header bg-light border-0 py-3">
                                 <h5 class="mb-0 fw-bold text-dark">
                                     <i class="fa-solid fa-box text-success me-2"></i>Sản phẩm đã mua
@@ -97,7 +97,7 @@
                     }
 
                     <!-- Navigation Action Buttons -->
-                    <div class="d-flex flex-column flex-sm-row gap-3 justify-content-center mt-4">
+                    <div class="d-flex flex-column flex-sm-row gap-3 justify-content-center mt-4" data-inspect-id="order-success-actions">
                         <a href="/Cart/OrderHistory" class="btn btn-outline-success px-4 py-2 rounded-pill fw-bold w-100 w-sm-auto transition">
                             <i class="fa-solid fa-clock-rotate-left me-2"></i>Lịch sử đơn hàng
                         </a>

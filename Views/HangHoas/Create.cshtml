@@ -10,10 +10,10 @@
             <h4 class="mb-0"><i class="fa fa-plus-circle me-2"></i>Thêm Mới Sản Phẩm</h4>
         </div>
         <div class="card-body p-4">
-            <form asp-action="Create" enctype="multipart/form-data">
+            <form asp-action="Create" enctype="multipart/form-data" data-inspect-id="product-create-form">
                 <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
 
-                <div class="row g-3">
+                <div class="row g-3" data-inspect-id="product-create-fields">
                     <div class="col-md-6">
                         <label asp-for="TenHh" class="form-label fw-bold text-muted"></label>
                         <input asp-for="TenHh" class="form-control rounded-pill" placeholder="Nhập tên sản phẩm..." />

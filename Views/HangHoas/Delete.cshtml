@@ -5,7 +5,7 @@
 }
 
 <div class="container py-5" style="max-width: 700px;">
-    <div class="card shadow-sm border-danger rounded-3 overflow-hidden">
+    <div class="card shadow-sm border-danger rounded-3 overflow-hidden" data-inspect-id="product-delete-confirm">
         <div class="card-header bg-danger text-white py-3 text-center">
             <h4 class="mb-0"><i class="fa fa-exclamation-triangle me-2"></i>Ngưng Hoạt Động Sản Phẩm</h4>
         </div>
@@ -18,7 +18,7 @@
             <h4 class="fw-bold text-primary">@Model.TenHh</h4>
             <p class="text-muted mb-4">Giá: <strong class="text-dark">$@Model.DonGia</strong> | Danh mục: <strong class="text-dark">@(Model.MaLoaiNavigation?.TenLoai ?? "N/A")</strong></p>
 
-            <form asp-action="Delete" class="d-flex justify-content-center gap-3">
+            <form asp-action="Delete" class="d-flex justify-content-center gap-3" data-inspect-id="product-delete-form">
                 <input type="hidden" asp-for="MaHh" />
                 <a asp-action="Index" class="btn btn-light rounded-pill px-5 border fw-bold">Hủy, Quay lại</a>
                 <button type="submit" class="btn btn-danger rounded-pill px-5 fw-bold"><i class="fa fa-power-off me-1"></i> Có, Tắt Ngay</button>

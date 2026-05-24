@@ -42,7 +42,7 @@
                     <p class="text-muted m-0 small">Quản lý thông tin hồ sơ để bảo mật tài khoản</p>
                 </div>
 
-                <form asp-action="Profile" method="post" enctype="multipart/form-data">
+                <form asp-action="Profile" method="post" enctype="multipart/form-data" data-inspect-id="profile-form">
                     <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
 
                     <!-- Giấu các trường không cho sửa vào thẻ hidden -->
@@ -53,7 +53,7 @@
                     <input type="hidden" asp-for="HieuLuc" />
                     <input type="hidden" asp-for="RandomKey" />
 
-                    <div class="row g-3">
+                    <div class="row g-3" data-inspect-id="profile-info-fields">
                         <!-- Họ và Tên -->
                         <div class="col-md-12">
                             <label asp-for="HoTen" class="form-label fw-bold text-secondary">Họ và tên</label>
@@ -99,9 +99,11 @@
                             <label asp-for="DiaChi" class="form-label fw-bold text-secondary">Địa chỉ liên hệ</label>
                             <input asp-for="DiaChi" class="form-control rounded-pill px-4 shadow-none border-success-focus" />
                         </div>
+                    </div>
 
+                    <div class="row mt-3">
                         <!-- Đổi Avatar -->
-                        <div class="col-12">
+                        <div class="col-12" data-inspect-id="profile-avatar-upload">
                             <label class="form-label fw-bold text-secondary mb-2">Ảnh đại diện hiện tại</label>
                             <div class="mb-3 d-flex align-items-center gap-3">
                                 <img src="@avatarUrl" class="rounded-circle border border-2 border-success shadow-sm" style="width: 70px; height: 70px; object-fit: cover;" />

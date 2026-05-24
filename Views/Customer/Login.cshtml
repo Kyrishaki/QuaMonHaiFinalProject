@@ -29,16 +29,16 @@
                     <p class="text-muted">Vui lòng đăng nhập để tiếp tục</p>
                 </div>
 
-                <form asp-action="Login" asp-route-returnurl="@ViewBag.ReturnUrl">
+                <form asp-action="Login" asp-route-returnurl="@ViewBag.ReturnUrl" data-inspect-id="login-form">
                     <div class="text-danger mb-3" asp-validation-summary="All"></div>
 
-                    <div class="form-floating mb-4">
+                    <div class="form-floating mb-4" data-inspect-id="login-username">
                         <input asp-for="@Model.UserName" type="text" class="form-control rounded-pill px-4" id="floatingInput" placeholder="Tên đăng nhập">
                         <label for="floatingInput" class="ms-3 text-muted">Tên đăng nhập *</label>
                         <span asp-validation-for="@Model.UserName" class="text-danger small ms-3"></span>
                     </div>
 
-                    <div class="form-floating mb-4">
+                    <div class="form-floating mb-4" data-inspect-id="login-password">
                         <input asp-for="@Model.Password" type="password" class="form-control rounded-pill px-4" id="floatingPassword" placeholder="Mật khẩu">
                         <label for="floatingPassword" class="ms-3 text-muted">Mật khẩu *</label>
                         <span asp-validation-for="@Model.Password" class="text-danger small ms-3"></span>
@@ -46,18 +46,18 @@
 
                     <!-- TEMPORARILY DISABLED FOR AUTOMATED FLOW TESTING -->
               
-                    <div class="d-flex justify-content-center mb-4">
+                    <div class="d-flex justify-content-center mb-4" data-inspect-id="login-recaptcha">
                         <div class="g-recaptcha" data-sitekey="6Le0Z-MsAAAAAB7YQK_ITslpZxYtzmtTi5h8O6Nr"></div>
                     </div>
            
 
-                    <div class="d-grid gap-3 mb-4">
+                    <div class="d-grid gap-3 mb-4" data-inspect-id="login-submit-btn">
                         <button type="submit" class="btn text-white rounded-pill py-3 fw-bold shadow-sm" style="background-color: #81c408; font-size: 1.1rem;">
                             ĐĂNG NHẬP
                         </button>
                     </div>
 
-                    <div class="d-flex justify-content-between align-items-center mt-2">
+                    <div class="d-flex justify-content-between align-items-center mt-2" data-inspect-id="login-redirect-links">
                         <a asp-controller="Customer" asp-action="ForgotPassword" class="text-danger text-decoration-none small"><i class="fa fa-lock me-1"></i> Quên mật khẩu?</a>
                         <a asp-controller="Customer" asp-action="Register" class="text-primary text-decoration-none fw-bold small">Tạo tài khoản <i class="fa fa-arrow-right ms-1"></i></a>
                     </div>
