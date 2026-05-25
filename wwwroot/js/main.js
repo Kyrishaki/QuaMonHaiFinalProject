@@ -102,25 +102,22 @@
             }
         });
 
-        // Click cuộn lên đầu trang bằng anime.js
+        // Click cuộn lên đầu trang mượt mà bằng API gốc của trình duyệt
         backToTopBtn.addEventListener('click', function(e) {
             e.preventDefault();
             
-            // Hiệu ứng nhấp nháy/phóng to thu nhỏ khi click
+            // Hiệu ứng nhấp nhẹ khi click nút
             anime({
                 targets: backToTopBtn,
-                scale: [1, 0.8, 1.25, 1],
-                duration: 500,
+                scale: [1, 0.8, 1.2, 1],
+                duration: 400,
                 easing: 'easeInOutQuad'
             });
-
-            // Cuộn mượt lên đầu trang
-            var scrollElement = window.document.scrollingElement || window.document.documentElement || window.document.body;
-            anime({
-                targets: scrollElement,
-                scrollTop: 0,
-                duration: 1000,
-                easing: 'easeInOutExpo'
+ 
+            // Cuộn mượt lên đầu trang bằng API phần cứng tối ưu
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
             });
             
             return false;

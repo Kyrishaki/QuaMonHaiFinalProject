@@ -87,7 +87,7 @@
                             <div class="d-flex flex-wrap gap-2">
                                 @foreach (var voucher in (List<GiamGia>)ViewBag.ActiveVouchers) {
                                     <span class="badge bg-danger-subtle text-danger border border-danger border-opacity-50 rounded-1 px-3 py-2 fw-bold cursor-pointer position-relative voucher-tag" 
-                                          title="Giảm @voucher.PhanTramGiam% cho đơn tối thiểu $@(voucher.GiaTriDonToiThieu ?? 0)" 
+                                          title="Giảm @voucher.PhanTramGiam% cho đơn tối thiểu $@(voucher.GiaTriDonToiThieu)" 
                                           style="border-style: dashed !important; font-size: 0.85rem;" 
                                           onclick="copyVoucher('@voucher.TenMa')">
                                         @voucher.TenMa

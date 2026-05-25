@@ -3,6 +3,8 @@ using LTWEB_QuaMonHai_CuoiKy.Helpers;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 
+using LTWEB_QuaMonHai_CuoiKy.Models;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -56,5 +58,57 @@ app.UseAuthorization();
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
+
+// ===================================================
+// Seed database với 7 voucher khác nhau
+// ===================================================
+using (var scope = app.Services.CreateScope())
+{
+    try
+    {
+        var context = scope.ServiceProvider.GetRequiredService<Hshop2023Context>();
+
+        // Tự động kiểm tra và thêm cột tính toán GiaSauGiam vào bảng HangHoa nếu chưa có
+        try
+        {
+            context.Database.ExecuteSqlRaw(@"
+                IF NOT EXISTS (
+                    SELECT 1 
+                    FROM sys.columns 
+                    WHERE object_id = OBJECT_ID(N'[dbo].[HangHoa]') 
+                      AND name = N'GiaSauGiam'
+                )
+                BEGIN
+                    ALTER TABLE [dbo].[HangHoa] 
+                    ADD [GiaSauGiam] AS (CONVERT([decimal](18,2),round(isnull([DonGia],(0))*((1)-isnull([GiamGia],(0))/(100.0)),(2)))) PERSISTED;
+                END
+            ");
+            Console.WriteLine("Computed column 'GiaSauGiam' successfully verified/added to database.");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error verifying/adding GiaSauGiam computed column: {ex.Message}");
+        }
+
+        if (!context.GiamGias.Any())
+        {
+            context.GiamGias.AddRange(
+                new GiamGia { TenMa = "WELCOME5", PhanTramGiam = 5, NgayBatDau = new DateTime(2026, 1, 1), NgayKetThuc = new DateTime(2028, 12, 31), GiaTriDonToiThieu = 20, SoLanSuDung = 1000, TrangThai = true },
+                new GiamGia { TenMa = "SUMMER10", PhanTramGiam = 10, NgayBatDau = new DateTime(2026, 1, 1), NgayKetThuc = new DateTime(2028, 12, 31), GiaTriDonToiThieu = 50, SoLanSuDung = 500, TrangThai = true },
+                new GiamGia { TenMa = "QMHVIP15", PhanTramGiam = 15, NgayBatDau = new DateTime(2026, 1, 1), NgayKetThuc = new DateTime(2028, 12, 31), GiaTriDonToiThieu = 100, SoLanSuDung = 200, TrangThai = true },
+                new GiamGia { TenMa = "BIGDEAL20", PhanTramGiam = 20, NgayBatDau = new DateTime(2026, 1, 1), NgayKetThuc = new DateTime(2028, 12, 31), GiaTriDonToiThieu = 150, SoLanSuDung = 150, TrangThai = true },
+                new GiamGia { TenMa = "MEGA50", PhanTramGiam = 50, NgayBatDau = new DateTime(2026, 1, 1), NgayKetThuc = new DateTime(2028, 12, 31), GiaTriDonToiThieu = 300, SoLanSuDung = 50, TrangThai = true },
+                new GiamGia { TenMa = "HAPPYWEEKEND", PhanTramGiam = 8, NgayBatDau = new DateTime(2026, 1, 1), NgayKetThuc = new DateTime(2028, 12, 31), GiaTriDonToiThieu = 40, SoLanSuDung = 300, TrangThai = true },
+                new GiamGia { TenMa = "FREESHIP", PhanTramGiam = 10, NgayBatDau = new DateTime(2026, 1, 1), NgayKetThuc = new DateTime(2028, 12, 31), GiaTriDonToiThieu = 30, SoLanSuDung = 2000, TrangThai = true }
+            );
+            context.SaveChanges();
+            Console.WriteLine("Successfully seeded 7 vouchers into the database.");
+        }
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"Error seeding vouchers: {ex.Message}");
+    }
+}
 
 app.Run();

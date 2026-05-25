@@ -4,6 +4,10 @@
     ViewData["Title"] = "Cửa hàng của chúng tôi";
     int currentPage = ViewBag.CurrentPage ?? 1;
     int totalPages = ViewBag.TotalPages ?? 1;
+
+    Func<double, string> formatPrice = (double value) => {
+        return value % 1 == 0 ? value.ToString("N0") : value.ToString("N2");
+    };
 }
 
 <div class="container py-5" style="max-width: 1200px;" id="product-section">
@@ -61,8 +65,15 @@
                                 <a asp-action="Details" asp-controller="HangHoas" asp-route-id="@item.MaHh" class="text-decoration-none text-dark">
                                     <h6 class="card-title text-truncate mb-1" title="@item.TenHh">@item.TenHh</h6>
                                 </a>
-                                 <div class="d-flex justify-content-between align-items-center mb-3">
-                                     <span class="text-primary fw-bold fs-5" style="color: #81c408 !important;">$@item.DonGia</span>
+                                 <div class="d-flex justify-content-between align-items-center flex-wrap gap-1 mb-3">
+                                     @if (item.GiamGia > 0) {
+                                         <div class="d-flex align-items-center gap-2">
+                                             <span class="text-danger fw-bold fs-5">$@formatPrice((double)item.GiaSauGiam)</span>
+                                             <span class="text-muted text-decoration-line-through small" style="font-size: 0.82rem;">$@formatPrice(item.DonGia ?? 0)</span>
+                                         </div>
+                                     } else {
+                                         <span class="text-primary fw-bold fs-5" style="color: #81c408 !important;">$@formatPrice(item.DonGia ?? 0)</span>
+                                     }
                                      @{
                                          int soldCount = 0;
                                          if (ViewBag.SoldCounts != null) {

@@ -188,7 +188,7 @@ namespace LTWEB_QuaMonHai_CuoiKy.Controllers {
 
             // Lấy danh sách mã giảm giá đang hoạt động
             var activeVouchers = await _context.GiamGias
-                .Where(v => v.TrangThai == true && (v.NgayBatDau == null || v.NgayBatDau <= DateTime.Now) && (v.NgayKetThuc == null || v.NgayKetThuc >= DateTime.Now))
+                .Where(v => v.TrangThai == true && v.NgayBatDau <= DateTime.Now && v.NgayKetThuc >= DateTime.Now)
                 .Take(3)
                 .ToListAsync();
             ViewBag.ActiveVouchers = activeVouchers;

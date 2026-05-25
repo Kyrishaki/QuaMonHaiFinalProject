@@ -640,7 +640,9 @@ namespace LTWEB_QuaMonHai_CuoiKy.Controllers
             // Lấy thông tin hóa đơn vừa tạo để hiển thị tóm tắt lại cho khách
             var hoaDon = await _Context.HoaDons
                 .Include(h => h.ChiTietHds)
-                .ThenInclude(c => c.MaHhNavigation)
+                    .ThenInclude(c => c.MaHhNavigation)
+                .Include(h => h.ChiTietHds)
+                    .ThenInclude(c => c.MaGgNavigation)
                 .SingleOrDefaultAsync(h => h.MaHd == id && h.MaKh == customerId);
 
             if (hoaDon == null) return NotFound();
