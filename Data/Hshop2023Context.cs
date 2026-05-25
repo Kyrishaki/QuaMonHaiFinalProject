@@ -183,6 +183,9 @@ public partial class Hshop2023Context : DbContext {
 
             entity.Property(e => e.MaHh).HasColumnName("MaHH");
             entity.Property(e => e.DonGia).HasDefaultValue(0.0);
+            entity.Property(e => e.GiaSauGiam)
+                .HasColumnType("decimal(18, 2)")
+                .HasComputedColumnSql("CONVERT(decimal(18,2), ROUND(isnull([DonGia],(0))*((1)-isnull([GiamGia],(0))/(100.0)), (2)))", stored: true);
             entity.Property(e => e.Hinh).HasMaxLength(50);
             entity.Property(e => e.MaNcc)
                 .HasMaxLength(50)

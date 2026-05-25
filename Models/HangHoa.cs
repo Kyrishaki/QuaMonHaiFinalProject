@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace LTWEB_QuaMonHai_CuoiKy.Models;
 
@@ -17,10 +18,13 @@ public partial class HangHoa
 
     public double? DonGia { get; set; }
 
+    public decimal GiaSauGiam { get; set; }
+
     public string? Hinh { get; set; }
 
     public DateTime NgaySx { get; set; }
 
+    [Range(0, 100, ErrorMessage = "Giảm giá chỉ được nhập từ 0 đến 100%.")]
     public double GiamGia { get; set; }
 
     public int SoLanXem { get; set; }

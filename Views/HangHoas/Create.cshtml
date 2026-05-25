@@ -43,9 +43,10 @@
                     <div class="col-md-4">
                         <label asp-for="GiamGia" class="form-label fw-bold text-muted"></label>
                         <div class="input-group">
-                            <input asp-for="GiamGia" class="form-control rounded-start-pill" type="number" value="0" />
+                            <input asp-for="GiamGia" class="form-control rounded-start-pill" type="number" min="0" max="100" step="0.01" value="0" />
                             <span class="input-group-text rounded-end-pill">%</span>
                         </div>
+                        <span asp-validation-for="GiamGia" class="text-danger small"></span>
                     </div>
                     <div class="col-md-4">
                         <label asp-for="MoTaDonVi" class="form-label fw-bold text-muted">Đơn vị (Kg, Hộp...)</label>

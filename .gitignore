@@ -3,6 +3,7 @@
 [Bb]in/
 [Oo]bj/
 [Tt]est[Rr]esults/
+artifacts/
 
 # File cấu hình user và cache
 *.user

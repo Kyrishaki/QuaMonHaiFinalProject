@@ -1,7 +1,6 @@
 @model LTWEB_QuaMonHai_CuoiKy.Models.HoaDon
 @{
     ViewData["Title"] = "Đặt hàng thành công";
-    Func<double, string> formatPrice = (double price) => price % 1 == 0 ? price.ToString("N0") : price.ToString("N2");
 }
 
 <div class="container my-5 py-3">
@@ -43,7 +42,7 @@
                                 {
                                     <div class="d-flex justify-content-between mb-2">
                                         <span class="text-muted">Số điện thoại:</span>
-                                        <span class="text-dark">0@(Model.SoDienThoai)</span>
+                                        <span class="text-dark">0@Model.SoDienThoai</span>
                                     </div>
                                 }
                                 <div class="d-flex justify-content-between mb-2">
@@ -82,7 +81,7 @@
                                                 <small class="text-muted">Số lượng: @cthd.SoLuong</small>
                                             </div>
                                             <div class="col-auto text-end">
-                                                <span class="fw-semibold text-dark">$@formatPrice(cthd.DonGia * cthd.SoLuong)</span>
+                                                <span class="fw-semibold text-dark">@((cthd.DonGia * cthd.SoLuong).ToString("N0"))$</span>
                                             </div>
                                         </div>
                                     </div>
@@ -91,7 +90,7 @@
                             <div class="card-footer bg-light border-0 p-4">
                                 <div class="d-flex justify-content-between align-items-center">
                                     <span class="text-muted fw-semibold">Tổng thanh toán (gồm vận chuyển):</span>
-                                    <span class="fs-4 fw-bold text-success">$@formatPrice(Model.ChiTietHds.Sum(c => c.DonGia * c.SoLuong) + Model.PhiVanChuyen - Model.ChiTietHds.Sum(c => c.GiamGia))</span>
+                                    <span class="fs-4 fw-bold text-success">@((Model.ChiTietHds.Sum(c => c.DonGia * c.SoLuong) + Model.PhiVanChuyen - Model.ChiTietHds.Sum(c => c.GiamGia)).ToString("N0"))$</span>
                                 </div>
                             </div>
                         </div>

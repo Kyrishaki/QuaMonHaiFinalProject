@@ -57,18 +57,18 @@ namespace LTWEB_QuaMonHai_CuoiKy.Controllers {
 
             // 3. Xử lý Lọc theo Giá
             if (!string.IsNullOrEmpty(priceRange)) {
-                if (double.TryParse(priceRange, out double maxVal)) {
-                    query = query.Where(h => h.DonGia <= maxVal);
+                if (decimal.TryParse(priceRange, out decimal maxVal)) {
+                    query = query.Where(h => h.GiaSauGiam <= maxVal);
                 } else {
                     switch (priceRange) {
                         case "under50":
-                            query = query.Where(h => h.DonGia < 50);
+                            query = query.Where(h => h.GiaSauGiam < 50);
                             break;
                         case "50to100":
-                            query = query.Where(h => h.DonGia >= 50 && h.DonGia <= 100);
+                            query = query.Where(h => h.GiaSauGiam >= 50 && h.GiaSauGiam <= 100);
                             break;
                         case "over100":
-                            query = query.Where(h => h.DonGia > 100);
+                            query = query.Where(h => h.GiaSauGiam > 100);
                             break;
                     }
                 }
