@@ -4,6 +4,7 @@ using LTWEB_QuaMonHai_CuoiKy.Helpers;
 using LTWEB_QuaMonHai_CuoiKy.Models;
 using LTWEB_QuaMonHai_CuoiKy.ViewModels;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -593,6 +594,104 @@ namespace LTWEB_QuaMonHai_CuoiKy.Controllers {
                 isFavorite = isFavorite, 
                 message = isFavorite ? "Đã thêm sản phẩm vào danh sách yêu thích!" : "Đã xóa sản phẩm khỏi danh sách yêu thích!" 
             });
+        }
+
+        // ===================================================
+        // 6. ĐĂNG NHẬP / ĐĂNG KÝ BẰNG TÀI KHOẢN GOOGLE (OAUTH2)
+        // ===================================================
+
+        [HttpGet]
+        public IActionResult GoogleLogin(string? returnUrl = null) {
+            var redirectUrl = Url.Action("GoogleResponse", "Customer", new { returnUrl });
+            var properties = new AuthenticationProperties { RedirectUri = redirectUrl };
+            return Challenge(properties, GoogleDefaults.AuthenticationScheme);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GoogleResponse(string? returnUrl = null) {
+            // Xác thực và lấy claims từ cookie đệm ExternalCookie
+            var result = await HttpContext.AuthenticateAsync("ExternalCookie");
+            if (!result.Succeeded || result.Principal == null) {
+                TempData["Error"] = "Xác thực với Google thất bại.";
+                return RedirectToAction("Login");
+            }
+
+            var externalClaims = result.Principal.Identities.FirstOrDefault()?.Claims;
+            var email = externalClaims?.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value;
+            var name = externalClaims?.FirstOrDefault(c => c.Type == ClaimTypes.Name)?.Value;
+            var picture = externalClaims?.FirstOrDefault(c => c.Type == "urn:google:picture")?.Value 
+                          ?? externalClaims?.FirstOrDefault(c => c.Type == "image")?.Value;
+
+            if (string.IsNullOrEmpty(email)) {
+                TempData["Error"] = "Không thể lấy thông tin Email từ tài khoản Google của bạn.";
+                return RedirectToAction("Login");
+            }
+
+            // Tìm kiếm khách hàng theo email
+            var khachHang = await db.KhachHangs.FirstOrDefaultAsync(kh => kh.Email.ToLower() == email.ToLower());
+
+            if (khachHang == null) {
+                // TỰ ĐỘNG ĐĂNG KÝ (TẠO TÀI KHOẢN MỚI)
+                string baseUsername = email.Split('@')[0];
+                string uniqueUsername = baseUsername;
+                
+                // Tránh trùng username
+                int count = 1;
+                while (await db.KhachHangs.AnyAsync(kh => kh.MaKh == uniqueUsername)) {
+                    uniqueUsername = $"{baseUsername}{count++}";
+                }
+
+                // Sinh mật khẩu ngẫu nhiên không thể đoán trước
+                string randomKey = MyUtil.GenerateRandomKey();
+                string passwordHash = Guid.NewGuid().ToString("N").Substring(0, 10).ToMd5Hash(randomKey);
+
+                khachHang = new KhachHang {
+                    MaKh = uniqueUsername,
+                    HoTen = name ?? "Google User",
+                    Email = email,
+                    MatKhau = passwordHash,
+                    RandomKey = randomKey,
+                    GioiTinh = true, // Mặc định Nam
+                    NgaySinh = new DateTime(2000, 1, 1),
+                    DiaChi = "Chưa cập nhật",
+                    DienThoai = "Chưa cập nhật",
+                    HieuLuc = true, // Kích hoạt ngay
+                    VaiTro = 0, // Khách hàng thường
+                    Hinh = picture ?? "Photo.gif"
+                };
+
+                db.KhachHangs.Add(khachHang);
+                await db.SaveChangesAsync();
+            }
+
+            if (!khachHang.HieuLuc) {
+                TempData["Error"] = "Tài khoản Google này liên kết với tài khoản đã bị khóa tại QuaMonHai.";
+                return RedirectToAction("Login");
+            }
+
+            // ĐĂNG NHẬP CHÍNH THỨC VÀO HỆ THỐNG
+            string userRole = khachHang.VaiTro == 1 ? "Admin" : (khachHang.VaiTro == 2 ? "Staff" : "Customer");
+            var claims = new List<Claim> {
+                new Claim(ClaimTypes.Email, khachHang.Email ?? ""),
+                new Claim(ClaimTypes.Name, khachHang.HoTen ?? ""),
+                new Claim("CustomerID", khachHang.MaKh),
+                new Claim(ClaimTypes.Role, userRole)
+            };
+
+            var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+            var claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
+
+            // Đăng nhập vào Cookie chính thức của hệ thống
+            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, claimsPrincipal);
+
+            // Đăng xuất xóa Cookie đệm
+            await HttpContext.SignOutAsync("ExternalCookie");
+
+            // Chuyển hướng người dùng
+            if (!string.IsNullOrEmpty(returnUrl) && Url.IsLocalUrl(returnUrl)) {
+                return Redirect(returnUrl);
+            }
+            return Redirect("/");
         }
 
         [HttpGet]

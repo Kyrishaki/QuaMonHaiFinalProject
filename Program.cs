@@ -22,10 +22,19 @@ builder.Services.AddDbContext<Hshop2023Context>(options =>
 // Cấu hình AutoMapper
 builder.Services.AddAutoMapper(typeof(AutoMapperProfile));
 
-// Khai báo dịch vụ Authentication Cookie
-builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(options => {
+// Khai báo dịch vụ Authentication Cookie và Google External Login
+builder.Services.AddAuthentication(options => {
+    options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+})
+.AddCookie(options => {
     options.LoginPath = "/Customer/Login";
     options.AccessDeniedPath = "/AccessDenied";
+})
+.AddCookie("ExternalCookie") // Cookie đệm chứa claims tạm thời từ Google
+.AddGoogle(options => {
+    options.SignInScheme = "ExternalCookie"; // Ghi claims Google vào cookie đệm
+    options.ClientId = builder.Configuration["Google:ClientId"] ?? "YOUR_GOOGLE_CLIENT_ID_HERE.apps.googleusercontent.com";
+    options.ClientSecret = builder.Configuration["Google:ClientSecret"] ?? "YOUR_GOOGLE_CLIENT_SECRET_HERE";
 });
 
 // Cấu hình Session (Bộ nhớ đệm giỏ hàng)
