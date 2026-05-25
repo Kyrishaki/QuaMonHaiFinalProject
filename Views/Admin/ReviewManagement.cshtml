@@ -113,9 +113,26 @@
                                     <!-- Khách hàng -->
                                     <td class="ps-4">
                                         <div class="d-flex align-items-center gap-2">
-                                            <img src="@Url.Content("~/img/Hinh/khachHang/" + (string.IsNullOrEmpty(review.MaKhNavigation?.Hinh) ? "Photo.gif" : review.MaKhNavigation.Hinh))" 
+                                            @{
+                                                var adminReviewAvatarUrl = "";
+                                                var reviewer = review.MaKhNavigation;
+                                                if (reviewer != null) {
+                                                    if (reviewer.Hinh != null && reviewer.Hinh.StartsWith("[API]:")) {
+                                                        string apiUserName = reviewer.Hinh.Replace("[API]:", "");
+                                                        adminReviewAvatarUrl = Url.Content($"~/api/Avatar/generate?name={Uri.EscapeDataString(apiUserName)}");
+                                                    } else if (!string.IsNullOrEmpty(reviewer.Hinh) && reviewer.Hinh != "default-avatar.jpg" && reviewer.Hinh != "avatar.jpg") {
+                                                        adminReviewAvatarUrl = Url.Content("~/img/Hinh/KhachHang/" + reviewer.Hinh);
+                                                    } else {
+                                                        adminReviewAvatarUrl = Url.Content($"~/api/Avatar/generate?name={Uri.EscapeDataString(reviewer.HoTen ?? "User")}");
+                                                    }
+                                                } else {
+                                                    adminReviewAvatarUrl = Url.Content("~/api/Avatar/generate?name=User");
+                                                }
+                                            }
+                                            <img src="@adminReviewAvatarUrl" 
                                                  alt="Avatar" class="rounded-circle img-thumbnail shadow-sm"
-                                                 style="width: 40px; height: 40px; object-fit: cover;" />
+                                                 style="width: 40px; height: 40px; object-fit: cover;"
+                                                 onerror="this.onerror=null; this.src='@Url.Content("~/api/Avatar/generate?name=" + Uri.EscapeDataString(review.MaKhNavigation?.HoTen ?? "User"))';" />
                                             <div>
                                                 <h6 class="fw-bold text-dark mb-0" style="font-size: 0.9rem;">@review.MaKhNavigation?.HoTen</h6>
                                                 <small class="text-muted font-monospace" style="font-size: 0.75rem;">@@@review.MaKh</small>

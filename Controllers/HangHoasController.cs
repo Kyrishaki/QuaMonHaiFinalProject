@@ -249,6 +249,20 @@ namespace LTWEB_QuaMonHai_CuoiKy.Controllers {
 
             var khachHang = await _context.KhachHangs.FirstOrDefaultAsync(k => k.MaKh == customerId);
 
+            var avatarUrl = "";
+            if (khachHang != null) {
+                if (khachHang.Hinh != null && khachHang.Hinh.StartsWith("[API]:")) {
+                    string apiName = khachHang.Hinh.Replace("[API]:", "");
+                    avatarUrl = Url.Content($"~/api/Avatar/generate?name={Uri.EscapeDataString(apiName)}");
+                } else if (!string.IsNullOrEmpty(khachHang.Hinh) && khachHang.Hinh != "default-avatar.jpg" && khachHang.Hinh != "avatar.jpg") {
+                    avatarUrl = Url.Content("~/img/Hinh/KhachHang/" + khachHang.Hinh);
+                } else {
+                    avatarUrl = Url.Content($"~/api/Avatar/generate?name={Uri.EscapeDataString(khachHang.HoTen ?? "User")}");
+                }
+            } else {
+                avatarUrl = Url.Content("~/api/Avatar/generate?name=User");
+            }
+
             return Json(new {
                 success = true,
                 message = "Đăng đánh giá thành công!",
@@ -259,7 +273,8 @@ namespace LTWEB_QuaMonHai_CuoiKy.Controllers {
                     tenKh = khachHang?.HoTen ?? "Người dùng",
                     sao = sao,
                     noiDung = noiDung,
-                    ngay = review.Ngay.ToString("dd/MM/yyyy HH:mm")
+                    ngay = review.Ngay.ToString("dd/MM/yyyy HH:mm"),
+                    avatarUrl = avatarUrl
                 }
             });
         }

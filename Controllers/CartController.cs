@@ -768,32 +768,5 @@ namespace LTWEB_QuaMonHai_CuoiKy.Controllers {
             var dsHoaDon = await query.OrderByDescending(h => h.NgayDat).ToListAsync();
             return View(dsHoaDon);
         }
-
-        // ============================================================
-        // GET: /Cart/LookupOrder
-        // ============================================================
-        [HttpGet]
-        public async Task<IActionResult> LookupOrder(int? orderId)
-        {
-            ViewBag.OrderId = orderId;
-            if (orderId.HasValue)
-            {
-                var order = await _Context.HoaDons
-                    .Include(h => h.MaKhNavigation)
-                    .Include(h => h.ChiTietHds)
-                    .ThenInclude(c => c.MaHhNavigation)
-                    .FirstOrDefaultAsync(h => h.MaHd == orderId.Value);
-
-                if (order == null)
-                {
-                    ViewBag.ErrorMessage = "Không tìm thấy đơn hàng với mã số này. Vui lòng kiểm tra lại.";
-                }
-                else
-                {
-                    return View(order);
-                }
-            }
-            return View();
-        }
     }
 }

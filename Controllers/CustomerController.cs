@@ -144,7 +144,7 @@ namespace LTWEB_QuaMonHai_CuoiKy.Controllers {
                 else {
                     // Kiểm tra nếu tài khoản KHÔNG có hiệu lực
                     if (!khachHang.HieuLuc) {
-                        ModelState.AddModelError("loi", "Tài khoản đã bị khóa. Vui lòng liên hệ hội đồng nhóm QuaMonGroup.");
+                        ModelState.AddModelError("loi", "Tài khoản đã bị khóa. Vui lòng liên hệ ban quản trị QuaMonHai.");
                     }
                     else {
                         if (khachHang.MatKhau != model.Password.ToMd5Hash(khachHang.RandomKey)) {

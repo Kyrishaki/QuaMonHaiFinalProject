@@ -1,6 +1,7 @@
 @model IEnumerable<LTWEB_QuaMonHai_CuoiKy.Models.HoaDon>
 @{
     ViewData["Title"] = "Lịch sử đơn hàng";
+    Func<double, string> formatPrice = (double price) => price % 1 == 0 ? price.ToString("N0") : price.ToString("N2");
 }
 
 <div class="container py-5 mt-5" style="max-width: 1200px;">
@@ -137,16 +138,16 @@
                                                         <h6 class="fw-bold text-dark mb-1 hover-primary pointer" style="font-size: 0.95rem;">
                                                             @item.MaHhNavigation.TenHh
                                                         </h6>
-                                                        <small class="text-muted d-block">Đơn giá: $@item.DonGia.ToString("N2") | Số lượng mua: <strong>@item.SoLuong</strong></small>
+                                                        <small class="text-muted d-block">Đơn giá: $@formatPrice(item.DonGia) | Số lượng mua: <strong>@item.SoLuong</strong></small>
                                                     </div>
                                                 </div>
                                                 <div class="text-end mt-2 mt-sm-0">
-                                                    <strong class="text-dark fs-6">$@((item.DonGia * item.SoLuong).ToString("N2"))</strong>
+                                                    <strong class="text-dark fs-6">$@formatPrice(item.DonGia * item.SoLuong)</strong>
                                                     @if (item.GiamGia > 0)
                                                     {
                                                         <div class="mt-1">
                                                             <span class="badge rounded px-2 py-1" style="font-size: 0.7rem; background-color: rgba(220, 53, 69, 0.1) !important; color: #dc3545 !important;">
-                                                                Giảm -$@item.GiamGia.ToString("N2")
+                                                                Giảm -$@formatPrice(item.GiamGia)
                                                             </span>
                                                         </div>
                                                     }
@@ -164,7 +165,7 @@
                                                 <i class="fa-solid fa-location-dot mt-1 text-success fs-6" style="color: var(--primary) !important;"></i>
                                                 <div>
                                                     <h6 class="fw-bold text-dark mb-1" style="font-size: 0.9rem;">@order.HoTen</h6>
-                                                    <p class="text-muted small mb-0 fs-7">@order.DiaChi</p>
+                                                    <p class="text-muted small mb-0 fs-7">@order.DiaChi @(order.SoDienThoai.HasValue ? " - 0" + order.SoDienThoai : "")</p>
                                                 </div>
                                             </div>
                                             <div class="d-flex flex-wrap gap-2 mt-3">
@@ -182,12 +183,12 @@
                                             <div class="bg-white p-3 rounded shadow-sm border d-inline-block w-100" style="max-width: 320px;">
                                                 <div class="d-flex justify-content-between mb-2 small text-secondary">
                                                     <span>Phí vận chuyển:</span>
-                                                    <span>$@order.PhiVanChuyen.ToString("N2")</span>
+                                                    <span>$@formatPrice(order.PhiVanChuyen)</span>
                                                 </div>
                                                 <div class="d-flex justify-content-between align-items-center border-top pt-2 mt-2">
                                                     <span class="text-dark fw-bold small">Tổng thanh toán:</span>
                                                     <span class="fs-5 fw-extrabold text-success" style="color: var(--primary) !important;">
-                                                        $@((order.ChiTietHds.Sum(c => c.DonGia * c.SoLuong) + order.PhiVanChuyen - order.ChiTietHds.Sum(c => c.GiamGia)).ToString("N2"))
+                                                        $@formatPrice(order.ChiTietHds.Sum(c => c.DonGia * c.SoLuong) + order.PhiVanChuyen - order.ChiTietHds.Sum(c => c.GiamGia))
                                                     </span>
                                                 </div>
                                             </div>
