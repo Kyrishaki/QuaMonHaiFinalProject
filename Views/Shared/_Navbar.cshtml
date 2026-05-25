@@ -3,29 +3,40 @@
 @{
     // Lấy tên hiển thị mới nhất từ Database để tránh lỗi phông chữ từ Cookie cũ
     string displayName = User.Identity?.Name ?? "";
+    string? avatarUrl = null;
     if (User.Identity?.IsAuthenticated == true) {
         var customerId = User.Claims.SingleOrDefault(c => c.Type == "CustomerID")?.Value;
         if (!string.IsNullOrEmpty(customerId)) {
             var khachHang = DbContext.KhachHangs.FirstOrDefault(kh => kh.MaKh == customerId);
             if (khachHang != null) {
                 displayName = khachHang.HoTen;
+                var hinh = khachHang.Hinh ?? "";
+                if (hinh.StartsWith("http://") || hinh.StartsWith("https://")) {
+                    avatarUrl = hinh;
+                } else {
+                    avatarUrl = Url.Content("~/img/Hinh/KhachHang/" + hinh);
+                }
             }
         }
     }
 }
 
 <div class="container-fluid custom-sticky px-0">
-    <div class="top-bar row gx-0 align-items-center d-none d-lg-flex border-bottom">
+    <div class="top-bar row gx-0 align-items-center d-none d-lg-flex border-bottom" style="font-size: 0.85rem;">
         <div class="col-lg-6 px-5 text-start">
-            <small class="text-muted"><i class="fa fa-map-marker-alt text-primary me-2"></i>Thành phố Biên Hòa, Đồng Nai</small>
-            <small class="text-muted ms-4"><i class="fa fa-envelope text-primary me-2"></i>quamonhai@gmail.com</small>
+            <a href="https://www.google.com/maps?q=Thành+phố+Biên+Hòa,+Đồng+Nai" target="_blank" class="text-muted text-decoration-none hover-primary-color transition-all me-4">
+                <i class="fa fa-map-marker-alt text-primary me-2"></i>Thành phố Biên Hòa, Đồng Nai
+            </a>
+            <a href="mailto:quamonhai@gmail.com" class="text-muted text-decoration-none hover-primary-color transition-all">
+                <i class="fa fa-envelope text-primary me-2"></i>quamonhai@gmail.com
+            </a>
         </div>
         <div class="col-lg-6 px-5 text-end">
             <small class="text-muted">Theo dõi chúng tôi:</small>
-            <a class="text-body ms-3" href="#"><i class="fab fa-facebook-f"></i></a>
-            <a class="text-body ms-3" href="#"><i class="fab fa-x-twitter"></i></a>
-            <a class="text-body ms-3" href="#"><i class="fab fa-linkedin-in"></i></a>
-            <a class="text-body ms-3" href="#"><i class="fab fa-instagram"></i></a>
+            <a class="text-body ms-3 hover-primary-color transition-all" asp-controller="Social" asp-action="Facebook" target="_blank"><i class="fab fa-facebook-f"></i></a>
+            <a class="text-body ms-3 hover-primary-color transition-all" asp-controller="Social" asp-action="X" target="_blank"><i class="fab fa-x-twitter"></i></a>
+            <a class="text-body ms-3 hover-primary-color transition-all" asp-controller="Social" asp-action="LinkedIn" target="_blank"><i class="fab fa-linkedin-in"></i></a>
+            <a class="text-body ms-3 hover-primary-color transition-all" asp-controller="Social" asp-action="Instagram" target="_blank"><i class="fab fa-instagram"></i></a>
         </div>
     </div>
 
@@ -40,16 +51,13 @@
         <div class="collapse navbar-collapse" id="navbarCollapse">
             <div class="navbar-nav ms-auto p-4 p-lg-0">
                 <a asp-controller="Home" asp-action="Index" class="nav-item nav-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "Home" ? "active text-primary" : "")">Trang chủ</a>
-                <a asp-controller="Home" asp-action="Privacy" class="nav-item nav-link">Bảo mật</a>
                 <div class="nav-item dropdown">
                     <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Trang tin</a>
                     <div class="dropdown-menu m-0 rounded-0">
-                        <a href="#" class="dropdown-item">Bài viết</a>
-                        <a asp-controller="Home" asp-action="VeChungToi" class="dropdown-item">Về chúng tôi</a>
+                        <a asp-controller="Home" asp-action="Blog" class="dropdown-item">Bài viết</a>
+                        <a asp-controller="Home" asp-action="AboutUs" class="dropdown-item">Về chúng tôi</a>
                     </div>
                 </div>
-                <a asp-controller="Cart" asp-action="LookupOrder" class="nav-item nav-link @(ViewContext.RouteData.Values["action"]?.ToString() == "LookupOrder" ? "active text-primary" : "")">Tra cứu đơn hàng</a>
-                <a href="#" class="nav-item nav-link">Liên hệ</a>
             </div>
 
             <div class="d-none d-lg-flex ms-2 align-items-center">
@@ -59,46 +67,68 @@
 
                 <div class="nav-item dropdown ms-3">
                     <a href="#" class="nav-link dropdown-toggle d-flex align-items-center gap-2 bg-white rounded-pill px-3 py-1 shadow-sm border" data-bs-toggle="dropdown">
-                        <div class="bg-primary rounded-circle d-flex align-items-center justify-content-center" style="width: 30px; height: 30px;">
-                            <i class="fa fa-user text-white" style="font-size: 0.8rem;"></i>
-                        </div>
-                        @if (User.Identity.IsAuthenticated) {
+                        @if (User.Identity.IsAuthenticated && !string.IsNullOrEmpty(avatarUrl)) {
+                            <img src="@avatarUrl" class="rounded-circle border" style="width: 30px; height: 30px; object-fit: cover;" alt="Avatar" />
                             <span class="fw-bold text-dark" style="font-size: 0.85rem;">@displayName</span>
+                        } else {
+                            <div class="bg-primary rounded-circle d-flex align-items-center justify-content-center" style="width: 30px; height: 30px;">
+                                <i class="fa fa-user text-white" style="font-size: 0.8rem;"></i>
+                            </div>
+                            @if (User.Identity.IsAuthenticated) {
+                                <span class="fw-bold text-dark" style="font-size: 0.85rem;">@displayName</span>
+                            }
                         }
                     </a>
-                    <div class="dropdown-menu dropdown-menu-end mt-2 shadow border-0 rounded-3">
+                    <div class="dropdown-menu dropdown-menu-end mt-2 shadow border-0 rounded-3" style="min-width: 230px;">
                         @if (User.Identity.IsAuthenticated) {
-                            <a asp-controller="Customer" asp-action="Profile" class="dropdown-item py-2">
-                                <i class="fa fa-id-card me-2 text-info"></i>Hồ sơ cá nhân
+                            <h6 class="dropdown-header text-uppercase fw-bold text-muted px-3 pt-2 pb-1" style="font-size: 0.75rem; letter-spacing: 0.5px;">KHÁCH HÀNG</h6>
+                            <a asp-controller="Customer" asp-action="Profile" class="dropdown-item py-2 px-3 d-flex align-items-center gap-2">
+                                <i class="fa fa-id-card text-info" style="width: 20px;"></i>
+                                <span>Hồ sơ cá nhân</span>
                             </a>
-                            <a asp-controller="Cart" asp-action="OrderHistory" class="dropdown-item py-2">
-                                <i class="fa fa-clock-rotate-left me-2 text-success"></i>Lịch sử mua hàng
+                            <a asp-controller="Cart" asp-action="OrderHistory" class="dropdown-item py-2 px-3 d-flex align-items-center gap-2">
+                                <i class="fa fa-clock-rotate-left text-success" style="width: 20px;"></i>
+                                <span>Lịch sử mua hàng</span>
                             </a>
-                            <a asp-controller="Customer" asp-action="Wishlist" class="dropdown-item py-2">
-                                <i class="fa fa-heart me-2 text-danger"></i>Sản phẩm yêu thích
+                            <a asp-controller="Customer" asp-action="Wishlist" class="dropdown-item py-2 px-3 d-flex align-items-center gap-2">
+                                <i class="fa fa-heart text-danger" style="width: 20px;"></i>
+                                <span>Sản phẩm yêu thích</span>
                             </a>
+                            
                             @if (User.IsInRole("Admin")) {
-                                <a asp-controller="HangHoas" asp-action="Index" class="dropdown-item py-2">
-                                    <i class="fa fa-cogs me-2 text-warning"></i>Quản lý sản phẩm
+                                <div class="dropdown-divider my-2"></div>
+                                <h6 class="dropdown-header text-uppercase fw-bold px-3 pt-1 pb-1" style="color: #ffb300; font-size: 0.75rem; letter-spacing: 0.5px;">QUẢN TRỊ VIÊN (ADMIN)</h6>
+                                <a asp-controller="HangHoas" asp-action="Index" class="dropdown-item py-2 px-3 d-flex align-items-center gap-2">
+                                    <i class="fa fa-cogs text-warning" style="width: 20px;"></i>
+                                    <span>Quản lý sản phẩm</span>
                                 </a>
-                                <a asp-controller="Admin" asp-action="UserManagement" class="dropdown-item py-2">
-                                    <i class="fa fa-users me-2 text-primary"></i>Quản lý người dùng
+                                <a asp-controller="Admin" asp-action="UserManagement" class="dropdown-item py-2 px-3 d-flex align-items-center gap-2">
+                                    <i class="fa fa-users text-success" style="width: 20px;"></i>
+                                    <span>Quản lý người dùng</span>
                                 </a>
-                                <a asp-controller="Admin" asp-action="OrderHistory" class="dropdown-item py-2">
-                                    <i class="fa fa-history me-2 text-info"></i>Quản lý đơn hàng
+                                <a asp-controller="Admin" asp-action="OrderHistory" class="dropdown-item py-2 px-3 d-flex align-items-center gap-2">
+                                    <i class="fa fa-history text-info" style="width: 20px;"></i>
+                                    <span>Quản lý đơn hàng</span>
                                 </a>
-                                <a asp-controller="Admin" asp-action="ReviewManagement" class="dropdown-item py-2">
-                                    <i class="fa fa-comments me-2 text-secondary"></i>Quản lý đánh giá
+                                <a asp-controller="Admin" asp-action="ReviewManagement" class="dropdown-item py-2 px-3 d-flex align-items-center gap-2">
+                                    <i class="fa fa-comments" style="color: #ff5722; width: 20px;"></i>
+                                    <span>Quản lý đánh giá</span>
+                                </a>
+                                <a asp-controller="Admin" asp-action="ChatDashboard" class="dropdown-item py-2 px-3 d-flex align-items-center gap-2">
+                                    <i class="fa fa-headset text-warning" style="width: 20px;"></i>
+                                    <span>Quản lý hỗ trợ</span>
                                 </a>
                             }
-                            <div class="dropdown-divider"></div>
-                            <a asp-controller="Customer" asp-action="Logout" class="dropdown-item py-2 text-danger">
-                                <i class="fa fa-sign-out-alt me-2"></i>Đăng xuất
+                            
+                            <div class="dropdown-divider my-2"></div>
+                            <a asp-controller="Customer" asp-action="Logout" class="dropdown-item py-2 px-3 text-danger d-flex align-items-center gap-2">
+                                <i class="fa fa-sign-out-alt" style="width: 20px;"></i>
+                                <span>Đăng xuất</span>
                             </a>
                         }
                         else {
-                            <a asp-controller="Customer" asp-action="Login" class="dropdown-item py-2">Đăng nhập</a>
-                            <a asp-controller="Customer" asp-action="Register" class="dropdown-item py-2">Đăng ký</a>
+                            <a asp-controller="Customer" asp-action="Login" class="dropdown-item py-2 px-3">Đăng nhập</a>
+                            <a asp-controller="Customer" asp-action="Register" class="dropdown-item py-2 px-3">Đăng ký</a>
                         }
                     </div>
                 </div>
@@ -126,6 +156,16 @@
 </div>
 
 <style>
+    .transition-all {
+        transition: all 0.2s ease-in-out !important;
+    }
+    .hover-primary-color:hover {
+        color: #81c408 !important;
+        text-decoration: none;
+    }
+    .hover-primary-color:hover i {
+        color: #81c408 !important;
+    }
     /* ... (Phần CSS cũ giữ nguyên) ... */
     .custom-sticky {
         position: fixed !important;
