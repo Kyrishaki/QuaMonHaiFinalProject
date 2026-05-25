@@ -23,8 +23,9 @@ namespace LTWEB_QuaMonHai_CuoiKy.ViewModels
         [MaxLength(50, ErrorMessage = "Tối đa 50 ký tự")]
         public string HoTen { get; set; }
 
-
-        public bool GioiTinh { get; set; } = true;
+        [Display(Name = "Giới tính")]
+        [Required(ErrorMessage = "Hãy chọn giới tính")]
+        public bool? GioiTinh { get; set; } = null;
 
 
         [Display(Name = "Ngày sinh")]
@@ -35,17 +36,18 @@ namespace LTWEB_QuaMonHai_CuoiKy.ViewModels
 
         [Display(Name = "Địa Chỉ")]
         [MaxLength(60, ErrorMessage = "Tối đa 60 ký tự")]
-        public string DiaChi { get; set; }
+        public string? DiaChi { get; set; }
 
 
         [Display(Name = "Điện Thoại")]
         [MaxLength(10, ErrorMessage = "Số điện thoại tối đa là 10 ký tự")]
         [RegularExpression(@"^0(3|5|7|8|9)\d{8}$", ErrorMessage = "Số điện thoại phải đủ 10 số và đúng định dạng VN ")]
-        public string DienThoai { get; set; }
+        public string? DienThoai { get; set; }
 
 
         [Display(Name = "Email")]
         [Required(ErrorMessage = "Vui lòng nhập Email")]
+        [EmailAddress(ErrorMessage = "Email phải có định dạng hợp lệ (ví dụ: abc@gmail.com)")]
         [RegularExpression(@"^[^@\s]+@[^@\s]+\.[^@\s]+$", ErrorMessage = "Email phải có định dạng hợp lệ (ví dụ: abc@gmail.com)")]
         public string Email { get; set; }
 
