@@ -1,14 +1,6 @@
-@using Microsoft.AspNetCore.Http
-@using LTWEB_QuaMonHai_CuoiKy.Helpers
-@using LTWEB_QuaMonHai_CuoiKy.ViewModels
-@inject IHttpContextAccessor HttpContextAccessor
 @inject LTWEB_QuaMonHai_CuoiKy.Data.Hshop2023Context DbContext
 
 @{
-    // Lấy số lượng sản phẩm trong giỏ hàng từ Session
-    var cartSession = HttpContextAccessor.HttpContext.Session.Get<List<CartItem>>("MyCart");
-    int soLuongGioHang = cartSession != null ? cartSession.Sum(c => c.SoLuong) : 0;
-
     // Lấy tên hiển thị mới nhất từ Database để tránh lỗi phông chữ từ Cookie cũ
     string displayName = User.Identity?.Name ?? "";
     if (User.Identity?.IsAuthenticated == true) {
@@ -111,15 +103,7 @@
                     </div>
                 </div>
 
-                <a class="btn-sm-square bg-white rounded-circle ms-3 shadow-sm border text-decoration-none d-flex align-items-center justify-content-center position-relative" asp-controller="Cart" asp-action="Index">
-                    <i class="fa fa-shopping-bag text-primary"></i>
-
-                    @if (soLuongGioHang > 0) {
-                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="font-size: 0.65rem;">
-                            @soLuongGioHang
-                        </span>
-                    }
-                </a>
+                @await Component.InvokeAsync("Cart")
             </div>
         </div>
     </nav>

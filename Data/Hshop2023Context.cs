@@ -55,7 +55,7 @@ public partial class Hshop2023Context : DbContext {
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) {
         if (!optionsBuilder.IsConfigured) {
-            optionsBuilder.UseSqlServer("Server=0.tcp.ap.ngrok.io,26018;Database=Hshop2023;User Id=sa;Password=QuaMonHai;TrustServerCertificate=True;");
+            optionsBuilder.UseSqlServer("Data Source=SQL1004.site4now.net;Initial Catalog=db_ac9191_quamonhaidb;User Id=db_ac9191_quamonhaidb_admin;Password=Tu@n1121314151;Encrypt=True;TrustServerCertificate=True;");
         }
     }
 
