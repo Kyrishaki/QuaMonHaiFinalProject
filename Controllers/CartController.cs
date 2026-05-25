@@ -617,6 +617,17 @@ namespace LTWEB_QuaMonHai_CuoiKy.Controllers
                 item.MaHhNavigation.SoLuong -= item.SoLuong;
                 _Context.HangHoas.Update(item.MaHhNavigation);
             }
+            // Cập nhật số lần sử dụng của voucher (nếu có)
+            if (voucher != null)
+            {
+                voucher.SoLanSuDung -= 1;
+
+                if (voucher.SoLanSuDung <= 0)
+                {
+                    voucher.SoLanSuDung = 0;
+                    voucher.TrangThai = false;
+                }
+            }
 
             // Lưu Hóa Đơn và Xóa các sản phẩm đã mua khỏi giỏ hàng DB
             _Context.HoaDons.Add(hoaDon);
