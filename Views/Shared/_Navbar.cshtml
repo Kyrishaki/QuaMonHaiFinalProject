@@ -13,8 +13,13 @@
                 var hinh = khachHang.Hinh ?? "";
                 if (hinh.StartsWith("http://") || hinh.StartsWith("https://")) {
                     avatarUrl = hinh;
-                } else {
+                } else if (hinh.StartsWith("[API]:")) {
+                    string apiName = hinh.Replace("[API]:", "");
+                    avatarUrl = Url.Content($"~/api/Avatar/generate?name={Uri.EscapeDataString(apiName)}");
+                } else if (!string.IsNullOrEmpty(hinh) && hinh != "default-avatar.jpg" && hinh != "avatar.jpg" && hinh != "Photo.gif" && hinh != "man.gif") {
                     avatarUrl = Url.Content("~/img/Hinh/KhachHang/" + hinh);
+                } else {
+                    avatarUrl = Url.Content($"~/api/Avatar/generate?name={Uri.EscapeDataString(khachHang.HoTen ?? "User")}");
                 }
             }
         }
