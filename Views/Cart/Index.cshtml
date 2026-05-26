@@ -252,23 +252,13 @@
                     row.find('.item-total').text(new Intl.NumberFormat('en-US').format(res.lineTotal) + '$');
                     
                     calculateCheckedTotal();
+                    updateBadge(res.count);
                     
                     if (!res.success) {
                         showToast(res.message, 'error');
-                    } else {
-                        // Cập nhật lại số lượng trên badge giỏ hàng
-                        $.get('@Url.Action("CartCount", "Cart")', function(count) {
-                            var badge = $('.fa-shopping-bag').siblings('.badge');
-                            if (badge.length > 0) {
-                                badge.text(count);
-                            } else if (count > 0) {
-                                $('.fa-shopping-bag').parent().append('<span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="font-size: 0.65rem;">' + count + '</span>');
-                            }
-                        });
                     }
                 },
-                error: function(err) {
-                    console.log('Error updating quantity:', err);
+                error: function() {
                     showToast('Lỗi kết nối máy chủ!', 'error');
                 }
             });
