@@ -1,7 +1,7 @@
 @inject LTWEB_QuaMonHai_CuoiKy.Data.Hshop2023Context db
 @{
     var customerId = User.Claims.FirstOrDefault(c => c.Type == "CustomerID")?.Value;
-    LTWEB_QuaMonHai_CuoiKy.Models.KhachHang khachHang = null;
+    LTWEB_QuaMonHai_CuoiKy.Models.KhachHang? khachHang = null;
     if (!string.IsNullOrEmpty(customerId))
     {
         khachHang = db.KhachHangs.FirstOrDefault(kh => kh.MaKh == customerId);

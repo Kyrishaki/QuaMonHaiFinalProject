@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authorization; // THÊM THƯ VIỆN NÀY DÙNG CHO B�
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using LTWEB_QuaMonHai_CuoiKy.Helpers;
 
 namespace LTWEB_QuaMonHai_CuoiKy.Controllers {
     public class HangHoasController : Controller {
@@ -15,94 +16,8 @@ namespace LTWEB_QuaMonHai_CuoiKy.Controllers {
 
         // GET: HangHoas (Mở cho tất cả mọi người xem danh sách)
         public async Task<IActionResult> Index(int? loaiId, string searchQuery, string priceRange, string sortBy, int page = 1, bool manage = false) {
-            int pageSize = 9;
-
-            // Lấy danh sách ID sản phẩm yêu thích của người dùng hiện tại
-            var favoriteProductIds = new List<int>();
-            if (User.Identity?.IsAuthenticated == true) {
-                var customerId = User.Claims.SingleOrDefault(c => c.Type == "CustomerID")?.Value;
-                if (!string.IsNullOrEmpty(customerId)) {
-                    favoriteProductIds = await _context.YeuThiches
-                        .Where(y => y.MaKh == customerId && y.MaHh.HasValue)
-                        .Select(y => y.MaHh ?? 0)
-                        .ToListAsync();
-                }
-            }
-            ViewBag.FavoriteProductIds = favoriteProductIds;
-
-            ViewBag.DanhMucs = await _context.Loais.Include(l => l.HangHoas).AsNoTracking().ToListAsync();
-            ViewBag.TotalProductCount = await _context.HangHoas.CountAsync();
-            ViewBag.CurrentLoai = loaiId;
-            ViewBag.CurrentSort = sortBy;
-
-            var query = _context.HangHoas
-                                .Include(h => h.MaLoaiNavigation)
-                                .AsNoTracking()
-                                .AsQueryable();
-
-            // Quản lý hiển thị sản phẩm dựa trên chế độ quản lý (manage) và vai trò
-            bool isManager = User.IsInRole("Admin") || User.IsInRole("Staff");
-            if (manage && isManager) {
-                ViewBag.ManageMode = true;
-            } else {
-                query = query.Where(h => h.HieuLuc && h.SoLuong > 0);
-                ViewBag.ManageMode = false;
-            }
-
-            if (loaiId.HasValue) {
-                query = query.Where(h => h.MaLoai == loaiId.Value);
-            }
-
-            if (!string.IsNullOrEmpty(searchQuery)) {
-                query = query.Where(h => h.TenHh.Contains(searchQuery));
-            }
-
-            if (!string.IsNullOrEmpty(priceRange)) {
-                if (decimal.TryParse(priceRange, out decimal maxVal)) {
-                    query = query.Where(h => h.GiaSauGiam <= maxVal);
-                } else {
-                    switch (priceRange) {
-                        case "under50":
-                            query = query.Where(h => h.GiaSauGiam < 50);
-                            break;
-                        case "50to100":
-                            query = query.Where(h => h.GiaSauGiam >= 50 && h.GiaSauGiam <= 100);
-                            break;
-                        case "over100":
-                            query = query.Where(h => h.GiaSauGiam > 100);
-                            break;
-                    }
-                }
-            }
-
-            // 4. Xử lý Sắp xếp
-            if (sortBy == "price_asc") {
-                query = query.OrderBy(h => h.DonGia);
-            } else if (sortBy == "price_desc") {
-                query = query.OrderByDescending(h => h.DonGia);
-            }
-
-            int totalItems = await query.CountAsync();
-            int totalPages = (int)Math.Ceiling(totalItems / (double)pageSize);
-
-            if (page < 1) page = 1;
-            if (page > totalPages && totalPages > 0) page = totalPages;
-
-            var items = await query
-                .Skip((page - 1) * pageSize)
-                .Take(pageSize)
-                .ToListAsync();
-
-            var productIds = items.Select(i => i.MaHh).ToList();
-            var soldCounts = await _context.ChiTietHds
-                .Where(ct => productIds.Contains(ct.MaHh) && ct.MaHdNavigation.MaTrangThai != -1)
-                .GroupBy(ct => ct.MaHh)
-                .Select(g => new { MaHh = g.Key, TotalSold = g.Sum(ct => ct.SoLuong) })
-                .ToDictionaryAsync(x => x.MaHh, x => x.TotalSold);
-            ViewBag.SoldCounts = soldCounts;
-
-            ViewBag.CurrentPage = page;
-            ViewBag.TotalPages = totalPages;
+            var items = await ProductQueryHelper.GetFilteredProductsAsync(
+                _context, User, ViewBag, loaiId, searchQuery, priceRange, sortBy, page, manage);
 
             return View(items);
         }
@@ -319,7 +234,11 @@ namespace LTWEB_QuaMonHai_CuoiKy.Controllers {
 
         private async Task<string> LuuFileHinh(IFormFile file) {
             var fileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
-            var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Hinh", "HangHoa", fileName);
+            var directoryPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "img", "Hinh", "HangHoa");
+            if (!Directory.Exists(directoryPath)) {
+                Directory.CreateDirectory(directoryPath);
+            }
+            var path = Path.Combine(directoryPath, fileName);
 
             using (var stream = new FileStream(path, FileMode.Create)) {
                 await file.CopyToAsync(stream);

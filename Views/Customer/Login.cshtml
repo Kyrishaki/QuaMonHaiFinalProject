@@ -33,15 +33,15 @@
                     <div class="text-danger mb-3" asp-validation-summary="All"></div>
 
                     <div class="form-floating mb-4">
-                        <input asp-for="@Model.UserName" type="text" class="form-control rounded-pill px-4" id="floatingInput" placeholder="Tên đăng nhập">
+                        <input asp-for="UserName" type="text" class="form-control rounded-pill px-4" id="floatingInput" placeholder="Tên đăng nhập">
                         <label for="floatingInput" class="ms-3 text-muted">Tên đăng nhập *</label>
-                        <span asp-validation-for="@Model.UserName" class="text-danger small ms-3"></span>
+                        <span asp-validation-for="UserName" class="text-danger small ms-3"></span>
                     </div>
 
                     <div class="form-floating mb-4">
-                        <input asp-for="@Model.Password" type="password" class="form-control rounded-pill px-4" id="floatingPassword" placeholder="Mật khẩu">
+                        <input asp-for="Password" type="password" class="form-control rounded-pill px-4" id="floatingPassword" placeholder="Mật khẩu">
                         <label for="floatingPassword" class="ms-3 text-muted">Mật khẩu *</label>
-                        <span asp-validation-for="@Model.Password" class="text-danger small ms-3"></span>
+                        <span asp-validation-for="Password" class="text-danger small ms-3"></span>
                     </div>
 
                     <!-- TEMPORARILY DISABLED FOR AUTOMATED FLOW TESTING -->

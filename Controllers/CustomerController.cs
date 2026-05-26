@@ -14,11 +14,6 @@ using System.Net.Mail;
 using System.Security.Claims;
 using Microsoft.EntityFrameworkCore;
 
-using System.Security.Claims;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.Cookies;
-
-
 namespace LTWEB_QuaMonHai_CuoiKy.Controllers {
     public class CustomerController : Controller {
         private readonly Hshop2023Context db;
@@ -171,27 +166,21 @@ namespace LTWEB_QuaMonHai_CuoiKy.Controllers {
 
                             await HttpContext.SignInAsync(claimsPrincipal);
 
-                            if (TempData["url"] != null)
+                            var urlObj = TempData["url"];
+                            if (urlObj != null)
                             {
-                                var url = TempData["url"].ToString();
-                                return Redirect(url);
-
-                            }
-                            else
-                            {
-                                // Kiểm tra đường dẫn và điều hướng
-                                if (Url.IsLocalUrl(ReturnUrl))
+                                var url = urlObj.ToString();
+                                if (!string.IsNullOrEmpty(url))
                                 {
-                                    return Redirect(ReturnUrl);
-                                }
-                                else
-                                {
-                                    return Redirect("/"); // Chuyển về trang chủ
+                                    return Redirect(url);
                                 }
                             }
 
-                           
-                           
+                            if (!string.IsNullOrEmpty(ReturnUrl) && Url.IsLocalUrl(ReturnUrl))
+                            {
+                                return Redirect(ReturnUrl);
+                            }
+                            return Redirect("/"); // Chuyển về trang chủ
                         }
                     }
                 }

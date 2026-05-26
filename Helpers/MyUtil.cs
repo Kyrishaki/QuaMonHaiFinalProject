@@ -66,25 +66,6 @@ namespace LTWEB_QuaMonHai_CuoiKy.Helpers
             }
         }
 
-        public static string UploadHinh(IFormFile Hinh, string folder)
-        {
-            try
-            {
-                var fullPath = Path.Combine
-                    (Directory.GetCurrentDirectory(), "wwwroot",
-                    "Hinh", folder, Hinh.FileName);
-                using (var myfile = new FileStream(fullPath, FileMode.CreateNew))
-                {
-                    Hinh.CopyTo(myfile);
-                }
-                return Hinh.FileName;
-            }
-            catch (Exception)
-            { 
-                return string.Empty;
-            }
-        }
-
         public static string GenerateRandomKey(int length = 5)
         {
             var pattern = @"qazwsxedcrfvtgbyhnujmiklopQAZWSXEDCRFVTGBYHNUJMIKLOP!";

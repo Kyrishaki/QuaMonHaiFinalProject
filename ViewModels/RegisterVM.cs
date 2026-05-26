@@ -1,4 +1,4 @@
-﻿using LTWEB_QuaMonHai_CuoiKy.Helpers;
+using LTWEB_QuaMonHai_CuoiKy.Helpers;
 using System.ComponentModel.DataAnnotations;
 
 namespace LTWEB_QuaMonHai_CuoiKy.ViewModels
@@ -35,13 +35,13 @@ namespace LTWEB_QuaMonHai_CuoiKy.ViewModels
 
         [Display(Name = "Địa Chỉ")]
         [MaxLength(60, ErrorMessage = "Tối đa 60 ký tự")]
-        public string DiaChi { get; set; }
+        public string? DiaChi { get; set; }
 
 
         [Display(Name = "Điện Thoại")]
         [MaxLength(10, ErrorMessage = "Số điện thoại tối đa là 10 ký tự")]
         [RegularExpression(@"^0(3|5|7|8|9)\d{8}$", ErrorMessage = "Số điện thoại phải đủ 10 số và đúng định dạng VN ")]
-        public string DienThoai { get; set; }
+        public string? DienThoai { get; set; }
 
 
         [Display(Name = "Email")]

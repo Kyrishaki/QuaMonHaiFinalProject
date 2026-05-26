@@ -1,0 +1,256 @@
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QuaMonGroup - Hệ thống liên kết</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,600;0,700;1,600&family=Outfit:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #3CB815;
+            --primary-dark: #2f9410;
+            --dark: #1E293B;
+            --light: #F8FAFC;
+        }
+
+        body {
+            background-color: #0f172a;
+            color: #f1f5f9;
+            font-family: 'Outfit', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            overflow-x: hidden;
+            background-image: 
+                radial-gradient(at 0% 0%, rgba(60, 184, 21, 0.15) 0px, transparent 50%),
+                radial-gradient(at 100% 100%, rgba(30, 41, 59, 0.8) 0px, transparent 50%);
+        }
+
+        .header-section {
+            padding: 60px 0 20px 0;
+            text-align: center;
+        }
+
+        .header-title {
+            font-family: 'Lora', serif;
+            font-size: 3.5rem;
+            font-weight: 800;
+            letter-spacing: 1px;
+            color: #ffffff;
+            margin-bottom: 10px;
+        }
+
+        .header-title span {
+            color: var(--primary);
+            font-style: italic;
+        }
+
+        .header-subtitle {
+            font-size: 1.2rem;
+            color: #94a3b8;
+            max-width: 600px;
+            margin: 0 auto;
+            font-weight: 300;
+        }
+
+        .group-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .hub-card {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 24px;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+            position: relative;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            text-decoration: none !important;
+            display: block;
+            height: 100%;
+        }
+
+        .hub-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(180deg, transparent 50%, rgba(15, 23, 42, 0.9) 100%);
+            z-index: 2;
+            transition: opacity 0.3s ease;
+        }
+
+        .hub-card:hover {
+            transform: translateY(-8px);
+            border-color: rgba(60, 184, 21, 0.4);
+            box-shadow: 0 20px 40px rgba(60, 184, 21, 0.15);
+        }
+
+        .hub-image-wrapper {
+            position: relative;
+            height: 250px;
+            overflow: hidden;
+            background-color: #1e293b;
+        }
+
+        .hub-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
+        }
+
+        .hub-card:hover .hub-image {
+            transform: scale(1.08);
+        }
+
+        .hub-content {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 30px;
+            z-index: 3;
+        }
+
+        .hub-tag {
+            background-color: var(--primary);
+            color: #ffffff;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            font-weight: 700;
+            padding: 6px 12px;
+            border-radius: 50px;
+            display: inline-block;
+            margin-bottom: 12px;
+            letter-spacing: 1px;
+            box-shadow: 0 4px 10px rgba(60, 184, 21, 0.3);
+        }
+
+        .hub-tag.tag-blue {
+            background-color: #2563eb;
+            box-shadow: 0 4px 10px rgba(37, 99, 235, 0.3);
+        }
+
+        .hub-card-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 8px;
+        }
+
+        .hub-card-description {
+            font-size: 0.95rem;
+            color: #cbd5e1;
+            margin-bottom: 0;
+            font-weight: 300;
+            line-height: 1.5;
+        }
+
+        .floating-back-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            border-radius: 50px;
+            padding: 14px 28px;
+            box-shadow: 0 8px 20px rgba(60, 184, 21, 0.3);
+            z-index: 10000;
+            text-decoration: none;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border: none;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .floating-back-btn:hover {
+            transform: translateY(-4px) scale(1.03);
+            box-shadow: 0 12px 25px rgba(60, 184, 21, 0.5);
+            color: white;
+        }
+
+        .footer-text {
+            text-align: center;
+            color: #64748b;
+            padding: 40px 0;
+            font-size: 0.9rem;
+            font-weight: 300;
+        }
+
+        .footer-text a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Back to Main Site Button -->
+    <a href="/" class="floating-back-btn">
+        <i class="fa fa-arrow-left"></i> Quay lại QuaMonHai
+    </a>
+
+    <!-- Header Section -->
+    <div class="header-section">
+        <h1 class="header-title">QuaMon<span>Group</span></h1>
+        <p class="header-subtitle">Hệ thống liên kết các nền tảng thương mại điện tử chất lượng hàng đầu Việt Nam</p>
+    </div>
+
+    <!-- Hub Cards Grid -->
+    <div class="group-container">
+        <div class="row g-4 justify-content-center">
+            
+            <!-- Card QuaMonMot -->
+            <div class="col-md-6">
+                <a href="http://quamonmot.runasp.net/" target="_blank" class="hub-card">
+                    <div class="hub-image-wrapper">
+                        <img src="~/img/quamonmot_banner.png" alt="QuaMonMot" class="hub-image">
+                    </div>
+                    <div class="hub-content">
+                        <span class="hub-tag">Hệ thống 1</span>
+                        <h3 class="hub-card-title">QuaMonMot</h3>
+                        <p class="hub-card-description">Nền tảng mua sắm tiện ích thông minh, cung cấp các mặt hàng thời trang, bách hóa tổng hợp với chất lượng vượt trội.</p>
+                    </div>
+                </a>
+            </div>
+
+            <!-- Card QuaMonBa -->
+            <div class="col-md-6">
+                <a href="http://quamonba.somee.com/" target="_blank" class="hub-card">
+                    <div class="hub-image-wrapper">
+                        <img src="~/img/quamonba_banner.png" alt="QuaMonBa" class="hub-image">
+                    </div>
+                    <div class="hub-content">
+                        <span class="hub-tag tag-blue">Hệ thống 3</span>
+                        <h3 class="hub-card-title">QuaMonBa</h3>
+                        <p class="hub-card-description">Nền tảng điện tử và phụ kiện công nghệ đỉnh cao, phân phối sản phẩm chính hãng với chế độ bảo hành chuyên nghiệp.</p>
+                    </div>
+                </a>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer-text">
+        &copy; 2026 <a href="#">QuaMonGroup</a>. Mọi quyền được bảo lưu.
+    </div>
+
+</body>
+</html>

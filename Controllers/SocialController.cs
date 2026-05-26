@@ -38,5 +38,10 @@ namespace LTWEB_QuaMonHai_CuoiKy.Controllers
             var products = await _context.HangHoas.Where(h => h.HieuLuc).Take(3).ToListAsync();
             return View(products);
         }
+
+        public IActionResult QuaMonGroup()
+        {
+            return View();
+        }
     }
 }
