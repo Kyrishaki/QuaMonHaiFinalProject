@@ -1,7 +1,7 @@
 @{
     var controller = ViewContext.RouteData.Values["controller"]?.ToString();
     var action = ViewContext.RouteData.Values["action"]?.ToString();
-    bool shouldShowChat = (controller == "Home" && action == "Index") || (controller == "HangHoas" && action == "Details");
+    bool shouldShowChat = true; // Show chat bubble on all customer-facing pages
 
     // Lấy thông tin sản phẩm nếu đang ở trang chi tiết
     LTWEB_QuaMonHai_CuoiKy.Models.HangHoa? hangHoa = null;
@@ -359,6 +359,11 @@
             // Bắt đầu chạy vòng check unread ban đầu
             checkUnreadCount();
             badgeInterval = setInterval(checkUnreadCount, 10000);
+
+            // Tự động mở nếu có tham số openChat=true trên URL
+            if (new URLSearchParams(window.location.search).get("openChat") === "true") {
+                setTimeout(openChat, 800);
+            }
         });
     </script>
 }

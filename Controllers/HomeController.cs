@@ -44,6 +44,13 @@ namespace LTWEB_QuaMonHai_CuoiKy.Controllers {
             return View();
         }
 
+        public IActionResult TermsAndPolicies() {
+            ViewData["Title"] = "Điều khoản & Chính sách";
+            ViewData["Breadcrumb_Parent"] = "Trang thông tin";
+            ViewData["Breadcrumb_ParentLink"] = "#";
+            return View();
+        }
+
         [Route("/AccessDenied")]
         public IActionResult AccessDenied() {
             ViewData["Title"] = "Truy cập bị từ chối";

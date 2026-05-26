@@ -1,7 +1,7 @@
 <div class="container-fluid bg-dark footer pt-5 wow fadeIn" data-wow-delay="0.1s">
     <div class="container py-5">
         <div class="row g-5">
-            <div class="col-lg-3 col-md-6">
+            <div class="col-lg-4 col-md-6">
                 <h1 class="fw-bold text-primary mb-4" style="font-family: 'Lora', serif; letter-spacing: 1px;">QuaMon<span class="text-secondary" style="font-style: italic;">Hai</span></h1>
                 <p>Hệ thống cung cấp sản phẩm công nghệ & phụ kiện thời trang chính hãng, cam kết chất lượng uy tín và bảo hành vượt trội.</p>
                 <div class="d-flex pt-2">
@@ -12,30 +12,38 @@
                     <a class="btn btn-square btn-outline-light rounded-circle me-0" asp-controller="Social" asp-action="QuaMonGroup" target="_blank" title="QuaMonGroup"><i class="fa-solid fa-users-rectangle text-success"></i></a>
                 </div>
             </div>
-            <div class="col-lg-3 col-md-6">
+            <div class="col-lg-4 col-md-6">
                 <h4 class="text-light mb-4">Địa chỉ liên hệ</h4>
                 <p><i class="fa fa-map-marker-alt me-3"></i>Thành phố Biên Hòa, Đồng Nai</p>
                 <p><i class="fa fa-phone-alt me-3"></i>0936 363 636</p>
                 <p><i class="fa fa-envelope me-3"></i>quamonhai@gmail.com</p>
             </div>
-            <div class="col-lg-3 col-md-6">
+            <div class="col-lg-4 col-md-6">
                 <h4 class="text-light mb-4">Liên kết nhanh</h4>
-                <a class="btn btn-link" href="">Về chúng tôi</a>
-                <a class="btn btn-link" href="">Liên hệ</a>
-                <a class="btn btn-link" href="">Dịch vụ</a>
-                <a class="btn btn-link" href="">Điều khoản & Chính sách</a>
-                <a class="btn btn-link" href="">Hỗ trợ khách hàng</a>
-            </div>
-            <div class="col-lg-3 col-md-6">
-                <h4 class="text-light mb-4">Đăng ký nhận tin</h4>
-                <p>Nhận ngay các thông tin khuyến mãi và mã giảm giá mới nhất từ chúng tôi.</p>
-                <div class="position-relative mx-auto" style="max-width: 400px;">
-                    <input class="form-control bg-transparent w-100 py-3 ps-4 pe-5" type="text" placeholder="Email của bạn">
-                    <button type="button" class="btn btn-primary py-2 position-absolute top-0 end-0 mt-2 me-2">Đăng ký</button>
-                </div>
+                <a class="btn btn-link" asp-controller="Home" asp-action="AboutUs">Về chúng tôi</a>
+                <a class="btn btn-link" href="javascript:void(0);" onclick="openCustomerChat(event)">Liên hệ</a>
+                <a class="btn btn-link" asp-controller="Home" asp-action="Blog">Bài viết</a>
+                <a class="btn btn-link" asp-controller="Home" asp-action="TermsAndPolicies">Điều khoản & Chính sách</a>
             </div>
         </div>
     </div>
+
+    <script>
+        function openCustomerChat(e) {
+            if (e) e.preventDefault();
+            const bubbleBtn = document.getElementById("chat-bubble-btn");
+            const chatWindow = document.getElementById("chat-window");
+            if (bubbleBtn && chatWindow) {
+                if (chatWindow.style.display === "none" || !chatWindow.classList.contains("animate__fadeInUp")) {
+                    bubbleBtn.click();
+                }
+                document.getElementById("customer-chat-widget").scrollIntoView({ behavior: 'smooth', block: 'end' });
+            } else {
+                // If bubble doesn't exist on this page, redirect to home page and trigger it (or since we enabled it on all pages, it should exist)
+                window.location.href = "/?openChat=true";
+            }
+        }
+    </script>
     <div class="container-fluid copyright">
         <div class="container">
             <div class="row border-bottom pb-3 mb-3">

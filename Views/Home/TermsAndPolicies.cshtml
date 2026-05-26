@@ -1,0 +1,193 @@
+@{
+    ViewData["Title"] = "Điều khoản & Chính sách";
+}
+
+<div class="container-xxl py-5 mt-5">
+    <div class="container">
+        <!-- Section Header -->
+        <div class="section-header text-center mx-auto mb-5 wow fadeInUp" data-wow-delay="0.1s" style="max-width: 800px;">
+            <h1 class="display-5 mb-3 fw-bold text-primary" style="font-family: 'Lora', serif;">Điều Khoản & Chính Sách</h1>
+            <p class="text-muted">Chào mừng bạn đến với QuaMonHaiShop. Vui lòng đọc kỹ các điều khoản và chính sách dưới đây để bảo vệ quyền lợi hợp pháp của bạn và xây dựng một môi trường mua sắm văn minh.</p>
+        </div>
+
+        <div class="row g-5">
+            <!-- Sidebar Navigation (Left Panel) -->
+            <div class="col-lg-4 wow fadeInUp" data-wow-delay="0.1s">
+                <div class="card border-0 shadow-sm rounded-4 p-3 bg-white sticky-lg-top" style="top: 100px; z-index: 100;">
+                    <h5 class="fw-bold text-dark px-3 mb-3 border-bottom pb-2" style="font-family: 'Lora', serif;"><i class="fa-solid fa-list-ul text-primary me-2"></i>Mục lục chính sách</h5>
+                    <div class="nav flex-column nav-pills policy-tabs" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                        <button class="nav-link active text-start py-3 px-4 rounded-3 mb-2 fw-semibold border-0 bg-transparent text-secondary position-relative transition-all" id="v-pills-terms-tab" data-bs-toggle="pill" data-bs-target="#v-pills-terms" type="button" role="tab" aria-controls="v-pills-terms" aria-selected="true">
+                            <i class="fa-solid fa-file-contract me-3 fs-5"></i>1. Điều khoản sử dụng
+                        </button>
+                        <button class="nav-link text-start py-3 px-4 rounded-3 mb-2 fw-semibold border-0 bg-transparent text-secondary position-relative transition-all" id="v-pills-privacy-tab" data-bs-toggle="pill" data-bs-target="#v-pills-privacy" type="button" role="tab" aria-controls="v-pills-privacy" aria-selected="false">
+                            <i class="fa-solid fa-user-shield me-3 fs-5"></i>2. Chính sách bảo mật
+                        </button>
+                        <button class="nav-link text-start py-3 px-4 rounded-3 mb-2 fw-semibold border-0 bg-transparent text-secondary position-relative transition-all" id="v-pills-delivery-tab" data-bs-toggle="pill" data-bs-target="#v-pills-delivery" type="button" role="tab" aria-controls="v-pills-delivery" aria-selected="false">
+                            <i class="fa-solid fa-truck-fast me-3 fs-5"></i>3. Chính sách giao nhận
+                        </button>
+                        <button class="nav-link text-start py-3 px-4 rounded-3 mb-2 fw-semibold border-0 bg-transparent text-secondary position-relative transition-all" id="v-pills-refund-tab" data-bs-toggle="pill" data-bs-target="#v-pills-refund" type="button" role="tab" aria-controls="v-pills-refund" aria-selected="false">
+                            <i class="fa-solid fa-rotate-left me-3 fs-5"></i>4. Đổi trả & hoàn tiền
+                        </button>
+                        <button class="nav-link text-start py-3 px-4 rounded-3 mb-2 fw-semibold border-0 bg-transparent text-secondary position-relative transition-all" id="v-pills-warranty-tab" data-bs-toggle="pill" data-bs-target="#v-pills-warranty" type="button" role="tab" aria-controls="v-pills-warranty" aria-selected="false">
+                            <i class="fa-solid fa-screwdriver-wrench me-3 fs-5"></i>5. Chính sách bảo hành
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Content Area (Right Panel) -->
+            <div class="col-lg-8 wow fadeInUp" data-wow-delay="0.3s">
+                <div class="tab-content" id="v-pills-tabContent">
+                    <!-- 1. Terms of Use -->
+                    <div class="tab-pane fade show active" id="v-pills-terms" role="tabpanel" aria-labelledby="v-pills-terms-tab">
+                        <div class="bg-white rounded-4 shadow-sm p-4 p-md-5 border border-light">
+                            <h2 class="fw-bold mb-4 text-primary" style="font-family: 'Lora', serif;"><i class="fa-solid fa-file-contract me-3"></i>1. Điều Khoản Sử Dụng</h2>
+                            <p class="text-muted leading-relaxed">Chào mừng bạn đến với QuaMonHaiShop. Khi bạn truy cập và mua sắm trên website của chúng tôi, đồng nghĩa với việc bạn đồng ý với các điều khoản sử dụng sau:</p>
+                            
+                            <h5 class="fw-bold mt-4 mb-3 text-dark"><i class="fa-solid fa-check text-success me-2"></i>Quyền sở hữu tài khoản</h5>
+                            <p class="text-muted small">Người dùng có trách nhiệm tự bảo mật tài khoản và mật khẩu của mình. Mọi hoạt động xảy ra dưới tài khoản của bạn sẽ thuộc trách nhiệm cá nhân của bạn. Nếu có bất kỳ sự cố rò rỉ bảo mật nào, vui lòng liên hệ ngay với ban quản trị.</p>
+                            
+                            <h5 class="fw-bold mt-4 mb-3 text-dark"><i class="fa-solid fa-check text-success me-2"></i>Quy định hành vi mua hàng</h5>
+                            <p class="text-muted small">Khách hàng cam kết cung cấp thông tin chính xác, đầy đủ bao gồm họ tên, số điện thoại, địa chỉ khi tiến hành đặt hàng để hệ thống xử lý giao hàng thành công. Các hành vi đặt hàng giả mạo, spam hệ thống sẽ bị khóa tài khoản vĩnh viễn.</p>
+                            
+                            <h5 class="fw-bold mt-4 mb-3 text-dark"><i class="fa-solid fa-check text-success me-2"></i>Bản quyền nội dung</h5>
+                            <p class="text-muted small">Tất cả hình ảnh sản phẩm, bài viết giới thiệu, logo thiết kế thuộc bản quyền của QuaMonHaiShop. Mọi hành vi sao chép nội dung khi chưa có sự cho phép bằng văn bản đều vi phạm quy định sử dụng dịch vụ.</p>
+                        </div>
+                    </div>
+
+                    <!-- 2. Privacy Policy -->
+                    <div class="tab-pane fade" id="v-pills-privacy" role="tabpanel" aria-labelledby="v-pills-privacy-tab">
+                        <div class="bg-white rounded-4 shadow-sm p-4 p-md-5 border border-light">
+                            <h2 class="fw-bold mb-4 text-primary" style="font-family: 'Lora', serif;"><i class="fa-solid fa-user-shield me-3"></i>2. Chính Sách Bảo Mật</h2>
+                            <p class="text-muted leading-relaxed">QuaMonHaiShop cam kết tuyệt đối bảo mật thông tin cá nhân của khách hàng theo đúng tinh thần trách nhiệm cao nhất:</p>
+                            
+                            <h5 class="fw-bold mt-4 mb-3 text-dark"><i class="fa-solid fa-shield text-success me-2"></i>Thu thập thông tin cá nhân</h5>
+                            <p class="text-muted small">Chúng tôi chỉ thu thập các thông tin cần thiết phục vụ cho quá trình giao dịch bao gồm: Họ tên, Email, Số điện thoại và Địa chỉ giao hàng. Hệ thống không lưu trữ thông tin thẻ ngân hàng hoặc mật khẩu dưới dạng thô.</p>
+                            
+                            <h5 class="fw-bold mt-4 mb-3 text-dark"><i class="fa-solid fa-shield text-success me-2"></i>Mục đích sử dụng dữ liệu</h5>
+                            <p class="text-muted small">Thông tin thu thập chỉ được dùng để liên lạc xác nhận đơn hàng, gửi thông tin cập nhật trạng thái đơn hàng, tư vấn sản phẩm qua cổng hỗ trợ trực tuyến và xử lý các khiếu nại phát sinh nếu có.</p>
+                            
+                            <h5 class="fw-bold mt-4 mb-3 text-dark"><i class="fa-solid fa-shield text-success me-2"></i>Cam kết không chia sẻ</h5>
+                            <p class="text-muted small">QuaMonHaiShop cam kết không chia sẻ, bán hoặc trao đổi thông tin khách hàng cho bất kỳ bên thứ ba nào ngoại trừ các đơn vị đối tác vận chuyển phục vụ việc giao hàng trực tiếp đến tay quý khách.</p>
+                        </div>
+                    </div>
+
+                    <!-- 3. Delivery Policy -->
+                    <div class="tab-pane fade" id="v-pills-delivery" role="tabpanel" aria-labelledby="v-pills-delivery-tab">
+                        <div class="bg-white rounded-4 shadow-sm p-4 p-md-5 border border-light">
+                            <h2 class="fw-bold mb-4 text-primary" style="font-family: 'Lora', serif;"><i class="fa-solid fa-truck-fast me-3"></i>3. Chính Sách Giao Nhận</h2>
+                            <p class="text-muted leading-relaxed">Chúng tôi xây dựng quy trình đóng gói và giao nhận chuyên nghiệp giúp hàng hóa đến tay khách hàng nhanh chóng và nguyên vẹn nhất:</p>
+                            
+                            <h5 class="fw-bold mt-4 mb-3 text-dark"><i class="fa-solid fa-box text-success me-2"></i>Phương thức vận chuyển & Chi phí</h5>
+                            <div class="table-responsive mb-3">
+                                <table class="table table-bordered table-striped small align-middle">
+                                    <thead>
+                                        <tr class="table-dark text-center">
+                                            <th>Phương thức</th>
+                                            <th>Thời gian nhận</th>
+                                            <th>Cước phí</th>
+                                            <th>Ghi chú</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td class="fw-bold text-success">Giao hàng tiêu chuẩn</td>
+                                            <td class="text-center">3 - 5 ngày làm việc</td>
+                                            <td class="text-center fw-bold">$2</td>
+                                            <td>Phù hợp cho các đơn hàng không quá gấp gáp.</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="fw-bold text-warning">Giao hàng nhanh</td>
+                                            <td class="text-center">1 - 2 ngày làm việc</td>
+                                            <td class="text-center fw-bold">$5</td>
+                                            <td>Ưu tiên xử lý đóng gói và vận chuyển hỏa tốc.</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            
+                            <h5 class="fw-bold mt-4 mb-3 text-dark"><i class="fa-solid fa-box text-success me-2"></i>Đồng kiểm khi nhận hàng</h5>
+                            <p class="text-muted small">Khách hàng khi nhận hàng từ nhân viên giao nhận có quyền mở hộp kiểm tra ngoại quan sản phẩm (không dùng thử, cắm điện). Nếu sản phẩm bị móp méo, bể vỡ do vận chuyển, vui lòng từ chối nhận hàng và liên hệ hotline hỗ trợ.</p>
+                        </div>
+                    </div>
+
+                    <!-- 4. Return and Refund Policy -->
+                    <div class="tab-pane fade" id="v-pills-refund" role="tabpanel" aria-labelledby="v-pills-refund-tab">
+                        <div class="bg-white rounded-4 shadow-sm p-4 p-md-5 border border-light">
+                            <h2 class="fw-bold mb-4 text-primary" style="font-family: 'Lora', serif;"><i class="fa-solid fa-rotate-left me-3"></i>4. Đổi Trả & Hoàn Tiền</h2>
+                            <p class="text-muted leading-relaxed">Chúng tôi luôn đặt sự hài lòng của khách hàng lên hàng đầu với chính sách đổi trả linh hoạt và minh bạch:</p>
+                            
+                            <h5 class="fw-bold mt-4 mb-3 text-dark"><i class="fa-solid fa-arrows-rotate text-success me-2"></i>Thời gian và Điều kiện đổi trả</h5>
+                            <p class="text-muted small">Khách hàng được hỗ trợ đổi sản phẩm mới cùng loại trong vòng <strong>7 ngày</strong> kể từ khi nhận hàng thành công nếu sản phẩm phát sinh lỗi kỹ thuật từ nhà sản xuất. Sản phẩm đổi trả phải còn đầy đủ vỏ hộp, phụ kiện, quà tặng kèm theo và chưa có dấu hiệu trầy xước, cạy mở bộ phận cơ học.</p>
+                            
+                            <h5 class="fw-bold mt-4 mb-3 text-dark"><i class="fa-solid fa-arrows-rotate text-success me-2"></i>Quy trình hoàn tiền</h5>
+                            <p class="text-muted small">Đối với trường hợp trả hàng hoàn tiền (khi không còn hàng đổi thế), số tiền hoàn lại sẽ được chuyển khoản ngân hàng trực tiếp vào tài khoản của khách hàng trong vòng 3 đến 5 ngày làm việc sau khi shop đã tiếp nhận và thẩm định hàng hoàn thành công.</p>
+                        </div>
+                    </div>
+
+                    <!-- 5. Warranty Policy -->
+                    <div class="tab-pane fade" id="v-pills-warranty" role="tabpanel" aria-labelledby="v-pills-warranty-tab">
+                        <div class="bg-white rounded-4 shadow-sm p-4 p-md-5 border border-light">
+                            <h2 class="fw-bold mb-4 text-primary" style="font-family: 'Lora', serif;"><i class="fa-solid fa-screwdriver-wrench me-3"></i>5. Chính Sách Bảo Hành</h2>
+                            <p class="text-muted leading-relaxed">Mọi sản phẩm bán ra từ hệ thống QuaMonHaiShop đều được áp dụng chế độ bảo hành chuyên nghiệp chuẩn hãng:</p>
+                            
+                            <h5 class="fw-bold mt-4 mb-3 text-dark"><i class="fa-solid fa-screwdriver-wrench text-success me-2"></i>Thời gian bảo hành theo ngành hàng</h5>
+                            <ul class="text-muted small lh-lg">
+                                <li><strong>Thiết bị công nghệ (Laptop, Điện thoại):</strong> Bảo hành chính hãng 12 - 24 tháng theo số serial máy.</li>
+                                <li><strong>Đồng hồ đeo tay cao cấp:</strong> Bảo hành bộ máy và hỗ trợ thay pin miễn phí trong vòng 12 tháng.</li>
+                                <li><strong>Trang sức (Nhẫn bạc, Đá Opal):</strong> Bảo hành đánh bóng, làm sáng miễn phí trọn đời sản phẩm.</li>
+                                <li><strong>Nước hoa:</strong> Cam kết hàng chính hãng 100%, bảo hành vòi xịt và mùi hương đến giọt cuối cùng.</li>
+                            </ul>
+                            
+                            <h5 class="fw-bold mt-4 mb-3 text-dark"><i class="fa-solid fa-screwdriver-wrench text-success me-2"></i>Trường hợp từ chối bảo hành</h5>
+                            <p class="text-muted small">Sản phẩm bị nứt vỡ, thấm nước do lỗi chủ quan trong quá trình sử dụng của khách hàng. Đồng hồ cơ bị ảnh hưởng bởi từ trường mạnh do để gần tivi, tủ lạnh hoặc nước hoa bị bảo quản sai cách dẫn tới biến mùi.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .policy-tabs .nav-link {
+        border-left: 3px solid transparent !important;
+        color: #6c757d !important;
+        font-size: 0.95rem;
+        transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    }
+    
+    .policy-tabs .nav-link:hover {
+        color: #81c408 !important;
+        background-color: rgba(129, 196, 8, 0.05) !important;
+        border-left-color: rgba(129, 196, 8, 0.3) !important;
+        padding-left: 1.75rem !important;
+    }
+    
+    .policy-tabs .nav-link.active {
+        color: #ffffff !important;
+        background: linear-gradient(135deg, #81c408 0%, #68a006 100%) !important;
+        border-left: 4px solid #4a7502 !important;
+        box-shadow: 0 4px 12px rgba(129, 196, 8, 0.25) !important;
+        padding-left: 1.75rem !important;
+    }
+
+    .leading-relaxed {
+        line-height: 1.75;
+    }
+    
+    .tab-content .tab-pane {
+        animation: fadeInTab 0.4s ease-out;
+    }
+    
+    @@keyframes fadeInTab {
+        from {
+            opacity: 0;
+            transform: translateY(10px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+</style>
