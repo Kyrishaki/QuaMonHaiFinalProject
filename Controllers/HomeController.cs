@@ -1,85 +1,89 @@
-﻿using LTWEB_QuaMonHai_CuoiKy.Data;
 using LTWEB_QuaMonHai_CuoiKy.Models;
+using LTWEB_QuaMonHai_CuoiKy.Services;
+using LTWEB_QuaMonHai_CuoiKy.ViewModels;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using System.Diagnostics;
 
-namespace LTWEB_QuaMonHai_CuoiKy.Controllers {
-    public class HomeController : Controller {
+namespace LTWEB_QuaMonHai_CuoiKy.Controllers
+{
+    public class HomeController : Controller
+    {
         private readonly ILogger<HomeController> _logger;
+        private readonly IConsumeApi _api;
 
-        private readonly Hshop2023Context _context;
-        public HomeController(ILogger<HomeController> logger, Hshop2023Context context) {
+        public HomeController(ILogger<HomeController> logger, IConsumeApi api)
+        {
             _logger = logger;
-            _context = context;
+            _api = api;
         }
+
         public IActionResult Home()
         {
             return View();
         }
 
-        public async Task<IActionResult> Index(int? loaiId, string searchQuery, string priceRange, int page = 1) {
-            int pageSize = 9; // Số sản phẩm trên mỗi trang
+        // GET: Index (Gọi API /api/HangHoas và /api/HangHoas/danh-muc)
+        public async Task<IActionResult> Index(int? loaiId, string searchQuery, string priceRange, int page = 1)
+        {
+            int pageSize = 9;
 
-            // Truyền danh sách Danh Mục cho Sidebar
-            ViewBag.DanhMucs = await _context.Loais.AsNoTracking().ToListAsync();
+            // 1. Lấy danh mục từ API
+            var resDanhMuc = await _api.GetAsync("HangHoas/danh-muc");
+            if (resDanhMuc.Success && resDanhMuc.Data != null)
+            {
+                var listLoai = JsonConvert.DeserializeObject<List<Loai>>(JsonConvert.SerializeObject(resDanhMuc.Data));
+                ViewBag.DanhMucs = listLoai;
+            }
+            else
+            {
+                ViewBag.DanhMucs = new List<Loai>();
+            }
+
             ViewBag.CurrentLoai = loaiId;
 
-            // Lấy dữ liệu cơ bản
-            var query = _context.HangHoas
-                                .Include(h => h.MaLoaiNavigation)
-                                .AsNoTracking()
-                                .AsQueryable();
+            // 2. Lấy danh sách hàng hóa có lọc & phân trang từ API
+            var pars = new Dictionary<string, dynamic>
+            {
+                { "page", page },
+                { "pageSize", pageSize }
+            };
 
-            // 1. Xử lý Lọc theo Danh mục (Sidebar)
-            if (loaiId.HasValue) {
-                query = query.Where(h => h.MaLoai == loaiId.Value);
-            }
+            if (loaiId.HasValue) pars.Add("loaiId", loaiId.Value);
+            if (!string.IsNullOrEmpty(searchQuery)) pars.Add("searchQuery", searchQuery);
+            if (!string.IsNullOrEmpty(priceRange)) pars.Add("priceRange", priceRange);
 
-            // 2. Xử lý Lọc theo Tên (Tìm kiếm)
-            if (!string.IsNullOrEmpty(searchQuery)) {
-                query = query.Where(h => h.TenHh.Contains(searchQuery));
-            }
+            var resHangHoa = await _api.GetAsync("HangHoas", pars);
+            var items = new List<HangHoa>();
 
-            // 3. Xử lý Lọc theo Giá
-            if (!string.IsNullOrEmpty(priceRange)) {
-                switch (priceRange) {
-                    case "under50":
-                        query = query.Where(h => h.DonGia < 50);
-                        break;
-                    case "50to100":
-                        query = query.Where(h => h.DonGia >= 50 && h.DonGia <= 100);
-                        break;
-                    case "over100":
-                        query = query.Where(h => h.DonGia > 100);
-                        break;
+            if (resHangHoa.Success && resHangHoa.Data != null)
+            {
+                var pagedData = resHangHoa.Data;
+                ViewBag.CurrentPage = (int)(pagedData.currentPage ?? 1);
+                ViewBag.TotalPages = (int)(pagedData.totalPages ?? 1);
+
+                if (pagedData.items != null)
+                {
+                    items = JsonConvert.DeserializeObject<List<HangHoa>>(JsonConvert.SerializeObject(pagedData.items)) ?? new List<HangHoa>();
                 }
             }
-
-            // Xử lý Phân trang
-            int totalItems = await query.CountAsync();
-            int totalPages = (int)Math.Ceiling(totalItems / (double)pageSize);
-
-            if (page < 1) page = 1;
-            if (page > totalPages && totalPages > 0) page = totalPages;
-
-            var items = await query
-                .Skip((page - 1) * pageSize)
-                .Take(pageSize)
-                .ToListAsync();
-
-            ViewBag.CurrentPage = page;
-            ViewBag.TotalPages = totalPages;
+            else
+            {
+                ViewBag.CurrentPage = 1;
+                ViewBag.TotalPages = 1;
+            }
 
             return View(items);
         }
 
-        public IActionResult Privacy() {
+        public IActionResult Privacy()
+        {
             return View();
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error() {
+        public IActionResult Error()
+        {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
     }

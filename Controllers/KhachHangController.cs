@@ -1,198 +1,182 @@
-﻿using AutoMapper;
-using LTWEB_QuaMonHai_CuoiKy.Data;
-using LTWEB_QuaMonHai_CuoiKy.Helpers;
 using LTWEB_QuaMonHai_CuoiKy.Models;
+using LTWEB_QuaMonHai_CuoiKy.Services;
 using LTWEB_QuaMonHai_CuoiKy.ViewModels;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
+using System.Net.Http.Headers;
 using System.Security.Claims;
 
-namespace LTWEB_QuaMonHai_CuoiKy.Controllers {
-    public class KhachHangController : Controller {
-        private readonly Hshop2023Context db;
-        private readonly IMapper _mapper;
+namespace LTWEB_QuaMonHai_CuoiKy.Controllers
+{
+    public class KhachHangController : Controller
+    {
+        private readonly IConsumeApi _api;
 
-        public KhachHangController(Hshop2023Context context, IMapper mapper) {
-            db = context;
-            _mapper = mapper;
+        public KhachHangController(IConsumeApi api)
+        {
+            _api = api;
+        }
+
+        private string GetJwtToken()
+        {
+            return HttpContext.Session.GetString("JWT_TOKEN") ?? string.Empty;
         }
 
         #region Register
         [HttpGet]
-        public IActionResult DangKy() {
+        public IActionResult DangKy()
+        {
             return View();
         }
 
         [HttpPost]
-        public IActionResult DangKy(RegisterVM model, IFormFile? Hinh) {
-            if (ModelState.IsValid) {
-                try {
-                    // 1. Kiểm tra tài khoản đã tồn tại chưa để tránh lỗi trùng khóa chính
-                    if (db.KhachHangs.Any(kh => kh.MaKh == model.MaKh)) {
-                        ModelState.AddModelError("MaKh", "Tên đăng nhập đã tồn tại. Vui lòng chọn tên khác.");
-                        return View(model);
-                    }
+        public async Task<IActionResult> DangKy(RegisterVM model, IFormFile? Hinh)
+        {
+            if (ModelState.IsValid)
+            {
+                using var form = new MultipartFormDataContent();
+                form.Add(new StringContent(model.MaKh ?? ""), "MaKh");
+                form.Add(new StringContent(model.MatKhau ?? ""), "MatKhau");
+                form.Add(new StringContent(model.HoTen ?? ""), "HoTen");
+                form.Add(new StringContent(model.GioiTinh.ToString()), "GioiTinh");
+                form.Add(new StringContent(model.NgaySinh?.ToString("o") ?? DateTime.Now.ToString("o")), "NgaySinh");
+                if (!string.IsNullOrEmpty(model.DiaChi)) form.Add(new StringContent(model.DiaChi), "DiaChi");
+                if (!string.IsNullOrEmpty(model.DienThoai)) form.Add(new StringContent(model.DienThoai), "DienThoai");
+                form.Add(new StringContent(model.Email ?? ""), "Email");
 
-                    var khachHang = _mapper.Map<KhachHang>(model);
-                    khachHang.RandomKey = MyUtil.GenerateRandomKey();
-                    khachHang.MatKhau = model.MatKhau.ToMd5Hash(khachHang.RandomKey);
+                if (Hinh != null && Hinh.Length > 0)
+                {
+                    var fileContent = new StreamContent(Hinh.OpenReadStream());
+                    fileContent.Headers.ContentType = new MediaTypeHeaderValue(Hinh.ContentType);
+                    form.Add(fileContent, "Hinh", Hinh.FileName);
+                }
 
-                    // Mặc định khi đăng ký mới tài khoản sẽ hoạt động và là quyền User
-                    khachHang.HieuLuc = true;
-                    khachHang.VaiTro = 0;
-
-                    if (Hinh != null) {
-                        khachHang.Hinh = MyUtil.UploadHinh(Hinh, "khachHang");
-                    }
-                    else {
-                        khachHang.Hinh = "Photo.gif"; // Cài ảnh mặc định nếu khách không tải ảnh lên
-                    }
-
-                    db.Add(khachHang);
-                    db.SaveChanges();
-
+                var res = await _api.PostFormAsync("KhachHang/dang-ky", form);
+                if (res.Success)
+                {
                     TempData["Success"] = "Đăng ký thành công! Vui lòng đăng nhập.";
                     return RedirectToAction("DangNhap", "KhachHang");
                 }
-                catch (Exception ex) {
-                    // Hiển thị lỗi ra UI thay vì để catch trống
-                    ModelState.AddModelError(string.Empty, "Đã xảy ra lỗi hệ thống: " + ex.Message);
-                }
+
+                ModelState.AddModelError(string.Empty, res.Message);
             }
-            return View(model); // Trả về model để không mất dữ liệu đang nhập dở
+            return View(model);
         }
         #endregion
 
-        #region Login in
+        #region Login
         [HttpGet]
-        public IActionResult DangNhap(string? ReturnUrl) {
+        public IActionResult DangNhap(string? ReturnUrl)
+        {
             ViewBag.ReturnUrl = ReturnUrl;
             return View();
         }
 
         [HttpPost]
-        public async Task<IActionResult> DangNhap(LoginVM model, string? ReturnUrl) {
+        public async Task<IActionResult> DangNhap(LoginVM model, string? ReturnUrl)
+        {
             ViewBag.ReturnUrl = ReturnUrl;
-            if (ModelState.IsValid) {
-                var khachHang = db.KhachHangs.SingleOrDefault(kh => kh.MaKh == model.UserName);
+            if (ModelState.IsValid)
+            {
+                var loginData = new { UserName = model.UserName, Password = model.Password };
+                var res = await _api.PostAsync("KhachHang/dang-nhap", loginData);
 
-                if (khachHang == null) {
-                    ModelState.AddModelError("loi", "Tài khoản hoặc mật khẩu không đúng.");
-                }
-                else {
-                    // 2. ĐÃ SỬA LỖI LOGIC: Kiểm tra nếu tài khoản KHÔNG có hiệu lực
-                    if (!khachHang.HieuLuc) {
-                        ModelState.AddModelError("loi", "Tài khoản đã bị khóa. Vui lòng liên hệ hội đồng nhóm QuaMonGroup.");
+                if (res.Success && res.Data != null)
+                {
+                    string token = res.Data.token ?? "";
+                    string role = res.Data.role ?? "Customer";
+                    string hoTen = res.Data.hoTen ?? model.UserName;
+                    string email = res.Data.email ?? "";
+                    string maKh = res.Data.maKh ?? model.UserName;
+
+                    // Lưu JWT Token vào Session để gọi các API bảo mật tiếp theo
+                    HttpContext.Session.SetString("JWT_TOKEN", token);
+
+                    var claims = new List<Claim>
+                    {
+                        new Claim(ClaimTypes.Email, email),
+                        new Claim(ClaimTypes.Name, hoTen),
+                        new Claim("CustomerID", maKh),
+                        new Claim(ClaimTypes.Role, role)
+                    };
+
+                    var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+                    var claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
+
+                    await HttpContext.SignInAsync(claimsPrincipal);
+
+                    if (!string.IsNullOrEmpty(ReturnUrl) && Url.IsLocalUrl(ReturnUrl))
+                    {
+                        return Redirect(ReturnUrl);
                     }
-                    else {
-                        if (khachHang.MatKhau != model.Password.ToMd5Hash(khachHang.RandomKey)) {
-                            ModelState.AddModelError("loi", "Tài khoản hoặc mật khẩu không đúng.");
-                        }
-                        else {
-                            // 3. TẠO SESSION ADMIN VÀ USER DỰA TRÊN DATABASE
-                            string userRole = khachHang.VaiTro == 1 ? "Admin" : "Customer";
-
-                            // Ghi nhận
-                            var claims = new List<Claim>
-                            {
-                                new Claim(ClaimTypes.Email, khachHang.Email),
-                                new Claim(ClaimTypes.Name, khachHang.HoTen),
-                                new Claim("CustomerID", khachHang.MaKh),
-
-                                // Claim - role động từ database
-                                new Claim(ClaimTypes.Role, userRole)
-                            };
-
-                            var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
-                            var claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
-
-                            await HttpContext.SignInAsync(claimsPrincipal);
-
-                            // Kiểm tra đường dẫn và điều hướng
-                            if (Url.IsLocalUrl(ReturnUrl)) {
-                                return Redirect(ReturnUrl);
-                            }
-                            else {
-                                // Nếu bạn đã xây dựng Khu vực (Area) Admin, bạn có thể điều hướng thẳng Admin vào đó. 
-                                // Ví dụ:
-                                // if (userRole == "Admin") { return RedirectToAction("Index", "Home", new { area = "Admin" }); }
-
-                                return Redirect("/"); // Chuyển về trang chủ
-                            }
-                        }
-                    }
+                    return Redirect("/");
                 }
+
+                ModelState.AddModelError("loi", res.Message);
             }
-            return View(model); // Trả về model để khách không phải gõ lại tên đăng nhập
+            return View(model);
         }
         #endregion
 
-        // GET: Hiển thị thông tin Profile
         [Authorize]
         [HttpGet]
-        public IActionResult Profile() {
-            // Lấy Mã khách hàng từ Session/Cookie hiện tại
-            var customerId = User.Claims.SingleOrDefault(c => c.Type == "CustomerID")?.Value;
-            if (string.IsNullOrEmpty(customerId)) {
+        public async Task<IActionResult> Profile()
+        {
+            var token = GetJwtToken();
+            var res = await _api.GetAsync("KhachHang/profile", null, token);
+
+            if (!res.Success || res.Data == null)
+            {
                 return RedirectToAction("DangNhap");
             }
 
-            // Tìm thông tin khách hàng trong Database
-            var khachHang = db.KhachHangs.SingleOrDefault(kh => kh.MaKh == customerId);
-            if (khachHang == null) {
-                return NotFound();
-            }
-
+            var khachHang = JsonConvert.DeserializeObject<KhachHang>(JsonConvert.SerializeObject(res.Data));
             return View(khachHang);
         }
 
-        // POST: Xử lý khi người dùng bấm nút "Lưu thay đổi"
         [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Profile(KhachHang model, IFormFile? fHinh) {
-            // Đảm bảo chỉ được sửa tài khoản của chính mình
-            var customerId = User.Claims.SingleOrDefault(c => c.Type == "CustomerID")?.Value;
-            if (customerId != model.MaKh) {
-                return BadRequest("Lỗi quyền truy cập.");
+        public async Task<IActionResult> Profile(KhachHang model, IFormFile? fHinh)
+        {
+            using var form = new MultipartFormDataContent();
+            form.Add(new StringContent(model.HoTen ?? ""), "HoTen");
+            form.Add(new StringContent(model.Email ?? ""), "Email");
+            if (!string.IsNullOrEmpty(model.DienThoai)) form.Add(new StringContent(model.DienThoai), "DienThoai");
+            if (!string.IsNullOrEmpty(model.DiaChi)) form.Add(new StringContent(model.DiaChi), "DiaChi");
+            form.Add(new StringContent(model.NgaySinh.ToString("o")), "NgaySinh");
+            form.Add(new StringContent(model.GioiTinh.ToString()), "GioiTinh");
+
+            if (fHinh != null && fHinh.Length > 0)
+            {
+                var fileContent = new StreamContent(fHinh.OpenReadStream());
+                fileContent.Headers.ContentType = new MediaTypeHeaderValue(fHinh.ContentType);
+                form.Add(fileContent, "FHinh", fHinh.FileName);
             }
 
-            var khachHang = db.KhachHangs.SingleOrDefault(kh => kh.MaKh == customerId);
-            if (khachHang == null) {
-                return NotFound();
-            }
+            var token = GetJwtToken();
+            var res = await _api.PutFormAsync("KhachHang/profile", form, token);
 
-            try {
-                // Cập nhật các thông tin được phép sửa
-                khachHang.HoTen = model.HoTen;
-                khachHang.Email = model.Email;
-                khachHang.DienThoai = model.DienThoai;
-                khachHang.DiaChi = model.DiaChi;
-                khachHang.NgaySinh = model.NgaySinh;
-                khachHang.GioiTinh = model.GioiTinh;
-
-                // Xử lý upload ảnh đại diện (avatar) mới nếu có
-                if (fHinh != null && fHinh.Length > 0) {
-                    khachHang.Hinh = MyUtil.UploadHinh(fHinh, "khachHang");
-                }
-
-                db.Update(khachHang);
-                db.SaveChanges();
-
+            if (res.Success)
+            {
                 TempData["Success"] = "Cập nhật hồ sơ cá nhân thành công!";
                 return RedirectToAction("Profile");
             }
-            catch (Exception ex) {
-                ModelState.AddModelError(string.Empty, "Có lỗi xảy ra: " + ex.Message);
-            }
 
+            ModelState.AddModelError(string.Empty, res.Message);
             return View(model);
         }
 
         [Authorize]
-        public async Task<IActionResult> DangXuat() {
+        public async Task<IActionResult> DangXuat()
+        {
+            var token = GetJwtToken();
+            await _api.PostAsync("KhachHang/dang-xuat", null, token);
+
+            HttpContext.Session.Remove("JWT_TOKEN");
             await HttpContext.SignOutAsync();
             return Redirect("/");
         }

@@ -1,192 +1,166 @@
-﻿using LTWEB_QuaMonHai_CuoiKy.Data;
 using LTWEB_QuaMonHai_CuoiKy.Models;
+using LTWEB_QuaMonHai_CuoiKy.Services;
 using LTWEB_QuaMonHai_CuoiKy.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using System.Security.Claims;
+using Newtonsoft.Json;
 
-namespace LTWEB_QuaMonHai_CuoiKy.Controllers {
-    [Authorize] // Bắt buộc đăng nhập để sử dụng giỏ hàng cá nhân
-    public class CartController : Controller {
-        private readonly Hshop2023Context _Context;
+namespace LTWEB_QuaMonHai_CuoiKy.Controllers
+{
+    [Authorize]
+    public class CartController : Controller
+    {
+        private readonly IConsumeApi _api;
 
-        public CartController(Hshop2023Context context) {
-            _Context = context;
+        public CartController(IConsumeApi api)
+        {
+            _api = api;
         }
 
-        // Đã sửa lại hàm lấy CustomerId an toàn hơn
-        private string GetCustomerId() {
-            var claim = User.Claims.SingleOrDefault(c => c.Type == "CustomerID")
-                     ?? User.Claims.SingleOrDefault(c => c.Type == ClaimTypes.NameIdentifier);
-
-            return claim?.Value ?? string.Empty;
+        private string GetJwtToken()
+        {
+            return HttpContext.Session.GetString("JWT_TOKEN") ?? string.Empty;
         }
 
-        public async Task<IActionResult> Index() {
-            var customerId = GetCustomerId();
+        // GET: Cart
+        public async Task<IActionResult> Index()
+        {
+            var token = GetJwtToken();
+            var res = await _api.GetAsync("Cart", null, token);
 
-            // Nếu không lấy được ID (phiên đăng nhập lỗi), bắt đăng nhập lại
-            if (string.IsNullOrEmpty(customerId)) {
-                return RedirectToAction("Login", "KhachHang");
+            var cartItems = new List<CartItem>();
+            if (res.Success && res.Data != null)
+            {
+                if (res.Data.items != null)
+                {
+                    cartItems = JsonConvert.DeserializeObject<List<CartItem>>(JsonConvert.SerializeObject(res.Data.items)) ?? new List<CartItem>();
+                }
             }
-
-            // Lấy dữ liệu giỏ hàng từ Database[cite: 8]
-            var gioHangDb = await _Context.GioHangs
-                .Include(g => g.MaHhNavigation)
-                .Where(g => g.MaKh == customerId)
-                .ToListAsync();
-
-            // Chuyển đổi từ Model Database sang ViewModel CartItem để hiển thị[cite: 8]
-            var cartItems = gioHangDb.Select(g => new CartItem {
-                MaHh = g.MaHh,
-                TenHh = g.MaHhNavigation.TenHh,
-                DonGia = g.MaHhNavigation.DonGia ?? 0,
-                Hinh = g.MaHhNavigation.Hinh,
-                SoLuong = g.SoLuong
-            }).ToList();
 
             return View(cartItems);
         }
 
-        public async Task<IActionResult> AddToCart(int id, int quantity = 1) {
-            var customerId = GetCustomerId();
+        // GET: Cart/AddToCart/5
+        public async Task<IActionResult> AddToCart(int id, int quantity = 1)
+        {
+            var token = GetJwtToken();
+            var pars = new Dictionary<string, dynamic> { { "quantity", quantity } };
 
-            // Chặn không cho thêm vào giỏ nếu chưa có ID
-            if (string.IsNullOrEmpty(customerId)) {
-                return RedirectToAction("Login", "KhachHang");
+            var res = await _api.PostAsync($"Cart/add/{id}?quantity={quantity}", null, token);
+            if (!res.Success)
+            {
+                TempData["Error"] = res.Message;
             }
 
-            var hanghoa = await _Context.HangHoas.SingleOrDefaultAsync(p => p.MaHh == id);
-            if (hanghoa == null) return NotFound();
-
-            var cartItem = await _Context.GioHangs
-                .SingleOrDefaultAsync(g => g.MaKh == customerId && g.MaHh == id);
-
-            if (cartItem == null) {
-                cartItem = new GioHang {
-                    MaKh = customerId,
-                    MaHh = id,
-                    SoLuong = quantity
-                };
-                _Context.GioHangs.Add(cartItem);
-            }
-            else {
-                cartItem.SoLuong += quantity;
-                _Context.GioHangs.Update(cartItem);
-            }
-
-            await _Context.SaveChangesAsync();
             return RedirectToAction("Index");
         }
 
-        public async Task<IActionResult> Delete(int id) {
-            var customerId = GetCustomerId();
-            if (string.IsNullOrEmpty(customerId)) return RedirectToAction("Login", "KhachHang");
+        // GET: Cart/Delete/5
+        public async Task<IActionResult> Delete(int id)
+        {
+            var token = GetJwtToken();
+            var res = await _api.DeleteAsync($"Cart/delete/{id}", null, token);
 
-            var itemToRemove = await _Context.GioHangs
-                .SingleOrDefaultAsync(g => g.MaKh == customerId && g.MaHh == id);
-
-            if (itemToRemove != null) {
-                _Context.GioHangs.Remove(itemToRemove);
-                await _Context.SaveChangesAsync();
+            if (!res.Success)
+            {
+                TempData["Error"] = res.Message;
             }
+
             return RedirectToAction("Index");
         }
 
-        public async Task<IActionResult> UpdateQuantity(int id, int delta) {
-            var customerId = GetCustomerId();
-            if (string.IsNullOrEmpty(customerId)) return RedirectToAction("Login", "KhachHang");
+        // GET: Cart/UpdateQuantity?id=5&delta=1
+        public async Task<IActionResult> UpdateQuantity(int id, int delta)
+        {
+            var token = GetJwtToken();
+            var res = await _api.PutAsync($"Cart/update-quantity/{id}?delta={delta}", null, token);
 
-            var item = await _Context.GioHangs
-                .SingleOrDefaultAsync(g => g.MaKh == customerId && g.MaHh == id);
-
-            if (item != null) {
-                item.SoLuong += delta;
-
-                if (item.SoLuong < 1) {
-                    item.SoLuong = 1;
-                }
-
-                _Context.GioHangs.Update(item);
-                await _Context.SaveChangesAsync();
+            if (!res.Success)
+            {
+                TempData["Error"] = res.Message;
             }
+
             return RedirectToAction("Index");
         }
 
-        // ================= KHU VỰC THANH TOÁN (CHECKOUT) =================
-
+        // GET: Cart/Checkout
         [HttpGet]
-        public async Task<IActionResult> Checkout() {
-            var customerId = GetCustomerId();
-            if (string.IsNullOrEmpty(customerId)) return RedirectToAction("Login", "KhachHang");
+        public async Task<IActionResult> Checkout()
+        {
+            var token = GetJwtToken();
+            var res = await _api.GetAsync("Cart/checkout", null, token);
 
-            var gioHangDb = await _Context.GioHangs
-                .Include(g => g.MaHhNavigation)
-                .Where(g => g.MaKh == customerId)
-                .ToListAsync();
-
-            if (!gioHangDb.Any()) return RedirectToAction("Index");
-
-            var khachHang = await _Context.KhachHangs.SingleOrDefaultAsync(kh => kh.MaKh == customerId);
-            ViewBag.Cart = gioHangDb;
-
-            return View(new CheckoutVM {
-                HoTen = khachHang?.HoTen ?? "",
-                DiaChi = khachHang?.DiaChi ?? ""
-            });
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Checkout(CheckoutVM model) {
-            var customerId = GetCustomerId();
-            if (string.IsNullOrEmpty(customerId)) return RedirectToAction("Login", "KhachHang");
-
-            var gioHangDb = await _Context.GioHangs
-                .Include(g => g.MaHhNavigation)
-                .Where(g => g.MaKh == customerId)
-                .ToListAsync();
-
-            if (!gioHangDb.Any()) return RedirectToAction("Index");
-
-            if (ModelState.IsValid) {
-                var hoadon = new HoaDon {
-                    MaKh = customerId,
-                    HoTen = model.HoTen,
-                    DiaChi = model.DiaChi,
-                    NgayDat = DateTime.Now,
-                    NgayCan = DateTime.Now.AddDays(3),
-                    MaTrangThai = 0,
-                    GhiChu = model.GhiChu,
-                    CachThanhToan = "COD",
-                    CachVanChuyen = "Giao hàng tiêu chuẩn",
-                    PhiVanChuyen = 5
-                };
-
-                _Context.HoaDons.Add(hoadon);
-                await _Context.SaveChangesAsync();
-
-                var cthds = gioHangDb.Select(item => new ChiTietHd {
-                    MaHd = hoadon.MaHd,
-                    MaHh = item.MaHh,
-                    SoLuong = item.SoLuong,
-                    DonGia = item.MaHhNavigation.DonGia ?? 0,
-                    GiamGia = 0
-                }).ToList();
-
-                _Context.ChiTietHds.AddRange(cthds);
-                _Context.GioHangs.RemoveRange(gioHangDb); // Xóa giỏ hàng sau khi đặt thành công[cite: 8]
-                await _Context.SaveChangesAsync();
-
-                return RedirectToAction("Success", new { id = hoadon.MaHd });
+            if (!res.Success || res.Data == null)
+            {
+                TempData["Error"] = res.Message ?? "Không thể lấy thông tin thanh toán.";
+                return RedirectToAction("Index");
             }
 
-            ViewBag.Cart = gioHangDb;
+            var model = new CheckoutVM();
+            if (res.Data.customerInfo != null)
+            {
+                model.HoTen = res.Data.customerInfo.hoTen ?? "";
+                model.DiaChi = res.Data.customerInfo.diaChi ?? "";
+            }
+
+            if (res.Data.cartItems != null)
+            {
+                var cartItems = JsonConvert.DeserializeObject<List<CartItem>>(JsonConvert.SerializeObject(res.Data.cartItems));
+                ViewBag.Cart = cartItems;
+            }
+
+            ViewBag.TotalPrice = (double)(res.Data.totalPrice ?? 0);
+            ViewBag.ShippingFee = (double)(res.Data.shippingFee ?? 0);
+            ViewBag.FinalTotal = (double)(res.Data.finalTotal ?? 0);
+
             return View(model);
         }
 
-        public IActionResult Success(int id) {
+        // POST: Cart/Checkout
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Checkout(CheckoutVM model)
+        {
+            var token = GetJwtToken();
+
+            if (ModelState.IsValid)
+            {
+                var body = new
+                {
+                    HoTen = model.HoTen,
+                    DiaChi = model.DiaChi,
+                    GhiChu = model.GhiChu
+                };
+
+                var res = await _api.PostAsync("Cart/checkout", body, token);
+                if (res.Success && res.Data != null)
+                {
+                    int orderId = (int)(res.Data.orderId ?? 0);
+                    return RedirectToAction("Success", new { id = orderId });
+                }
+
+                ModelState.AddModelError(string.Empty, res.Message ?? "Đặt hàng thất bại.");
+            }
+
+            // Nếu thất bại thì lấy lại giỏ hàng hiển thị
+            var resCart = await _api.GetAsync("Cart/checkout", null, token);
+            if (resCart.Success && resCart.Data != null)
+            {
+                if (resCart.Data.cartItems != null)
+                {
+                    ViewBag.Cart = JsonConvert.DeserializeObject<List<CartItem>>(JsonConvert.SerializeObject(resCart.Data.cartItems));
+                }
+                ViewBag.TotalPrice = (double)(resCart.Data.totalPrice ?? 0);
+                ViewBag.ShippingFee = (double)(resCart.Data.shippingFee ?? 0);
+                ViewBag.FinalTotal = (double)(resCart.Data.finalTotal ?? 0);
+            }
+
+            return View(model);
+        }
+
+        // GET: Cart/Success/5
+        public IActionResult Success(int id)
+        {
             ViewBag.OrderId = id;
             return View();
         }

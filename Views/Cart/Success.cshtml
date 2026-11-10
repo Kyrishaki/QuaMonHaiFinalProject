@@ -1,0 +1,39 @@
+@{
+    ViewData["Title"] = "Đặt hàng thành công";
+    int orderId = ViewBag.OrderId != null ? (int)ViewBag.OrderId : 0;
+}
+
+<!-- Single Page Header start -->
+<div class="container-fluid page-header py-5">
+    <h1 class="text-center text-white display-6">Đặt Hàng Thành Công</h1>
+    <ol class="breadcrumb justify-content-center mb-0">
+        <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Trang chủ</a></li>
+        <li class="breadcrumb-item active text-white">Thành công</li>
+    </ol>
+</div>
+<!-- Single Page Header End -->
+
+<!-- Success Page Start -->
+<div class="container-fluid py-5">
+    <div class="container py-5 text-center">
+        <div class="row justify-content-center">
+            <div class="col-lg-6">
+                <i class="bi bi-check-circle-fill display-1 text-primary"></i>
+                <h1 class="display-5 my-4">Cảm ơn bạn đã đặt hàng!</h1>
+                <p class="mb-4">
+                    Đơn hàng của bạn đã được tiếp nhận và đang được xử lý.
+                    @if (orderId > 0)
+                    {
+                        <br />
+                        <strong>Mã đơn hàng: #@orderId</strong>
+                    }
+                </p>
+                <div class="d-flex justify-content-center gap-3">
+                    <a class="btn border-secondary rounded-pill py-3 px-5 text-primary" asp-controller="Home" asp-action="Index">Tiếp tục mua sắm</a>
+                    <a class="btn btn-primary rounded-pill py-3 px-5 text-white" asp-controller="KhachHang" asp-action="Profile">Xem tài khoản</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Success Page End -->

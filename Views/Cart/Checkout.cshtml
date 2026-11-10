@@ -1,0 +1,126 @@
+@model LTWEB_QuaMonHai_CuoiKy.ViewModels.CheckoutVM
+@{
+    ViewData["Title"] = "Thanh toán";
+    var cartItems = ViewBag.Cart as List<LTWEB_QuaMonHai_CuoiKy.ViewModels.CartItem> ?? new List<LTWEB_QuaMonHai_CuoiKy.ViewModels.CartItem>();
+    double totalPrice = ViewBag.TotalPrice != null ? (double)ViewBag.TotalPrice : 0;
+    double shippingFee = ViewBag.ShippingFee != null ? (double)ViewBag.ShippingFee : 5.0;
+    double finalTotal = ViewBag.FinalTotal != null ? (double)ViewBag.FinalTotal : (totalPrice + shippingFee);
+}
+
+<!-- Single Page Header start -->
+<div class="container-fluid page-header py-5">
+    <h1 class="text-center text-white display-6">Thanh Toán</h1>
+    <ol class="breadcrumb justify-content-center mb-0">
+        <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Trang chủ</a></li>
+        <li class="breadcrumb-item"><a asp-controller="Cart" asp-action="Index">Giỏ hàng</a></li>
+        <li class="breadcrumb-item active text-white">Thanh toán</li>
+    </ol>
+</div>
+<!-- Single Page Header End -->
+
+<!-- Checkout Page Start -->
+<div class="container-fluid py-5">
+    <div class="container py-5">
+        <h1 class="mb-4">Chi tiết thanh toán</h1>
+        <form asp-action="Checkout" method="post">
+            @Html.AntiForgeryToken()
+            <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+            <div class="row g-5">
+                <div class="col-md-12 col-lg-6 col-xl-7">
+                    <div class="form-item mb-3">
+                        <label asp-for="HoTen" class="form-label my-3"></label><sup>*</sup>
+                        <input asp-for="HoTen" class="form-control" placeholder="Nhập họ và tên..." />
+                        <span asp-validation-for="HoTen" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-item mb-3">
+                        <label asp-for="DiaChi" class="form-label my-3"></label><sup>*</sup>
+                        <input asp-for="DiaChi" class="form-control" placeholder="Nhập số nhà, tên đường, phường/xã, quận/huyện..." />
+                        <span asp-validation-for="DiaChi" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-item mb-3">
+                        <label asp-for="GhiChu" class="form-label my-3"></label>
+                        <textarea asp-for="GhiChu" class="form-control" spellcheck="false" cols="30" rows="6" placeholder="Ghi chú về đơn hàng, thời gian giao hàng mong muốn..."></textarea>
+                        <span asp-validation-for="GhiChu" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="col-md-12 col-lg-6 col-xl-5">
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Sản phẩm</th>
+                                    <th scope="col">Tên</th>
+                                    <th scope="col">Giá</th>
+                                    <th scope="col">SL</th>
+                                    <th scope="col">Tổng</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in cartItems)
+                                {
+                                    <tr>
+                                        <th scope="row">
+                                            <div class="d-flex align-items-center mt-2">
+                                                <img src="~/Hinh/HangHoa/@item.Hinh" class="img-fluid rounded-circle" style="width: 50px; height: 50px; object-fit: cover;" alt="@item.TenHh" onerror="this.src='/Hinh/HangHoa/default.png';">
+                                            </div>
+                                        </th>
+                                        <td class="py-4">@item.TenHh</td>
+                                        <td class="py-4">$@item.DonGia.ToString("N2")</td>
+                                        <td class="py-4">@item.SoLuong</td>
+                                        <td class="py-4">$@((item.DonGia * item.SoLuong).ToString("N2"))</td>
+                                    </tr>
+                                }
+                                <tr>
+                                    <th scope="row"></th>
+                                    <td class="py-4"></td>
+                                    <td class="py-4"></td>
+                                    <td class="py-4"><p class="mb-0 text-dark py-2">Tạm tính</p></td>
+                                    <td class="py-4">
+                                        <div class="py-2">
+                                            <p class="mb-0 text-dark"><strong>$@totalPrice.ToString("N2")</strong></p>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th scope="row"></th>
+                                    <td class="py-4">
+                                        <p class="mb-0 text-dark py-2">Vận chuyển</p>
+                                    </td>
+                                    <td class="py-4"></td>
+                                    <td class="py-4"></td>
+                                    <td class="py-4">
+                                        <div class="py-2">
+                                            <p class="mb-0 text-dark"><strong>$@shippingFee.ToString("N2")</strong></p>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th scope="row"></th>
+                                    <td class="py-4">
+                                        <p class="mb-0 text-dark text-uppercase py-2">Tổng cộng</p>
+                                    </td>
+                                    <td class="py-4"></td>
+                                    <td class="py-4"></td>
+                                    <td class="py-4">
+                                        <div class="py-2">
+                                            <p class="mb-0 text-danger fs-5"><strong>$@finalTotal.ToString("N2")</strong></p>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="row g-4 text-center align-items-center justify-content-center pt-4">
+                        <button type="submit" class="btn border-secondary py-3 px-4 text-uppercase w-100 text-primary">Đặt Hàng</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<!-- Checkout Page End -->

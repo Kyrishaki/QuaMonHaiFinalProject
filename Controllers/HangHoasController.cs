@@ -1,83 +1,87 @@
-﻿using LTWEB_QuaMonHai_CuoiKy.Data;
 using LTWEB_QuaMonHai_CuoiKy.Models;
-using Microsoft.AspNetCore.Authorization; // THÊM THƯ VIỆN NÀY DÙNG CHO BẢO MẬT
+using LTWEB_QuaMonHai_CuoiKy.Services;
+using LTWEB_QuaMonHai_CuoiKy.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
+using System.Net.Http.Headers;
 
-namespace LTWEB_QuaMonHai_CuoiKy.Controllers {
-    public class HangHoasController : Controller {
-        private readonly Hshop2023Context _context;
+namespace LTWEB_QuaMonHai_CuoiKy.Controllers
+{
+    public class HangHoasController : Controller
+    {
+        private readonly IConsumeApi _api;
 
-        public HangHoasController(Hshop2023Context context) {
-            _context = context;
+        public HangHoasController(IConsumeApi api)
+        {
+            _api = api;
         }
 
-        // GET: HangHoas (Mở cho tất cả mọi người xem danh sách)
-        public async Task<IActionResult> Index(int? loaiId, string searchQuery, string priceRange, int page = 1) {
+        private string GetJwtToken()
+        {
+            return HttpContext.Session.GetString("JWT_TOKEN") ?? string.Empty;
+        }
+
+        // GET: HangHoas
+        public async Task<IActionResult> Index(int? loaiId, string searchQuery, string priceRange, int page = 1)
+        {
             int pageSize = 9;
 
-            ViewBag.DanhMucs = await _context.Loais.AsNoTracking().ToListAsync();
+            var resDanhMuc = await _api.GetAsync("HangHoas/danh-muc");
+            if (resDanhMuc.Success && resDanhMuc.Data != null)
+            {
+                ViewBag.DanhMucs = JsonConvert.DeserializeObject<List<Loai>>(JsonConvert.SerializeObject(resDanhMuc.Data));
+            }
+            else
+            {
+                ViewBag.DanhMucs = new List<Loai>();
+            }
+
             ViewBag.CurrentLoai = loaiId;
 
-            var query = _context.HangHoas
-                                .Include(h => h.MaLoaiNavigation)
-                                .AsNoTracking()
-                                .AsQueryable();
+            var pars = new Dictionary<string, dynamic>
+            {
+                { "page", page },
+                { "pageSize", pageSize }
+            };
 
-            if (loaiId.HasValue) {
-                query = query.Where(h => h.MaLoai == loaiId.Value);
-            }
+            if (loaiId.HasValue) pars.Add("loaiId", loaiId.Value);
+            if (!string.IsNullOrEmpty(searchQuery)) pars.Add("searchQuery", searchQuery);
+            if (!string.IsNullOrEmpty(priceRange)) pars.Add("priceRange", priceRange);
 
-            if (!string.IsNullOrEmpty(searchQuery)) {
-                query = query.Where(h => h.TenHh.Contains(searchQuery));
-            }
+            var res = await _api.GetAsync("HangHoas", pars);
+            var items = new List<HangHoa>();
 
-            if (!string.IsNullOrEmpty(priceRange)) {
-                switch (priceRange) {
-                    case "under50":
-                        query = query.Where(h => h.DonGia < 50);
-                        break;
-                    case "50to100":
-                        query = query.Where(h => h.DonGia >= 50 && h.DonGia <= 100);
-                        break;
-                    case "over100":
-                        query = query.Where(h => h.DonGia > 100);
-                        break;
+            if (res.Success && res.Data != null)
+            {
+                var pagedData = res.Data;
+                ViewBag.CurrentPage = (int)(pagedData.currentPage ?? 1);
+                ViewBag.TotalPages = (int)(pagedData.totalPages ?? 1);
+
+                if (pagedData.items != null)
+                {
+                    items = JsonConvert.DeserializeObject<List<HangHoa>>(JsonConvert.SerializeObject(pagedData.items)) ?? new List<HangHoa>();
                 }
             }
-
-            int totalItems = await query.CountAsync();
-            int totalPages = (int)Math.Ceiling(totalItems / (double)pageSize);
-
-            if (page < 1) page = 1;
-            if (page > totalPages && totalPages > 0) page = totalPages;
-
-            var items = await query
-                .Skip((page - 1) * pageSize)
-                .Take(pageSize)
-                .ToListAsync();
-
-            ViewBag.CurrentPage = page;
-            ViewBag.TotalPages = totalPages;
+            else
+            {
+                ViewBag.CurrentPage = 1;
+                ViewBag.TotalPages = 1;
+            }
 
             return View(items);
         }
 
-        // GET: HangHoas/Details/5 (Mở cho tất cả mọi người xem chi tiết)
-        public async Task<IActionResult> Details(int? id) {
-            if (id == null) {
-                return NotFound();
-            }
+        // GET: HangHoas/Details/5
+        public async Task<IActionResult> Details(int? id)
+        {
+            if (id == null) return NotFound();
 
-            var hangHoa = await _context.HangHoas
-                .Include(h => h.MaLoaiNavigation)
-                .Include(h => h.MaNccNavigation)
-                .FirstOrDefaultAsync(m => m.MaHh == id);
-            if (hangHoa == null) {
-                return NotFound();
-            }
+            var res = await _api.GetAsync($"HangHoas/{id}");
+            if (!res.Success || res.Data == null) return NotFound();
 
+            var hangHoa = JsonConvert.DeserializeObject<HangHoa>(JsonConvert.SerializeObject(res.Data));
             return View(hangHoa);
         }
 
@@ -85,9 +89,14 @@ namespace LTWEB_QuaMonHai_CuoiKy.Controllers {
 
         // GET: HangHoas/Create
         [Authorize(Roles = "Admin")]
-        public IActionResult Create() {
-            ViewData["MaLoai"] = new SelectList(_context.Loais, "MaLoai", "TenLoai");
-            ViewData["MaNcc"] = new SelectList(_context.NhaCungCaps, "MaNcc", "TenCongTy");
+        public async Task<IActionResult> Create()
+        {
+            var resDanhMuc = await _api.GetAsync("HangHoas/danh-muc");
+            var listLoai = resDanhMuc.Success && resDanhMuc.Data != null
+                ? JsonConvert.DeserializeObject<List<Loai>>(JsonConvert.SerializeObject(resDanhMuc.Data))
+                : new List<Loai>();
+
+            ViewData["MaLoai"] = new SelectList(listLoai, "MaLoai", "TenLoai");
             return View();
         }
 
@@ -95,52 +104,57 @@ namespace LTWEB_QuaMonHai_CuoiKy.Controllers {
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> Create([Bind("MaHh,TenHh,TenAlias,MaLoai,MoTaDonVi,DonGia,Hinh,NgaySx,GiamGia,SoLanXem,MoTa,MaNcc")] HangHoa hangHoa, IFormFile? fHinh) {
-            ModelState.Remove("MaLoaiNavigation");
-            ModelState.Remove("MaNccNavigation");
-            ModelState.Remove("fHinh");
+        public async Task<IActionResult> Create(HangHoa hangHoa, IFormFile? fHinh)
+        {
+            using var form = new MultipartFormDataContent();
+            form.Add(new StringContent(hangHoa.TenHh ?? ""), "TenHh");
+            if (!string.IsNullOrEmpty(hangHoa.TenAlias)) form.Add(new StringContent(hangHoa.TenAlias), "TenAlias");
+            form.Add(new StringContent(hangHoa.MaLoai.ToString()), "MaLoai");
+            if (!string.IsNullOrEmpty(hangHoa.MoTaDonVi)) form.Add(new StringContent(hangHoa.MoTaDonVi), "MoTaDonVi");
+            form.Add(new StringContent((hangHoa.DonGia ?? 0).ToString()), "DonGia");
+            form.Add(new StringContent(hangHoa.NgaySx.ToString("o")), "NgaySx");
+            form.Add(new StringContent(hangHoa.GiamGia.ToString()), "GiamGia");
+            if (!string.IsNullOrEmpty(hangHoa.MoTa)) form.Add(new StringContent(hangHoa.MoTa), "MoTa");
+            form.Add(new StringContent(hangHoa.MaNcc ?? "NK"), "MaNcc");
 
-            if (ModelState.IsValid) {
-                if (fHinh != null && fHinh.Length > 0) {
-                    hangHoa.Hinh = await LuuFileHinh(fHinh);
-                }
-                else {
-                    hangHoa.Hinh = "no-image.jpg";
-                }
+            if (fHinh != null && fHinh.Length > 0)
+            {
+                var fileStream = fHinh.OpenReadStream();
+                var fileContent = new StreamContent(fileStream);
+                fileContent.Headers.ContentType = new MediaTypeHeaderValue(fHinh.ContentType);
+                form.Add(fileContent, "FHinh", fHinh.FileName);
+            }
 
-                _context.Add(hangHoa);
-                await _context.SaveChangesAsync();
+            var token = GetJwtToken();
+            var res = await _api.PostFormAsync("HangHoas", form, token);
+
+            if (res.Success)
+            {
                 TempData["Success"] = "Thêm mới sản phẩm thành công!";
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["MaLoai"] = new SelectList(_context.Loais, "MaLoai", "TenLoai", hangHoa.MaLoai);
-            ViewData["MaNcc"] = new SelectList(_context.NhaCungCaps, "MaNcc", "TenCongTy", hangHoa.MaNcc);
+
+            ModelState.AddModelError(string.Empty, res.Message);
             return View(hangHoa);
-        }
-
-        private async Task<string> LuuFileHinh(IFormFile file) {
-            var fileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
-            var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Hinh", "HangHoa", fileName);
-
-            using (var stream = new FileStream(path, FileMode.Create)) {
-                await file.CopyToAsync(stream);
-            }
-            return fileName;
         }
 
         // GET: HangHoas/Edit/5
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> Edit(int? id) {
-            if (id == null) {
-                return NotFound();
-            }
+        public async Task<IActionResult> Edit(int? id)
+        {
+            if (id == null) return NotFound();
 
-            var hangHoa = await _context.HangHoas.FindAsync(id);
-            if (hangHoa == null) {
-                return NotFound();
-            }
-            ViewData["MaLoai"] = new SelectList(_context.Loais, "MaLoai", "TenLoai", hangHoa.MaLoai);
-            ViewData["MaNcc"] = new SelectList(_context.NhaCungCaps, "MaNcc", "TenCongTy", hangHoa.MaNcc);
+            var res = await _api.GetAsync($"HangHoas/{id}");
+            if (!res.Success || res.Data == null) return NotFound();
+
+            var hangHoa = JsonConvert.DeserializeObject<HangHoa>(JsonConvert.SerializeObject(res.Data));
+
+            var resDanhMuc = await _api.GetAsync("HangHoas/danh-muc");
+            var listLoai = resDanhMuc.Success && resDanhMuc.Data != null
+                ? JsonConvert.DeserializeObject<List<Loai>>(JsonConvert.SerializeObject(resDanhMuc.Data))
+                : new List<Loai>();
+
+            ViewData["MaLoai"] = new SelectList(listLoai, "MaLoai", "TenLoai", hangHoa?.MaLoai);
             return View(hangHoa);
         }
 
@@ -148,55 +162,50 @@ namespace LTWEB_QuaMonHai_CuoiKy.Controllers {
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> Edit(int id, [Bind("MaHh,TenHh,TenAlias,MaLoai,MoTaDonVi,DonGia,Hinh,NgaySx,GiamGia,SoLanXem,MoTa,MaNcc")] HangHoa hangHoa, IFormFile? fHinh) {
-            if (id != hangHoa.MaHh) {
-                return NotFound();
+        public async Task<IActionResult> Edit(int id, HangHoa hangHoa, IFormFile? fHinh)
+        {
+            using var form = new MultipartFormDataContent();
+            form.Add(new StringContent(hangHoa.TenHh ?? ""), "TenHh");
+            if (!string.IsNullOrEmpty(hangHoa.TenAlias)) form.Add(new StringContent(hangHoa.TenAlias), "TenAlias");
+            form.Add(new StringContent(hangHoa.MaLoai.ToString()), "MaLoai");
+            if (!string.IsNullOrEmpty(hangHoa.MoTaDonVi)) form.Add(new StringContent(hangHoa.MoTaDonVi), "MoTaDonVi");
+            form.Add(new StringContent((hangHoa.DonGia ?? 0).ToString()), "DonGia");
+            form.Add(new StringContent(hangHoa.NgaySx.ToString("o")), "NgaySx");
+            form.Add(new StringContent(hangHoa.GiamGia.ToString()), "GiamGia");
+            if (!string.IsNullOrEmpty(hangHoa.MoTa)) form.Add(new StringContent(hangHoa.MoTa), "MoTa");
+            form.Add(new StringContent(hangHoa.MaNcc ?? "NK"), "MaNcc");
+
+            if (fHinh != null && fHinh.Length > 0)
+            {
+                var fileStream = fHinh.OpenReadStream();
+                var fileContent = new StreamContent(fileStream);
+                fileContent.Headers.ContentType = new MediaTypeHeaderValue(fHinh.ContentType);
+                form.Add(fileContent, "FHinh", fHinh.FileName);
             }
 
-            ModelState.Remove("MaLoaiNavigation");
-            ModelState.Remove("MaNccNavigation");
-            ModelState.Remove("fHinh");
+            var token = GetJwtToken();
+            var res = await _api.PutFormAsync($"HangHoas/{id}", form, token);
 
-            if (ModelState.IsValid) {
-                try {
-                    if (fHinh != null && fHinh.Length > 0) {
-                        hangHoa.Hinh = await LuuFileHinh(fHinh);
-                    }
-
-                    _context.Update(hangHoa);
-                    await _context.SaveChangesAsync();
-                    TempData["Success"] = "Cập nhật sản phẩm thành công!";
-                }
-                catch (DbUpdateConcurrencyException) {
-                    if (!HangHoaExists(hangHoa.MaHh)) {
-                        return NotFound();
-                    }
-                    else {
-                        throw;
-                    }
-                }
+            if (res.Success)
+            {
+                TempData["Success"] = "Cập nhật sản phẩm thành công!";
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["MaLoai"] = new SelectList(_context.Loais, "MaLoai", "TenLoai", hangHoa.MaLoai);
-            ViewData["MaNcc"] = new SelectList(_context.NhaCungCaps, "MaNcc", "TenCongTy", hangHoa.MaNcc);
+
+            ModelState.AddModelError(string.Empty, res.Message);
             return View(hangHoa);
         }
 
         // GET: HangHoas/Delete/5
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> Delete(int? id) {
-            if (id == null) {
-                return NotFound();
-            }
+        public async Task<IActionResult> Delete(int? id)
+        {
+            if (id == null) return NotFound();
 
-            var hangHoa = await _context.HangHoas
-                .Include(h => h.MaLoaiNavigation)
-                .Include(h => h.MaNccNavigation)
-                .FirstOrDefaultAsync(m => m.MaHh == id);
-            if (hangHoa == null) {
-                return NotFound();
-            }
+            var res = await _api.GetAsync($"HangHoas/{id}");
+            if (!res.Success || res.Data == null) return NotFound();
 
+            var hangHoa = JsonConvert.DeserializeObject<HangHoa>(JsonConvert.SerializeObject(res.Data));
             return View(hangHoa);
         }
 
@@ -204,19 +213,21 @@ namespace LTWEB_QuaMonHai_CuoiKy.Controllers {
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> DeleteConfirmed(int id) {
-            var hangHoa = await _context.HangHoas.FindAsync(id);
-            if (hangHoa != null) {
-                _context.HangHoas.Remove(hangHoa);
+        public async Task<IActionResult> DeleteConfirmed(int id)
+        {
+            var token = GetJwtToken();
+            var res = await _api.DeleteAsync($"HangHoas/{id}", null, token);
+
+            if (res.Success)
+            {
                 TempData["Success"] = "Đã xóa sản phẩm!";
             }
+            else
+            {
+                TempData["Error"] = res.Message;
+            }
 
-            await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
-        }
-
-        private bool HangHoaExists(int id) {
-            return _context.HangHoas.Any(e => e.MaHh == id);
         }
     }
 }
